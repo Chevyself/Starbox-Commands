@@ -4,8 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Result {
 
-  @Nullable
-  private final Object message;
+  @Nullable private final Object message;
   private final Object[] strings;
 
   public Result(@Nullable final Object message, final Object... strings) {

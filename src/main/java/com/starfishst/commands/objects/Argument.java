@@ -4,16 +4,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class Argument {
 
-  @NotNull
-  private final Class<?> clazz;
+  @NotNull private final Class<?> clazz;
   private final boolean required;
   private final int position;
-  @NotNull
-  private final String[] suggestions;
-  @NotNull
-  private final String name;
-  @NotNull
-  private final String description;
+  @NotNull private final String[] suggestions;
+  @NotNull private final String name;
+  @NotNull private final String description;
 
   public Argument(
       @NotNull final Class<?> clazz,

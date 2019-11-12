@@ -12,8 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Strings {
 
-  @NotNull
-  private static final StringBuilder builder = new StringBuilder();
+  @NotNull private static final StringBuilder builder = new StringBuilder();
 
   @NotNull
   public static StringBuilder getBuilder() {
@@ -71,5 +70,25 @@ public class Strings {
     } else {
       return new ArrayList<>();
     }
+  }
+
+  public static String fromArray(@NotNull String[] strings) {
+    StringBuilder builder = getBuilder();
+    for (String string : strings) {
+      builder.append(string).append(" ");
+    }
+    if (builder.length() >= 1) {
+      builder.deleteCharAt(strings.length - 1);
+    }
+    return builder.toString();
+  }
+
+  @NotNull
+  public static String[] arrayFrom(String[] oldArray, int position) {
+    String[] newArray = new String[oldArray.length - position];
+    if (oldArray.length - position >= 0) {
+      System.arraycopy(oldArray, position, newArray, position, oldArray.length - position);
+    }
+    return newArray;
   }
 }

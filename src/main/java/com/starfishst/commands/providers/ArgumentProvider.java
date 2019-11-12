@@ -7,8 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class ArgumentProvider<O> {
 
-  @NotNull
-  private final Class<O> clazz;
+  @NotNull private final Class<O> clazz;
 
   @NotNull
   public ArgumentProvider(@NotNull Class<O> clazz) {

@@ -6,12 +6,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandContext {
 
-  @NotNull
-  private final CommandSender sender;
-  @NotNull
-  private final String command;
-  @NotNull
-  private final String[] strings;
+  @NotNull private final CommandSender sender;
+  @NotNull private final String command;
+  @NotNull private final String[] strings;
 
   public CommandContext(
       @NotNull CommandSender sender, @NotNull String command, @NotNull String[] strings) {

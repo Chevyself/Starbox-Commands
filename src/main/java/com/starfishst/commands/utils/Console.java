@@ -6,8 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Console {
 
-  @Nullable
-  public static Logger logger;
+  @Nullable public static Logger logger;
 
   public Console(@NotNull Logger logger) {
     Console.logger = logger;

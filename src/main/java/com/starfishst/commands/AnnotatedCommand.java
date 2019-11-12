@@ -6,6 +6,7 @@ import com.starfishst.commands.objects.Argument;
 import com.starfishst.commands.objects.CommandContext;
 import com.starfishst.commands.objects.Result;
 import com.starfishst.commands.providers.ArgumentProvider;
+import com.starfishst.commands.providers.MultipleArgumentProvider;
 import com.starfishst.commands.utils.Chat;
 import com.starfishst.commands.utils.Strings;
 import java.lang.reflect.InvocationTargetException;
@@ -20,12 +21,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class AnnotatedCommand extends org.bukkit.command.Command {
 
-  @NotNull
-  private final Object clazz;
-  @NotNull
-  private final Method method;
-  @NotNull
-  private final Argument[] arguments;
+  @NotNull private final Object clazz;
+  @NotNull private final Method method;
+  @NotNull private final Argument[] arguments;
 
   AnnotatedCommand(
       @NotNull final Object clazz,
@@ -89,7 +87,13 @@ public class AnnotatedCommand extends org.bukkit.command.Command {
           final Class<?> clazz1 = argumentProvider.getClazz();
           if (clazz1.isAssignableFrom(clazz)) {
             try {
-              objects[i] = argumentProvider.fromString(string);
+              if (argumentProvider instanceof MultipleArgumentProvider) {
+                objects[i] =
+                    ((MultipleArgumentProvider<?>) argumentProvider)
+                        .fromStrings(Strings.arrayFrom(strings, argument.getPosition()));
+              } else {
+                objects[i] = argumentProvider.fromString(string);
+              }
               cached = true;
             } catch (ArgumentProviderException e) {
               return new Result(e.getMessage());

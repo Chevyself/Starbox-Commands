@@ -32,14 +32,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class CommandManager {
 
-  @NotNull
-  private static final List<ArgumentProvider<?>> argumentProviderList = new ArrayList<>();
-  @NotNull
-  private static final Server server = Bukkit.getServer();
-  @NotNull
-  private static final HelpMap helpMap = server.getHelpMap();
-  @NotNull
-  private static final CommandMap commandMap;
+  @NotNull private static final List<ArgumentProvider<?>> argumentProviderList = new ArrayList<>();
+  @NotNull private static final Server server = Bukkit.getServer();
+  @NotNull private static final HelpMap helpMap = server.getHelpMap();
+  @NotNull private static final CommandMap commandMap;
 
   static {
     try {
@@ -62,10 +58,8 @@ public class CommandManager {
   }
 
   private final List<AnnotatedCommand> commands = new ArrayList<>();
-  @NotNull
-  private final Plugin plugin;
-  @Nullable
-  private ParentCommand parent;
+  @NotNull private final Plugin plugin;
+  @Nullable private ParentCommand parent;
 
   public CommandManager(@NotNull final Plugin plugin) {
     this.plugin = plugin;

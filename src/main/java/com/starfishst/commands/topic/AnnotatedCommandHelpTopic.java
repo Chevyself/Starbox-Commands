@@ -16,10 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 class AnnotatedCommandHelpTopic extends HelpTopic {
 
-  @NotNull
-  private static final Server server = Bukkit.getServer();
-  @NotNull
-  private static final HelpMap helpMap = server.getHelpMap();
+  @NotNull private static final Server server = Bukkit.getServer();
+  @NotNull private static final HelpMap helpMap = server.getHelpMap();
   @NotNull
   private static final String TEMPLATE = "&7{0} \n &7Usage: {1} \n &7Arguments: \n",
       PARENT =

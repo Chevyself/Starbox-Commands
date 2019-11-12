@@ -13,10 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class ParentCommand extends AnnotatedCommand {
 
-  @NotNull
-  private final List<AnnotatedCommand> commands = new ArrayList<>();
-  @NotNull
-  private final List<String> commandsAlias = new ArrayList<>();
+  @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
+  @NotNull private final List<String> commandsAlias = new ArrayList<>();
 
   ParentCommand(
       @NotNull final Object clazz,
