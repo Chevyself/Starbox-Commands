@@ -2,7 +2,23 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.starfishst</groupId>
   <artifactId>EasyCommands</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+
+  <modules>
+    <module>core</module>
+    <module>bukkit</module>
+    <module>jda</module>
+  </modules>
 
   <build>
     <plugins>
@@ -29,27 +45,14 @@
       </plugin>
     </plugins>
   </build>
+
   <dependencies>
-    <dependency>
-      <artifactId>spigot-api</artifactId>
-      <groupId>org.spigotmc</groupId>
-      <scope>provided</scope>
-      <version>1.14.4-R0.1-SNAPSHOT</version>
-    </dependency>
     <dependency>
       <artifactId>annotations</artifactId>
       <groupId>org.jetbrains</groupId>
       <version>17.0.0</version>
     </dependency>
   </dependencies>
-  <groupId>com.starfishst.commands</groupId>
-
-  <modelVersion>4.0.0</modelVersion>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
 
   <repositories>
     <repository>
@@ -57,7 +60,5 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
   </repositories>
-
-  <version>1.0-SNAPSHOT</version>
 
 </project>

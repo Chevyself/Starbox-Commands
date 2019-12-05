@@ -1,0 +1,53 @@
+package com.starfishst.core.context;
+
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * The context of a command
+ *
+ * @param <O> the sender of the command
+ * @param <S> the strings of the command
+ */
+public interface ICommandContext<O, S extends String> {
+
+  /**
+   * Get the sender of the command
+   *
+   * @return the sender of the command
+   */
+  @NotNull
+  O getSender();
+
+  /**
+   * Get the joined strings of the command
+   *
+   * @return the joined strings
+   */
+  @NotNull
+  S getString();
+
+  /**
+   * Get the joined strings of the command
+   *
+   * @return the joined strings
+   */
+  @NotNull
+  S[] getStrings();
+
+  /**
+   * Get's if the command was executed using a flag
+   *
+   * @param flag the flag to check
+   * @return true if the command was executed with a flag
+   */
+  boolean hasFlag(@NotNull String flag);
+
+  /**
+   * Get the joined strings from a certain position
+   *
+   * @param position the position to get the string from
+   * @return an array of strings empty if none
+   */
+  @NotNull
+  String[] getStringsFrom(int position);
+}
