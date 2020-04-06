@@ -1,5 +1,6 @@
 package com.starfishst.core.providers;
 
+import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.type.IArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +13,7 @@ public class StringProvider implements IArgumentProvider<String> {
 
   @NotNull
   @Override
-  public String fromString(@NotNull String string) {
+  public String fromString(@NotNull String string, @NotNull ICommandContext<?> context) {
     return string;
   }
 }

@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,5 +48,10 @@ public class BukkitUtils {
   @NotNull
   public static String getMessage(@Nullable String message, Object... strings) {
     return BukkitUtils.color(Strings.buildMessage(message, strings));
+  }
+
+  public static void dispatch(
+          @NotNull CommandSender sender, @NotNull String command, Object... objects) {
+    Bukkit.dispatchCommand(sender, Strings.buildMessage(command, objects));
   }
 }

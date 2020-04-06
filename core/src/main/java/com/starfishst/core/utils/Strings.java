@@ -28,31 +28,47 @@ public class Strings {
   @NotNull
   public static String buildMessage(@Nullable String message, Object... strings) {
     if (message != null) {
-      for (int i = 0; i < strings.length; i++) {
-        message =
-            message.replace("{" + i + "}", strings[i] == null ? "Null" : strings[i].toString());
-      }
+        for (int i = 0; i < strings.length; i++) {
+            message =
+                    message.replace("{" + i + "}", strings[i] == null ? "Null" : strings[i].toString());
+        }
     } else {
-      message = "Null";
+        message = "Null";
     }
-    return message;
+      return message;
   }
 
-  /**
-   * Builds a String from an array.
-   *
-   * @param strings the string array
-   * @return a brand new string
-   */
-  public static String fromArray(@NotNull String[] strings) {
-    StringBuilder builder = Strings.getBuilder();
+    /**
+     * Build a message which has place holders but if the message is null it also returns null
+     *
+     * @param message the message
+     * @param strings the place holders
+     * @return the built message
+     */
+    @Nullable
+    public static String buildMessageOrNull(@Nullable String message, Object... strings) {
+        if (message != null) {
+            return buildMessage(message, strings);
+        } else {
+            return null;
+        }
+    }
 
-    for (String string : strings) {
-      builder.append(string).append(" ");
+    /**
+     * Builds a String from an array.
+     *
+     * @param strings the string array
+     * @return a brand new string
+     */
+    public static String fromArray(@NotNull String[] strings) {
+        StringBuilder builder = Strings.getBuilder();
+
+        for (String string : strings) {
+            builder.append(string).append(" ");
+        }
+        if (builder.length() >= 1) {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        return builder.toString();
     }
-    if (builder.length() >= 1) {
-      builder.deleteCharAt(builder.length() - 1);
-    }
-    return builder.toString();
-  }
 }

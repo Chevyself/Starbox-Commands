@@ -6,16 +6,19 @@ import com.starfishst.core.utils.Strings;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-public class CommandContext implements ICommandContext {
+public class CommandContext implements ICommandContext<CommandSender> {
 
-  @NotNull private final CommandSender sender;
-  @NotNull private final String string;
-  @NotNull private final String[] strings;
+  @NotNull
+  private final CommandSender sender;
+  @NotNull
+  private final String string;
+  @NotNull
+  private final String[] strings;
 
   /**
    * Create a bukkit context
    *
-   * @param sender the sender of the bukkit command
+   * @param sender  the sender of the bukkit command
    * @param strings the strings from the command execution
    */
   public CommandContext(@NotNull CommandSender sender, @NotNull String[] strings) {

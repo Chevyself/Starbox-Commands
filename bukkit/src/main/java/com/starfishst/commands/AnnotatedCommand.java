@@ -8,6 +8,7 @@ import com.starfishst.commands.result.Result;
 import com.starfishst.commands.utils.Chat;
 import com.starfishst.core.ICommand;
 import com.starfishst.core.ICommandManager;
+import com.starfishst.core.ISimpleCommand;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.arguments.ExtraArgument;
 import com.starfishst.core.arguments.type.ISimpleArgument;
@@ -65,8 +66,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     for (int i = 0; i < this.arguments.size(); i++) {
       ISimpleArgument argument = this.arguments.get(i);
       if (argument instanceof ExtraArgument) {
-        IExtraArgumentProvider provider =
-            ICommandManager.getProvider(argument.getClazz(), IExtraArgumentProvider.class);
+        IExtraArgumentProvider<?> provider =
+                ICommandManager.getProvider(argument.getClazz(), IExtraArgumentProvider.class);
         if (provider != null) {
           try {
             objects[i] = provider.getObject(context);
@@ -77,7 +78,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
           return new Result("&cProvider for {0} wasn't found", argument.getClazz());
         }
       } else if (argument instanceof Argument) {
-        String string = ICommand.getArgument(((Argument) argument), context);
+        String string = ISimpleCommand.getArgument(((Argument) argument), context);
         if (string == null && ((Argument) argument).isRequired()) {
           return new Result(
               "&cMissing argument: &e{0}&c, position: &e{1}",
@@ -85,15 +86,15 @@ public class AnnotatedCommand extends org.bukkit.command.Command
         } else if (string == null && !((Argument) argument).isRequired()) {
           objects[i] = null;
         } else if (string != null) {
-          ISimpleArgumentProvider provider =
-              ICommandManager.getProvider(argument.getClazz(), ISimpleArgumentProvider.class);
+          ISimpleArgumentProvider<?> provider =
+                  ICommandManager.getProvider(argument.getClazz(), ISimpleArgumentProvider.class);
           if (provider instanceof IMultipleArgumentProvider) {
             objects[i] =
-                ((IMultipleArgumentProvider) provider)
-                    .fromStrings(context.getStringsFrom(((Argument) argument).getPosition()));
+                    ((IMultipleArgumentProvider<?>) provider)
+                            .fromStrings(context.getStringsFrom(((Argument) argument).getPosition()));
           } else if (provider instanceof IArgumentProvider) {
             try {
-              objects[i] = ((IArgumentProvider) provider).fromString(string);
+              objects[i] = ((IArgumentProvider<?>) provider).fromString(string, context);
             } catch (ArgumentProviderException e) {
               return new Result("&c{0}", e.getMessage());
             }
@@ -170,18 +171,18 @@ public class AnnotatedCommand extends org.bukkit.command.Command
         return StringUtil.copyPartialMatches(
             strings[strings.length - 1], argument.getSuggestions(context), new ArrayList<>());
       } else {
-        ISimpleArgumentProvider provider =
-            ICommandManager.getProvider(argument.getClazz(), ISimpleArgumentProvider.class);
+        ISimpleArgumentProvider<?> provider =
+                ICommandManager.getProvider(argument.getClazz(), ISimpleArgumentProvider.class);
         if (provider instanceof BukkitArgumentProvider) {
           return StringUtil.copyPartialMatches(
-              strings[strings.length - 1],
-              ((BukkitArgumentProvider) provider).getSuggestions(context),
-              new ArrayList<>());
+                  strings[strings.length - 1],
+                  ((BukkitArgumentProvider<?>) provider).getSuggestions(context),
+                  new ArrayList<>());
         } else if (provider instanceof BukkitMultiArgumentProvider) {
           return StringUtil.copyPartialMatches(
-              strings[strings.length - 1],
-              ((BukkitMultiArgumentProvider) provider).getSuggestions(context),
-              new ArrayList<>());
+                  strings[strings.length - 1],
+                  ((BukkitMultiArgumentProvider<?>) provider).getSuggestions(context),
+                  new ArrayList<>());
         } else {
           return new ArrayList<>();
         }

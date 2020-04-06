@@ -56,12 +56,6 @@ public class Argument implements ISuggestible, ISimpleArgument, IMappable {
 
   @NotNull
   @Override
-  public List<String> getSuggestions(@NotNull ICommandContext context) {
-    return this.suggestions;
-  }
-
-  @NotNull
-  @Override
   public Class<?> getClazz() {
     return this.clazz;
   }
@@ -87,20 +81,25 @@ public class Argument implements ISuggestible, ISimpleArgument, IMappable {
   @Override
   public String toString() {
     return "Argument{"
-        + "name='"
-        + this.name
-        + '\''
-        + ", description='"
-        + this.description
-        + '\''
-        + ", suggestions="
-        + this.suggestions
-        + ", clazz="
-        + this.clazz
-        + ", required="
-        + this.required
-        + ", position="
-        + this.position
-        + '}';
+            + "name='"
+            + this.name
+            + '\''
+            + ", description='"
+            + this.description
+            + '\''
+            + ", suggestions="
+            + this.suggestions
+            + ", clazz="
+            + this.clazz
+            + ", required="
+            + this.required
+            + ", position="
+            + this.position
+            + '}';
+  }
+
+  @Override
+  public @NotNull List<String> getSuggestions(@NotNull ICommandContext<?> context) {
+    return this.suggestions;
   }
 }

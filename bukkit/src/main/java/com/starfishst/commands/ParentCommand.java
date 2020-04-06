@@ -22,11 +22,11 @@ public class ParentCommand extends AnnotatedCommand
   @NotNull private final List<String> commandsAlias = new ArrayList<>();
 
   ParentCommand(
-      @NotNull Object clazz,
-      @NotNull Method method,
-      @NotNull List<ISimpleArgument> arguments,
-      @NotNull Command command,
-      CommandManagerOptions options) {
+          @NotNull Object clazz,
+          @NotNull Method method,
+          @NotNull List<ISimpleArgument> arguments,
+          @NotNull Command command,
+          @NotNull CommandManagerOptions options) {
     super(clazz, method, arguments, command);
     this.options = options;
   }

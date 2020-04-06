@@ -13,7 +13,7 @@ public class ExtraArgument implements ISimpleArgument {
    *
    * @param clazz the class of the argument
    */
-  public ExtraArgument(@NotNull Class clazz) {
+  public ExtraArgument(@NotNull Class<?> clazz) {
     this.clazz = clazz;
   }
 

@@ -7,14 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandContextProvider implements IExtraArgumentProvider<CommandContext> {
 
-  @NotNull
-  @Override
-  public CommandContext getObject(@NotNull ICommandContext context) {
-    return (CommandContext) context;
-  }
+    @Override
+    public @NotNull Class<CommandContext> getClazz() {
+        return CommandContext.class;
+    }
 
-  @Override
-  public @NotNull Class<?> getClazz() {
-    return CommandContext.class;
-  }
+    @NotNull
+    @Override
+    public CommandContext getObject(@NotNull ICommandContext<?> context) {
+        return (CommandContext) context;
+    }
 }

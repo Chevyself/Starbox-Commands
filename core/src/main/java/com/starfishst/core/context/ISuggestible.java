@@ -13,5 +13,5 @@ public interface ISuggestible {
    * @return the list of suggestions
    */
   @NotNull
-  List<String> getSuggestions(@NotNull ICommandContext context);
+  List<String> getSuggestions(@NotNull ICommandContext<?> context);
 }

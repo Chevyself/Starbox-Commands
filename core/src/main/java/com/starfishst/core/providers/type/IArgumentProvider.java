@@ -1,6 +1,7 @@
 package com.starfishst.core.providers.type;
 
 import com.starfishst.core.ICommand;
+import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <O> the class to provide as argument
  */
-public interface IArgumentProvider<O> extends ISimpleArgumentProvider {
+public interface IArgumentProvider<O> extends ISimpleArgumentProvider<O> {
 
   /**
    * Get the class instance for the {@link ICommand}
@@ -19,5 +20,6 @@ public interface IArgumentProvider<O> extends ISimpleArgumentProvider {
    * @throws ArgumentProviderException when the object could not be obtained
    */
   @NotNull
-  O fromString(@NotNull String string) throws ArgumentProviderException;
+  O fromString(@NotNull String string, @NotNull ICommandContext<?> context)
+          throws ArgumentProviderException;
 }

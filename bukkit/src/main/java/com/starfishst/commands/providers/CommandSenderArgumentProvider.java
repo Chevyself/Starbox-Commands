@@ -7,14 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandSenderArgumentProvider implements IExtraArgumentProvider<CommandSender> {
 
-  @NotNull
-  @Override
-  public CommandSender getObject(@NotNull ICommandContext context) {
-    return (CommandSender) context.getSender();
-  }
+    @Override
+    public @NotNull Class<CommandSender> getClazz() {
+        return CommandSender.class;
+    }
 
-  @Override
-  public @NotNull Class<?> getClazz() {
-    return CommandSender.class;
-  }
+    @NotNull
+    @Override
+    public CommandSender getObject(@NotNull ICommandContext<?> context) {
+        return (CommandSender) context.getSender();
+    }
 }

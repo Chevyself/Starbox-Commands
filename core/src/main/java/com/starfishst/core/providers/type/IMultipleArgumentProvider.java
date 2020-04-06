@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <O> the class to provide as argument
  */
-public interface IMultipleArgumentProvider<O> extends ISimpleArgumentProvider {
+public interface IMultipleArgumentProvider<O> extends ISimpleArgumentProvider<O> {
 
   /**
    * Get the object of the provider
