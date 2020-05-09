@@ -1,67 +1,26 @@
 package com.starfishst.core;
 
+import com.starfishst.core.annotations.Multiple;
+import com.starfishst.core.annotations.Optional;
+import com.starfishst.core.annotations.Required;
 import com.starfishst.core.arguments.Argument;
+import com.starfishst.core.arguments.ExtraArgument;
+import com.starfishst.core.arguments.MultipleArgument;
 import com.starfishst.core.arguments.type.ISimpleArgument;
-import com.starfishst.core.providers.DoubleProvider;
-import com.starfishst.core.providers.IntegerProvider;
-import com.starfishst.core.providers.JoinedStringsProvider;
-import com.starfishst.core.providers.LongProvider;
-import com.starfishst.core.providers.NumberProvider;
-import com.starfishst.core.providers.StringProvider;
-import com.starfishst.core.providers.type.IArgumentProvider;
-import com.starfishst.core.providers.type.ISimpleArgumentProvider;
-import com.starfishst.core.utils.Lots;
+import com.starfishst.core.exceptions.CommandRegistrationException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This class is used to register commands
+ *
+ * @param <C> the command class
  */
 public interface ICommandManager<C extends ISimpleCommand<?>> {
-
-  List<ISimpleArgumentProvider<?>> providers =
-          Lots.list(
-                  new DoubleProvider(),
-                  new IntegerProvider(),
-                  new JoinedStringsProvider(),
-                  new LongProvider(),
-                  new StringProvider(),
-                  new NumberProvider());
-
-  /**
-   * Add a {@link IArgumentProvider} to the manager
-   *
-   * @param provider the provider to add
-   */
-  static void addProvider(@NotNull ISimpleArgumentProvider<?> provider) {
-    ICommandManager.providers.add(provider);
-  }
-
-  static void removeProvider(@NotNull Class<?> clazz) {
-    ICommandManager.providers.removeIf(provider -> provider.getClazz() == clazz);
-  }
-
-  /**
-   * Get a provider using its class
-   *
-   * @param clazz the class to get the provider from
-   * @return the provider if found
-   */
-  @Nullable
-  static <I extends ISimpleArgumentProvider<?>> I getProvider(
-          @NotNull Class<?> clazz, @NotNull Class<I> providerClass) {
-    return providerClass.cast(
-            ICommandManager.providers.stream()
-                    .filter(
-                            provider ->
-                                    provider.getClazz() == clazz
-                                            && providerClass.isAssignableFrom(provider.getClass()))
-                    .findFirst()
-                    .orElse(null));
-  }
 
   /**
    * Register a command in {@link ICommandManager}
@@ -75,11 +34,24 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    *
    * @param parameters the parameters of the command method
    * @param annotations the annotations of the parameters of the command method
-   * @return the list of parsed {@link ISimpleArgument} empty if theres none
+   * @return the list of parsed {@link ISimpleArgument} empty if there's none
    */
   @NotNull
-  List<ISimpleArgument> parseArguments(
-      @NotNull final Class<?>[] parameters, @NotNull final Annotation[][] annotations);
+  default List<ISimpleArgument<?>> parseArguments(
+      @NotNull final Class<?>[] parameters, @NotNull final Annotation[][] annotations) {
+    List<ISimpleArgument<?>> arguments = new ArrayList<>();
+    int position = 0;
+    for (int i = 0; i < parameters.length; i++) {
+      Annotation[] paramAnnotations = annotations[i];
+      if (isEmpty(paramAnnotations)) {
+        arguments.add(i, new ExtraArgument<>(parameters[i]));
+      } else {
+        arguments.add(i, this.parseArgument(parameters[i], annotations[i], position));
+        position++;
+      }
+    }
+    return arguments;
+  }
 
   /**
    * Get a new instance of {@link ICommand}
@@ -95,11 +67,92 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
   /**
    * Get a argument using the command annotations
    *
-   * @param parameter   the parameter of the command
+   * @param parameter the parameter of the command
    * @param annotations the annotations of the command
-   * @param position    the position of the parameter
+   * @param position the position of the parameter
    * @return the argument made with the annotations
    */
   @NotNull
-  Argument parseArgument(Class<?> parameter, Annotation[] annotations, int position);
+  default Argument<?> parseArgument(Class<?> parameter, Annotation[] annotations, int position) {
+    boolean multiple = hasAnnotation(annotations, Multiple.class);
+    for (Annotation annotation : annotations) {
+      if (annotation instanceof Required) {
+        String name = ((Required) annotation).name();
+        String description = ((Required) annotation).description();
+        List<String> suggestions = Arrays.asList(((Required) annotation).suggestions());
+        return getArgument(parameter, position, multiple, name, description, suggestions);
+      } else if (annotation instanceof Optional) {
+        String name = ((Optional) annotation).name();
+        String description = ((Optional) annotation).description();
+        List<String> suggestions = Arrays.asList(((Optional) annotation).suggestions());
+        return getArgument(parameter, position, multiple, name, description, suggestions);
+      }
+    }
+    throw new CommandRegistrationException(
+        "Argument could not be parsed for "
+            + parameter
+            + " because it may not contain the annotations "
+            + Required.class
+            + " or "
+            + Optional.class);
+  }
+
+  /**
+   * Get the argument with the provided parameters
+   *
+   * @param parameter the parameter where the argument came from
+   * @param position the position of the argument
+   * @param multiple whether or not has the annotation {@link Multiple}
+   * @param name the name of the argument
+   * @param description the description of the argument
+   * @param suggestions the suggestions for the argument
+   * @return the argument
+   */
+  @NotNull
+  default Argument<?> getArgument(
+      Class<?> parameter,
+      int position,
+      boolean multiple,
+      String name,
+      String description,
+      List<String> suggestions) {
+    if (multiple) {
+      return new MultipleArgument<>(name, description, suggestions, parameter, true, position);
+    } else {
+      return new Argument<>(name, description, suggestions, parameter, true, position);
+    }
+  }
+
+  /**
+   * Checks if an array of annotations has certain annotation
+   *
+   * @param annotations the array of annotations
+   * @param search the annotation to match
+   * @return true if the array was the annotation
+   * @param <T> the type of annotation
+   */
+  default <T extends Annotation> boolean hasAnnotation(
+      @NotNull Annotation[] annotations, @NotNull Class<T> search) {
+    for (Annotation annotation : annotations) {
+      if (search.isAssignableFrom(annotation.getClass())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Checks if the annotations of a method are empty
+   *
+   * @param annotations the annotations of the method
+   * @return true if the annotations are empty
+   */
+  default boolean isEmpty(@NotNull Annotation[] annotations) {
+    for (Annotation annotation : annotations) {
+      if (annotation instanceof Required || annotation instanceof Optional) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

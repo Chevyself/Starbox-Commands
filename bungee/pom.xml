@@ -65,13 +65,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.15-SNAPSHOT</version>
-            <type>javadoc</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.starfishst.core</groupId>
             <artifactId>core</artifactId>
             <version>1.0-SNAPSHOT</version>

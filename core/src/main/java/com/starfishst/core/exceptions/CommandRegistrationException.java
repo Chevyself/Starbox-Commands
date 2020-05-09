@@ -7,12 +7,11 @@ import org.jetbrains.annotations.NotNull;
 public class CommandRegistrationException extends SimpleRuntimeException {
 
   /**
-   * Throw the exception using a message with place holders
+   * Throw the exception when a command could not be registered
    *
    * @param message the message
-   * @param objects the place holders replacers
    */
-  public CommandRegistrationException(@NotNull String message, @NotNull Object... objects) {
-    super(message, objects);
+  public CommandRegistrationException(@NotNull String message) {
+    super(message);
   }
 }

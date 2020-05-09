@@ -1,22 +1,25 @@
 package com.starfishst.commands.messages;
 
+import com.starfishst.commands.CommandManager;
 import com.starfishst.commands.ManagerOptions;
 import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.result.ResultType;
+import com.starfishst.core.messages.IMessagesProvider;
+import com.starfishst.core.utils.time.Time;
+import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
-public interface MessagesProvider {
+/** Provides messages to results */
+public interface MessagesProvider extends IMessagesProvider<User, CommandContext> {
 
   /**
-   * @return The message when a command is not found in {@link
-   * com.starfishst.commands.CommandManager}
+   * @param command is the input string that's not found as a command
+   * @return The message when a command is not found in {@link CommandManager}
    */
   @NotNull
-  String commandNotFound();
+  String commandNotFound(@NotNull String command);
 
-  /**
-   * @return The footer in case {@link ManagerOptions#isEmbedMessages()} is true
-   */
+  /** @return The footer in case {@link ManagerOptions#isEmbedMessages()} is true */
   @NotNull
   String footer();
 
@@ -28,34 +31,78 @@ public interface MessagesProvider {
   String getTitle(@NotNull ResultType type);
 
   /**
-   * {0} is the title from the {@link ResultType} that you get from {@link #getTitle(ResultType)}
-   * {1} is the result that you get from {@link
-   * com.starfishst.commands.AnnotatedCommand#execute(CommandContext)}
-   *
+   * @param title the title of the response
+   * @param message the message of the response
    * @return the message when the result has a message
    */
   @NotNull
-  String response();
+  String response(@NotNull String title, @NotNull String message);
 
-  /**
-   * @return the message when the sender does not have a permission
-   */
+  /** @return the message when the sender does not have a permission */
   @NotNull
   String notAllowed();
 
   /**
    * @return the message when the command has to be executed in a {@link
-   * net.dv8tion.jda.api.entities.Guild}
+   *     net.dv8tion.jda.api.entities.Guild}
    */
   @NotNull
   String guildOnly();
 
   /**
-   * {0} is the name of the argument {1} is the description of the argument {2} is the position
-   * where the argument is missing
+   * Get the url to use as thumbnail
    *
-   * @return The error when the message is missing arguments
+   * @return the url to use as thumbnail
    */
   @NotNull
-  String missingArgument();
+  String thumbnailUrl();
+
+  /**
+   * Get the message sent when the user is still on cooldown
+   *
+   * @param timeLeft the time left for the user
+   * @return the built string
+   */
+  @NotNull
+  String cooldown(Time timeLeft);
+
+  /**
+   * The message sent when a string is not a valid user
+   *
+   * @param string the string that is not valid
+   * @param context the context of the command
+   * @return the message to tell that the input is wrong
+   */
+  @NotNull
+  String invalidUser(@NotNull String string, @NotNull CommandContext context);
+
+  /**
+   * The message sent when a string is not a valid user
+   *
+   * @param string the string that is not valid
+   * @param context the context of the command
+   * @return the message to tell that the input is wrong
+   */
+  @NotNull
+  String invalidMember(@NotNull String string, @NotNull CommandContext context);
+
+  /**
+   * The message sent when a string is not a valid role
+   *
+   * @param string the string that is invalid
+   * @param context the context of the command
+   * @return the message to tell that the input is wrong
+   */
+  @NotNull
+  String invalidRole(@NotNull String string, @NotNull CommandContext context);
+
+  /**
+   * The message sent when a string is not a valid role
+   *
+   * @param string the string that is invalid
+   * @param context the context ofo the command
+   * @return the message to tell that the input is wrong
+   */
+  @NotNull
+  String invalidTextChannel(String string, CommandContext context);
 }

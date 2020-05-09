@@ -1,17 +1,16 @@
 package com.starfishst.core.exceptions.type;
 
-import com.starfishst.core.utils.Strings;
 import org.jetbrains.annotations.NotNull;
 
+/** A runtime exception that can be handled in commands */
 public class SimpleRuntimeException extends RuntimeException {
 
   /**
-   * Throw the exception using a message with place holders
+   * Throw a simple runtime exception
    *
    * @param message the message
-   * @param objects the place holders replacers
    */
-  protected SimpleRuntimeException(@NotNull String message, @NotNull Object... objects) {
-    super(Strings.buildMessage(message, objects));
+  public SimpleRuntimeException(@NotNull String message) {
+    super(message);
   }
 }

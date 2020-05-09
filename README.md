@@ -28,7 +28,7 @@ mvn clean install
 ```
 <dependency>
   <artifactId>EasyCommands</artifactId>
-  <groupId>com.starfishst.commands</groupId>
+  <groupId>com.starfishst.bukkit</groupId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ```

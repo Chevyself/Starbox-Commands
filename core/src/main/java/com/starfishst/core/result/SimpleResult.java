@@ -1,20 +1,20 @@
 package com.starfishst.core.result;
 
-import com.starfishst.core.utils.Strings;
 import org.jetbrains.annotations.Nullable;
 
+/** A simple result given by a command */
 public class SimpleResult implements IResult {
 
+  /** A message sent by the execution of a command */
   @Nullable private final String message;
 
   /**
    * Create a new instance of {@link SimpleResult} with a message with place holders
    *
-   * @param string the message with place holders
-   * @param strings the place holders
+   * @param message the message with place holders
    */
-  protected SimpleResult(@Nullable String string, Object... strings) {
-    this.message = Strings.buildMessage(string, strings);
+  protected SimpleResult(@Nullable String message) {
+    this.message = message;
   }
 
   /** Create a new instance of {@link SimpleResult} with no message; */

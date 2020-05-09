@@ -12,9 +12,8 @@ public class ArgumentProviderException extends SimpleException {
    * Throw the exception using a message with place holders
    *
    * @param message the message
-   * @param objects the place holders replacers
    */
-  public ArgumentProviderException(@NotNull String message, @NotNull Object... objects) {
-    super(message, objects);
+  public ArgumentProviderException(@NotNull String message) {
+    super(message);
   }
 }

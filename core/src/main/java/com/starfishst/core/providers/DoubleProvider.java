@@ -2,24 +2,39 @@ package com.starfishst.core.providers;
 
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
+import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
-public class DoubleProvider implements IArgumentProvider<Double> {
+/** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Double} */
+public class DoubleProvider<O, T extends ICommandContext<O>>
+    implements IArgumentProvider<Double, T> {
 
-    @Override
-    public @NotNull Class<Double> getClazz() {
-        return double.class;
-    }
+  /** The provider to give the error message */
+  private final IMessagesProvider<O, T> messagesProvider;
 
-    @NotNull
-    @Override
-    public Double fromString(@NotNull String string, @NotNull ICommandContext<?> context)
-            throws ArgumentProviderException {
-        try {
-            return Double.parseDouble(string);
-        } catch (NumberFormatException e) {
-            throw new ArgumentProviderException("{0} is not the correct format for double", string);
-        }
+  /**
+   * Create an instance
+   *
+   * @param messagesProvider to send the error message in case that the long could not be parsed
+   */
+  public DoubleProvider(IMessagesProvider<O, T> messagesProvider) {
+    this.messagesProvider = messagesProvider;
+  }
+
+  @Override
+  public @NotNull Class<Double> getClazz() {
+    return double.class;
+  }
+
+  @NotNull
+  @Override
+  public Double fromString(@NotNull String string, @NotNull T context)
+      throws ArgumentProviderException {
+    try {
+      return Double.parseDouble(string);
+    } catch (NumberFormatException e) {
+      throw new ArgumentProviderException(messagesProvider.invalidDouble(string, context));
     }
+  }
 }

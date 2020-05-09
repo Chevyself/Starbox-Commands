@@ -9,12 +9,19 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /** An argument is a parameter for the {@link ICommand} different results can be given by them */
-public class Argument implements ISuggestible, ISimpleArgument, IMappable {
+public class Argument<O> implements ISuggestible, ISimpleArgument<O>, IMappable {
 
-  @NotNull private final String name, description;
+  /** The name of the argument */
+  @NotNull private final String name;
+  /** The description of the argument */
+  @NotNull private final String description;
+  /** A list of suggestions for the user that will need to input the argument */
   @NotNull private final List<String> suggestions;
-  @NotNull private final Class<?> clazz;
+  /** Get the class that represents the argument */
+  @NotNull private final Class<O> clazz;
+  /** If the argument is required */
   private final boolean required;
+  /** The position of the argument */
   private final int position;
 
   /**
@@ -31,7 +38,7 @@ public class Argument implements ISuggestible, ISimpleArgument, IMappable {
       @NotNull String name,
       @NotNull String description,
       @NotNull List<String> suggestions,
-      @NotNull Class<?> clazz,
+      @NotNull Class<O> clazz,
       boolean required,
       int position) {
     this.name = name;
@@ -56,7 +63,7 @@ public class Argument implements ISuggestible, ISimpleArgument, IMappable {
 
   @NotNull
   @Override
-  public Class<?> getClazz() {
+  public Class<O> getClazz() {
     return this.clazz;
   }
 
@@ -81,21 +88,21 @@ public class Argument implements ISuggestible, ISimpleArgument, IMappable {
   @Override
   public String toString() {
     return "Argument{"
-            + "name='"
-            + this.name
-            + '\''
-            + ", description='"
-            + this.description
-            + '\''
-            + ", suggestions="
-            + this.suggestions
-            + ", clazz="
-            + this.clazz
-            + ", required="
-            + this.required
-            + ", position="
-            + this.position
-            + '}';
+        + "name='"
+        + this.name
+        + '\''
+        + ", description='"
+        + this.description
+        + '\''
+        + ", suggestions="
+        + this.suggestions
+        + ", clazz="
+        + this.clazz
+        + ", required="
+        + this.required
+        + ", position="
+        + this.position
+        + '}';
   }
 
   @Override

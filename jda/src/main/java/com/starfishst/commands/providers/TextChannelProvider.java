@@ -1,30 +1,42 @@
 package com.starfishst.commands.providers;
 
 import com.starfishst.commands.context.CommandContext;
-import com.starfishst.core.context.ICommandContext;
+import com.starfishst.commands.messages.MessagesProvider;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.providers.type.IArgumentProvider;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
-public class TextChannelProvider implements IArgumentProvider<TextChannel> {
+/** Provides the {@link com.starfishst.core.ICommandManager} with a {@link User} */
+public class TextChannelProvider implements IArgumentProvider<TextChannel, CommandContext> {
 
-    @NotNull
-    @Override
-    public TextChannel fromString(@NotNull String string, @NotNull ICommandContext<?> context)
-            throws ArgumentProviderException {
-        if (context instanceof CommandContext) {
-            for (TextChannel channel : ((CommandContext) context).getMessage().getMentionedChannels()) {
-                if (channel.getAsMention().equalsIgnoreCase(string)) {
-                    return channel;
-                }
-            }
-        }
-        throw new ArgumentProviderException("{0} is not a channel", string);
-    }
+  /** The provider to give the error message */
+  private final MessagesProvider messagesProvider;
 
-    @Override
-    public @NotNull Class<TextChannel> getClazz() {
-        return TextChannel.class;
+  /**
+   * Create an instance
+   *
+   * @param messagesProvider to send the error message in case that the long could not be parsed
+   */
+  public TextChannelProvider(MessagesProvider messagesProvider) {
+    this.messagesProvider = messagesProvider;
+  }
+
+  @NotNull
+  @Override
+  public TextChannel fromString(@NotNull String string, @NotNull CommandContext context)
+      throws ArgumentProviderException {
+    for (TextChannel channel : context.getMessage().getMentionedChannels()) {
+      if (string.contains(channel.getId())) {
+        return channel;
+      }
     }
+    throw new ArgumentProviderException(messagesProvider.invalidTextChannel(string, context));
+  }
+
+  @Override
+  public @NotNull Class<TextChannel> getClazz() {
+    return TextChannel.class;
+  }
 }

@@ -2,6 +2,7 @@ package com.starfishst.core.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
@@ -82,6 +83,13 @@ public class Lots {
     }
   }
 
+  /**
+   * Get an array from certain position from another one
+   *
+   * @param position the position to get the array from
+   * @param array the array to get the new from
+   * @return the new array with the objects from the array at a certain position
+   */
   @NotNull
   public static String[] arrayFrom(int position, String[] array) {
     if (position < 0) {
@@ -97,5 +105,17 @@ public class Lots {
       }
       return newArr;
     }
+  }
+
+  /**
+   * Gives a pretty string of a collection
+   *
+   * @param collection the collection to give as string
+   * @param <O> the type of the collection
+   * @return a string given by the collection
+   */
+  @NotNull
+  public static <O> String pretty(Collection<O> collection) {
+    return collection.toString().replace("[", "").replace("]", "");
   }
 }
