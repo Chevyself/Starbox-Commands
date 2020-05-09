@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 /** Used for the representation of parameters that require multiple strings */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target(ElementType.PARAMETER)
 public @interface Multiple {}
