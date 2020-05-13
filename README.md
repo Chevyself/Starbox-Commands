@@ -25,13 +25,35 @@ mvn clean install
 
 4. Add the dependency to your project pom.xml.
 
+
+### Bukkit
+
 ```xml
 <dependency>
-  <artifactId>EasyCommands</artifactId>
+  <artifactId>bukkit</artifactId>
   <groupId>com.starfishst.bukkit</groupId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
+
+### Bungee
+
+```xml
+<dependency>
+  <artifactId>bungee</artifactId>
+  <groupId>com.starfishst.bungee</groupId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+### JDA 
+
+<dependency>
+  <artifactId>JDA-Command-Framework</artifactId>
+  <groupId>com.starfishst.commands</groupId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+
 5. Read the documentation and create your own commands!
 
-### TO-DO
+# TO-DO
