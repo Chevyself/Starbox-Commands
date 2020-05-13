@@ -48,11 +48,13 @@ mvn clean install
 
 ### JDA 
 
+```xml
 <dependency>
   <artifactId>JDA-Command-Framework</artifactId>
   <groupId>com.starfishst.commands</groupId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
+```
 
 5. Read the documentation and create your own commands!
 
