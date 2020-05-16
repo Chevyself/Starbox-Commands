@@ -48,7 +48,7 @@ public class Time {
    * @return the time
    */
   public static Time fromMillis(long millis) {
-    return new Time(millis, Unit.MILLISECONDS);
+    return new Time(millis, Unit.fromMillis(millis));
   }
 
   /**
@@ -104,7 +104,7 @@ public class Time {
    * @return the next date
    */
   public OffsetDateTime nextDateOffset() {
-    return TimeUtils.getOffsetDateFroMillis(nextDateMillis());
+    return TimeUtils.getOffsetDateFromMillis(nextDateMillis());
   }
 
   /**
@@ -113,7 +113,7 @@ public class Time {
    * @return the previous date
    */
   public OffsetDateTime previousDateOffset() {
-    return TimeUtils.getOffsetDateFroMillis(previousDateMillis());
+    return TimeUtils.getOffsetDateFromMillis(previousDateMillis());
   }
 
   /**
@@ -208,5 +208,16 @@ public class Time {
   @Override
   public String toString() {
     return this.value + " " + unit.toString().toLowerCase();
+  }
+
+  @NotNull
+  public Time sustract(@NotNull Time time) {
+    long millis = this.millis() - time.millis();
+    return Time.fromMillis(millis < 0 ? 0 : millis);
+  }
+
+  @NotNull
+  public Time sum(@NotNull Time time) {
+    return Time.fromMillis(millis() + time.millis());
   }
 }
