@@ -48,7 +48,7 @@ public class Time {
    * @return the time
    */
   public static Time fromMillis(long millis) {
-    return new Time(millis, Unit.fromMillis(millis));
+    return new Time(millis, Unit.MILLISECONDS);
   }
 
   /**
@@ -58,7 +58,7 @@ public class Time {
    * @param unit the unit to get the time from
    * @return the time with the new unit
    */
-  public Time getAs(@NotNull final Unit unit) {
+  public Time getValue(@NotNull final Unit unit) {
     return new Time(this.millis() / unit.millis(), unit);
   }
 
@@ -144,7 +144,7 @@ public class Time {
     Time effectiveTime = null;
     for (Unit unit : Unit.values()) {
       if (unit.millis() < this.millis()) {
-        effectiveTime = this.getAs(unit);
+        effectiveTime = this.getValue(unit);
       }
     }
     if (effectiveTime != null) {
@@ -177,13 +177,13 @@ public class Time {
   }
 
   /**
-   * Just like {@link Time#getAs(Unit)} but using java unit
+   * Just like {@link Time#getValue(Unit)} but using java unit
    *
    * @param unit the java unit to get the value from
    * @return the value as certain unit
    */
   private long getAs(@NotNull TimeUnit unit) {
-    return getAs(Unit.fromTimeUnit(unit)).getAs();
+    return getValue(Unit.fromTimeUnit(unit)).getValue();
   }
 
   /**
@@ -191,7 +191,7 @@ public class Time {
    *
    * @return the value of the time
    */
-  public long getAs() {
+  public long getValue() {
     return value;
   }
 
