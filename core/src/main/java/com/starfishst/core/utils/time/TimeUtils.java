@@ -30,4 +30,31 @@ public class TimeUtils {
   public static OffsetDateTime getOffsetDateFroMillis(long millis) {
     return Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toOffsetDateTime();
   }
+
+
+  /**
+   * Get the millis from a local date
+   *
+   * @param date to get the millis from
+   * @return the millis
+   */
+  public static long getMillisFromLocalDate(@NotNull LocalDateTime date){
+    return date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+  }
+
+  /**
+   * Get the time since a date
+   *
+   * @param date the date to get the time from
+   * @return the time since a date
+   */
+  @NotNull
+  public static Time getTimeFromToday(@NotNull LocalDateTime date) {
+    long millis = (System.currentTimeMillis() - getMillisFromLocalDate(date));
+    if (millis < 0) {
+      millis *= -1;
+    }
+    return Time.fromMillis(millis);
+  }
+  
 }
