@@ -136,7 +136,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   }
 
   @Override
-  public @NotNull IMessagesProvider<?, CommandContext> getMessagesProvider() {
+  public @NotNull IMessagesProvider<CommandContext> getMessagesProvider() {
     return messagesProvider;
   }
 

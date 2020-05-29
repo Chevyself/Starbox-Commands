@@ -6,10 +6,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Provides messages for different instances of the manager
  *
- * @param <O> the sender of the context
  * @param <T> the command context
  */
-public interface IMessagesProvider<O, T extends ICommandContext<O>> {
+public interface IMessagesProvider<T extends ICommandContext> {
 
   /**
    * The message sent when a string is not valid as a long

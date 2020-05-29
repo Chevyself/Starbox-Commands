@@ -116,7 +116,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   }
 
   @Override
-  public @NotNull IMessagesProvider<?, CommandContext> getMessagesProvider() {
+  public @NotNull IMessagesProvider<CommandContext> getMessagesProvider() {
     return messagesProvider;
   }
 }

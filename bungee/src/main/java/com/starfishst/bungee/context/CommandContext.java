@@ -7,7 +7,7 @@ import net.md_5.bungee.api.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 /** The context for bungee commands */
-public class CommandContext implements ICommandContext<CommandSender> {
+public class CommandContext implements ICommandContext {
 
   /** The sender of bungee commands */
   @NotNull private final CommandSender sender;

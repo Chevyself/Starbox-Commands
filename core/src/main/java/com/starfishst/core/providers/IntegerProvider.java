@@ -7,18 +7,17 @@ import com.starfishst.core.providers.type.IArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Integer} */
-public class IntegerProvider<O, T extends ICommandContext<O>>
-    implements IArgumentProvider<Integer, T> {
+public class IntegerProvider<T extends ICommandContext> implements IArgumentProvider<Integer, T> {
 
   /** The provider to give the error message */
-  private final IMessagesProvider<O, T> messagesProvider;
+  private final IMessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */
-  public IntegerProvider(IMessagesProvider<O, T> messagesProvider) {
+  public IntegerProvider(IMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

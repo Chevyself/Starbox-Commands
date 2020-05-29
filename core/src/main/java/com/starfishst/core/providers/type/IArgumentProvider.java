@@ -10,8 +10,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <O> the class to provide as argument
  */
-public interface IArgumentProvider<O, T extends ICommandContext<?>>
-    extends IContextualProvider<O, T> {
+public interface IArgumentProvider<O, T extends ICommandContext> extends IContextualProvider<O, T> {
 
   /**
    * Get the class instance for the {@link ICommand}

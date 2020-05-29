@@ -2,11 +2,10 @@ package com.starfishst.bukkit.messages;
 
 import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.core.messages.IMessagesProvider;
-import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the messages for bukkit responses */
-public interface MessagesProvider extends IMessagesProvider<CommandSender, CommandContext> {
+public interface MessagesProvider extends IMessagesProvider<CommandContext> {
 
   /**
    * The message sent when a player is not found

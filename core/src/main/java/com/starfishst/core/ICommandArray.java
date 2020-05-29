@@ -7,7 +7,7 @@ import com.starfishst.core.context.ICommandContext;
  *
  * @param <C> the context of the command
  */
-public interface ICommandArray<C extends ICommandContext<?>> extends ISimpleCommand<C> {
+public interface ICommandArray<C extends ICommandContext> extends ISimpleCommand<C> {
 
   /**
    * Get the aliases of the command. Commands can have different aliases and a name

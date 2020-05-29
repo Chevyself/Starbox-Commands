@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <O> the class to provide as argument
  */
-public interface IMultipleArgumentProvider<O, T extends ICommandContext<?>>
+public interface IMultipleArgumentProvider<O, T extends ICommandContext>
     extends IContextualProvider<O, T> {
 
   /**

@@ -2,10 +2,9 @@ package com.starfishst.bungee.messages;
 
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.core.messages.IMessagesProvider;
-import net.md_5.bungee.api.CommandSender;
 
 /** The messages provider for bungee */
-public interface MessagesProvider extends IMessagesProvider<CommandSender, CommandContext> {
+public interface MessagesProvider extends IMessagesProvider<CommandContext> {
 
   /**
    * The message sent when the user that executed the command is not allowed to use it

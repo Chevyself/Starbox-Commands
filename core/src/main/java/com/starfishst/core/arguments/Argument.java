@@ -106,7 +106,7 @@ public class Argument<O> implements ISuggestible, ISimpleArgument<O>, IMappable 
   }
 
   @Override
-  public @NotNull List<String> getSuggestions(@NotNull ICommandContext<?> context) {
+  public @NotNull List<String> getSuggestions(@NotNull ICommandContext context) {
     return this.suggestions;
   }
 }

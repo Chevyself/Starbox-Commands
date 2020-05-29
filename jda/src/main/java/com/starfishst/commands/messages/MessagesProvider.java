@@ -6,11 +6,10 @@ import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.result.ResultType;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.utils.time.Time;
-import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides messages to results */
-public interface MessagesProvider extends IMessagesProvider<User, CommandContext> {
+public interface MessagesProvider extends IMessagesProvider<CommandContext> {
 
   /**
    * @param command is the input string that's not found as a command

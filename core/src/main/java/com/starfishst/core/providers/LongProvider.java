@@ -7,17 +7,17 @@ import com.starfishst.core.providers.type.IArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Long} */
-public class LongProvider<O, T extends ICommandContext<O>> implements IArgumentProvider<Long, T> {
+public class LongProvider<T extends ICommandContext> implements IArgumentProvider<Long, T> {
 
   /** The provider to give the error message */
-  private final IMessagesProvider<O, T> messagesProvider;
+  private final IMessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */
-  public LongProvider(IMessagesProvider<O, T> messagesProvider) {
+  public LongProvider(IMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

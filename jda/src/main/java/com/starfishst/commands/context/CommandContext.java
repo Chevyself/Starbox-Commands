@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
 /** This context is used for every command {@link User being the sender} */
-public class CommandContext implements ICommandContext<User> {
+public class CommandContext implements ICommandContext {
 
   /** The message that executed the command */
   @NotNull private final Message message;

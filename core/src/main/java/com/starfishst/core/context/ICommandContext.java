@@ -3,12 +3,8 @@ package com.starfishst.core.context;
 import com.starfishst.core.utils.Lots;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * The context of a command
- *
- * @param <O> the sender of the command
- */
-public interface ICommandContext<O> {
+/** The context of a command */
+public interface ICommandContext {
 
   /**
    * Get's if the command was executed using a flag
@@ -35,7 +31,7 @@ public interface ICommandContext<O> {
    * @return the sender of the command
    */
   @NotNull
-  O getSender();
+  Object getSender();
 
   /**
    * Get the joined strings of the command

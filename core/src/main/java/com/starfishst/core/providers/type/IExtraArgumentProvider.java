@@ -5,7 +5,7 @@ import com.starfishst.core.exceptions.ArgumentProviderException;
 import org.jetbrains.annotations.NotNull;
 
 /** An extra argument will be in the command method but it is not needed in the command string */
-public interface IExtraArgumentProvider<O, T extends ICommandContext<?>>
+public interface IExtraArgumentProvider<O, T extends ICommandContext>
     extends IContextualProvider<O, T> {
 
   /**

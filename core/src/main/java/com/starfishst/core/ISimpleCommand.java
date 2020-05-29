@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <C> the command context
  */
-public interface ISimpleCommand<C extends ICommandContext<?>> {
+public interface ISimpleCommand<C extends ICommandContext> {
 
   /**
    * Get the string to use as argument in a position
@@ -31,7 +31,7 @@ public interface ISimpleCommand<C extends ICommandContext<?>> {
    * @return the string that matches the requirements of the argument
    */
   @Nullable
-  static String getArgument(@NotNull Argument<?> argument, @NotNull ICommandContext<?> context) {
+  static String getArgument(@NotNull Argument<?> argument, @NotNull ICommandContext context) {
     String[] strings = context.getStrings();
     if (strings.length - 1 < argument.getPosition()) {
       if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
@@ -144,5 +144,5 @@ public interface ISimpleCommand<C extends ICommandContext<?>> {
    * @return the messages provider
    */
   @NotNull
-  IMessagesProvider<?, C> getMessagesProvider();
+  IMessagesProvider<C> getMessagesProvider();
 }

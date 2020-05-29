@@ -211,7 +211,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
 
   @NotNull
   @Override
-  public IMessagesProvider<?, CommandContext> getMessagesProvider() {
+  public IMessagesProvider<CommandContext> getMessagesProvider() {
     return messagesProvider;
   }
 

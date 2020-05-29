@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @param <T> the context
  */
-public class ProvidersRegistry<T extends ICommandContext<?>> {
+public class ProvidersRegistry<T extends ICommandContext> {
 
   /** The providers that must be given with a context */
   protected List<IContextualProvider<?, T>> providers = new ArrayList<>();

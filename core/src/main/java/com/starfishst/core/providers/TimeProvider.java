@@ -8,17 +8,17 @@ import com.starfishst.core.utils.time.Time;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Time} */
-public class TimeProvider<O, T extends ICommandContext<O>> implements IArgumentProvider<Time, T> {
+public class TimeProvider<T extends ICommandContext> implements IArgumentProvider<Time, T> {
 
   /** The provider to give the error message */
-  private final IMessagesProvider<O, T> messagesProvider;
+  private final IMessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */
-  public TimeProvider(IMessagesProvider<O, T> messagesProvider) {
+  public TimeProvider(IMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

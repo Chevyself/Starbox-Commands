@@ -6,7 +6,7 @@ import com.starfishst.core.providers.type.IMultipleArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link JoinedStrings} */
-public class JoinedStringsProvider<O, T extends ICommandContext<O>>
+public class JoinedStringsProvider<T extends ICommandContext>
     implements IMultipleArgumentProvider<JoinedStrings, T> {
 
   @NotNull

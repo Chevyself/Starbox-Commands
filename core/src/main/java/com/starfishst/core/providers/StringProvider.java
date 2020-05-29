@@ -5,8 +5,7 @@ import com.starfishst.core.providers.type.IArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link String} */
-public class StringProvider<O, T extends ICommandContext<O>>
-    implements IArgumentProvider<String, T> {
+public class StringProvider<T extends ICommandContext> implements IArgumentProvider<String, T> {
 
   @Override
   public @NotNull Class<String> getClazz() {

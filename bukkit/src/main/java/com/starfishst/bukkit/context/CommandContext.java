@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 /** The context of a bukkit command */
-public class CommandContext implements ICommandContext<CommandSender> {
+public class CommandContext implements ICommandContext {
 
   /** The sender of the command */
   @NotNull private final CommandSender sender;
