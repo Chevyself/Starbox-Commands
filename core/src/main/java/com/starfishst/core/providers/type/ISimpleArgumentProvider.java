@@ -1,6 +1,5 @@
 package com.starfishst.core.providers.type;
 
-import java.lang.reflect.Type;
 import org.jetbrains.annotations.NotNull;
 
 /** A simple provider only requires the class of the object */
@@ -20,16 +19,7 @@ public interface ISimpleArgumentProvider<O> {
    * @param clazz the queried class
    * @return true if it provides it
    */
-  default boolean provides(Class<?> clazz) {
+  default boolean provides(@NotNull Class<?> clazz) {
     return clazz.isAssignableFrom(getClazz());
-  }
-
-  /**
-   * Get the type of the argument
-   *
-   * @return the type of the argument
-   */
-  default Type getType() {
-    return getClass();
   }
 }
