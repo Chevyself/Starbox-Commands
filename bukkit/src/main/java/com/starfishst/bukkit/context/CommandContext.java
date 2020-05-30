@@ -1,6 +1,9 @@
 package com.starfishst.bukkit.context;
 
+import com.starfishst.bukkit.messages.MessagesProvider;
+import com.starfishst.bukkit.providers.registry.ImplProvidersRegistry;
 import com.starfishst.core.context.ICommandContext;
+import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Lots;
 import com.starfishst.core.utils.Strings;
 import org.bukkit.command.CommandSender;
@@ -15,17 +18,22 @@ public class CommandContext implements ICommandContext {
   @NotNull private final String string;
   /** The command line slitted */
   @NotNull private final String[] strings;
+  /** The messages provider of this context */
+  @NotNull private final MessagesProvider messagesProvider;
 
   /**
    * Create a bukkit context
    *
    * @param sender the sender of the bukkit command
    * @param strings the strings from the command execution
+   * @param messagesProvider the messages provider used in this context
    */
-  public CommandContext(@NotNull CommandSender sender, @NotNull String[] strings) {
+  public CommandContext(
+      @NotNull CommandSender sender, @NotNull String[] strings, MessagesProvider messagesProvider) {
     this.sender = sender;
     this.string = Strings.fromArray(strings);
     this.strings = strings;
+    this.messagesProvider = messagesProvider;
   }
 
   @NotNull
@@ -44,6 +52,17 @@ public class CommandContext implements ICommandContext {
   @Override
   public String[] getStrings() {
     return this.strings;
+  }
+
+  @Override
+  public ProvidersRegistry<CommandContext> getRegistry() {
+    return ImplProvidersRegistry.getInstance();
+  }
+
+  @NotNull
+  @Override
+  public MessagesProvider getMessagesProvider() {
+    return messagesProvider;
   }
 
   @Override

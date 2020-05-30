@@ -1,5 +1,7 @@
 package com.starfishst.core.context;
 
+import com.starfishst.core.messages.IMessagesProvider;
+import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Lots;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,4 +50,18 @@ public interface ICommandContext {
    */
   @NotNull
   String[] getStrings();
+
+  /**
+   * Get the registry used in this context
+   *
+   * @return the registry
+   */
+  ProvidersRegistry<? extends ICommandContext> getRegistry();
+
+  /**
+   * Get the messages provider used in this context
+   *
+   * @return the messages provider used in this context
+   */
+  IMessagesProvider<? extends ICommandContext> getMessagesProvider();
 }

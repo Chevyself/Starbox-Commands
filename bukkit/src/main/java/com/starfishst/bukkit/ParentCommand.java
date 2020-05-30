@@ -33,7 +33,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param arguments the arguments to get the parameters for the method
    * @param command the command annotation
    * @param options the options for the command
-   * @param provider the messages provider
+   * @param messagesProvider the messages provider
    */
   ParentCommand(
       @NotNull Object clazz,
@@ -41,8 +41,8 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NotNull List<ISimpleArgument<?>> arguments,
       @NotNull Command command,
       @NotNull CommandManagerOptions options,
-      @NotNull MessagesProvider provider) {
-    super(clazz, method, arguments, command, provider);
+      @NotNull MessagesProvider messagesProvider) {
+    super(clazz, method, arguments, command, messagesProvider);
     this.options = options;
   }
 
@@ -84,7 +84,9 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       if (command != null) {
         return command.execute(
             new CommandContext(
-                context.getSender(), Arrays.copyOfRange(strings, 1, strings.length)));
+                context.getSender(),
+                Arrays.copyOfRange(strings, 1, strings.length),
+                messagesProvider));
       } else {
         return super.execute(context);
       }

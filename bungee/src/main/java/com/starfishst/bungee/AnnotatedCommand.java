@@ -30,7 +30,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   /** The arguments to get the parameters for the method */
   @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The messages provider */
-  @NotNull private final MessagesProvider messagesProvider;
+  @NotNull protected final MessagesProvider messagesProvider;
 
   /**
    * Create an instance
@@ -86,7 +86,8 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
 
   @Override
   public void execute(CommandSender sender, String[] strings) {
-    String message = this.execute(new CommandContext(sender, strings)).getMessage();
+    String message =
+        this.execute(new CommandContext(sender, strings, messagesProvider)).getMessage();
     if (message != null) {
       Chat.send(sender, message);
     }

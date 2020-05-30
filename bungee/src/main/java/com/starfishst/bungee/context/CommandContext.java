@@ -1,6 +1,9 @@
 package com.starfishst.bungee.context;
 
+import com.starfishst.bungee.messages.MessagesProvider;
+import com.starfishst.bungee.providers.registry.ImplProvidersRegistry;
 import com.starfishst.core.context.ICommandContext;
+import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Lots;
 import com.starfishst.core.utils.Strings;
 import net.md_5.bungee.api.CommandSender;
@@ -15,17 +18,24 @@ public class CommandContext implements ICommandContext {
   @NotNull private final String string;
   /** The command line in separated strings */
   @NotNull private final String[] strings;
+  /** The provider of messages for this context */
+  @NotNull private final MessagesProvider messagesProvider;
 
   /**
    * Create an instance
    *
    * @param sender the sender of the command
    * @param strings the command line in separated strings
+   * @param messagesProvider the messages provider for this context
    */
-  public CommandContext(@NotNull CommandSender sender, @NotNull String[] strings) {
+  public CommandContext(
+      @NotNull CommandSender sender,
+      @NotNull String[] strings,
+      @NotNull MessagesProvider messagesProvider) {
     this.sender = sender;
     this.string = Strings.fromArray(strings);
     this.strings = strings;
+    this.messagesProvider = messagesProvider;
   }
 
   @NotNull
@@ -44,6 +54,16 @@ public class CommandContext implements ICommandContext {
   @Override
   public String[] getStrings() {
     return this.strings;
+  }
+
+  @Override
+  public ProvidersRegistry<CommandContext> getRegistry() {
+    return ImplProvidersRegistry.getInstance();
+  }
+
+  @Override
+  public MessagesProvider getMessagesProvider() {
+    return messagesProvider;
   }
 
   @Override

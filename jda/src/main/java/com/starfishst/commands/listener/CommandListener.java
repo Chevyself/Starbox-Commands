@@ -172,10 +172,20 @@ public class CommandListener implements EventListener {
     strings = Lots.arrayFrom(1, strings);
     if (event.getMember() != null) {
       return new GuildCommandContext(
-          event.getMessage(), event.getAuthor(), strings, event.getChannel(), event);
+          event.getMessage(),
+          event.getAuthor(),
+          strings,
+          event.getChannel(),
+          event,
+          messagesProvider);
     } else {
       return new CommandContext(
-          event.getMessage(), event.getAuthor(), strings, event.getChannel(), event);
+          event.getMessage(),
+          event.getAuthor(),
+          strings,
+          event.getChannel(),
+          event,
+          messagesProvider);
     }
   }
 

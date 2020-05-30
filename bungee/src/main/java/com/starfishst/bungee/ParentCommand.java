@@ -50,7 +50,9 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       if (command != null) {
         return command.execute(
             new CommandContext(
-                context.getSender(), Arrays.copyOfRange(strings, 1, strings.length)));
+                context.getSender(),
+                Arrays.copyOfRange(strings, 1, strings.length),
+                messagesProvider));
       } else {
         return super.execute(context);
       }

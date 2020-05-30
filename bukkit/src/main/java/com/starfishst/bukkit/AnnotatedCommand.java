@@ -37,7 +37,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   /** The arguments of the command */
   @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The provider for messages */
-  @NotNull private final MessagesProvider messagesProvider;
+  @NotNull protected final MessagesProvider messagesProvider;
 
   /**
    * Create an instance
@@ -143,7 +143,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   @Override
   public boolean execute(
       @NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
-    String message = this.execute(new CommandContext(commandSender, strings)).getMessage();
+    String message =
+        this.execute(new CommandContext(commandSender, strings, messagesProvider)).getMessage();
     if (message != null) {
       Chat.send(commandSender, message);
     }
@@ -154,7 +155,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   public @NotNull List<String> tabComplete(
       @NotNull CommandSender sender, @NotNull String alias, @NotNull String[] strings)
       throws IllegalArgumentException {
-    CommandContext context = new CommandContext(sender, strings);
+    CommandContext context = new CommandContext(sender, strings, messagesProvider);
     Argument<?> argument = this.getArgument(strings.length - 1);
     if (argument != null) {
       if (argument.getSuggestions(context).size() > 0) {

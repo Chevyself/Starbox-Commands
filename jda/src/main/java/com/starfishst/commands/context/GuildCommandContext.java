@@ -1,5 +1,6 @@
 package com.starfishst.commands.context;
 
+import com.starfishst.commands.messages.MessagesProvider;
 import java.util.Objects;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -28,14 +29,16 @@ public class GuildCommandContext extends CommandContext {
    * @param args the strings representing the arguments of the command
    * @param channel the channel where the command was executed
    * @param event the event where the command was executed
+   * @param messagesProvider the messages provider for this context
    */
   public GuildCommandContext(
       @NotNull Message message,
       @NotNull User sender,
       @NotNull String[] args,
       @NotNull MessageChannel channel,
-      @NotNull MessageReceivedEvent event) {
-    super(message, sender, args, channel, event);
+      @NotNull MessageReceivedEvent event,
+      @NotNull MessagesProvider messagesProvider) {
+    super(message, sender, args, channel, event, messagesProvider);
     member =
         Objects.requireNonNull(
             message.getMember(), "Guild command context must have a valid member");

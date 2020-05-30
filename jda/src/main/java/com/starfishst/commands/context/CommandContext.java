@@ -1,6 +1,9 @@
 package com.starfishst.commands.context;
 
+import com.starfishst.commands.messages.MessagesProvider;
+import com.starfishst.commands.providers.registry.ImplProvidersRegistry;
 import com.starfishst.core.context.ICommandContext;
+import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Strings;
 import java.util.Arrays;
 import net.dv8tion.jda.api.entities.Message;
@@ -22,6 +25,8 @@ public class CommandContext implements ICommandContext {
   @NotNull private final MessageReceivedEvent event;
   /** The strings of the command execution */
   @NotNull private String[] strings;
+  /** The messages provider of this context */
+  @NotNull private final MessagesProvider messagesProvider;
 
   /**
    * Create an instance
@@ -31,18 +36,21 @@ public class CommandContext implements ICommandContext {
    * @param args the strings send in the command
    * @param channel the channel where the command was executed
    * @param event the event where the command was executed
+   * @param messagesProvider the messages provider for this context
    */
   public CommandContext(
       @NotNull Message message,
       @NotNull User sender,
       @NotNull String[] args,
       @NotNull MessageChannel channel,
-      @NotNull MessageReceivedEvent event) {
+      @NotNull MessageReceivedEvent event,
+      @NotNull MessagesProvider messagesProvider) {
     this.message = message;
     this.sender = sender;
     this.strings = args;
     this.channel = channel;
     this.event = event;
+    this.messagesProvider = messagesProvider;
   }
 
   /**
@@ -100,6 +108,17 @@ public class CommandContext implements ICommandContext {
   @Override
   public String[] getStrings() {
     return strings;
+  }
+
+  @Override
+  public ProvidersRegistry<CommandContext> getRegistry() {
+    return ImplProvidersRegistry.getInstance();
+  }
+
+  @NotNull
+  @Override
+  public MessagesProvider getMessagesProvider() {
+    return messagesProvider;
   }
 
   @Override
