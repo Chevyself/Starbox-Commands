@@ -21,4 +21,46 @@ public class Maps {
     map.put(key, value);
     return map;
   }
+
+  /**
+   * Create a hashmap from strings separating the key and the value using a dot '.'. If there's no
+   * dot it will be ignored
+   *
+   * @param strings to get the key and value
+   * @return the map
+   */
+  public static HashMap<String, String> fromStringArray(@NotNull String... strings) {
+    HashMap<String, String> map = new HashMap<>();
+    for (String string : strings) {
+      if (string.contains(".")) {
+        String[] split = string.split("\\.");
+        map.put(split[0], split[1]);
+      }
+    }
+    return map;
+  }
+
+  /**
+   * Separates each element with a coma ',' and the key and value with a '.' also check {@link
+   * Maps##fromStringArray(String...)}
+   *
+   * @param string to convert
+   * @return the map
+   */
+  public static HashMap<String, String> fromString(@NotNull String string) {
+    return fromStringArray(string.split(","));
+  }
+
+  /**
+   * Puts all the map in a string that can be read using {@link Maps#fromString(String)}
+   *
+   * @param map to get as string
+   * @return the built string
+   */
+  @NotNull
+  public static String toString(HashMap<String, String> map) {
+    StringBuilder builder = Strings.getBuilder();
+    map.forEach((key, value) -> builder.append(key).append(".").append(value).append(","));
+    return builder.toString();
+  }
 }
