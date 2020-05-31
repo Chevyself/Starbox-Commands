@@ -40,6 +40,11 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
+  public @NotNull String invalidNumber(@NotNull String string, @NotNull CommandContext context) {
+    return string + " is not a valid number";
+  }
+
+  @Override
   public String notAllowed(CommandContext context) {
     return "You are not allowed to use this command";
   }

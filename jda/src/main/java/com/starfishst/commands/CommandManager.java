@@ -23,6 +23,7 @@ import com.starfishst.core.exceptions.CommandRegistrationException;
 import com.starfishst.core.providers.BooleanProvider;
 import com.starfishst.core.providers.DoubleProvider;
 import com.starfishst.core.providers.IntegerProvider;
+import com.starfishst.core.providers.JoinedNumberProvider;
 import com.starfishst.core.providers.JoinedStringsProvider;
 import com.starfishst.core.providers.LongProvider;
 import com.starfishst.core.providers.StringProvider;
@@ -100,6 +101,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new TextChannelExtraProvider());
     registry.addProvider(new TextChannelProvider(messagesProvider));
     registry.addProvider(new UserProvider(messagesProvider));
+    registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
   }
 
   /**

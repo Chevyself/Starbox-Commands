@@ -77,6 +77,11 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
+  public @NotNull String invalidNumber(@NotNull String string, @NotNull CommandContext context) {
+    return string + " is not a valid number";
+  }
+
+  @Override
   public @NotNull String thumbnailUrl() {
     return "";
   }
