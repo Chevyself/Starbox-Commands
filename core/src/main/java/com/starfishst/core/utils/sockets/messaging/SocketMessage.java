@@ -61,4 +61,24 @@ public class SocketMessage {
   public SocketMessageType getType() {
     return SocketMessageType.MESSAGE;
   }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (!(object instanceof SocketMessage)) return false;
+
+    SocketMessage that = (SocketMessage) object;
+
+    return data.equals(that.data);
+  }
+
+  @Override
+  public int hashCode() {
+    return data.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "SocketMessage{" + "data=" + data + '}';
+  }
 }

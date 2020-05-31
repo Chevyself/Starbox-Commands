@@ -1,6 +1,6 @@
 package com.starfishst.core.utils.sockets.client;
 
-import com.starfishst.core.utils.sockets.messaging.IMessenger;
+import com.starfishst.core.utils.sockets.messaging.ISocketMessenger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,7 +9,7 @@ import java.net.Socket;
 import org.jetbrains.annotations.NotNull;
 
 /** A client that can connect to a {@link com.starfishst.core.utils.sockets.server.Server} */
-public class Client implements IMessenger {
+public class Client implements ISocketMessenger {
 
   /** The actual socket client */
   @NotNull protected final Socket client;

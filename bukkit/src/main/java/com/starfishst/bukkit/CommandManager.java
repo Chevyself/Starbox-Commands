@@ -7,6 +7,7 @@ import com.starfishst.bukkit.providers.CommandContextProvider;
 import com.starfishst.bukkit.providers.CommandSenderArgumentProvider;
 import com.starfishst.bukkit.providers.PlayerProvider;
 import com.starfishst.bukkit.providers.PlayerSenderProvider;
+import com.starfishst.bukkit.providers.registry.ImplProvidersRegistry;
 import com.starfishst.bukkit.result.Result;
 import com.starfishst.bukkit.topic.AnnotatedCommandHelpTopicFactory;
 import com.starfishst.bukkit.topic.PluginHelpTopic;
@@ -17,6 +18,7 @@ import com.starfishst.core.exceptions.CommandRegistrationException;
 import com.starfishst.core.providers.BooleanProvider;
 import com.starfishst.core.providers.DoubleProvider;
 import com.starfishst.core.providers.IntegerProvider;
+import com.starfishst.core.providers.JoinedNumberProvider;
 import com.starfishst.core.providers.JoinedStringsProvider;
 import com.starfishst.core.providers.LongProvider;
 import com.starfishst.core.providers.StringProvider;
@@ -76,6 +78,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     this.plugin = plugin;
     this.options = options;
     this.messagesProvider = messagesProvider;
+    addProviders(ImplProvidersRegistry.getInstance(), messagesProvider);
   }
 
   /**
@@ -98,6 +101,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new CommandSenderArgumentProvider());
     registry.addProvider(new PlayerProvider(messagesProvider));
     registry.addProvider(new PlayerSenderProvider(messagesProvider));
+    registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
   }
 
   /**

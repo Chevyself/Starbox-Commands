@@ -37,4 +37,27 @@ public class SocketRequest extends SocketMessage {
   public @NotNull SocketMessageType getType() {
     return SocketMessageType.REQUEST;
   }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (!(object instanceof SocketRequest)) return false;
+    if (!super.equals(object)) return false;
+
+    SocketRequest that = (SocketRequest) object;
+
+    return isVoid == that.isVoid;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (isVoid ? 1 : 0);
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "SocketRequest{" + "isVoid=" + isVoid + '}';
+  }
 }

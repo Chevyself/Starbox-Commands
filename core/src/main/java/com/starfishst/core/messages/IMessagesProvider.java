@@ -70,4 +70,14 @@ public interface IMessagesProvider<T extends ICommandContext> {
    */
   @NotNull
   String missingArgument(@NotNull String name, @NotNull String description, int position);
+
+  /**
+   * Get the message to send when a string is not a valid number
+   *
+   * @param string the string that is not a valid number
+   * @param context the context of the command
+   * @return the message to tell that the input is wrong
+   */
+  @NotNull
+  String invalidNumber(@NotNull String string, @NotNull T context);
 }

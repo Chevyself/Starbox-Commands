@@ -6,10 +6,9 @@ import com.starfishst.core.utils.sockets.exception.SocketException;
 import com.starfishst.core.utils.sockets.messaging.IMessenger;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;
 import com.starfishst.core.utils.sockets.messaging.SocketResponse;
+import com.starfishst.core.utils.sockets.messaging.handlers.type.PingHandler;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.starfishst.core.utils.sockets.messaging.handlers.type.PingHandler;
 import org.jetbrains.annotations.NotNull;
 
 /** This handles the requests that a socket receives */
@@ -31,7 +30,8 @@ public class ResponseGiver {
    * @throws SocketException in case that the request is illegal or there's no handler for it
    */
   @NotNull
-  public static SocketResponse getResponse(@NotNull SocketRequest request, @NotNull IMessenger messenger) throws SocketException {
+  public static SocketResponse getResponse(
+      @NotNull SocketRequest request, @NotNull IMessenger messenger) throws SocketException {
     return getHandler(request).getResponse(request, messenger);
   }
 
@@ -81,7 +81,7 @@ public class ResponseGiver {
    *
    * @param method the method to match
    */
-  public static void removeHandler(@NotNull String method){
+  public static void removeHandler(@NotNull String method) {
     handlers.removeIf(handler -> handler.method().equalsIgnoreCase(method));
   }
 
@@ -90,7 +90,7 @@ public class ResponseGiver {
    *
    * @param handler to remove
    */
-  public static void removeHandler(@NotNull RequestHandler handler){
+  public static void removeHandler(@NotNull RequestHandler handler) {
     handlers.remove(handler);
   }
 }

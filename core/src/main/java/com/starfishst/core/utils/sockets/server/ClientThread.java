@@ -1,7 +1,7 @@
 package com.starfishst.core.utils.sockets.server;
 
 import com.starfishst.core.utils.cache.Catchable;
-import com.starfishst.core.utils.sockets.messaging.IMessenger;
+import com.starfishst.core.utils.sockets.messaging.ISocketMessenger;
 import com.starfishst.core.utils.sockets.messaging.type.request.DisconnectedRequest;
 import com.starfishst.core.utils.time.Time;
 import java.io.BufferedReader;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>It is a catchable because if you keep clients in a socket for too long it will consume CPU
  * resources.
  */
-public class ClientThread extends Catchable implements IMessenger {
+public class ClientThread extends Catchable implements ISocketMessenger {
 
   /** The server that this client is connected to */
   @NotNull protected final Server server;
@@ -64,6 +64,16 @@ public class ClientThread extends Catchable implements IMessenger {
   @Override
   public @NotNull PrintWriter getChannelOut() {
     return out;
+  }
+
+  /**
+   * Get the actual socket client
+   *
+   * @return the socket client
+   */
+  @NotNull
+  public Socket getClient() {
+    return client;
   }
 
   @Override
