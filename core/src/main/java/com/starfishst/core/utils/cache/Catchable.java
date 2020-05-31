@@ -24,7 +24,12 @@ public abstract class Catchable {
    */
   public Catchable(@NotNull Time toRemove) {
     this.toRemove = toRemove;
-    Cache.addToCache(refresh());
+    addToCache();
+  }
+
+  /** Adds this object to the cache */
+  public void addToCache() {
+    Cache.add(refresh());
   }
 
   /**
@@ -44,7 +49,7 @@ public abstract class Catchable {
 
   /** Unloads this from the cache */
   public void unload() {
-    Cache.getCache().remove(this);
+    Cache.remove(this);
   }
 
   /** When seconds have passed inside the cache this method will be called */

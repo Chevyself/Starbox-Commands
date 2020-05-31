@@ -6,6 +6,7 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -30,8 +31,37 @@ public class Cache {
    *
    * @param catchable the object to put inside the cache
    */
-  public static void addToCache(@NotNull Catchable catchable) {
+  public static void add(@NotNull Catchable catchable) {
     cache.add(catchable);
+  }
+
+  /**
+   * Removes an object from the cache
+   *
+   * @param catchable the object to remove
+   */
+  public static void remove(@NotNull Catchable catchable) {
+    cache.remove(catchable);
+  }
+
+  /**
+   * Check if the cache contains an object
+   *
+   * @param catchable to check
+   * @return true if the cache contains it
+   */
+  public static boolean contains(@NotNull Catchable catchable) {
+    return cache.contains(catchable);
+  }
+
+  /**
+   * Get the stream of catchables
+   *
+   * @return the stream
+   */
+  @NotNull
+  public static Stream<Catchable> stream() {
+    return cache.stream();
   }
 
   /**
