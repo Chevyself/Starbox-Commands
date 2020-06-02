@@ -1,6 +1,5 @@
 package com.starfishst.core.utils;
 
-import com.starfishst.core.fallback.Fallback;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -107,15 +106,15 @@ public class Strings {
    */
   @NotNull
   public static String buildMessage(
-      @NotNull String message, @NotNull HashMap<String, String> placeHolders) {
+      @Nullable String message, @NotNull HashMap<String, String> placeHolders) {
+    if (message == null) return "Null";
     Atomic<String> atomicMessage = new Atomic<>(message);
     placeHolders.forEach(
         (placeHolder, value) -> {
           if (value != null) {
             atomicMessage.set(atomicMessage.get().replace("%" + placeHolder + "%", value));
           } else {
-            Fallback.addError(
-                "Value for placeholder " + placeHolder + " is null and was not changed");
+            atomicMessage.set(atomicMessage.get().replace("%" + placeHolder + "%", "null"));
           }
         });
     return atomicMessage.get();

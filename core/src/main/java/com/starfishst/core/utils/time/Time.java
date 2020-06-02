@@ -220,4 +220,24 @@ public class Time {
   public Time sum(@NotNull Time time) {
     return Time.fromMillis(millis() + time.millis());
   }
+
+  /**
+   * Compares if this time is higher than another time
+   *
+   * @param time the time to check if is lower than this one
+   * @return true if the parameter time is lower than this
+   */
+  public boolean higherThan(@NotNull Time time) {
+    return this.millis() > time.millis();
+  }
+
+  /**
+   * Compares if this time is lower than another time
+   *
+   * @param time the time to check if is higher than this one
+   * @return tru if the parameter time is higher than this
+   */
+  public boolean lowerThan(@NotNull Time time) {
+    return this.millis() < time.millis();
+  }
 }
