@@ -6,9 +6,7 @@ import org.jetbrains.annotations.Nullable;
 /** Easy to use logger for bukkit */
 public class Console {
 
-  /**
-   * The logger that will be used
-   */
+  /** The logger that will be used */
   @Nullable private static Logger logger = null;
 
   /**
@@ -37,6 +35,7 @@ public class Console {
 
   /**
    * Set the logger that this util with use
+   *
    * @param logger the logger to use
    */
   public static void setLogger(@Nullable Logger logger) {
