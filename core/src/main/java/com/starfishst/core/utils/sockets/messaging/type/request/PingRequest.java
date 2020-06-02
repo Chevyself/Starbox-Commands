@@ -3,9 +3,7 @@ package com.starfishst.core.utils.sockets.messaging.type.request;
 import com.starfishst.core.utils.Maps;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;
 
-/**
- * A ping between sockets
- */
+/** A ping between sockets */
 public class PingRequest extends SocketRequest {
 
   /** Create a ping request to send */

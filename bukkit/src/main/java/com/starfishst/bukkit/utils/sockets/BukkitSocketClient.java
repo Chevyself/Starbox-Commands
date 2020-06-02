@@ -1,5 +1,6 @@
 package com.starfishst.bukkit.utils.sockets;
 
+import com.starfishst.bukkit.utils.sockets.requests.ServerInfoRequest;
 import com.starfishst.core.utils.sockets.client.Client;
 import java.io.IOException;
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ public class BukkitSocketClient extends Client {
                 },
                 0L,
                 1L);
+    sendRequest(new ServerInfoRequest());
   }
 
   /**

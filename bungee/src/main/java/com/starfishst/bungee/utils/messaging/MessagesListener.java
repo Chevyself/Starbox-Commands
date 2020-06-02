@@ -19,9 +19,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * A listener for plugin messages that are treated as socket messages
- */
+/** A listener for plugin messages that are treated as socket messages */
 public class MessagesListener implements Listener {
 
   /** The name of the channel that this will listen to */
@@ -62,6 +60,18 @@ public class MessagesListener implements Listener {
         e.printStackTrace();
       }
     }
+  }
+
+  /**
+   * Sends a request to the desired server
+   *
+   * @param server the server to send the request
+   * @param request the request
+   * @return the response to the request
+   */
+  @NotNull
+  public SocketResponse sendRequest(@NotNull ServerInfo server, @NotNull SocketRequest request) {
+    return new SenderServer(server).sendRequest(request);
   }
 
   public void stop() {

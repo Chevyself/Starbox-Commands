@@ -1,17 +1,21 @@
 package com.starfishst.bungee.utils.sockets;
 
+import com.starfishst.core.fallback.Fallback;
+import com.starfishst.core.utils.NullableAtomic;
 import com.starfishst.core.utils.sockets.server.ClientThread;
 import com.starfishst.core.utils.sockets.server.Server;
 import com.starfishst.core.utils.time.Time;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * A socket server for bungee
- */
+/** A socket server for bungee */
 public class BungeeSocketServer extends Server {
 
   /** The plugin where the socket server was created */
@@ -20,6 +24,8 @@ public class BungeeSocketServer extends Server {
   @NotNull private final ScheduledTask task;
   /** The clients connected to the server */
   @NotNull private final HashMap<ClientThread, ScheduledTask> clients = new HashMap<>();
+  /** The HashMap with the ports of each client thread */
+  @NotNull private final HashMap<ClientThread, String> names = new HashMap<>();
 
   /**
    * Start a server
@@ -33,13 +39,74 @@ public class BungeeSocketServer extends Server {
       throws IOException {
     super(port, toRemove);
     this.plugin = plugin;
-    this.task = plugin.getProxy().getScheduler().runAsync(plugin, new ServerTask(this));
+    this.task =
+        plugin.getProxy().getScheduler().schedule(plugin, this, 0, 1, TimeUnit.MILLISECONDS);
+  }
+
+  /**
+   * Add the server name of a client
+   *
+   * @param client the client
+   * @param name the name
+   */
+  public void setName(@NotNull ClientThread client, @NotNull String name) {
+    names.put(client, name);
+  }
+
+  /**
+   * Get the server name of a client
+   *
+   * @param client the client to get the port from
+   * @return the port
+   */
+  @NotNull
+  public String getName(@NotNull ClientThread client) {
+    return names.getOrDefault(client, "");
+  }
+
+  /**
+   * Get the server where the thread is coming from
+   *
+   * @param thread the client to get the server where is coming from
+   * @return the server
+   */
+  @NotNull
+  public ServerInfo getServer(@NotNull ClientThread thread) {
+    return ProxyServer.getInstance().getServerInfo(getName(thread));
+  }
+
+  @Nullable
+  public ClientThread getClient(@NotNull String name) {
+    NullableAtomic<ClientThread> atomic = new NullableAtomic<>();
+    names.forEach(
+        (client, serverName) -> {
+          if (serverName.equalsIgnoreCase(name)) {
+            atomic.set(client);
+          }
+        });
+    return atomic.get();
   }
 
   @Override
   public void startClientTask(@NotNull ClientThread client) {
     clients.put(
-        client, plugin.getProxy().getScheduler().runAsync(plugin, new ClientThreadTask(client)));
+        client,
+        plugin
+            .getProxy()
+            .getScheduler()
+            .schedule(
+                plugin,
+                () -> {
+                  try {
+                    client.listen();
+                  } catch (IOException e) {
+                    Fallback.addError(e.getMessage());
+                    e.printStackTrace();
+                  }
+                },
+                0,
+                1,
+                TimeUnit.MILLISECONDS));
   }
 
   /**
@@ -51,77 +118,10 @@ public class BungeeSocketServer extends Server {
   public void disconnectClient(@NotNull ClientThread client) {
     ScheduledTask task = clients.get(client);
     if (task != null) {
-      clients.remove(client);
-      if (task instanceof ClientThreadTask) {
-        ((ClientThreadTask) task).cancelTask();
-      }
       task.cancel();
     }
+    clients.remove(client);
+    names.remove(client);
     super.disconnectClient(client);
-  }
-
-  /** The task for client threads */
-  static class ClientThreadTask implements Runnable {
-
-    /** The client owner of the thread */
-    @NotNull private final ClientThread client;
-    /** Whether the task is running */
-    private boolean running = true;
-
-    /**
-     * Create the task
-     *
-     * @param client the client owner of the task
-     */
-    ClientThreadTask(@NotNull ClientThread client) {
-      this.client = client;
-    }
-
-    /** Cancels the task */
-    public void cancelTask() {
-      running = false;
-    }
-
-    @Override
-    public void run() {
-      if (running) {
-        try {
-          client.listen();
-        } catch (IOException e) {
-          e.printStackTrace();
-          running = false;
-        }
-      }
-    }
-  }
-
-  /** The task for the bungee socket server */
-  static class ServerTask implements Runnable {
-
-    /** The server that is running this task */
-    @NotNull private final BungeeSocketServer server;
-    /** Whether the task is running */
-    private boolean running = true;
-
-    /**
-     * Create the task
-     *
-     * @param server the server that needs to listen to connections
-     */
-    ServerTask(@NotNull BungeeSocketServer server) {
-      this.server = server;
-    }
-
-    /** Cancels the task */
-    public void cancelTask() {
-      running = false;
-    }
-
-    @Override
-    public void run() {
-      if (running) {
-        server.run();
-      }
-    }
   }
 }

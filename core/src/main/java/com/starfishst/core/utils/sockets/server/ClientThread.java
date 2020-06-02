@@ -76,6 +76,16 @@ public class ClientThread extends Catchable implements ISocketMessenger {
     return client;
   }
 
+  /**
+   * The server that the client is connected to
+   *
+   * @return the server
+   */
+  @NotNull
+  public Server getServer() {
+    return server;
+  }
+
   @Override
   public void onSecondsPassed() {}
 
@@ -83,6 +93,7 @@ public class ClientThread extends Catchable implements ISocketMessenger {
   public void onRemove() {
     try {
       sendRequest(new DisconnectedRequest("Time exceeded"));
+      server.disconnectClient(this);
       close();
     } catch (IOException e) {
       e.printStackTrace();

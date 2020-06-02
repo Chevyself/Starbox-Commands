@@ -19,9 +19,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * A plugin messages listener for messages that are treated as socket messages
- */
+/** A plugin messages listener for messages that are treated as socket messages */
 public class MessagesListener implements PluginMessageListener {
 
   /** The channel where this listener will be working */
