@@ -80,12 +80,12 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
         String name = ((Required) annotation).name();
         String description = ((Required) annotation).description();
         List<String> suggestions = Arrays.asList(((Required) annotation).suggestions());
-        return getArgument(parameter, position, multiple, name, description, suggestions);
+        return getArgument(parameter, position, multiple, true, name, description, suggestions);
       } else if (annotation instanceof Optional) {
         String name = ((Optional) annotation).name();
         String description = ((Optional) annotation).description();
         List<String> suggestions = Arrays.asList(((Optional) annotation).suggestions());
-        return getArgument(parameter, position, multiple, name, description, suggestions);
+        return getArgument(parameter, position, multiple, false, name, description, suggestions);
       }
     }
     throw new CommandRegistrationException(
@@ -103,6 +103,7 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @param parameter the parameter where the argument came from
    * @param position the position of the argument
    * @param multiple whether or not has the annotation {@link Multiple}
+   * @param required whether the argument is required
    * @param name the name of the argument
    * @param description the description of the argument
    * @param suggestions the suggestions for the argument
@@ -110,16 +111,17 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    */
   @NotNull
   default Argument<?> getArgument(
-      Class<?> parameter,
+      @NotNull Class<?> parameter,
       int position,
       boolean multiple,
-      String name,
-      String description,
-      List<String> suggestions) {
+      boolean required,
+      @NotNull String name,
+      @NotNull String description,
+      @NotNull List<String> suggestions) {
     if (multiple) {
       return new MultipleArgument<>(name, description, suggestions, parameter, true, position);
     } else {
-      return new Argument<>(name, description, suggestions, parameter, true, position);
+      return new Argument<>(name, description, suggestions, parameter, required, position);
     }
   }
 
