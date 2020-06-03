@@ -18,6 +18,7 @@
         <module>Bukkit</module>
         <module>Bungee</module>
         <module>core</module>
+        <module>core-utils</module>
         <module>JDA</module>
     </modules>
 

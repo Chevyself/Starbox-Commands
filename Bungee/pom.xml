@@ -13,6 +13,7 @@
     <groupId>com.starfishst.bungee</groupId>
     <artifactId>bungee</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <description>Bungee utils and command framework</description>
 
     <build>
         <plugins>
@@ -40,6 +41,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>com.starfishst.core:core</include>
+                                    <include>com.starfishst.utils:core-utils</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -67,6 +69,12 @@
         <dependency>
             <groupId>com.starfishst.core</groupId>
             <artifactId>core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.starfishst.utils</groupId>
+            <artifactId>core-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

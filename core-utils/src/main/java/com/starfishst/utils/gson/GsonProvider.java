@@ -1,4 +1,4 @@
-package com.starfishst.bukkit.utils.gson;
+package com.starfishst.utils.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
