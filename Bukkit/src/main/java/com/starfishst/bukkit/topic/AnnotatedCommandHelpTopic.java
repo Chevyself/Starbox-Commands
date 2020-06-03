@@ -5,6 +5,7 @@ import com.starfishst.bukkit.ParentCommand;
 import com.starfishst.bukkit.utils.BukkitUtils;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.utils.Strings;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -12,8 +13,6 @@ import org.bukkit.help.HelpMap;
 import org.bukkit.help.HelpTopic;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 /** The {@link HelpTopic} for the commands generated with annotations */
 class AnnotatedCommandHelpTopic extends HelpTopic {

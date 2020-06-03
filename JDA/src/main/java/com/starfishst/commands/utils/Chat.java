@@ -1,12 +1,11 @@
 package com.starfishst.commands.utils;
 
 import com.starfishst.commands.context.CommandContext;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 /** Utils for sending messages in discord */
 public class Chat {

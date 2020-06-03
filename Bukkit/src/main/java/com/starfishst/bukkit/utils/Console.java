@@ -1,8 +1,7 @@
 package com.starfishst.bukkit.utils;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.logging.Logger;
+import org.jetbrains.annotations.Nullable;
 
 /** Easy to use logger for bukkit */
 public class Console {

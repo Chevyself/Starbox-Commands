@@ -6,13 +6,12 @@ import com.starfishst.bungee.messages.MessagesProvider;
 import com.starfishst.bungee.result.Result;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.type.ISimpleArgument;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** Parent command for bungee commands */
 public class ParentCommand extends AnnotatedCommand implements IParentCommand<AnnotatedCommand> {

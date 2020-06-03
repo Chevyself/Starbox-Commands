@@ -4,12 +4,11 @@ import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.bukkit.providers.type.BukkitArgumentProvider;
 import com.starfishst.core.exceptions.ArgumentProviderException;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** Provides the {@link com.starfishst.bukkit.CommandManager} with the object of {@link Player} */
 public class PlayerProvider implements BukkitArgumentProvider<Player> {

@@ -6,13 +6,12 @@ import com.starfishst.commands.messages.MessagesProvider;
 import com.starfishst.commands.result.Result;
 import com.starfishst.commands.result.ResultType;
 import com.starfishst.core.utils.Validate;
+import java.awt.*;
+import java.util.LinkedHashMap;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
-import java.util.LinkedHashMap;
 
 /** Easily create embeds */
 public class EmbedFactory {

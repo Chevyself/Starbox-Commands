@@ -2,9 +2,8 @@ package com.starfishst.bukkit.result;
 
 import com.starfishst.core.result.SimpleResult;
 import com.starfishst.core.utils.Strings;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
+import org.jetbrains.annotations.NotNull;
 
 /** The result that can be send by the execution of the command */
 public class Result extends SimpleResult {

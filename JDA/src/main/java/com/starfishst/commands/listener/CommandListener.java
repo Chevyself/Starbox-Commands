@@ -12,6 +12,7 @@ import com.starfishst.commands.utils.embeds.EmbedFactory;
 import com.starfishst.commands.utils.message.MessagesFactory;
 import com.starfishst.core.utils.Lots;
 import com.starfishst.core.utils.Strings;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
@@ -20,8 +21,6 @@ import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 /** The main listener of command execution */
 public class CommandListener implements EventListener {

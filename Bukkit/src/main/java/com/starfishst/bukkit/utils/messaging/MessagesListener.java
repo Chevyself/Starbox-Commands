@@ -6,19 +6,18 @@ import com.starfishst.core.utils.sockets.messaging.SocketMessageType;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;
 import com.starfishst.core.utils.sockets.messaging.SocketResponse;
 import com.starfishst.core.utils.sockets.messaging.type.response.VoidResponse;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** A plugin messages listener for messages that are treated as socket messages */
 public class MessagesListener implements PluginMessageListener {

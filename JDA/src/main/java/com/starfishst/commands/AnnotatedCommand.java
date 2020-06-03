@@ -17,14 +17,13 @@ import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.cache.Cache;
 import com.starfishst.core.utils.time.Time;
-import net.dv8tion.jda.api.Permission;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import net.dv8tion.jda.api.Permission;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** An annotated command for discord */
 public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {

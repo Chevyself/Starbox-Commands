@@ -6,19 +6,18 @@ import com.starfishst.core.utils.sockets.messaging.SocketMessageType;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;
 import com.starfishst.core.utils.sockets.messaging.SocketResponse;
 import com.starfishst.core.utils.sockets.messaging.type.response.VoidResponse;
-import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.event.PluginMessageEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.event.EventHandler;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.event.PluginMessageEvent;
+import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.event.EventHandler;
+import org.jetbrains.annotations.NotNull;
 
 /** A listener for plugin messages that are treated as socket messages */
 public class MessagesListener implements Listener {

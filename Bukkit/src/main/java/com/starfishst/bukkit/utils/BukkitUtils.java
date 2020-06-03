@@ -1,6 +1,8 @@
 package com.starfishst.bukkit.utils;
 
 import com.starfishst.core.utils.Strings;
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -8,9 +10,6 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
 
 /** Utils for bukkit */
 public class BukkitUtils {

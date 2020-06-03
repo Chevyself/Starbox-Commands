@@ -3,11 +3,10 @@ package com.starfishst.commands.result;
 import com.starfishst.commands.utils.embeds.EmbedQuery;
 import com.starfishst.commands.utils.message.MessageQuery;
 import com.starfishst.core.result.IResult;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.entities.Message;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 /** This is your general type of result */
 public class Result implements IResult {

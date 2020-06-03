@@ -2,12 +2,11 @@ package com.starfishst.bukkit.utils.sockets;
 
 import com.starfishst.bukkit.utils.sockets.requests.ServerInfoRequest;
 import com.starfishst.core.utils.sockets.client.Client;
+import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 
 /** Creates a Bukkit socket client */
 public class BukkitSocketClient extends Client {

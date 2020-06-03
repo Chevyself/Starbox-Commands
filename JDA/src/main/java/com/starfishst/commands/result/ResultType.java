@@ -2,10 +2,9 @@ package com.starfishst.commands.result;
 
 import com.starfishst.commands.ManagerOptions;
 import com.starfishst.commands.messages.MessagesProvider;
+import java.awt.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.awt.*;
 
 /** The different types of results */
 public enum ResultType {

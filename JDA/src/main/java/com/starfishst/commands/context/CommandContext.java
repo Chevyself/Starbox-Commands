@@ -5,13 +5,12 @@ import com.starfishst.commands.providers.registry.ImplProvidersRegistry;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Strings;
+import java.util.Arrays;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 
 /** This context is used for every command {@link User being the sender} */
 public class CommandContext implements ICommandContext {

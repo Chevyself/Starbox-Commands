@@ -4,14 +4,13 @@ import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.utils.Chat;
 import com.starfishst.commands.utils.message.MessageQuery;
 import com.starfishst.commands.utils.message.MessagesFactory;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 /** An easy way to send embeds */
 public class EmbedQuery {

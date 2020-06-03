@@ -2,9 +2,8 @@ package com.starfishst.bungee.result;
 
 import com.starfishst.core.result.SimpleResult;
 import com.starfishst.core.utils.Strings;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
+import org.jetbrains.annotations.NotNull;
 
 /** Result for bungee command execution */
 public class Result extends SimpleResult {

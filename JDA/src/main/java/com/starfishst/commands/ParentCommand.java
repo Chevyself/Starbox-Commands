@@ -8,12 +8,11 @@ import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.type.ISimpleArgument;
 import com.starfishst.core.utils.Lots;
 import com.starfishst.core.utils.time.Time;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Just like {@link AnnotatedCommand} but has children commands that are executed just like any

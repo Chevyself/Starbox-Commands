@@ -18,13 +18,12 @@ import com.starfishst.core.providers.LongProvider;
 import com.starfishst.core.providers.StringProvider;
 import com.starfishst.core.providers.TimeProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 /** The command manager for bungee commands */
 public class CommandManager implements ICommandManager<AnnotatedCommand> {

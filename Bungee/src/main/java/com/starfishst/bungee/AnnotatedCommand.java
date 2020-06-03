@@ -13,12 +13,11 @@ import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Lots;
-import net.md_5.bungee.api.CommandSender;
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import net.md_5.bungee.api.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 /** The annotated command for bungee */
 public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command

@@ -2,13 +2,12 @@ package com.starfishst.commands.utils.message;
 
 import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.utils.Chat;
+import java.util.function.Consumer;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 /** An easy way to use the messages from {@link MessagesFactory} */
 public class MessageQuery {

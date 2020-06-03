@@ -1,9 +1,8 @@
 package com.starfishst.bukkit.utils;
 
+import java.io.File;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
 
 /** Utilities for files while using bukkit */
 public class FilesUtils {

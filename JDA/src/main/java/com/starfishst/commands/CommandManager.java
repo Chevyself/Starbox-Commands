@@ -30,14 +30,13 @@ import com.starfishst.core.providers.StringProvider;
 import com.starfishst.core.providers.TimeProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.time.Time;
-import net.dv8tion.jda.api.JDA;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import net.dv8tion.jda.api.JDA;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** The command manager for discord commands */
 public class CommandManager implements ICommandManager<AnnotatedCommand> {

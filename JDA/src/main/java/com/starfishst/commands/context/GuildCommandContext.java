@@ -1,6 +1,7 @@
 package com.starfishst.commands.context;
 
 import com.starfishst.commands.messages.MessagesProvider;
+import java.util.Objects;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -8,8 +9,6 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * This context is used when the command is executed inside of a guild the context is still a {@link

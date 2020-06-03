@@ -5,6 +5,7 @@ import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.bukkit.providers.CommandContextProvider;
 import com.starfishst.bukkit.providers.CommandSenderArgumentProvider;
+import com.starfishst.bukkit.providers.OfflinePlayerProvider;
 import com.starfishst.bukkit.providers.PlayerProvider;
 import com.starfishst.bukkit.providers.PlayerSenderProvider;
 import com.starfishst.bukkit.providers.registry.ImplProvidersRegistry;
@@ -24,17 +25,16 @@ import com.starfishst.core.providers.LongProvider;
 import com.starfishst.core.providers.StringProvider;
 import com.starfishst.core.providers.TimeProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.help.HelpMap;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 /** The command manager for bukkit commands */
 public class CommandManager implements ICommandManager<AnnotatedCommand> {
@@ -100,6 +100,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new TimeProvider<>(messagesProvider));
     registry.addProvider(new CommandContextProvider());
     registry.addProvider(new CommandSenderArgumentProvider());
+    registry.addProvider(new OfflinePlayerProvider());
     registry.addProvider(new PlayerProvider(messagesProvider));
     registry.addProvider(new PlayerSenderProvider(messagesProvider));
     registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
