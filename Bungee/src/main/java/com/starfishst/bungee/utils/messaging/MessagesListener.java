@@ -12,6 +12,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.function.Consumer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -28,7 +29,9 @@ public class MessagesListener implements Listener {
   @NotNull private final Plugin plugin;
   /** Contains the response that the server was waiting for */
   @NotNull private final HashMap<SenderServer, SocketResponse> responses = new HashMap<>();
-
+  /** Contains the callback that the server was waiting for */
+  @NotNull
+  private final HashMap<SenderServer, Consumer<SocketResponse>> callbacks = new HashMap<>();
   /**
    * Start the listener
    *
@@ -39,6 +42,7 @@ public class MessagesListener implements Listener {
     this.channel = channel;
     this.plugin = plugin;
     plugin.getProxy().registerChannel(channel);
+    plugin.getProxy().getPluginManager().registerListener(plugin, this);
   }
 
   /**
@@ -68,12 +72,15 @@ public class MessagesListener implements Listener {
    * @param server the server to send the request
    * @param request the request
    * @return the response to the request
+   * @throws NullPointerException if this invoked from a synchronous method because it wont be able
+   *     to be able get the response
    */
   @NotNull
   public SocketResponse sendRequest(@NotNull ServerInfo server, @NotNull SocketRequest request) {
     return new SenderServer(server).sendRequest(request);
   }
 
+  /** Stops the messages listener */
   public void stop() {
     plugin.getProxy().unregisterChannel(channel);
   }
@@ -119,7 +126,6 @@ public class MessagesListener implements Listener {
       SocketMessageType type = SocketMessageType.fromData(data);
       if (type == SocketMessageType.RESPONSE) {
         responses.put(this, new SocketResponse(data));
-        notifyAll();
       } else {
         IMessenger.super.processData(data);
       }
@@ -129,19 +135,23 @@ public class MessagesListener implements Listener {
     public @NotNull SocketResponse sendRequest(@NotNull SocketRequest request) {
       this.sendData(request.build());
       if (!request.isVoid()) {
-        while (responses.get(this) == null) {
-          try {
-            wait(1000);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-            break;
+        int millis = 0;
+        while (!responses.containsKey(this)) {
+          if (millis < 300) {
+            try {
+              Thread.sleep(1);
+              millis++;
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+              break;
+            }
+          } else {
+            throw new IllegalStateException(request + " timed out... Is it running synchronously?");
           }
         }
-        if (responses.containsKey(this)) {
-          return responses.get(this);
-        } else {
-          throw new IllegalStateException("The other socket did not send anything");
-        }
+        SocketResponse response = responses.get(this);
+        responses.remove(this);
+        return response;
       }
       return new VoidResponse();
     }

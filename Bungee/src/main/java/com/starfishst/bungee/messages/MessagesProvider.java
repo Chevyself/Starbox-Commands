@@ -2,6 +2,7 @@ package com.starfishst.bungee.messages;
 
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.core.messages.IMessagesProvider;
+import org.jetbrains.annotations.NotNull;
 
 /** The messages provider for bungee */
 public interface MessagesProvider extends IMessagesProvider<CommandContext> {
@@ -12,5 +13,16 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to send
    */
+  @NotNull
   String notAllowed(CommandContext context);
+
+  /**
+   * The message to send when the string does not match a proxied player
+   *
+   * @param string the string
+   * @param context the context of the command
+   * @return the message to send
+   */
+  @NotNull
+  String invalidPlayer(@NotNull String string, @NotNull CommandContext context);
 }

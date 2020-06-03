@@ -43,7 +43,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   /** The plugin where this command was registered */
   @NotNull protected final Plugin plugin;
   /** Whether the command should be executed asynchronously */
-  private final boolean async;
+  private final boolean asynchronous;
 
   /**
    * Create an instance
@@ -54,7 +54,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
    * @param command the annotation that has all the command information
    * @param messagesProvider the provider for messages
    * @param plugin the plugin where this command was registered
-   * @param async whether the command should execute asynchronously
+   * @param asynchronous whether the command should execute asynchronously
    */
   AnnotatedCommand(
       @NotNull Object clazz,
@@ -63,7 +63,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
       @NotNull Command command,
       @NotNull MessagesProvider messagesProvider,
       @NotNull Plugin plugin,
-      boolean async) {
+      boolean asynchronous) {
     super(
         command.aliases()[0], command.description(), "", Lots.removeAndList(command.aliases(), 0));
     this.clazz = clazz;
@@ -71,7 +71,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
     this.plugin = plugin;
-    this.async = async;
+    this.asynchronous = asynchronous;
     final String permission = command.permission();
     if (!permission.isEmpty()) {
       this.setPermission(permission);
@@ -169,7 +169,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   @Override
   public boolean execute(
       @NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
-    if (async) {
+    if (asynchronous) {
       Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> run(commandSender, strings));
     } else {
       run(commandSender, strings);

@@ -48,6 +48,8 @@ public class MessagesListener implements PluginMessageListener {
    * @param request to send
    * @return the response or null if there was no available player to send it {@link #available()}
    * @throws IOException if the request went wrong
+   * @throws NullPointerException if this invoked from a synchronous method because it wont be able
+   *     to be able get the response
    */
   @Nullable
   public SocketResponse sendRequest(@NotNull SocketRequest request) throws IOException {
@@ -143,19 +145,23 @@ public class MessagesListener implements PluginMessageListener {
     public @NotNull SocketResponse sendRequest(@NotNull SocketRequest request) throws IOException {
       this.sendData(request.build());
       if (!request.isVoid()) {
-        while (responses.get(this) == null) {
-          try {
-            wait(1000);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-            break;
+        int millis = 0;
+        while (!responses.containsKey(this)) {
+          if (millis < 300) {
+            try {
+              Thread.sleep(1);
+              millis++;
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+              break;
+            }
+          } else {
+            throw new IllegalStateException(request + " timed out... Is it running synchronously?");
           }
         }
-        if (responses.containsKey(this)) {
-          return responses.get(this);
-        } else {
-          throw new IllegalStateException("The other socket did not send anything");
-        }
+        SocketResponse response = responses.get(this);
+        responses.remove(this);
+        return response;
       }
       return new VoidResponse();
     }
@@ -165,7 +171,6 @@ public class MessagesListener implements PluginMessageListener {
       SocketMessageType type = SocketMessageType.fromData(data);
       if (type == SocketMessageType.RESPONSE) {
         responses.put(this, new SocketResponse(data));
-        notifyAll();
       } else {
         IMessenger.super.processData(data);
       }

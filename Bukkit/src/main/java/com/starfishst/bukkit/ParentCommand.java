@@ -1,9 +1,7 @@
 package com.starfishst.bukkit;
 
 import com.starfishst.bukkit.annotations.Command;
-import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
-import com.starfishst.bukkit.result.Result;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.type.ISimpleArgument;
 import java.lang.reflect.Method;
@@ -82,21 +80,17 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
   }
 
   @Override
-  public @NotNull Result execute(@NotNull CommandContext context) {
-    String[] strings = context.getStrings();
+  public boolean execute(
+      @NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
     if (strings.length >= 1) {
       AnnotatedCommand command = this.getCommand(strings[0]);
       if (command != null) {
-        return command.execute(
-            new CommandContext(
-                context.getSender(),
-                Arrays.copyOfRange(strings, 1, strings.length),
-                messagesProvider));
+        return command.execute(commandSender, s, Arrays.copyOfRange(strings, 1, strings.length));
       } else {
-        return super.execute(context);
+        return super.execute(commandSender, s, strings);
       }
     } else {
-      return super.execute(context);
+      return super.execute(commandSender, s, strings);
     }
   }
 

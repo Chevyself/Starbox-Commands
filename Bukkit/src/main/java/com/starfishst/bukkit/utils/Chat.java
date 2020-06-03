@@ -1,5 +1,9 @@
 package com.starfishst.bukkit.utils;
 
+import com.starfishst.utils.gson.JsonUtils;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +21,12 @@ public class Chat {
   public static void send(
       @Nullable CommandSender sender, @NotNull String string, @NotNull Object... strings) {
     if (sender != null) {
-      sender.sendMessage(BukkitUtils.getMessage(string, strings));
+      String message = BukkitUtils.getMessage(string, strings);
+      if (JsonUtils.isJson(message)) {
+        BaseComponent[] baseComponents = ComponentSerializer.parse(message);
+        message = new TextComponent(baseComponents).toString();
+      }
+      sender.sendMessage(message);
     }
   }
 }

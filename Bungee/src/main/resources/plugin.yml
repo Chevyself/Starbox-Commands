@@ -1,0 +1,3 @@
+name: Easy-Commands-Bungee
+main: com.starfishst.bungee.plugin.Main
+version: ${project.version}

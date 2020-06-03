@@ -20,9 +20,11 @@ public class BukkitSocketClient extends Client {
    * @param ip of the socket
    * @param port of the socket
    * @param plugin the plugin owner of the socket
+   * @param serverName the name of the server
    * @throws IOException if the connection goes wrong
    */
-  public BukkitSocketClient(@NotNull String ip, int port, @NotNull Plugin plugin)
+  public BukkitSocketClient(
+      @NotNull String ip, int port, @NotNull Plugin plugin, @NotNull String serverName)
       throws IOException {
     super(ip, port);
     this.task =
@@ -38,7 +40,7 @@ public class BukkitSocketClient extends Client {
                 },
                 0L,
                 1L);
-    sendRequest(new ServerInfoRequest());
+    sendRequest(new ServerInfoRequest(serverName));
   }
 
   /**

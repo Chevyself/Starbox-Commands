@@ -44,8 +44,21 @@ public class DefaultMessagesProvider implements MessagesProvider {
     return string + " is not a valid number";
   }
 
+  @NotNull
   @Override
   public String notAllowed(CommandContext context) {
     return "You are not allowed to use this command";
+  }
+
+  /**
+   * The message to send when the string does not match a proxied player
+   *
+   * @param string the string
+   * @param context the context of the command
+   * @return the message to send
+   */
+  @Override
+  public @NotNull String invalidPlayer(@NotNull String string, @NotNull CommandContext context) {
+    return string + " is not a valid player!";
   }
 }

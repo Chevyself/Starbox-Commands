@@ -75,6 +75,12 @@ public class BungeeSocketServer extends Server {
     return ProxyServer.getInstance().getServerInfo(getName(thread));
   }
 
+  /**
+   * Get the client of a server using its name
+   *
+   * @param name the name of the server
+   * @return the client if found else null
+   */
   @Nullable
   public ClientThread getClient(@NotNull String name) {
     NullableAtomic<ClientThread> atomic = new NullableAtomic<>();
@@ -85,6 +91,16 @@ public class BungeeSocketServer extends Server {
           }
         });
     return atomic.get();
+  }
+
+  /**
+   * Get the clients and the name of the servers where the client is connected
+   *
+   * @return the clients
+   */
+  @NotNull
+  public HashMap<ClientThread, String> getClients() {
+    return names;
   }
 
   @Override

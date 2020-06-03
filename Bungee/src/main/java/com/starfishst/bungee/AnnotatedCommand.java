@@ -35,7 +35,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   /** The plugin where this command was registered */
   @NotNull protected final Plugin plugin;
   /** Whether the command should be executed asynchronously */
-  private final boolean async;
+  private final boolean asynchronous;
   /**
    * Create an instance
    *
@@ -45,7 +45,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
    * @param command the annotation of the command to get the parameters
    * @param messagesProvider the messages provider
    * @param plugin the plugin where this command was registered
-   * @param async whether this command should run asynchronously
+   * @param asynchronous whether this command should run asynchronously
    */
   public AnnotatedCommand(
       @NotNull Object clazz,
@@ -54,7 +54,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
       @NotNull Command command,
       @NotNull MessagesProvider messagesProvider,
       @NotNull Plugin plugin,
-      boolean async) {
+      boolean asynchronous) {
     super(
         command.aliases()[0],
         command.permission().isEmpty() ? null : command.permission(),
@@ -64,7 +64,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
     this.plugin = plugin;
-    this.async = async;
+    this.asynchronous = asynchronous;
   }
 
   @Override
@@ -108,9 +108,18 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
+  /**
+   * Get if this command is asynchronous
+   *
+   * @return true if it is
+   */
+  public boolean isAsynchronous() {
+    return this.asynchronous;
+  }
+
   @Override
   public void execute(CommandSender sender, String[] strings) {
-    if (async) {
+    if (this.isAsynchronous()) {
       plugin.getProxy().getScheduler().runAsync(plugin, () -> run(sender, strings));
     } else {
       run(sender, strings);

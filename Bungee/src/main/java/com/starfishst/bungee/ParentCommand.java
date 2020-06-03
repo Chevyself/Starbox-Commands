@@ -1,15 +1,14 @@
 package com.starfishst.bungee;
 
 import com.starfishst.bungee.annotations.Command;
-import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
-import com.starfishst.bungee.result.Result;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.type.ISimpleArgument;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,21 +47,16 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
   }
 
   @Override
-  public @NotNull Result execute(@NotNull CommandContext context) {
-    String[] strings = context.getStrings();
+  public void execute(CommandSender sender, String[] strings) {
     if (strings.length >= 1) {
       AnnotatedCommand command = this.getCommand(strings[0]);
       if (command != null) {
-        return command.execute(
-            new CommandContext(
-                context.getSender(),
-                Arrays.copyOfRange(strings, 1, strings.length),
-                messagesProvider));
+        command.execute(sender, Arrays.copyOfRange(strings, 1, strings.length));
       } else {
-        return super.execute(context);
+        super.execute(sender, strings);
       }
     } else {
-      return super.execute(context);
+      super.execute(sender, strings);
     }
   }
 
