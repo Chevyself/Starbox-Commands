@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +35,8 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param command the command annotation
    * @param options the options for the command
    * @param messagesProvider the messages provider
+   * @param plugin the plugin where this command was registered
+   * @param async whether this command should execute asynchronously
    */
   ParentCommand(
       @NotNull Object clazz,
@@ -41,8 +44,10 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NotNull List<ISimpleArgument<?>> arguments,
       @NotNull Command command,
       @NotNull CommandManagerOptions options,
-      @NotNull MessagesProvider messagesProvider) {
-    super(clazz, method, arguments, command, messagesProvider);
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull Plugin plugin,
+      boolean async) {
+    super(clazz, method, arguments, command, messagesProvider, plugin, async);
     this.options = options;
   }
 

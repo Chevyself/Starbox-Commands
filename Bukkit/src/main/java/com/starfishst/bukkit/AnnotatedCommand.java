@@ -21,7 +21,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +40,10 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The provider for messages */
   @NotNull protected final MessagesProvider messagesProvider;
+  /** The plugin where this command was registered */
+  @NotNull protected final Plugin plugin;
+  /** Whether the command should be executed asynchronously */
+  private final boolean async;
 
   /**
    * Create an instance
@@ -47,19 +53,25 @@ public class AnnotatedCommand extends org.bukkit.command.Command
    * @param arguments the arguments of the command
    * @param command the annotation that has all the command information
    * @param messagesProvider the provider for messages
+   * @param plugin the plugin where this command was registered
+   * @param async whether the command should execute asynchronously
    */
   AnnotatedCommand(
       @NotNull Object clazz,
       @NotNull Method method,
       @NotNull List<ISimpleArgument<?>> arguments,
       @NotNull Command command,
-      @NotNull MessagesProvider messagesProvider) {
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull Plugin plugin,
+      boolean async) {
     super(
         command.aliases()[0], command.description(), "", Lots.removeAndList(command.aliases(), 0));
     this.clazz = clazz;
     this.method = method;
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
+    this.plugin = plugin;
+    this.async = async;
     final String permission = command.permission();
     if (!permission.isEmpty()) {
       this.setPermission(permission);
@@ -140,13 +152,27 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     return messagesProvider;
   }
 
-  @Override
-  public boolean execute(
-      @NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
+  /**
+   * Run the command
+   *
+   * @param commandSender the sender of the command
+   * @param strings the strings of the command
+   */
+  private void run(@NotNull CommandSender commandSender, @NotNull String[] strings) {
     String message =
         this.execute(new CommandContext(commandSender, strings, messagesProvider)).getMessage();
     if (message != null) {
       Chat.send(commandSender, message);
+    }
+  }
+
+  @Override
+  public boolean execute(
+      @NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
+    if (async) {
+      Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> run(commandSender, strings));
+    } else {
+      run(commandSender, strings);
     }
     return true;
   }

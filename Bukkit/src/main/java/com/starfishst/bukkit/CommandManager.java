@@ -28,6 +28,7 @@ import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -158,6 +159,17 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     this.parent = null;
   }
 
+  /**
+   * Get if a command is async
+   *
+   * @param method the method of the command
+   * @return true if the command is async
+   */
+  private boolean isAsync(@NotNull Method method) {
+    HashMap<String, String> settings = parseSettings(method);
+    return Boolean.parseBoolean(settings.getOrDefault("async", "false"));
+  }
+
   @Override
   public @NotNull AnnotatedCommand parseCommand(
       @NotNull Object object, @NotNull Method method, boolean isParent) {
@@ -172,14 +184,18 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             this.parseArguments(parameters, annotations),
             command,
             options,
-            messagesProvider);
+            messagesProvider,
+            plugin,
+            isAsync(method));
       } else {
         return new AnnotatedCommand(
             object,
             method,
             this.parseArguments(parameters, annotations),
             command,
-            messagesProvider);
+            messagesProvider,
+            plugin,
+            isAsync(method));
       }
     } else {
       throw new CommandRegistrationException("{0} must return {1}");

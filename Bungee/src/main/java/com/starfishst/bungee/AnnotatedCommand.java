@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 /** The annotated command for bungee */
@@ -31,7 +32,10 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The messages provider */
   @NotNull protected final MessagesProvider messagesProvider;
-
+  /** The plugin where this command was registered */
+  @NotNull protected final Plugin plugin;
+  /** Whether the command should be executed asynchronously */
+  private final boolean async;
   /**
    * Create an instance
    *
@@ -40,13 +44,17 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
    * @param arguments the arguments to get the parameters for the command
    * @param command the annotation of the command to get the parameters
    * @param messagesProvider the messages provider
+   * @param plugin the plugin where this command was registered
+   * @param async whether this command should run asynchronously
    */
   public AnnotatedCommand(
       @NotNull Object clazz,
       @NotNull Method method,
       @NotNull List<ISimpleArgument<?>> arguments,
       @NotNull Command command,
-      @NotNull MessagesProvider messagesProvider) {
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull Plugin plugin,
+      boolean async) {
     super(
         command.aliases()[0],
         command.permission().isEmpty() ? null : command.permission(),
@@ -55,6 +63,8 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     this.method = method;
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
+    this.plugin = plugin;
+    this.async = async;
   }
 
   @Override
@@ -84,12 +94,26 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
-  @Override
-  public void execute(CommandSender sender, String[] strings) {
+  /**
+   * Run the command
+   *
+   * @param sender the sender of the command
+   * @param strings the arguments of the command
+   */
+  private void run(CommandSender sender, String[] strings) {
     String message =
         this.execute(new CommandContext(sender, strings, messagesProvider)).getMessage();
     if (message != null) {
       Chat.send(sender, message);
+    }
+  }
+
+  @Override
+  public void execute(CommandSender sender, String[] strings) {
+    if (async) {
+      plugin.getProxy().getScheduler().runAsync(plugin, () -> run(sender, strings));
+    } else {
+      run(sender, strings);
     }
   }
 

@@ -3,6 +3,8 @@ package com.starfishst.core;
 import com.starfishst.core.annotations.Multiple;
 import com.starfishst.core.annotations.Optional;
 import com.starfishst.core.annotations.Required;
+import com.starfishst.core.annotations.settings.Setting;
+import com.starfishst.core.annotations.settings.Settings;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.arguments.ExtraArgument;
 import com.starfishst.core.arguments.MultipleArgument;
@@ -12,6 +14,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
@@ -156,5 +159,22 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
       }
     }
     return true;
+  }
+
+  /**
+   * Gets the settings for a command
+   *
+   * @param method the method of a command
+   * @return the settings as a HashMap
+   */
+  @NotNull
+  default HashMap<String, String> parseSettings(@NotNull Method method) {
+    HashMap<String, String> settings = new HashMap<>();
+    if (method.isAnnotationPresent(Settings.class)) {
+      for (Setting setting : method.getAnnotation(Settings.class).settings()) {
+        settings.put(setting.value(), setting.key());
+      }
+    }
+    return settings;
   }
 }

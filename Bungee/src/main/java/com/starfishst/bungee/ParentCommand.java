@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,14 +28,18 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param arguments the arguments to get the parameters for the method to invoke
    * @param command the annotations to get the parameters of the command
    * @param messagesProvider the messages provider
+   * @param plugin the plugin where this command was registered
+   * @param async whether the command should be executed async
    */
   public ParentCommand(
-      Object object,
-      Method method,
-      List<ISimpleArgument<?>> arguments,
-      Command command,
-      MessagesProvider messagesProvider) {
-    super(object, method, arguments, command, messagesProvider);
+      @NotNull Object object,
+      @NotNull Method method,
+      @NotNull List<ISimpleArgument<?>> arguments,
+      @NotNull Command command,
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull Plugin plugin,
+      boolean async) {
+    super(object, method, arguments, command, messagesProvider, plugin, async);
   }
 
   @Override
