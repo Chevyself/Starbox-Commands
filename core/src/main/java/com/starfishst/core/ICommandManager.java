@@ -172,7 +172,7 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
     HashMap<String, String> settings = new HashMap<>();
     if (method.isAnnotationPresent(Settings.class)) {
       for (Setting setting : method.getAnnotation(Settings.class).settings()) {
-        settings.put(setting.value(), setting.key());
+        settings.put(setting.key(), setting.value());
       }
     }
     return settings;

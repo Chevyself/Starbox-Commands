@@ -25,6 +25,7 @@ public class UUIDUtils {
    */
   public static UUID untrim(@NotNull String trimmed) {
     StringBuilder builder = Strings.getBuilder();
+    builder.append(trimmed);
     builder.insert(20, "-");
     builder.insert(16, "-");
     builder.insert(12, "-");
