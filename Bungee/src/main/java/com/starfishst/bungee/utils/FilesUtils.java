@@ -1,14 +1,14 @@
-package com.starfishst.bukkit.utils;
+package com.starfishst.bungee.utils;
 
 import com.starfishst.core.utils.Validate;
 import com.starfishst.core.utils.files.CoreFiles;
 import java.io.File;
 import java.io.IOException;
-import org.bukkit.plugin.Plugin;
+import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** Utilities for files while using bukkit */
+/** File utility for bungee */
 public class FilesUtils {
 
   /**
@@ -28,7 +28,8 @@ public class FilesUtils {
         parent,
         fileName,
         Validate.notNull(
-            plugin.getResource(fileName), "The resource " + fileName + " could not be found!"));
+            plugin.getResourceAsStream(fileName),
+            "The resource " + fileName + " could not be found!"));
   }
 
   /**
