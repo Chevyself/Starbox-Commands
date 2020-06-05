@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +46,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   /** The message provider for certain messages */
   @NotNull private final MessagesProvider messagesProvider;
   /** The time to cooldown the use of the message for the users */
-  @NotNull private final Time cooldown;
+  @NotNull private Time cooldown;
   /**
    * Whether or not if it should be excluded from being deleted it's success check {@link
    * com.starfishst.commands.annotations.Exclude}
@@ -104,13 +105,13 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   /**
    * Check the cooldown of the sender
    *
-   * @param context the context of the command
+   * @param sender the sender of the command
    * @return an usage error if the sender is not allowed to use the command yet else null
    */
   @Nullable
-  private Result checkCooldown(@NotNull CommandContext context) {
+  public Result checkCooldown(@NotNull User sender) {
     if (cooldown.millis() != 0) {
-      CooldownUser cooldownUser = getCooldownUser(context);
+      CooldownUser cooldownUser = getCooldownUser(sender);
       if (cooldownUser != null) {
         return new Result(ResultType.USAGE, messagesProvider.cooldown(cooldownUser.getTimeLeft()));
       }
@@ -121,26 +122,45 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   /**
    * Get a cooldown user
    *
-   * @param context the context to get the sender
+   * @param sender the sender to check the cooldown
    * @return a cooldown user if it exists
    */
   @Nullable
-  private CooldownUser getCooldownUser(@NotNull CommandContext context) {
+  public CooldownUser getCooldownUser(@NotNull User sender) {
     return (CooldownUser)
         Cache.getCache().stream()
             .filter(
                 catchable ->
                     catchable instanceof CooldownUser
-                        && context.getSender().getIdLong() == ((CooldownUser) catchable).getId())
+                        && sender.getIdLong() == ((CooldownUser) catchable).getId())
             .findFirst()
             .orElse(null);
+  }
+
+  /**
+   * Set the cooldown of the command
+   *
+   * @param cooldown the new cooldown
+   */
+  public void setCooldown(@NotNull Time cooldown) {
+    this.cooldown = cooldown;
+  }
+
+  /**
+   * Get the cooldown of the command
+   *
+   * @return the cooldown
+   */
+  @NotNull
+  public Time getCooldown() {
+    return cooldown;
   }
 
   @Override
   public @NotNull Result execute(@NotNull CommandContext context) {
     Result result = checkPermissions(context);
     if (result != null) {
-      result = checkCooldown(context);
+      result = checkCooldown(context.getSender());
     }
     if (result != null) {
       return result;
