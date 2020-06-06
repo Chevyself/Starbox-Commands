@@ -26,7 +26,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The annotated command for bukkit */
 public class AnnotatedCommand extends org.bukkit.command.Command

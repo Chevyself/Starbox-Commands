@@ -4,6 +4,7 @@ import com.starfishst.bungee.annotations.Command;
 import com.starfishst.bungee.messages.MessagesProvider;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.type.ISimpleArgument;
+import com.starfishst.core.utils.Strings;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,8 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
 
   /** The list of children commands */
   @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
+  /** A list of the names of the commands registered in this parent */
+  @NotNull private final List<String> commandAliases = new ArrayList<>();
 
   /**
    * Create an instance
@@ -60,6 +63,22 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
     }
   }
 
+  @Override
+  public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
+    if (strings.length == 1) {
+      return Strings.copyPartials(strings[strings.length - 1], this.commandAliases);
+    } else if (strings.length >= 2) {
+      AnnotatedCommand command = this.getCommand(strings[0]);
+      if (command != null) {
+        return command.onTabComplete(commandSender, Arrays.copyOfRange(strings, 1, strings.length));
+      } else {
+        return super.onTabComplete(commandSender, Arrays.copyOfRange(strings, 1, strings.length));
+      }
+    } else {
+      return new ArrayList<>();
+    }
+  }
+
   @Nullable
   @Override
   public AnnotatedCommand getCommand(@NotNull String name) {
@@ -84,5 +103,6 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
   @Override
   public void addCommand(@NotNull AnnotatedCommand command) {
     this.commands.add(command);
+    this.commandAliases.add(command.getName());
   }
 }

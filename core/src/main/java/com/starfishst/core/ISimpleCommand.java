@@ -115,13 +115,13 @@ public interface ISimpleCommand<C extends ICommandContext> {
   @Nullable
   default Argument<?> getArgument(int position) {
     return (Argument<?>)
-            this.getArguments().stream()
-                    .filter(
-                            argument ->
-                                    argument instanceof Argument
-                                            && ((Argument<?>) argument).getPosition() == position)
-                    .findFirst()
-                    .orElse(null);
+        this.getArguments().stream()
+            .filter(
+                argument ->
+                    argument instanceof Argument
+                        && ((Argument<?>) argument).getPosition() == position)
+            .findFirst()
+            .orElse(null);
   }
 
   /**

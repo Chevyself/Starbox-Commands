@@ -17,12 +17,11 @@ import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.providers.type.IContextualProvider;
 import com.starfishst.core.utils.Lots;
+import com.starfishst.core.utils.Strings;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.starfishst.core.utils.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
@@ -83,12 +82,18 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
       if (argument.getSuggestions(context).size() > 0) {
         return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
       } else {
-        List<IContextualProvider<?, CommandContext>> providers = getRegistry().getProviders(argument.getClazz());
+        List<IContextualProvider<?, CommandContext>> providers =
+            getRegistry().getProviders(argument.getClazz());
         for (IContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BungeeArgumentProvider) {
-            return Strings.copyPartials(strings[strings.length - 1], ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
+            return Strings.copyPartials(
+                strings[strings.length - 1],
+                ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
           } else if (provider instanceof BungeeMultiArgumentProvider) {
-            return Strings.copyPartials(strings[strings.length - 1], ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));          }
+            return Strings.copyPartials(
+                strings[strings.length - 1],
+                ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));
+          }
         }
         return new ArrayList<>();
       }

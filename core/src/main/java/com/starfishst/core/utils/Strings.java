@@ -3,7 +3,6 @@ package com.starfishst.core.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -152,6 +151,7 @@ public class Strings {
   @NotNull
   public static List<String> copyPartials(@NotNull String toMatch, @NotNull List<String> list) {
     List<String> matching = new ArrayList<>();
-    return Lots.addIf(matching, list, string -> string.toLowerCase().startsWith(toMatch.toLowerCase()));
+    return Lots.addIf(
+        matching, list, string -> string.toLowerCase().startsWith(toMatch.toLowerCase()));
   }
 }

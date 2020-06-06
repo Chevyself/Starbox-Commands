@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import org.jetbrains.annotations.NotNull;
 
 /** Utils for {@link java.util.List} and {@link java.lang.reflect.Array} */
@@ -135,5 +134,4 @@ public class Lots {
     list.addAll(toAdd.stream().filter(bol).collect(Collectors.toList()));
     return list;
   }
-
 }
