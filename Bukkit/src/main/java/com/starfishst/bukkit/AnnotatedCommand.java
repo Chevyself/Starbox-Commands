@@ -78,24 +78,6 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     }
   }
 
-  /**
-   * Get the argument of certain position
-   *
-   * @param position the position to get the argument from
-   * @return the argument if exists else null
-   */
-  @Nullable
-  private Argument<?> getArgument(int position) {
-    return (Argument<?>)
-        this.arguments.stream()
-            .filter(
-                argument ->
-                    argument instanceof Argument
-                        && ((Argument<?>) argument).getPosition() == position)
-            .findFirst()
-            .orElse(null);
-  }
-
   @Override
   public @NotNull Result execute(@NotNull CommandContext context) {
     CommandSender sender = context.getSender();
@@ -201,8 +183,6 @@ public class AnnotatedCommand extends org.bukkit.command.Command
                 strings[strings.length - 1],
                 ((BukkitMultiArgumentProvider<?>) provider).getSuggestions(context),
                 new ArrayList<>());
-          } else {
-            return new ArrayList<>();
           }
         }
         return new ArrayList<>();

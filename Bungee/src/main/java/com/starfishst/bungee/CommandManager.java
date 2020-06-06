@@ -5,6 +5,7 @@ import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
 import com.starfishst.bungee.providers.CommandSenderProvider;
 import com.starfishst.bungee.providers.ProxiedPlayerProvider;
+import com.starfishst.bungee.providers.ProxiedPlayerSenderProvider;
 import com.starfishst.bungee.providers.registry.ImplProvidersRegistry;
 import com.starfishst.bungee.result.Result;
 import com.starfishst.core.ICommandManager;
@@ -68,9 +69,10 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new LongProvider<>(messagesProvider));
     registry.addProvider(new StringProvider<>());
     registry.addProvider(new TimeProvider<>(messagesProvider));
+    registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
     registry.addProvider(new CommandSenderProvider());
     registry.addProvider(new ProxiedPlayerProvider(messagesProvider));
-    registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
+    registry.addProvider(new ProxiedPlayerSenderProvider(messagesProvider));
   }
 
   @Override

@@ -61,4 +61,16 @@ public class DefaultMessagesProvider implements MessagesProvider {
   public @NotNull String invalidPlayer(@NotNull String string, @NotNull CommandContext context) {
     return string + " is not a valid player!";
   }
+
+  /**
+   * The message to send when a command that is required that the sender is a player happens to be
+   * something else
+   *
+   * @param context the context of the command
+   * @return the message
+   */
+  @Override
+  public @NotNull String onlyPlayers(CommandContext context) {
+    return "Only players can use this command!";
+  }
 }

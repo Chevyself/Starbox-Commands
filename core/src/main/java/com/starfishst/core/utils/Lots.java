@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 
 /** Utils for {@link java.util.List} and {@link java.lang.reflect.Array} */
@@ -118,4 +121,19 @@ public class Lots {
   public static <O> String pretty(Collection<O> collection) {
     return collection.toString().replace("[", "").replace("]", "");
   }
+
+  /**
+   * Adds all the elements from another list that assert the predicate
+   *
+   * @param list the list to add the matching elements
+   * @param toAdd the elements to test
+   * @param bol the predicate to assert
+   * @param <O> the type of the objects
+   * @return the list that got the elements added
+   */
+  public static <O> List<O> addIf(@NotNull List<O> list, @NotNull List<O> toAdd, Predicate<O> bol) {
+    list.addAll(toAdd.stream().filter(bol).collect(Collectors.toList()));
+    return list;
+  }
+
 }

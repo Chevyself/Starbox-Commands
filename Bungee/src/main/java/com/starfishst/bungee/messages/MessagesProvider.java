@@ -25,4 +25,14 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    */
   @NotNull
   String invalidPlayer(@NotNull String string, @NotNull CommandContext context);
+
+  /**
+   * The message to send when a command that is required that the sender is a player happens to be
+   * something else
+   *
+   * @param context the context of the command
+   * @return the message
+   */
+  @NotNull
+  String onlyPlayers(CommandContext context);
 }

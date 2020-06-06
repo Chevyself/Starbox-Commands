@@ -107,6 +107,24 @@ public interface ISimpleCommand<C extends ICommandContext> {
   }
 
   /**
+   * Get the argument of certain position
+   *
+   * @param position the position to get the argument from
+   * @return the argument if exists else null
+   */
+  @Nullable
+  default Argument<?> getArgument(int position) {
+    return (Argument<?>)
+            this.getArguments().stream()
+                    .filter(
+                            argument ->
+                                    argument instanceof Argument
+                                            && ((Argument<?>) argument).getPosition() == position)
+                    .findFirst()
+                    .orElse(null);
+  }
+
+  /**
    * Get the class instance of a command
    *
    * @return the class instance of a command

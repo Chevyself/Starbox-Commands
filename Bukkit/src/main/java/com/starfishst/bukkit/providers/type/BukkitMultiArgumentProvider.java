@@ -16,5 +16,5 @@ public interface BukkitMultiArgumentProvider<O>
    * @return a list of suggestions of the command
    */
   @NotNull
-  List<String> getSuggestions(CommandContext context);
+  List<String> getSuggestions(@NotNull CommandContext context);
 }

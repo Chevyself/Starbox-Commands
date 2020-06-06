@@ -4,25 +4,33 @@ import com.starfishst.bungee.annotations.Command;
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
 import com.starfishst.bungee.providers.registry.ImplProvidersRegistry;
+import com.starfishst.bungee.providers.type.BungeeArgumentProvider;
+import com.starfishst.bungee.providers.type.BungeeMultiArgumentProvider;
 import com.starfishst.bungee.result.Result;
 import com.starfishst.bungee.utils.Chat;
 import com.starfishst.core.ICommandArray;
+import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.arguments.type.ISimpleArgument;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
+import com.starfishst.core.providers.type.IContextualProvider;
 import com.starfishst.core.utils.Lots;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.starfishst.core.utils.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 
 /** The annotated command for bungee */
 public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
-    implements ICommandArray<CommandContext> {
+    implements ICommandArray<CommandContext>, TabExecutor {
 
   /** The object that contains the method that invokes the command */
   @NotNull private final Object clazz;
@@ -65,6 +73,28 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     this.messagesProvider = messagesProvider;
     this.plugin = plugin;
     this.asynchronous = asynchronous;
+  }
+
+  @Override
+  public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
+    CommandContext context = new CommandContext(commandSender, strings, messagesProvider);
+    Argument<?> argument = getArgument(strings.length - 1);
+    if (argument != null) {
+      if (argument.getSuggestions(context).size() > 0) {
+        return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
+      } else {
+        List<IContextualProvider<?, CommandContext>> providers = getRegistry().getProviders(argument.getClazz());
+        for (IContextualProvider<?, CommandContext> provider : providers) {
+          if (provider instanceof BungeeArgumentProvider) {
+            return Strings.copyPartials(strings[strings.length - 1], ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
+          } else if (provider instanceof BungeeMultiArgumentProvider) {
+            return Strings.copyPartials(strings[strings.length - 1], ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));          }
+        }
+        return new ArrayList<>();
+      }
+    } else {
+      return new ArrayList<>();
+    }
   }
 
   @Override

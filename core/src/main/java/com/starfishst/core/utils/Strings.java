@@ -1,6 +1,9 @@
 package com.starfishst.core.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -137,5 +140,18 @@ public class Strings {
       }
       return false;
     }
+  }
+
+  /**
+   * Copies the strings that match in another array list
+   *
+   * @param list the list to check if it is matching
+   * @param toMatch the string to match
+   * @return the list with matching strings
+   */
+  @NotNull
+  public static List<String> copyPartials(@NotNull String toMatch, @NotNull List<String> list) {
+    List<String> matching = new ArrayList<>();
+    return Lots.addIf(matching, list, string -> string.toLowerCase().startsWith(toMatch.toLowerCase()));
   }
 }
