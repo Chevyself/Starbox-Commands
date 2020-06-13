@@ -1,6 +1,6 @@
 package com.starfishst.core.utils.sockets.messaging.type.request;
 
-import com.starfishst.core.utils.Maps;
+import com.starfishst.core.utils.maps.Maps;
 import org.jetbrains.annotations.NotNull;
 
 /** The requests send by the server to the client telling it that it has been disconnected */

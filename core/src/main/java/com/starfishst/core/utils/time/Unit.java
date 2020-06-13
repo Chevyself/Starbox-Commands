@@ -6,26 +6,30 @@ import org.jetbrains.annotations.NotNull;
 /** Represents a time unit */
 public enum Unit {
   /** The unit of milliseconds */
-  MILLISECONDS("l", "millis", 1),
+  MILLISECONDS("l", "millis", true, 1),
+  /** Many games uses ticks but this is minecraft ticks */
+  TICKS("t", "ticks", false, 50),
   /** The unit of seconds */
-  SECONDS("s", "seconds", 1000),
+  SECONDS("s", "seconds", true, 1000),
   /** The unit of minutes */
-  MINUTES("m", "minutes", 60000),
+  MINUTES("m", "minutes", true, 60000),
   /** The unit of hours */
-  HOURS("h", "hours", 3600000),
+  HOURS("h", "hours", true, 3600000),
   /** The unit of days */
-  DAYS("d", "days", 86400000),
+  DAYS("d", "days", true, 86400000),
   /** The unit of weeks */
-  WEEKS("w", "weeks", 604800000),
+  WEEKS("w", "weeks", true, 604800000),
   /** The unit of months */
-  MONTHS("o", "months", 2629800000L),
+  MONTHS("o", "months", true, 2629800000L),
   /** The unit of years */
-  YEARS("y", "years", 31557600000L);
+  YEARS("y", "years", true, 31557600000L);
 
   /** The unit represented by a single letter/character */
   @NotNull private final String simple;
   /** The unit as a full name */
   @NotNull private final String complete;
+  /** Whether it can be obtained from a {@link Unit#fromMillis(long)} query */
+  @NotNull private final boolean millisObtainable;
   /** The unit in millis */
   private final long millis;
 
@@ -35,11 +39,13 @@ public enum Unit {
    *
    * @param simple the simple denomination
    * @param complete the complete denomination
+   * @param millisObtainable Whether it can be obtained from a {@link Unit#fromMillis(long)} query
    * @param millis the unit in millis
    */
-  Unit(@NotNull String simple, @NotNull String complete, long millis) {
+  Unit(@NotNull String simple, @NotNull String complete, boolean millisObtainable, long millis) {
     this.simple = simple;
     this.complete = complete;
+    this.millisObtainable = millisObtainable;
     this.millis = millis;
   }
 
@@ -81,12 +87,21 @@ public enum Unit {
     } else {
       Unit unit = MILLISECONDS;
       for (Unit value : values()) {
-        if (value.millis <= millis) {
+        if (value.millis <= millis && value.isMillisObtainable()) {
           unit = value;
         }
       }
       return unit;
     }
+  }
+
+  /**
+   * Get whether it can be obtained from milliseconds
+   *
+   * @return true if it can be obtained from milliseconds
+   */
+  public boolean isMillisObtainable() {
+    return millisObtainable;
   }
 
   /**

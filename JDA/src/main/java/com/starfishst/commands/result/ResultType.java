@@ -1,6 +1,7 @@
 package com.starfishst.commands.result;
 
 import com.starfishst.commands.ManagerOptions;
+import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.messages.MessagesProvider;
 import java.awt.*;
 import org.jetbrains.annotations.NotNull;
@@ -33,11 +34,12 @@ public enum ResultType {
    * Get the title of the result
    *
    * @param provider in case that there's provider use it to get the title
+   * @param context the context of the command
    * @return the title
    */
   @NotNull
-  public String getTitle(@Nullable MessagesProvider provider) {
-    if (provider != null) return provider.getTitle(this);
+  public String getTitle(@Nullable MessagesProvider provider, @Nullable CommandContext context) {
+    if (provider != null && context != null) return provider.getTitle(this, context);
     return title;
   }
 

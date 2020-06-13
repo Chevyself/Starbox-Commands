@@ -1,6 +1,6 @@
 package com.starfishst.bukkit.utils.sockets.requests;
 
-import com.starfishst.core.utils.Maps;
+import com.starfishst.core.utils.maps.Maps;
 import com.starfishst.core.utils.sockets.messaging.type.request.VoidRequest;
 import org.jetbrains.annotations.NotNull;
 

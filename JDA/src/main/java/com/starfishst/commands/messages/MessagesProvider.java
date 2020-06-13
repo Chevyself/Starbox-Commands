@@ -13,57 +13,69 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
 
   /**
    * @param command is the input string that's not found as a command
+   * @param context the context of the command
    * @return The message when a command is not found in {@link CommandManager}
    */
   @NotNull
-  String commandNotFound(@NotNull String command);
+  String commandNotFound(@NotNull String command, @NotNull CommandContext context);
 
-  /** @return The footer in case {@link ManagerOptions#isEmbedMessages()} is true */
+  /**
+   * @param context the context of the command
+   * @return The footer in case {@link ManagerOptions#isEmbedMessages()} is true
+   */
   @NotNull
-  String footer();
+  String footer(@NotNull CommandContext context);
 
   /**
    * @param type the type of result
+   * @param context the context of the command
    * @return the title to use for a result
    */
   @NotNull
-  String getTitle(@NotNull ResultType type);
+  String getTitle(@NotNull ResultType type, @NotNull CommandContext context);
 
   /**
    * @param title the title of the response
    * @param message the message of the response
+   * @param context the context of the command
    * @return the message when the result has a message
    */
   @NotNull
-  String response(@NotNull String title, @NotNull String message);
-
-  /** @return the message when the sender does not have a permission */
-  @NotNull
-  String notAllowed();
+  String response(@NotNull String title, @NotNull String message, @NotNull CommandContext context);
 
   /**
+   * @param context the context of the command
+   * @return the message when the sender does not have a permission
+   */
+  @NotNull
+  String notAllowed(@NotNull CommandContext context);
+
+  /**
+   * @param context the context of the command
    * @return the message when the command has to be executed in a {@link
    *     net.dv8tion.jda.api.entities.Guild}
    */
   @NotNull
-  String guildOnly();
+  String guildOnly(@NotNull CommandContext context);
 
   /**
    * Get the url to use as thumbnail
    *
+   * @param context the context of the command
    * @return the url to use as thumbnail
    */
   @NotNull
-  String thumbnailUrl();
+  String thumbnailUrl(@NotNull CommandContext context);
 
   /**
    * Get the message sent when the user is still on cooldown
    *
    * @param timeLeft the time left for the user
+   * @param context the context of the command
    * @return the built string
    */
   @NotNull
-  String cooldown(Time timeLeft);
+  String cooldown(@NotNull Time timeLeft, @NotNull CommandContext context);
 
   /**
    * The message sent when a string is not a valid user

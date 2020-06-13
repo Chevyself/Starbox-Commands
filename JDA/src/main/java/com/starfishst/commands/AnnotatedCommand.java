@@ -94,10 +94,10 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   private Result checkPermissions(@NotNull CommandContext context) {
     if (this.permission != Permission.UNKNOWN && context.getMessage().getMember() != null) {
       if (!context.getMessage().getMember().hasPermission(this.permission)) {
-        return new Result(ResultType.PERMISSION, messagesProvider.notAllowed());
+        return new Result(ResultType.PERMISSION, messagesProvider.notAllowed(context));
       }
     } else if (this.permission != Permission.UNKNOWN && context.getMessage().getMember() == null) {
-      return new Result(ResultType.ERROR, messagesProvider.guildOnly());
+      return new Result(ResultType.ERROR, messagesProvider.guildOnly(context));
     }
     return null;
   }
@@ -106,14 +106,16 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * Check the cooldown of the sender
    *
    * @param sender the sender of the command
+   * @param context the context of the command
    * @return an usage error if the sender is not allowed to use the command yet else null
    */
   @Nullable
-  public Result checkCooldown(@NotNull User sender) {
+  public Result checkCooldown(@NotNull User sender, @NotNull CommandContext context) {
     if (cooldown.millis() != 0) {
       CooldownUser cooldownUser = getCooldownUser(sender);
       if (cooldownUser != null) {
-        return new Result(ResultType.USAGE, messagesProvider.cooldown(cooldownUser.getTimeLeft()));
+        return new Result(
+            ResultType.USAGE, messagesProvider.cooldown(cooldownUser.getTimeLeft(), context));
       }
     }
     return null;
@@ -132,7 +134,8 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
             .filter(
                 catchable ->
                     catchable instanceof CooldownUser
-                        && sender.getIdLong() == ((CooldownUser) catchable).getId())
+                        && sender.getIdLong() == ((CooldownUser) catchable).getId()
+                        && ((CooldownUser) catchable).getCommand() == this)
             .findFirst()
             .orElse(null);
   }
@@ -160,7 +163,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   public @NotNull Result execute(@NotNull CommandContext context) {
     Result result = checkPermissions(context);
     if (result != null) {
-      result = checkCooldown(context.getSender());
+      result = checkCooldown(context.getSender(), context);
     }
     if (result != null) {
       return result;
@@ -169,7 +172,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
       Object[] objects = getObjects(context);
       result = (Result) this.method.invoke(this.clazz, objects);
       if (cooldown.millis() != 0) {
-        new CooldownUser(cooldown, context.getSender().getIdLong());
+        new CooldownUser(cooldown, this, context.getSender().getIdLong());
       }
       if (result.getSuccess() == null && excluded) {
         result =
@@ -243,5 +246,29 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   @Override
   public @NotNull String getDescription() {
     return description;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (!(object instanceof AnnotatedCommand)) return false;
+
+    AnnotatedCommand command = (AnnotatedCommand) object;
+
+    if (!clazz.equals(command.clazz)) return false;
+    if (!method.equals(command.method)) return false;
+    if (!name.equals(command.name)) return false;
+    if (!aliases.equals(command.aliases)) return false;
+    return permission == command.permission;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = clazz.hashCode();
+    result = 31 * result + method.hashCode();
+    result = 31 * result + name.hashCode();
+    result = 31 * result + aliases.hashCode();
+    result = 31 * result + permission.hashCode();
+    return result;
   }
 }

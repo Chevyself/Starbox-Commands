@@ -40,32 +40,33 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String commandNotFound(@NotNull String command) {
+  public @NotNull String commandNotFound(@NotNull String command, @NotNull CommandContext context) {
     return "Command not found";
   }
 
   @Override
-  public @NotNull String footer() {
+  public @NotNull String footer(@NotNull CommandContext context) {
     return "";
   }
 
   @Override
-  public @NotNull String getTitle(@NotNull ResultType type) {
-    return type.getTitle(null);
+  public @NotNull String getTitle(@NotNull ResultType type, @NotNull CommandContext context) {
+    return type.getTitle(null, context);
   }
 
   @Override
-  public @NotNull String response(@NotNull String title, @NotNull String message) {
+  public @NotNull String response(
+      @NotNull String title, @NotNull String message, @NotNull CommandContext context) {
     return Strings.buildMessage("{0} -> {1}", title, message);
   }
 
   @Override
-  public @NotNull String notAllowed() {
+  public @NotNull String notAllowed(@NotNull CommandContext context) {
     return "You are not allowed to use this command";
   }
 
   @Override
-  public @NotNull String guildOnly() {
+  public @NotNull String guildOnly(@NotNull CommandContext context) {
     return "You may use this command in a guild";
   }
 
@@ -82,12 +83,12 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String thumbnailUrl() {
+  public @NotNull String thumbnailUrl(@NotNull CommandContext context) {
     return "";
   }
 
   @Override
-  public @NotNull String cooldown(Time timeLeft) {
+  public @NotNull String cooldown(@NotNull Time timeLeft, @NotNull CommandContext context) {
     return "You are on cooldown! please wait " + timeLeft.toEffectiveString();
   }
 

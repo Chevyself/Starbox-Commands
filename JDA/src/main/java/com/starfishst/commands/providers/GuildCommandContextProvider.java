@@ -28,7 +28,7 @@ public class GuildCommandContextProvider
   public GuildCommandContext getObject(@NotNull CommandContext context)
       throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(messagesProvider.guildOnly());
+      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
     }
     return (GuildCommandContext) context;
   }

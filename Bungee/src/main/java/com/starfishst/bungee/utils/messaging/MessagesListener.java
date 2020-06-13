@@ -1,6 +1,6 @@
 package com.starfishst.bungee.utils.messaging;
 
-import com.starfishst.core.utils.Maps;
+import com.starfishst.core.utils.maps.Maps;
 import com.starfishst.core.utils.sockets.messaging.IMessenger;
 import com.starfishst.core.utils.sockets.messaging.SocketMessageType;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;

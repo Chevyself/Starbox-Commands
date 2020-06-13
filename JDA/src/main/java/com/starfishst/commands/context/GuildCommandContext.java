@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This context is used when the command is executed inside of a guild the context is still a {@link
@@ -36,7 +37,7 @@ public class GuildCommandContext extends CommandContext {
       @NotNull User sender,
       @NotNull String[] args,
       @NotNull MessageChannel channel,
-      @NotNull MessageReceivedEvent event,
+      @Nullable MessageReceivedEvent event,
       @NotNull MessagesProvider messagesProvider) {
     super(message, sender, args, channel, event, messagesProvider);
     member =

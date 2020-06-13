@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** This context is used for every command {@link User being the sender} */
 public class CommandContext implements ICommandContext {
@@ -21,8 +22,11 @@ public class CommandContext implements ICommandContext {
   @NotNull private final User sender;
   /** The channel where the command was invoked */
   @NotNull private final MessageChannel channel;
-  /** The event where the command started */
-  @NotNull private final MessageReceivedEvent event;
+  /**
+   * The event where the command started. Sometimes it could be that it was not executed from an
+   * actual event
+   */
+  @Nullable private final MessageReceivedEvent event;
   /** The strings of the command execution */
   @NotNull private String[] strings;
   /** The messages provider of this context */
@@ -43,7 +47,7 @@ public class CommandContext implements ICommandContext {
       @NotNull User sender,
       @NotNull String[] args,
       @NotNull MessageChannel channel,
-      @NotNull MessageReceivedEvent event,
+      @Nullable MessageReceivedEvent event,
       @NotNull MessagesProvider messagesProvider) {
     this.message = message;
     this.sender = sender;
@@ -87,7 +91,7 @@ public class CommandContext implements ICommandContext {
    *
    * @return the event
    */
-  @NotNull
+  @Nullable
   public MessageReceivedEvent getEvent() {
     return event;
   }

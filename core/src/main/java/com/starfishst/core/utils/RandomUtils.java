@@ -69,4 +69,14 @@ public class RandomUtils {
   public static String nextStringLower(int length) {
     return nextString(LOWER_LETTERS, length);
   }
+
+  /**
+   * Get the random java util object
+   *
+   * @return the random util object
+   */
+  @NotNull
+  public static Random getRandom() {
+    return random;
+  }
 }

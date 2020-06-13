@@ -58,7 +58,7 @@ public class Time {
    * @param unit the unit to get the time from
    * @return the time with the new unit
    */
-  public Time getValue(@NotNull final Unit unit) {
+  public Time getAs(@NotNull final Unit unit) {
     return new Time(this.millis() / unit.millis(), unit);
   }
 
@@ -141,17 +141,7 @@ public class Time {
    */
   @NotNull
   public String toEffectiveString() {
-    Time effectiveTime = null;
-    for (Unit unit : Unit.values()) {
-      if (unit.millis() < this.millis()) {
-        effectiveTime = this.getValue(unit);
-      }
-    }
-    if (effectiveTime != null) {
-      return effectiveTime.toString();
-    } else {
-      return this.toString();
-    }
+    return this.getAs(Unit.fromMillis(this.millis())).toString();
   }
 
   /**
@@ -172,18 +162,28 @@ public class Time {
   @NotNull
   public ClassicTime toClassicTime() {
     TimeUnit newUnit = unit.toTimeUnit();
-    long newValue = getAs(newUnit);
+    long newValue = getValue(newUnit);
     return new ClassicTime(newValue, newUnit);
   }
 
   /**
-   * Just like {@link Time#getValue(Unit)} but using java unit
+   * Just like {@link Time#getValue()} but getting as another java unit
    *
-   * @param unit the java unit to get the value from
+   * @param unit the unit to get the value from
    * @return the value as certain unit
    */
-  private long getAs(@NotNull TimeUnit unit) {
-    return getValue(Unit.fromTimeUnit(unit)).getValue();
+  public long getValue(@NotNull TimeUnit unit) {
+    return getAs(Unit.fromTimeUnit(unit)).getValue();
+  }
+
+  /**
+   * Just like {@link Time#getValue()} but getting as another unit
+   *
+   * @param unit the unit to get the value from
+   * @return the value as certain unit
+   */
+  public long getValue(@NotNull Unit unit) {
+    return getAs(unit).getValue();
   }
 
   /**

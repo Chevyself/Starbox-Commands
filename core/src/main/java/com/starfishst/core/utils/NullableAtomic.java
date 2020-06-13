@@ -1,5 +1,7 @@
 package com.starfishst.core.utils;
 
+import java.util.function.Supplier;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** An atomic that can be a null */
@@ -30,6 +32,28 @@ public class NullableAtomic<O> {
   @Nullable
   public O get() {
     return o;
+  }
+
+  /**
+   * Get the object or return a default not null one
+   *
+   * @param notNull the not null object
+   * @return the object or default one
+   */
+  @NotNull
+  public O getOr(@NotNull O notNull) {
+    return o == null ? notNull : o;
+  }
+
+  /**
+   * Get the object or return a default not null one
+   *
+   * @param supplier the supplier of the non null object
+   * @return the object or default one with the supplier
+   */
+  @NotNull
+  public O getOr(@NotNull Supplier<O> supplier) {
+    return o == null ? supplier.get() : o;
   }
 
   /**

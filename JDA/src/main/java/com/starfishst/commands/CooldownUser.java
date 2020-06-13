@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 /** An user that is inside the cooldown of a command */
 public class CooldownUser extends Catchable {
 
+  /** The command where the user is cooled down */
+  @NotNull private final AnnotatedCommand command;
   /** The id of the user */
   private final long id;
 
@@ -14,10 +16,12 @@ public class CooldownUser extends Catchable {
    * Create an instance
    *
    * @param toRemove the time to remove the user from the cooldown
+   * @param command the command where the user is cooled down
    * @param id the id of the user
    */
-  public CooldownUser(@NotNull Time toRemove, long id) {
+  public CooldownUser(@NotNull Time toRemove, @NotNull AnnotatedCommand command, long id) {
     super(toRemove);
+    this.command = command;
     this.id = id;
   }
 
@@ -28,6 +32,16 @@ public class CooldownUser extends Catchable {
    */
   public long getId() {
     return id;
+  }
+
+  /**
+   * Get the command where the user is cooled down
+   *
+   * @return the command
+   */
+  @NotNull
+  public AnnotatedCommand getCommand() {
+    return command;
   }
 
   @Override

@@ -57,4 +57,14 @@ public class GsonProvider {
     fileWriter.write(GSON.toJson(toWrite));
     fileWriter.close();
   }
+
+  /**
+   * Get the adapters inside the provider
+   *
+   * @return the adapters
+   */
+  @NotNull
+  public static HashMap<Type, Object> getAdapters() {
+    return adapters;
+  }
 }

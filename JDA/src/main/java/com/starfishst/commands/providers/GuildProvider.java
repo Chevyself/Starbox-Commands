@@ -27,7 +27,7 @@ public class GuildProvider implements IExtraArgumentProvider<Guild, CommandConte
   @Override
   public Guild getObject(@NotNull CommandContext context) throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(messagesProvider.guildOnly());
+      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
     }
     return ((GuildCommandContext) context).getGuild();
   }

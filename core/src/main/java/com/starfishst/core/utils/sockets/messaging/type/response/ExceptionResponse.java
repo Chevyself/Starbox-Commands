@@ -1,6 +1,6 @@
 package com.starfishst.core.utils.sockets.messaging.type.response;
 
-import com.starfishst.core.utils.Maps;
+import com.starfishst.core.utils.maps.Maps;
 import com.starfishst.core.utils.sockets.messaging.SocketResponse;
 import org.jetbrains.annotations.NotNull;
 

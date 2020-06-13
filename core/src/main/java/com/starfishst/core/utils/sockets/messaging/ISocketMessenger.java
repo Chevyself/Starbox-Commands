@@ -1,6 +1,6 @@
 package com.starfishst.core.utils.sockets.messaging;
 
-import com.starfishst.core.utils.Maps;
+import com.starfishst.core.utils.maps.Maps;
 import com.starfishst.core.utils.sockets.messaging.type.response.VoidResponse;
 import java.io.BufferedReader;
 import java.io.IOException;

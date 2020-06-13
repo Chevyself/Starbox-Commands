@@ -69,14 +69,15 @@ public class CommandListener implements EventListener {
   public void onMessageReceivedEvent(@NotNull MessageReceivedEvent event) {
     String[] strings = event.getMessage().getContentRaw().split(" +");
     String commandName = strings[0];
+    CommandContext context = getCommandContext(event, strings);
     if (!commandName.startsWith(this.prefix)) return;
     if (managerOptions.isDeleteCommands() && event.getChannelType() != ChannelType.PRIVATE) {
       event.getMessage().delete().queue();
     }
     commandName = commandName.substring(prefix.length());
     AnnotatedCommand command = manager.getCommand(commandName);
-    Result result = getResult(event, strings, command, commandName);
-    Message response = getMessage(result);
+    Result result = getResult(command, commandName, context);
+    Message response = getMessage(result, context);
     Consumer<Message> consumer = getConsumer(result);
     if (response != null) {
       if (consumer != null) {
@@ -110,14 +111,15 @@ public class CommandListener implements EventListener {
    * Get the message that will be send from a result
    *
    * @param result the result to get the message from
+   * @param context the context of the command
    * @return the message
    */
   @Nullable
-  private Message getMessage(@NotNull Result result) {
+  private Message getMessage(@NotNull Result result, CommandContext context) {
     if (result.getDiscordMessage() == null) {
       if (managerOptions.isEmbedMessages()) {
         if (result.getMessage() != null) {
-          return EmbedFactory.fromResult(result, this).getAsMessageQuery().getMessage();
+          return EmbedFactory.fromResult(result, this, context).getAsMessageQuery().getMessage();
         } else {
           return null;
         }
@@ -126,7 +128,9 @@ public class CommandListener implements EventListener {
           return MessagesFactory.fromString(
                   Strings.buildMessage(
                       messagesProvider.response(
-                          result.getType().getTitle(messagesProvider), result.getMessage())))
+                          result.getType().getTitle(messagesProvider, context),
+                          result.getMessage(),
+                          context)))
               .getMessage();
         } else {
           return null;
@@ -140,22 +144,18 @@ public class CommandListener implements EventListener {
   /**
    * Get the result of a command execution
    *
-   * @param event the event executing a command
-   * @param strings the strings executing the command
    * @param command the command
    * @param commandName the name of the command
+   * @param context the context of the command
    * @return the result of the command execution
    */
   @NotNull
   private Result getResult(
-      @NotNull MessageReceivedEvent event,
-      @NotNull String[] strings,
-      @Nullable AnnotatedCommand command,
-      @NotNull String commandName) {
+      @Nullable AnnotatedCommand command, @NotNull String commandName, CommandContext context) {
     if (command != null) {
-      return command.execute(getCommandContext(event, strings));
+      return command.execute(context);
     } else {
-      return new Result(ResultType.ERROR, messagesProvider.commandNotFound(commandName));
+      return new Result(ResultType.ERROR, messagesProvider.commandNotFound(commandName, context));
     }
   }
 

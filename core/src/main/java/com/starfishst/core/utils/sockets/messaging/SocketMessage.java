@@ -1,6 +1,6 @@
 package com.starfishst.core.utils.sockets.messaging;
 
-import com.starfishst.core.utils.Maps;
+import com.starfishst.core.utils.maps.Maps;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 

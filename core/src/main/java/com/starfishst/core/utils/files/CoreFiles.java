@@ -21,10 +21,9 @@ public class CoreFiles {
    * @param parent the directory of the file
    * @param fileName the name of the file
    * @return the file
-   * @throws IOException if the parent directory (if it exist) could not be created
    */
   @Nullable
-  public static File getFile(@Nullable String parent, @NotNull String fileName) throws IOException {
+  public static File getFile(@Nullable String parent, @NotNull String fileName) {
     File file = new FileNameValidator(parent, fileName).getFile();
     if (file.exists()) {
       return file;
@@ -38,10 +37,9 @@ public class CoreFiles {
    *
    * @param fileName the path to the file
    * @return the file if found else null
-   * @throws IOException if the directory of the file could not be created
    */
   @Nullable
-  public static File getFile(@NotNull String fileName) throws IOException {
+  public static File getFile(@NotNull String fileName) {
     return getFile(null, fileName);
   }
 

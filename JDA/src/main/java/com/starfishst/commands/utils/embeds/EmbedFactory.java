@@ -1,6 +1,7 @@
 package com.starfishst.commands.utils.embeds;
 
 import com.starfishst.commands.ManagerOptions;
+import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.listener.CommandListener;
 import com.starfishst.commands.messages.MessagesProvider;
 import com.starfishst.commands.result.Result;
@@ -24,19 +25,21 @@ public class EmbedFactory {
    *
    * @param result the result to make as embed
    * @param listener the command listener to get the {@link ManagerOptions}
+   * @param context the context of the command
    * @return an embed query built from the result
    */
-  public static EmbedQuery fromResult(@NotNull Result result, @NotNull CommandListener listener) {
+  public static EmbedQuery fromResult(
+      @NotNull Result result, @NotNull CommandListener listener, @NotNull CommandContext context) {
     MessagesProvider messagesProvider = listener.getMessagesProvider();
     ManagerOptions managerOptions = listener.getManagerOptions();
     ResultType type = result.getType();
-    final String thumbnail = messagesProvider.thumbnailUrl();
+    final String thumbnail = messagesProvider.thumbnailUrl(context);
     return newEmbed(
-        type.getTitle(messagesProvider),
+        type.getTitle(messagesProvider, context),
         result.getMessage(),
         thumbnail,
         null,
-        messagesProvider.footer(),
+        messagesProvider.footer(context),
         type.getColor(managerOptions),
         null,
         false);

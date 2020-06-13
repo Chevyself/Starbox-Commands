@@ -38,7 +38,7 @@ public abstract class Catchable {
    * @return for convenience return this same object
    */
   public Catchable refresh() {
-    secondsLeft = this.toRemove.getValue(Unit.SECONDS).getValue();
+    secondsLeft = this.toRemove.getAs(Unit.SECONDS).getValue();
     return this;
   }
 

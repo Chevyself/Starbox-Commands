@@ -1,12 +1,16 @@
 package com.starfishst.bungee.utils.sockets;
 
+import com.starfishst.bungee.utils.sockets.request.BungeeDisconnectedRequest;
 import com.starfishst.core.fallback.Fallback;
 import com.starfishst.core.utils.NullableAtomic;
+import com.starfishst.core.utils.sockets.messaging.requests.HeartbeatRequest;
 import com.starfishst.core.utils.sockets.server.ClientThread;
 import com.starfishst.core.utils.sockets.server.Server;
 import com.starfishst.core.utils.time.Time;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -22,6 +26,8 @@ public class BungeeSocketServer extends Server {
   @NotNull private final Plugin plugin;
   /** The task where the socket is listening */
   @NotNull private final ScheduledTask task;
+  /** The task to check which servers are still online */
+  @NotNull private final ScheduledTask heartbeatTask;
   /** The clients connected to the server */
   @NotNull private final HashMap<ClientThread, ScheduledTask> clients = new HashMap<>();
   /** The HashMap with the ports of each client thread */
@@ -41,6 +47,11 @@ public class BungeeSocketServer extends Server {
     this.plugin = plugin;
     this.task =
         plugin.getProxy().getScheduler().schedule(plugin, this, 0, 1, TimeUnit.MILLISECONDS);
+    this.heartbeatTask =
+        plugin
+            .getProxy()
+            .getScheduler()
+            .schedule(plugin, new HeartbeatTask(this), 0, 1, TimeUnit.MINUTES);
   }
 
   /**
@@ -117,6 +128,8 @@ public class BungeeSocketServer extends Server {
                     client.listen();
                   } catch (IOException e) {
                     Fallback.addError(e.getMessage());
+                    Fallback.addError("Disconnected client for: " + getName(client));
+                    disconnectClient(client);
                     e.printStackTrace();
                   }
                 },
@@ -139,5 +152,60 @@ public class BungeeSocketServer extends Server {
     clients.remove(client);
     names.remove(client);
     super.disconnectClient(client);
+  }
+
+  /**
+   * Closes the server
+   *
+   * @throws IOException if it closed with errors or wasn't open
+   */
+  @Override
+  public void close() throws IOException {
+    this.task.cancel();
+    this.heartbeatTask.cancel();
+    this.threads.forEach(
+        thread -> {
+          try {
+            thread.sendRequest(new BungeeDisconnectedRequest());
+          } catch (IOException e) {
+            Fallback.addError(e.getMessage());
+            e.printStackTrace();
+          }
+        });
+    this.threads.clear();
+    super.close();
+  }
+
+  /** The task for the server to ping the clients */
+  class HeartbeatTask implements Runnable {
+
+    /** The server that needs the task */
+    @NotNull private final BungeeSocketServer server;
+
+    /**
+     * Create the task
+     *
+     * @param server that needs the task
+     */
+    HeartbeatTask(@NotNull BungeeSocketServer server) {
+      this.server = server;
+    }
+
+    @Override
+    public void run() {
+      List<ClientThread> toDisconnect = new ArrayList<>();
+      server
+          .getThreads()
+          .forEach(
+              thread -> {
+                try {
+                  thread.sendRequest(new HeartbeatRequest());
+                } catch (IOException e) {
+                  toDisconnect.add(thread);
+                }
+              });
+      toDisconnect.forEach(server::disconnectClient);
+      toDisconnect.clear();
+    }
   }
 }

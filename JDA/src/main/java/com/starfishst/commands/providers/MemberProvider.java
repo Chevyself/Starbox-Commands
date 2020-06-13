@@ -28,7 +28,7 @@ public class MemberProvider implements IArgumentProvider<Member, CommandContext>
   public Member fromString(@NotNull String string, @NotNull CommandContext context)
       throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(messagesProvider.guildOnly());
+      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
     } else {
       Member member =
           context.getMessage().getMentionedMembers().stream()

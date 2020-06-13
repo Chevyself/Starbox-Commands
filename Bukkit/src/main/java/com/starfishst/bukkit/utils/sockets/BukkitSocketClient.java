@@ -13,6 +13,8 @@ public class BukkitSocketClient extends Client {
 
   /** The task where the client is running */
   @NotNull private final BukkitTask task;
+  /** The name of the server where this client was created */
+  @NotNull private final String serverName;
 
   /**
    * Connect to a socket server
@@ -40,6 +42,7 @@ public class BukkitSocketClient extends Client {
                 },
                 0L,
                 1L);
+    this.serverName = serverName;
     sendRequest(new ServerInfoRequest(serverName));
   }
 
@@ -51,6 +54,16 @@ public class BukkitSocketClient extends Client {
   @NotNull
   public BukkitTask getTask() {
     return task;
+  }
+
+  /**
+   * Get the name of the server where this client was created
+   *
+   * @return the name of the server
+   */
+  @NotNull
+  public String getServerName() {
+    return serverName;
   }
 
   @Override

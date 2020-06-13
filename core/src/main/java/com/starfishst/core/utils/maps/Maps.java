@@ -1,5 +1,6 @@
-package com.starfishst.core.utils;
+package com.starfishst.core.utils.maps;
 
+import com.starfishst.core.utils.Strings;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,20 @@ public class Maps {
     HashMap<T, O> map = new HashMap<>();
     map.put(key, value);
     return map;
+  }
+
+  /**
+   * Creates a map builder
+   *
+   * @param key with which the value is associated
+   * @param value the value associated with the key
+   * @param <K> the type of the key
+   * @param <V> the type of the value
+   * @return the map builder
+   */
+  @NotNull
+  public static <K, V> MapBuilder<K, V> builder(@NotNull K key, @Nullable V value) {
+    return new MapBuilder<>(singleton(key, value));
   }
 
   /**

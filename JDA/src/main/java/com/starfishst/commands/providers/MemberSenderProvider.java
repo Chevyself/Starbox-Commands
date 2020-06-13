@@ -28,7 +28,7 @@ public class MemberSenderProvider implements IExtraArgumentProvider<Member, Comm
   @Override
   public Member getObject(@NotNull CommandContext context) throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(messagesProvider.guildOnly());
+      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
     } else {
       return ((GuildCommandContext) context).getMember();
     }
