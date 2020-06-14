@@ -210,12 +210,24 @@ public class Time {
     return this.value + " " + unit.toString().toLowerCase();
   }
 
+  /**
+   * subtract this time with another
+   *
+   * @param time the time to subtract this one
+   * @return the subtraction but it cannot be negative it would be 0
+   */
   @NotNull
-  public Time sustract(@NotNull Time time) {
+  public Time subtract(@NotNull Time time) {
     long millis = this.millis() - time.millis();
     return Time.fromMillis(millis < 0 ? 0 : millis);
   }
 
+  /**
+   * Sums this time with another one
+   *
+   * @param time the another one to sum
+   * @return the result of the operation
+   */
   @NotNull
   public Time sum(@NotNull Time time) {
     return Time.fromMillis(millis() + time.millis());

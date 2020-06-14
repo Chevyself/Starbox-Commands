@@ -29,7 +29,7 @@ public class EmbedFactory {
    * @return an embed query built from the result
    */
   public static EmbedQuery fromResult(
-      @NotNull Result result, @NotNull CommandListener listener, @NotNull CommandContext context) {
+      @NotNull Result result, @NotNull CommandListener listener, @Nullable CommandContext context) {
     MessagesProvider messagesProvider = listener.getMessagesProvider();
     ManagerOptions managerOptions = listener.getManagerOptions();
     ResultType type = result.getType();

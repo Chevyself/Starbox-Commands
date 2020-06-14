@@ -185,7 +185,7 @@ public class CoreFiles {
   private static class FileNameValidator {
 
     /** The file */
-    @NotNull private File file;
+    @NotNull private final File file;
     /** The directory of the file */
     @Nullable private File directory;
 

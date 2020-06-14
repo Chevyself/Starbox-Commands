@@ -110,7 +110,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @return an usage error if the sender is not allowed to use the command yet else null
    */
   @Nullable
-  public Result checkCooldown(@NotNull User sender, @NotNull CommandContext context) {
+  public Result checkCooldown(@NotNull User sender, @Nullable CommandContext context) {
     if (cooldown.millis() != 0) {
       CooldownUser cooldownUser = getCooldownUser(sender);
       if (cooldownUser != null) {

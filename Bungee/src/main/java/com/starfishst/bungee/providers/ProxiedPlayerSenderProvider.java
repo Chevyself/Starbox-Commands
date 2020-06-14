@@ -8,12 +8,18 @@ import com.starfishst.core.providers.type.IExtraArgumentProvider;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
 
+/** Provides with the player that executed the command */
 public class ProxiedPlayerSenderProvider
     implements IExtraArgumentProvider<ProxiedPlayer, CommandContext> {
 
   /** The provider for the error message */
   @NotNull private final MessagesProvider messagesProvider;
 
+  /**
+   * Create the provider
+   *
+   * @param messagesProvider the provider for the error message
+   */
   public ProxiedPlayerSenderProvider(@NotNull MessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }

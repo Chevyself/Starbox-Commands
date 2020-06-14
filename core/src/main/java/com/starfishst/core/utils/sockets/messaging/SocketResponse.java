@@ -1,5 +1,6 @@
 package com.starfishst.core.utils.sockets.messaging;
 
+import com.starfishst.core.utils.maps.MapBuilder;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +14,15 @@ public class SocketResponse extends SocketMessage {
    */
   public SocketResponse(@NotNull HashMap<String, String> data) {
     super(data);
+  }
+
+  /**
+   * Create a socket response
+   *
+   * @param data to sen in the response message
+   */
+  public SocketResponse(@NotNull MapBuilder<String, String> data) {
+    super(data.build());
   }
 
   @Override

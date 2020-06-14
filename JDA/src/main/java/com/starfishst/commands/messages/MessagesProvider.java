@@ -7,6 +7,7 @@ import com.starfishst.commands.result.ResultType;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.utils.time.Time;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** Provides messages to results */
 public interface MessagesProvider extends IMessagesProvider<CommandContext> {
@@ -24,7 +25,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return The footer in case {@link ManagerOptions#isEmbedMessages()} is true
    */
   @NotNull
-  String footer(@NotNull CommandContext context);
+  String footer(@Nullable CommandContext context);
 
   /**
    * @param type the type of result
@@ -32,7 +33,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return the title to use for a result
    */
   @NotNull
-  String getTitle(@NotNull ResultType type, @NotNull CommandContext context);
+  String getTitle(@NotNull ResultType type, @Nullable CommandContext context);
 
   /**
    * @param title the title of the response
@@ -41,7 +42,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return the message when the result has a message
    */
   @NotNull
-  String response(@NotNull String title, @NotNull String message, @NotNull CommandContext context);
+  String response(@NotNull String title, @NotNull String message, @Nullable CommandContext context);
 
   /**
    * @param context the context of the command
@@ -65,7 +66,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return the url to use as thumbnail
    */
   @NotNull
-  String thumbnailUrl(@NotNull CommandContext context);
+  String thumbnailUrl(@Nullable CommandContext context);
 
   /**
    * Get the message sent when the user is still on cooldown
@@ -75,7 +76,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return the built string
    */
   @NotNull
-  String cooldown(@NotNull Time timeLeft, @NotNull CommandContext context);
+  String cooldown(@NotNull Time timeLeft, @Nullable CommandContext context);
 
   /**
    * The message sent when a string is not a valid user

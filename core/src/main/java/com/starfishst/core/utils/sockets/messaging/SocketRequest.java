@@ -1,5 +1,6 @@
 package com.starfishst.core.utils.sockets.messaging;
 
+import com.starfishst.core.utils.maps.MapBuilder;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,6 +23,18 @@ public class SocketRequest extends SocketMessage {
     this.isVoid = isVoid;
     data.put("method", method);
     data.put("void", String.valueOf(isVoid));
+  }
+
+  /**
+   * Create a request to send
+   *
+   * @param data the data to send in the request
+   * @param method the method used in the request
+   * @param isVoid if the request is void and is not waiting for a response
+   */
+  public SocketRequest(
+      @NotNull MapBuilder<String, String> data, @NotNull String method, boolean isVoid) {
+    this(data.build(), method, isVoid);
   }
 
   /**

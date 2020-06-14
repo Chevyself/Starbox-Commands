@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class ProvidersRegistry<T extends ICommandContext> {
 
   /** The providers that must be given with a context */
-  protected List<IContextualProvider<?, T>> providers = new ArrayList<>();
+  protected final List<IContextualProvider<?, T>> providers = new ArrayList<>();
 
   /**
    * Registers a provider in the providers registry

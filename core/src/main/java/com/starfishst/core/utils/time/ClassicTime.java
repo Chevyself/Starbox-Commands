@@ -12,7 +12,7 @@ public class ClassicTime {
   /** The unit of the time */
   @NotNull private final TimeUnit unit;
   /** The value of the time */
-  private long value;
+  private final long value;
 
   /**
    * Create an instance

@@ -1,5 +1,6 @@
 package com.starfishst.core.utils.sockets.messaging;
 
+import com.starfishst.core.utils.maps.MapBuilder;
 import com.starfishst.core.utils.maps.Maps;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,15 @@ public class SocketMessage {
   public SocketMessage(@NotNull HashMap<String, String> data) {
     this.data = data;
     checkType();
+  }
+
+  /**
+   * Create the message
+   *
+   * @param data the data to send in the message
+   */
+  public SocketMessage(@NotNull MapBuilder<String, String> data) {
+    this(data.build());
   }
 
   /**

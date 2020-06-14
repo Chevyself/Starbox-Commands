@@ -23,6 +23,9 @@ import org.jetbrains.annotations.NotNull;
 /** A listener for plugin messages that are treated as socket messages */
 public class MessagesListener implements Listener {
 
+  /** The time to timeout a request */
+  private static int timeout = 10000;
+
   /** The name of the channel that this will listen to */
   @NotNull private final String channel;
   /** The plugin where this listener is working */
@@ -85,6 +88,24 @@ public class MessagesListener implements Listener {
     plugin.getProxy().unregisterChannel(channel);
   }
 
+  /**
+   * Set the time in which request times out The default time is 10000ms
+   *
+   * @param timeout the time to timeout in millis
+   */
+  public static void setTimeout(int timeout) {
+    MessagesListener.timeout = timeout;
+  }
+
+  /**
+   * Get the time to timeout the request
+   *
+   * @return the time in millis
+   */
+  public static int getTimeout() {
+    return timeout;
+  }
+
   /** A temporal server that is sending data */
   class SenderServer implements IMessenger {
 
@@ -137,7 +158,7 @@ public class MessagesListener implements Listener {
       if (!request.isVoid()) {
         int millis = 0;
         while (!responses.containsKey(this)) {
-          if (millis < 300) {
+          if (millis < timeout) {
             try {
               Thread.sleep(1);
               millis++;

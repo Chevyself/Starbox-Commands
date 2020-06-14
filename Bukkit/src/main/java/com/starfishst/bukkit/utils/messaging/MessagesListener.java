@@ -22,6 +22,9 @@ import org.jetbrains.annotations.Nullable;
 /** A plugin messages listener for messages that are treated as socket messages */
 public class MessagesListener implements PluginMessageListener {
 
+  /** The time to timeout a request */
+  private static int timeout = 10000;
+
   /** The channel where this listener will be working */
   @NotNull private final String channel;
   /** The plugin where this listener was registered */
@@ -104,6 +107,24 @@ public class MessagesListener implements PluginMessageListener {
     }
   }
 
+  /**
+   * Set the time in which request times out The default time is 10000ms
+   *
+   * @param timeout the time to timeout in millis
+   */
+  public static void setTimeout(int timeout) {
+    MessagesListener.timeout = timeout;
+  }
+
+  /**
+   * Get the time to timeout the request
+   *
+   * @return the time in millis
+   */
+  public static int getTimeout() {
+    return timeout;
+  }
+
   /** The player that is sending data */
   class PlayerSender implements IMessenger {
 
@@ -147,7 +168,7 @@ public class MessagesListener implements PluginMessageListener {
       if (!request.isVoid()) {
         int millis = 0;
         while (!responses.containsKey(this)) {
-          if (millis < 300) {
+          if (millis < timeout) {
             try {
               Thread.sleep(1);
               millis++;

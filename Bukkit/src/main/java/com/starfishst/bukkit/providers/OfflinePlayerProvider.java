@@ -9,6 +9,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Provides the command with an offline player. It queries the players that have played in the
+ * server
+ */
 public class OfflinePlayerProvider implements BukkitArgumentProvider<OfflinePlayer> {
 
   @Override

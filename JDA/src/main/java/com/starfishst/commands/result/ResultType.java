@@ -25,6 +25,12 @@ public enum ResultType {
   /** Whether the result is an error */
   private final boolean isError;
 
+  /**
+   * The type of result of a command
+   *
+   * @param title the title of the result
+   * @param isError whether this type of result is an error
+   */
   ResultType(@NotNull String title, boolean isError) {
     this.title = title;
     this.isError = isError;
@@ -39,7 +45,7 @@ public enum ResultType {
    */
   @NotNull
   public String getTitle(@Nullable MessagesProvider provider, @Nullable CommandContext context) {
-    if (provider != null && context != null) return provider.getTitle(this, context);
+    if (provider != null) return provider.getTitle(this, context);
     return title;
   }
 

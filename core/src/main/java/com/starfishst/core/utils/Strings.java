@@ -114,7 +114,8 @@ public class Strings {
     placeHolders.forEach(
         (placeHolder, value) -> {
           if (value != null) {
-            atomicMessage.set(atomicMessage.get().replace("%" + placeHolder + "%", value));
+            atomicMessage.set(
+                atomicMessage.get().replace("%" + placeHolder + "%", value));
           } else {
             atomicMessage.set(atomicMessage.get().replace("%" + placeHolder + "%", "null"));
           }
