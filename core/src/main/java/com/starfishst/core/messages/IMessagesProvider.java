@@ -80,4 +80,13 @@ public interface IMessagesProvider<T extends ICommandContext> {
    */
   @NotNull
   String invalidNumber(@NotNull String string, @NotNull T context);
+
+  /**
+   * Get the message sent when the input string for a double is empty
+   *
+   * @param context the context of the command
+   * @return the message to tell the user that a double cannot be empty
+   */
+  @NotNull
+  String emptyDouble(@NotNull T context);
 }

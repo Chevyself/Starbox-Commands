@@ -5,6 +5,7 @@ import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.bukkit.providers.CommandContextProvider;
 import com.starfishst.bukkit.providers.CommandSenderArgumentProvider;
+import com.starfishst.bukkit.providers.MaterialProvider;
 import com.starfishst.bukkit.providers.OfflinePlayerProvider;
 import com.starfishst.bukkit.providers.PlayerProvider;
 import com.starfishst.bukkit.providers.PlayerSenderProvider;
@@ -40,8 +41,6 @@ import org.jetbrains.annotations.Nullable;
 /** The command manager for bukkit commands */
 public class CommandManager implements ICommandManager<AnnotatedCommand> {
 
-  /** The list of commands that this manager handles */
-  @NotNull private static final List<AnnotatedCommand> commands = new ArrayList<>();
   /** The bukkit help map */
   @NotNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
   /** The bukkit command map */
@@ -50,8 +49,6 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   static {
     try {
       commandMap = BukkitUtils.getCommandMap();
-      CommandManager.helpMap.registerHelpTopicFactory(
-          AnnotatedCommand.class, new AnnotatedCommandHelpTopicFactory());
     } catch (NoSuchFieldException | IllegalAccessException e) {
       throw new CommandRegistrationException("Command Map could not be accessed");
     }
@@ -65,6 +62,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @NotNull private final MessagesProvider messagesProvider;
   /** The temporal parent to register commands there and not in the manager */
   @Nullable private ParentCommand parent = null;
+  /** The list of commands that this manager handles */
+  @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
 
   /**
    * Create an instance
@@ -81,6 +80,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     this.options = options;
     this.messagesProvider = messagesProvider;
     addProviders(ImplProvidersRegistry.getInstance(), messagesProvider);
+    CommandManager.helpMap.registerHelpTopicFactory(
+        AnnotatedCommand.class, new AnnotatedCommandHelpTopicFactory(messagesProvider));
   }
 
   /**
@@ -101,6 +102,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new TimeProvider<>(messagesProvider));
     registry.addProvider(new CommandContextProvider());
     registry.addProvider(new CommandSenderArgumentProvider());
+    registry.addProvider(new MaterialProvider(messagesProvider));
     registry.addProvider(new OfflinePlayerProvider());
     registry.addProvider(new PlayerProvider(messagesProvider));
     registry.addProvider(new PlayerSenderProvider(messagesProvider));
@@ -112,7 +114,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * this after you've registered all your commands so they can be shown
    */
   public void registerPlugin() {
-    CommandManager.helpMap.addTopic(new PluginHelpTopic(this.plugin));
+    CommandManager.helpMap.addTopic(new PluginHelpTopic(this.plugin, this, this.messagesProvider));
   }
 
   /**
@@ -121,8 +123,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * @return the commands registered in the manager
    */
   @NotNull
-  public static List<AnnotatedCommand> getCommands() {
-    return CommandManager.commands;
+  public List<AnnotatedCommand> getCommands() {
+    return commands;
   }
 
   /**
@@ -142,7 +144,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
       if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
         this.parent = (ParentCommand) this.parseCommand(object, method, true);
         CommandManager.commandMap.register(this.plugin.getName(), this.parent);
-        CommandManager.commands.add(this.parent);
+        commands.add(this.parent);
       }
     }
     for (final Method method : clazz.getDeclaredMethods()) {
@@ -152,7 +154,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
           this.parent.addCommand(cmd);
         } else {
           CommandManager.commandMap.register(this.plugin.getName(), cmd);
-          CommandManager.commands.add(cmd);
+          commands.add(cmd);
         }
       }
     }

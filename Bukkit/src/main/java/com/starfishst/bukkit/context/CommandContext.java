@@ -29,7 +29,9 @@ public class CommandContext implements ICommandContext {
    * @param messagesProvider the messages provider used in this context
    */
   public CommandContext(
-      @NotNull CommandSender sender, @NotNull String[] strings, MessagesProvider messagesProvider) {
+      @NotNull CommandSender sender,
+      @NotNull String[] strings,
+      @NotNull MessagesProvider messagesProvider) {
     this.sender = sender;
     this.string = Strings.fromArray(strings);
     this.strings = strings;

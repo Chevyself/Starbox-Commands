@@ -34,7 +34,7 @@ public class OfflinePlayerProvider implements BukkitArgumentProvider<OfflinePlay
   }
 
   @Override
-  public @NotNull List<String> getSuggestions(CommandContext context) {
+  public @NotNull List<String> getSuggestions(@NotNull String string, CommandContext context) {
     List<String> suggestions = new ArrayList<>();
     for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
       if (player.getName() != null) suggestions.add(player.getName());

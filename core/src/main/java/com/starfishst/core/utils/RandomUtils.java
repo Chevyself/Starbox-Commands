@@ -1,5 +1,6 @@
 package com.starfishst.core.utils;
 
+import java.util.List;
 import java.util.Random;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,5 +79,21 @@ public class RandomUtils {
   @NotNull
   public static Random getRandom() {
     return random;
+  }
+
+  /**
+   * Get a random object inside a list
+   *
+   * @param list the list to get the random object from
+   * @param <O> the type of the elements inside the list
+   * @return the random selected object
+   * @throws IllegalArgumentException if the parameter list is empty
+   */
+  @NotNull
+  public static <O> O getRandom(@NotNull List<O> list) {
+    if (list.isEmpty()) {
+      throw new IllegalArgumentException("List cannot be empty!");
+    }
+    return list.get(random.nextInt(list.size()));
   }
 }

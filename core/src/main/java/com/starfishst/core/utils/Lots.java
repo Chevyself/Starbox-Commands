@@ -3,6 +3,7 @@ package com.starfishst.core.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -133,5 +134,17 @@ public class Lots {
   public static <O> List<O> addIf(@NotNull List<O> list, @NotNull List<O> toAdd, Predicate<O> bol) {
     list.addAll(toAdd.stream().filter(bol).collect(Collectors.toList()));
     return list;
+  }
+
+  /**
+   * Create an immutable list
+   *
+   * @param objects the objects to put inside the list
+   * @param <O> the type of objects inside the list
+   * @return the immutable list
+   */
+  @SafeVarargs
+  public static <O> List<O> inmutable(@NotNull O... objects) {
+    return Collections.unmodifiableList(list(objects));
   }
 }

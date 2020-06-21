@@ -71,6 +71,6 @@ public class SocketRequest extends SocketMessage {
 
   @Override
   public String toString() {
-    return "SocketRequest{" + "isVoid=" + isVoid + '}';
+    return "SocketRequest{" + "isVoid=" + isVoid + ", data=" + data + '}';
   }
 }

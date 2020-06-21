@@ -32,6 +32,8 @@ public class BungeeSocketServer extends Server {
   @NotNull private final HashMap<ClientThread, ScheduledTask> clients = new HashMap<>();
   /** The HashMap with the ports of each client thread */
   @NotNull private final HashMap<ClientThread, String> names = new HashMap<>();
+  /** The list of names that were or are connected to the socket server */
+  @NotNull private final List<String> connections = new ArrayList<>();
 
   /**
    * Start a server
@@ -62,6 +64,19 @@ public class BungeeSocketServer extends Server {
    */
   public void setName(@NotNull ClientThread client, @NotNull String name) {
     names.put(client, name);
+    if (!connections.contains(name)) {
+      connections.add(name);
+    }
+  }
+
+  /**
+   * Get the names of the connections that have been connected to this server
+   *
+   * @return the names
+   */
+  @NotNull
+  public List<String> getConnections() {
+    return connections;
   }
 
   /**

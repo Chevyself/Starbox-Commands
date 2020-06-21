@@ -111,7 +111,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
       throws ArgumentProviderException {
     for (IContextualProvider<?, T> provider : getProviders(clazz)) {
       if (provider instanceof IMultipleArgumentProvider) {
-        return ((IMultipleArgumentProvider<?, T>) provider).fromStrings(strings, context);
+        ((IMultipleArgumentProvider<?, T>) provider).fromStrings(strings, context);
       }
     }
     throw new ArgumentProviderException(

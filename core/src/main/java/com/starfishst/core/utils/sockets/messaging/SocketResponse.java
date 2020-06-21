@@ -29,4 +29,9 @@ public class SocketResponse extends SocketMessage {
   public @NotNull SocketMessageType getType() {
     return SocketMessageType.RESPONSE;
   }
+
+  @Override
+  public String toString() {
+    return "SocketResponse{" + "data=" + data + '}';
+  }
 }

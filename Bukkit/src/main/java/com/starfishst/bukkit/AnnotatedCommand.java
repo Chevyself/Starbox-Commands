@@ -175,7 +175,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
           if (provider instanceof BukkitArgumentProvider) {
             return StringUtil.copyPartialMatches(
                 strings[strings.length - 1],
-                ((BukkitArgumentProvider<?>) provider).getSuggestions(context),
+                ((BukkitArgumentProvider<?>) provider)
+                    .getSuggestions(strings[strings.length - 1], context),
                 new ArrayList<>());
           } else if (provider instanceof BukkitMultiArgumentProvider) {
             return StringUtil.copyPartialMatches(

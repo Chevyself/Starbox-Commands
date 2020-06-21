@@ -11,9 +11,10 @@ public interface BukkitArgumentProvider<O> extends IArgumentProvider<O, CommandC
   /**
    * Get the suggestions for the command
    *
+   * @param string the string that is in the argument position at the moment
    * @param context the context of the command
    * @return a list of suggestions of the command
    */
   @NotNull
-  List<String> getSuggestions(CommandContext context);
+  List<String> getSuggestions(@NotNull String string, CommandContext context);
 }

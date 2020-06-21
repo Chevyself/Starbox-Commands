@@ -25,11 +25,20 @@ public class PlayerProvider implements BukkitArgumentProvider<Player> {
     this.messagesProvider = messagesProvider;
   }
 
-  @Override
-  public @NotNull List<String> getSuggestions(CommandContext context) {
+  /**
+   * Get the name of the players that are online the server
+   *
+   * @return the name of the players that are online the server
+   */
+  public static @NotNull List<String> getPlayerNames() {
     List<String> names = new ArrayList<>();
     Bukkit.getOnlinePlayers().forEach(player -> names.add(player.getName()));
     return names;
+  }
+
+  @Override
+  public @NotNull List<String> getSuggestions(@NotNull String string, CommandContext context) {
+    return getPlayerNames();
   }
 
   @Override

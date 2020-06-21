@@ -2,6 +2,8 @@ package com.starfishst.core.utils.files;
 
 import com.starfishst.core.utils.Validate;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -149,6 +151,37 @@ public class CoreFiles {
   }
 
   /**
+   * Gets a file or copies a resource
+   *
+   * @param parent the directory of the file
+   * @param fileName the name of the file
+   * @return the file
+   * @throws IOException if the file could not be created/copied in case that it is needed
+   */
+  @NotNull
+  public static File getFileOrResource(@Nullable String parent, @NotNull String fileName)
+      throws IOException {
+    File file = getFile(parent, fileName);
+    if (file == null || !file.exists()) {
+      file = getOrCreate(parent, fileName);
+      copyResource(file, getResource(fileName));
+    }
+    return file;
+  }
+
+  /**
+   * Get a file or copy the resource
+   *
+   * @param fileName the path to the file
+   * @return the file
+   * @throws IOException if the file could not be created/copied in case that it is needed
+   */
+  @NotNull
+  public static File getFileOrResource(@NotNull String fileName) throws IOException {
+    return getFileOrResource(null, fileName, getResource(fileName));
+  }
+
+  /**
    * Get a file or create it
    *
    * @param fileName the name of the file
@@ -179,6 +212,18 @@ public class CoreFiles {
   @NotNull
   public static String validatePath(@NotNull String path) {
     return path.replace("/", File.separator);
+  }
+
+  /**
+   * Get a file reader
+   *
+   * @param file the file that needs to be read
+   * @return the file reader
+   * @throws FileNotFoundException if the file is not found
+   */
+  @NotNull
+  public static FileReader getReader(@NotNull File file) throws FileNotFoundException {
+    return new FileReader(file);
   }
 
   /** Validates the name/directory of a file to be compatible with every os */

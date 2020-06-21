@@ -44,6 +44,11 @@ public class DefaultMessagesProvider implements MessagesProvider {
     return string + " is not a valid number";
   }
 
+  @Override
+  public @NotNull String emptyDouble(@NotNull CommandContext context) {
+    return "Doubles cannot be empty!";
+  }
+
   @NotNull
   @Override
   public String notAllowed(CommandContext context) {

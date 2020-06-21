@@ -1,5 +1,6 @@
 package com.starfishst.core.utils;
 
+import com.starfishst.core.utils.maps.MapBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +101,7 @@ public class Strings {
   }
 
   /**
-   * Build a message using more readable place holders like %name%
+   * Build a message using more readable placeholders like %name%
    *
    * @param message the message to build
    * @param placeHolders the placeholders and its values
@@ -114,13 +115,24 @@ public class Strings {
     placeHolders.forEach(
         (placeHolder, value) -> {
           if (value != null) {
-            atomicMessage.set(
-                atomicMessage.get().replace("%" + placeHolder + "%", value));
+            atomicMessage.set(atomicMessage.get().replace("%" + placeHolder + "%", value));
           } else {
             atomicMessage.set(atomicMessage.get().replace("%" + placeHolder + "%", "null"));
           }
         });
     return atomicMessage.get();
+  }
+
+  /**
+   * Build a message using more readable placeholders like %name
+   *
+   * @param message the message to build
+   * @param placeholders the placeholders and its values
+   * @return the built message
+   */
+  public static String buildMessage(
+      @Nullable String message, @NotNull MapBuilder<String, String> placeholders) {
+    return buildMessage(message, placeholders.build());
   }
 
   /**

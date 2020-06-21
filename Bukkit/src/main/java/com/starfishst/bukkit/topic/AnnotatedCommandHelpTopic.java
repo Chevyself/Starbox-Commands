@@ -2,7 +2,7 @@ package com.starfishst.bukkit.topic;
 
 import com.starfishst.bukkit.AnnotatedCommand;
 import com.starfishst.bukkit.ParentCommand;
-import com.starfishst.bukkit.utils.BukkitUtils;
+import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.utils.Strings;
 import java.util.List;
@@ -22,94 +22,71 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
   /** The HelpMap to register the command */
   @NotNull private static final HelpMap helpMap = AnnotatedCommandHelpTopic.server.getHelpMap();
 
-  /** The template for commands */
-  @NotNull private static final String TEMPLATE = "&7{0} \n &7Usage: {1} \n &7Arguments: \n {2}";
-  /** The template for {@link ParentCommand} */
-  @NotNull
-  private static final String PARENT =
-      "&7{0} \n &7Usage: {1} \n &7Subcommands (use /help {2}.<child>): \n {3} &7Arguments: \n {4}";
-
-  /** The template for {@link com.starfishst.core.annotations.Optional} arguments */
-  @NotNull private static final String OPTIONAL = "&e(&6{0}&e)&7: &7{1}";
-  /** The template for {@link com.starfishst.core.annotations.Required} arguments */
-  @NotNull private static final String REQUIRED = "&e<&6{0}&e>&7: &7{1}";
-  /** The template for children commands */
-  @NotNull private static final String CHILD = "&e{0}&7: {1}";
+  /** The messages provider to build messages for the help topic */
+  @NotNull private final MessagesProvider provider;
 
   /**
    * Create the topic
    *
    * @param command the command to create the topic from
    * @param parent the parent if the command has one
+   * @param provider the messages provider to build messages for the help topic
    */
-  AnnotatedCommandHelpTopic(@NotNull AnnotatedCommand command, @Nullable AnnotatedCommand parent) {
+  AnnotatedCommandHelpTopic(
+      @NotNull AnnotatedCommand command,
+      @Nullable AnnotatedCommand parent,
+      @NotNull MessagesProvider provider) {
+    this.provider = provider;
     final String permission = command.getPermission();
     this.amendedPermission = permission == null ? null : permission.isEmpty() ? null : permission;
     if (parent == null) {
-      this.shortText = BukkitUtils.color(command.getDescription());
-      this.name = "/" + command.getName();
+      this.shortText = provider.commandShortText(command);
+      this.name = provider.commandName(command);
       if (command instanceof ParentCommand) {
         this.fullText =
-            BukkitUtils.getMessage(
-                AnnotatedCommandHelpTopic.PARENT,
-                "(Parent) " + this.shortText,
-                command.getUsage(),
-                command.getName(),
-                this.buildChildren(((ParentCommand) command)),
-                AnnotatedCommandHelpTopic.buildArguments(command));
+            provider.parentCommandFull(
+                (ParentCommand) command,
+                provider.parentCommandShort((ParentCommand) command, this.shortText),
+                this.buildChildren((ParentCommand) command),
+                buildArguments(provider, command));
         final List<AnnotatedCommand> commands = ((ParentCommand) command).getCommands();
         commands.forEach(
             childCommand ->
                 AnnotatedCommandHelpTopic.helpMap.addTopic(
-                    new AnnotatedCommandHelpTopic(childCommand, command)));
+                    new AnnotatedCommandHelpTopic(childCommand, command, provider)));
       } else {
         this.fullText =
-            BukkitUtils.getMessage(
-                AnnotatedCommandHelpTopic.TEMPLATE,
-                this.shortText,
-                command.getUsage(),
-                AnnotatedCommandHelpTopic.buildArguments(command));
+            provider.commandFull(command, this.shortText, buildArguments(provider, command));
       }
     } else {
-      this.name = "/" + parent.getName() + "." + command.getName();
-      this.shortText = BukkitUtils.color(command.getDescription());
+      this.name = provider.childCommandName(command, parent);
+      this.shortText = provider.childCommandShort(command, parent);
       this.fullText =
-          BukkitUtils.getMessage(
-              AnnotatedCommandHelpTopic.TEMPLATE,
-              this.shortText,
-              command.getUsage(),
-              AnnotatedCommandHelpTopic.buildArguments(command));
+          provider.childCommandFull(
+              command, parent, this.shortText, buildArguments(provider, command));
     }
   }
 
   /**
    * Build the arguments help
    *
+   * @param provider the messages provider to build the help topic
    * @param command the command to build the arguments from
    * @return the arguments built help
    */
   @NotNull
-  private static String buildArguments(@NotNull AnnotatedCommand command) {
+  private static String buildArguments(
+      @NotNull MessagesProvider provider, @NotNull AnnotatedCommand command) {
     StringBuilder builder = Strings.getBuilder();
     command.getArguments().stream()
         .filter(argument -> argument instanceof Argument)
         .forEach(
             argument -> {
-              final String description = ((Argument<?>) argument).getDescription();
               if (((Argument<?>) argument).isRequired()) {
-                builder.append(
-                    Strings.buildMessage(
-                        AnnotatedCommandHelpTopic.REQUIRED,
-                        ((Argument<?>) argument).getName(),
-                        description));
+                builder.append(provider.requiredArgumentHelp((Argument<?>) argument));
               } else {
-                builder.append(
-                    Strings.buildMessage(
-                        AnnotatedCommandHelpTopic.OPTIONAL,
-                        ((Argument<?>) argument).getName(),
-                        description));
+                builder.append(provider.optionalArgumentHelp((Argument<?>) argument));
               }
-              builder.append("\n");
             });
     return builder.toString();
   }
@@ -124,15 +101,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
   private String buildChildren(@NotNull ParentCommand command) {
     StringBuilder builder = Strings.getBuilder();
     final List<AnnotatedCommand> commands = command.getCommands();
-    commands.forEach(
-        annotatedCommand -> {
-          builder.append(
-              Strings.buildMessage(
-                  AnnotatedCommandHelpTopic.CHILD,
-                  annotatedCommand.getName(),
-                  annotatedCommand.getDescription()));
-          builder.append("\n");
-        });
+    commands.forEach(annotatedCommand -> builder.append(provider.childCommand(command)));
     return builder.toString();
   }
 

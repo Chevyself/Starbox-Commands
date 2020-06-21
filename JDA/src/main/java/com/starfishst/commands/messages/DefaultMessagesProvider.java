@@ -83,6 +83,11 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
+  public @NotNull String emptyDouble(@NotNull CommandContext context) {
+    return "Doubles cannot be emtpy!";
+  }
+
+  @Override
   public @NotNull String thumbnailUrl(@NotNull CommandContext context) {
     return "";
   }

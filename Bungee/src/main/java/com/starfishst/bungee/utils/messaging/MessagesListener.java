@@ -5,6 +5,7 @@ import com.starfishst.core.utils.sockets.messaging.IMessenger;
 import com.starfishst.core.utils.sockets.messaging.SocketMessageType;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;
 import com.starfishst.core.utils.sockets.messaging.SocketResponse;
+import com.starfishst.core.utils.sockets.messaging.type.response.ExceptionResponse;
 import com.starfishst.core.utils.sockets.messaging.type.response.VoidResponse;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -157,6 +158,7 @@ public class MessagesListener implements Listener {
       this.sendData(request.build());
       if (!request.isVoid()) {
         int millis = 0;
+        SocketResponse response = null;
         while (!responses.containsKey(this)) {
           if (millis < timeout) {
             try {
@@ -167,11 +169,13 @@ public class MessagesListener implements Listener {
               break;
             }
           } else {
-            throw new IllegalStateException(request + " timed out... Is it running synchronously?");
+            response = new ExceptionResponse("Timed out after " + timeout + "ms");
           }
         }
-        SocketResponse response = responses.get(this);
-        responses.remove(this);
+        if (response == null) {
+          response = responses.get(this);
+          responses.remove(this);
+        }
         return response;
       }
       return new VoidResponse();
