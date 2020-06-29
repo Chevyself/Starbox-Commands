@@ -67,4 +67,6 @@ public class GsonProvider {
   public static HashMap<Type, Object> getAdapters() {
     return adapters;
   }
+
+
 }
