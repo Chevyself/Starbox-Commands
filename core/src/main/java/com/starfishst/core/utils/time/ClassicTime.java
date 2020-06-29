@@ -44,6 +44,25 @@ public class ClassicTime {
     return unit;
   }
 
+  /**
+   * Get this time in millis
+   *
+   * @return the time in millis
+   */
+  public long millis() {
+    return getUnit().toMillis(value);
+  }
+
+  /**
+   * Makes this as a core type of time
+   *
+   * @return the core type of time
+   */
+  @NotNull
+  public Time toTime() {
+    return Time.fromMillis(millis());
+  }
+
   @Override
   public String toString() {
     return this.value + " " + unit.toString().toLowerCase();

@@ -15,6 +15,7 @@ import com.starfishst.commands.providers.RoleProvider;
 import com.starfishst.commands.providers.TextChannelExtraProvider;
 import com.starfishst.commands.providers.TextChannelProvider;
 import com.starfishst.commands.providers.UserProvider;
+import com.starfishst.commands.providers.UserSenderProvider;
 import com.starfishst.commands.providers.registry.ImplProvidersRegistry;
 import com.starfishst.commands.result.Result;
 import com.starfishst.core.ICommandManager;
@@ -101,6 +102,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new TextChannelExtraProvider());
     registry.addProvider(new TextChannelProvider(messagesProvider));
     registry.addProvider(new UserProvider(messagesProvider));
+    registry.addProvider(new UserSenderProvider());
     registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
   }
 

@@ -162,9 +162,9 @@ public class TestCommands {
       @NotNull Player player, @NotNull Material material, @NotNull Shape shape, boolean faces) {
     List<Point> points;
     if (faces) {
-      points = shape.getFacePoints();
+      points = shape.getFacePoints().getPoints();
     } else {
-      points = shape.getPointsInside();
+      points = shape.getPointsInside().getPoints();
     }
     World world = player.getLocation().getWorld();
     if (world == null) {

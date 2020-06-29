@@ -2,6 +2,8 @@ package com.starfishst.core.utils.sockets.server;
 
 import com.starfishst.core.utils.cache.Catchable;
 import com.starfishst.core.utils.sockets.messaging.ISocketMessenger;
+import com.starfishst.core.utils.sockets.messaging.SocketRequest;
+import com.starfishst.core.utils.sockets.messaging.SocketResponse;
 import com.starfishst.core.utils.sockets.messaging.type.request.DisconnectedRequest;
 import com.starfishst.core.utils.time.Time;
 import java.io.BufferedReader;
@@ -64,6 +66,18 @@ public class ClientThread extends Catchable implements ISocketMessenger {
   @Override
   public @NotNull PrintWriter getChannelOut() {
     return out;
+  }
+
+  @Override
+  public @NotNull SocketResponse sendRequest(@NotNull SocketRequest request) throws IOException {
+    refresh();
+    return ISocketMessenger.super.sendRequest(request);
+  }
+
+  @Override
+  public void sendResponse(@NotNull SocketResponse response) {
+    refresh();
+    ISocketMessenger.super.sendResponse(response);
   }
 
   /**

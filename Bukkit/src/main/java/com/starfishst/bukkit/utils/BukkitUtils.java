@@ -20,9 +20,35 @@ public class BukkitUtils {
    * @param string the string
    * @return the colored string
    */
+  @Deprecated
   @NotNull
   public static String color(@Nullable String string) {
     return ChatColor.translateAlternateColorCodes('&', string == null ? "$cNull" : string);
+  }
+
+  /**
+   * Build a message and give it colors
+   *
+   * @param string the message to build
+   * @param placeholders the placeholders of the message. See {@link Strings#buildMessage(String,
+   *     HashMap)}
+   * @return the built message
+   */
+  @NotNull
+  public static String build(
+      @Nullable String string, @NotNull HashMap<String, String> placeholders) {
+    return ChatColor.translateAlternateColorCodes('&', Strings.buildMessage(string, placeholders));
+  }
+
+  /**
+   * Build a message and give it colors
+   *
+   * @param string the message to build
+   * @return the built message
+   */
+  @NotNull
+  public static String build(@Nullable String string) {
+    return ChatColor.translateAlternateColorCodes('$', Strings.buildMessage(string));
   }
 
   /**

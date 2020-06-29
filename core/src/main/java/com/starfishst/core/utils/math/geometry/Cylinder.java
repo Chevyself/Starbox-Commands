@@ -1,7 +1,7 @@
 package com.starfishst.core.utils.math.geometry;
 
 import com.starfishst.core.utils.math.MathUtils;
-import java.util.List;
+import com.starfishst.core.utils.math.geometry.containers.Points;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -130,7 +130,9 @@ public class Cylinder implements Shape {
   public boolean contains(@NotNull Point point) {
     return point.getY() >= base.getY()
         && point.getY() <= getTotalHeight()
-        && MathUtils.square(base.distance(point)) <= MathUtils.square(radius);
+        && (MathUtils.square(point.getX() - base.getX())
+                + MathUtils.square(point.getZ() - base.getZ())
+            <= MathUtils.square(radius));
   }
 
   @Override
@@ -140,9 +142,10 @@ public class Cylinder implements Shape {
 
   @NotNull
   @Override
-  public List<Point> getPointsInside() {
-    return new Box(getMinimum(), getMaximum(), null)
-        .getPointsInside().stream().filter(this::contains).collect(Collectors.toList());
+  public Points getPointsInside() {
+    return new Points(
+        new Box(getMinimum(), getMaximum(), null)
+            .getPointsInside().stream().filter(this::contains).collect(Collectors.toList()));
   }
 
   @Override

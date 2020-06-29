@@ -1,5 +1,6 @@
 package com.starfishst.core.utils.math.geometry;
 
+import com.starfishst.core.utils.math.geometry.containers.Points;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -115,7 +116,7 @@ public class Box implements Shape {
 
   @NotNull
   @Override
-  public List<Point> getPointsInside() {
+  public Points getPointsInside() {
     List<Point> points = new ArrayList<>();
     for (double x = getMinimum().getX(); x < getMaximum().getX(); x++) {
       for (double z = getMinimum().getZ(); z < getMaximum().getZ(); z++) {
@@ -124,7 +125,7 @@ public class Box implements Shape {
         }
       }
     }
-    return points;
+    return new Points(points);
   }
 
   @Override

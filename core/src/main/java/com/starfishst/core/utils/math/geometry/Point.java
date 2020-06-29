@@ -62,6 +62,11 @@ public class Point {
     return new Point(x, y, z);
   }
 
+  /**
+   * Get the size of the point. The size if the sum of all the coordinates
+   *
+   * @return the size of the point
+   */
   public double size() {
     return x + y + z;
   }

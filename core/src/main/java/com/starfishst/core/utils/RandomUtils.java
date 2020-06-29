@@ -1,7 +1,9 @@
 package com.starfishst.core.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 /** Utilities for randomization */
@@ -69,6 +71,18 @@ public class RandomUtils {
    */
   public static String nextStringLower(int length) {
     return nextString(LOWER_LETTERS, length);
+  }
+
+  /**
+   * Get a random element from a set
+   *
+   * @param set the set to get the element
+   * @param <O> the type of the elements
+   * @return the random element
+   */
+  @NotNull
+  public static <O> O getRandom(@NotNull Set<O> set) {
+    return new ArrayList<>(set).get(random.nextInt(set.size()));
   }
 
   /**

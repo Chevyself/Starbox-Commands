@@ -1,6 +1,8 @@
 package com.starfishst.core.utils.math.geometry;
 
 import com.starfishst.core.utils.RandomUtils;
+import com.starfishst.core.utils.math.geometry.containers.InfinitePoints;
+import com.starfishst.core.utils.math.geometry.containers.Points;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,14 +67,18 @@ public interface Shape {
    * @return the points where this shapes are intersecting
    */
   @NotNull
-  default List<Point> intersectingPoints(@NotNull Shape another) {
-    List<Point> points = new ArrayList<>();
-    for (Point point : another.getPointsInside()) {
-      if (this.contains(point)) {
-        points.add(point);
+  default Points intersectingPoints(@NotNull Shape another) {
+    if (another.getPointsInside().isInfinite()) {
+      return new InfinitePoints();
+    } else {
+      List<Point> points = new ArrayList<>();
+      for (Point point : another.getPointsInside().getPoints()) {
+        if (this.contains(point)) {
+          points.add(point);
+        }
       }
+      return new Points(points);
     }
-    return points;
   }
 
   /**
@@ -89,7 +95,7 @@ public interface Shape {
    * @return the points inside
    */
   @NotNull
-  List<Point> getPointsInside();
+  Points getPointsInside();
 
   /**
    * Get the minimum point of the shape
@@ -114,8 +120,15 @@ public interface Shape {
    * @return the points that are the faces of the shape
    */
   @NotNull
-  default List<Point> getFacePoints() {
-    return getPointsInside().stream().filter(this::isFacePoint).collect(Collectors.toList());
+  default Points getFacePoints() {
+    Points pointsInside = getPointsInside();
+    if (pointsInside.isInfinite()) {
+      throw new UnsupportedOperationException(
+          "There's infinite points. This operation would never end");
+    } else {
+      return new Points(
+          pointsInside.stream().filter(this::isFacePoint).collect(Collectors.toList()));
+    }
   }
 
   /**
@@ -125,7 +138,7 @@ public interface Shape {
    */
   @NotNull
   default Point getRandomPoint() {
-    return RandomUtils.getRandom(getPointsInside());
+    return RandomUtils.getRandom(getPointsInside().getPoints());
   }
 
   /**

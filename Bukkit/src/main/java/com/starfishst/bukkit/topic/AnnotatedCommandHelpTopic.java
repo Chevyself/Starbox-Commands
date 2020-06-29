@@ -34,7 +34,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    */
   AnnotatedCommandHelpTopic(
       @NotNull AnnotatedCommand command,
-      @Nullable AnnotatedCommand parent,
+      @Nullable ParentCommand parent,
       @NotNull MessagesProvider provider) {
     this.provider = provider;
     final String permission = command.getPermission();
@@ -53,7 +53,8 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
         commands.forEach(
             childCommand ->
                 AnnotatedCommandHelpTopic.helpMap.addTopic(
-                    new AnnotatedCommandHelpTopic(childCommand, command, provider)));
+                    new AnnotatedCommandHelpTopic(
+                        childCommand, (ParentCommand) command, provider)));
       } else {
         this.fullText =
             provider.commandFull(command, this.shortText, buildArguments(provider, command));
@@ -101,7 +102,8 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
   private String buildChildren(@NotNull ParentCommand command) {
     StringBuilder builder = Strings.getBuilder();
     final List<AnnotatedCommand> commands = command.getCommands();
-    commands.forEach(annotatedCommand -> builder.append(provider.childCommand(command)));
+    commands.forEach(
+        annotatedCommand -> builder.append(provider.childCommand(annotatedCommand, command)));
     return builder.toString();
   }
 

@@ -156,20 +156,20 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NotNull String childCommandName(
-      @NotNull AnnotatedCommand command, AnnotatedCommand parent) {
+      @NotNull AnnotatedCommand command, @NotNull ParentCommand parent) {
     return "/" + parent.getName() + "." + command.getName();
   }
 
   @Override
   public @NotNull String childCommandShort(
-      @NotNull AnnotatedCommand command, AnnotatedCommand parent) {
+      @NotNull AnnotatedCommand command, @NotNull ParentCommand parent) {
     return command.getDescription();
   }
 
   @Override
   public @NotNull String childCommandFull(
       @NotNull AnnotatedCommand command,
-      AnnotatedCommand parent,
+      @NotNull ParentCommand parent,
       @NotNull String shortText,
       @NotNull String buildArguments) {
     return shortText
@@ -192,7 +192,8 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String childCommand(@NotNull ParentCommand command) {
+  public @NotNull String childCommand(
+      @NotNull AnnotatedCommand command, @NotNull ParentCommand parent) {
     return "- " + command.getName();
   }
 

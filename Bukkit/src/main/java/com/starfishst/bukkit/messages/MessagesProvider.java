@@ -163,7 +163,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return the name for the command help topic
    */
   @NotNull
-  String childCommandName(@NotNull AnnotatedCommand command, AnnotatedCommand parent);
+  String childCommandName(@NotNull AnnotatedCommand command, @NotNull ParentCommand parent);
 
   /**
    * Get the short text for a child command help topic
@@ -173,7 +173,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return the short text of the child command help topic
    */
   @NotNull
-  String childCommandShort(@NotNull AnnotatedCommand command, AnnotatedCommand parent);
+  String childCommandShort(@NotNull AnnotatedCommand command, @NotNull ParentCommand parent);
 
   /**
    * Get the full text for a child command help topic
@@ -187,7 +187,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
   @NotNull
   String childCommandFull(
       @NotNull AnnotatedCommand command,
-      AnnotatedCommand parent,
+      @NotNull ParentCommand parent,
       @NotNull String shortText,
       @NotNull String buildArguments);
 
@@ -213,10 +213,11 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * A simple description for a child command for its parents help topic
    *
    * @param command the command that requires the description for its parent
+   * @param parent the parent of the command
    * @return the child command description
    */
   @NotNull
-  String childCommand(@NotNull ParentCommand command);
+  String childCommand(@NotNull AnnotatedCommand command, @NotNull ParentCommand parent);
 
   /**
    * The message to tell the users that materials have a name and it cannot be empty

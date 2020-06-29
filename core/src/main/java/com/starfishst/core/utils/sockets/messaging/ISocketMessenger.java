@@ -55,7 +55,8 @@ public interface ISocketMessenger extends IMessenger {
       if (line != null) {
         return new SocketResponse(Maps.fromString(line));
       } else {
-        throw new IllegalStateException("The other socket did not send anything");
+        throw new IOException(
+            "The other socket did not send anything while executing the request " + request);
       }
     }
     return new VoidResponse();

@@ -13,4 +13,14 @@ public class SocketException extends SimpleException {
   public SocketException(@NotNull String message) {
     super(message);
   }
+
+  /**
+   * Throw a simple exception
+   *
+   * @param message the message
+   * @param cause the cause of the exception
+   */
+  public SocketException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

@@ -1,7 +1,7 @@
 package com.starfishst.core.utils.math.geometry;
 
 import com.starfishst.core.utils.math.MathUtils;
-import java.util.List;
+import com.starfishst.core.utils.math.geometry.containers.Points;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -84,9 +84,10 @@ public class Sphere implements Shape {
   }
 
   @Override
-  public @NotNull List<Point> getPointsInside() {
-    return new Box(getMinimum(), getMaximum(), null)
-        .getPointsInside().stream().filter(this::contains).collect(Collectors.toList());
+  public @NotNull Points getPointsInside() {
+    return new Points(
+        new Box(getMinimum(), getMaximum(), null)
+            .getPointsInside().stream().filter(this::contains).collect(Collectors.toList()));
   }
 
   @Override

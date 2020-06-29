@@ -2,6 +2,7 @@ package com.starfishst.core.utils.sockets.messaging;
 
 import com.starfishst.core.utils.maps.MapBuilder;
 import com.starfishst.core.utils.maps.Maps;
+import com.starfishst.core.utils.sockets.exception.IllegalRequestTypeException;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,6 +40,11 @@ public class SocketMessage {
   private void checkType() {
     if (!this.data.containsKey("type")) {
       this.data.put("type", getType().toString());
+    }
+    try {
+      SocketMessageType.fromData(this.data);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalRequestTypeException(this + " has an illegal type!", e);
     }
   }
 

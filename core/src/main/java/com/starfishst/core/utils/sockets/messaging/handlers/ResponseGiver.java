@@ -6,6 +6,8 @@ import com.starfishst.core.utils.sockets.exception.SocketException;
 import com.starfishst.core.utils.sockets.messaging.IMessenger;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;
 import com.starfishst.core.utils.sockets.messaging.SocketResponse;
+import com.starfishst.core.utils.sockets.messaging.handlers.type.EmptyHandler;
+import com.starfishst.core.utils.sockets.messaging.handlers.type.HeartbeatHandler;
 import com.starfishst.core.utils.sockets.messaging.handlers.type.PingHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,8 @@ public class ResponseGiver {
   @NotNull private static final List<RequestHandler> handlers = new ArrayList<>();
 
   static {
+    handlers.add(new EmptyHandler());
+    handlers.add(new HeartbeatHandler());
     handlers.add(new PingHandler());
   }
 

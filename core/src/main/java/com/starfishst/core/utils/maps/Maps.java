@@ -57,6 +57,26 @@ public class Maps {
   }
 
   /**
+   * Create a hashmap from strings separating the key and the value using a dot '.'. If there's no
+   * dot it will be ignored
+   *
+   * @param separator the char separator for the key and value
+   * @param strings to get the key and value
+   * @return the map
+   */
+  public static HashMap<String, String> fromStringArray(
+      String separator, @NotNull String... strings) {
+    HashMap<String, String> map = new HashMap<>();
+    for (String string : strings) {
+      if (string.contains(separator)) {
+        String[] split = string.split(separator);
+        map.put(split[0], split[1]);
+      }
+    }
+    return map;
+  }
+
+  /**
    * Separates each element with a coma ',' and the key and value with a '.' also check {@link
    * Maps##fromStringArray(String...)}
    *
