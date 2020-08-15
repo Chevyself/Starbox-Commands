@@ -67,6 +67,22 @@ public class Pagination<O> {
   }
 
   /**
+   * Get the index of an object in a list or -1 if the list does not contain the object
+   *
+   * @param o the object to get the index of
+   * @return the index of the object
+   */
+  public int getIndex(@NotNull O o) {
+    int index = 0;
+    for (int i = 0; i < list.size(); i++) {
+      if (o.equals(list.get(i))) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /**
    * Get the list that is being paginated
    *
    * @return the list that is being paginated
