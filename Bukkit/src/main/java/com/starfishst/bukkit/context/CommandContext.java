@@ -1,7 +1,6 @@
 package com.starfishst.bukkit.context;
 
 import com.starfishst.bukkit.messages.MessagesProvider;
-import com.starfishst.bukkit.providers.registry.ImplProvidersRegistry;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Lots;
@@ -20,6 +19,8 @@ public class CommandContext implements ICommandContext {
   @NotNull private final String[] strings;
   /** The messages provider of this context */
   @NotNull private final MessagesProvider messagesProvider;
+  /** The registry for the command context to use */
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create a bukkit context
@@ -27,15 +28,18 @@ public class CommandContext implements ICommandContext {
    * @param sender the sender of the bukkit command
    * @param strings the strings from the command execution
    * @param messagesProvider the messages provider used in this context
+   * @param registry the registry for the command context to use
    */
   public CommandContext(
       @NotNull CommandSender sender,
       @NotNull String[] strings,
-      @NotNull MessagesProvider messagesProvider) {
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull ProvidersRegistry<CommandContext> registry) {
     this.sender = sender;
     this.string = Strings.fromArray(strings);
     this.strings = strings;
     this.messagesProvider = messagesProvider;
+    this.registry = registry;
   }
 
   @NotNull
@@ -56,9 +60,10 @@ public class CommandContext implements ICommandContext {
     return this.strings;
   }
 
+  @NotNull
   @Override
   public ProvidersRegistry<CommandContext> getRegistry() {
-    return ImplProvidersRegistry.getInstance();
+    return registry;
   }
 
   @NotNull

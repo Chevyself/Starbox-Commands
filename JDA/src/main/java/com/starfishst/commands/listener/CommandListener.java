@@ -177,7 +177,8 @@ public class CommandListener implements EventListener {
           strings,
           event.getChannel(),
           event,
-          messagesProvider);
+          messagesProvider,
+          manager.getRegistry());
     } else {
       return new CommandContext(
           event.getMessage(),
@@ -185,7 +186,8 @@ public class CommandListener implements EventListener {
           strings,
           event.getChannel(),
           event,
-          messagesProvider);
+          messagesProvider,
+          manager.getRegistry());
     }
   }
 

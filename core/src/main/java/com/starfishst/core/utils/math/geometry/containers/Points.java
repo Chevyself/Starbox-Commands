@@ -3,7 +3,7 @@ package com.starfishst.core.utils.math.geometry.containers;
 import com.starfishst.core.utils.NullableAtomic;
 import com.starfishst.core.utils.math.geometry.Point;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -14,14 +14,14 @@ import org.jetbrains.annotations.Nullable;
 public class Points {
 
   /** The contained points */
-  @NotNull private final List<Point> points;
+  @NotNull private final Set<Point> points;
 
   /**
    * Create the collection of points
    *
    * @param points the set of points
    */
-  public Points(@NotNull List<Point> points) {
+  public Points(@NotNull Set<Point> points) {
     this.points = points;
   }
 
@@ -157,7 +157,7 @@ public class Points {
    * @return the points
    */
   @NotNull
-  public List<Point> getPoints() {
+  public Set<Point> getPoints() {
     return points;
   }
 

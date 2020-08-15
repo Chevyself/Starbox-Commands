@@ -6,6 +6,7 @@ import com.starfishst.commands.messages.MessagesProvider;
 import com.starfishst.commands.result.Result;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.type.ISimpleArgument;
+import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Lots;
 import com.starfishst.core.utils.time.Time;
 import java.lang.reflect.Method;
@@ -33,6 +34,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param messagesProvider the provider of messages
    * @param cooldown the time of cooldown
    * @param excluded if the command should be excluded from deleting its success
+   * @param registry the registry to get the providers from
    */
   public ParentCommand(
       @NotNull Object clazz,
@@ -41,8 +43,9 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NotNull List<ISimpleArgument<?>> arguments,
       @NotNull MessagesProvider messagesProvider,
       @NotNull Time cooldown,
-      boolean excluded) {
-    super(clazz, method, cmd, arguments, messagesProvider, cooldown, excluded);
+      boolean excluded,
+      ProvidersRegistry<CommandContext> registry) {
+    super(clazz, method, cmd, arguments, messagesProvider, registry, cooldown, excluded);
   }
 
   @Override

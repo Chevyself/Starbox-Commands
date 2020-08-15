@@ -1,7 +1,6 @@
 package com.starfishst.commands.context;
 
 import com.starfishst.commands.messages.MessagesProvider;
-import com.starfishst.commands.providers.registry.ImplProvidersRegistry;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.Strings;
@@ -31,6 +30,8 @@ public class CommandContext implements ICommandContext {
   @NotNull private String[] strings;
   /** The messages provider of this context */
   @NotNull private final MessagesProvider messagesProvider;
+  /** The registry of the command context */
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create an instance
@@ -41,6 +42,7 @@ public class CommandContext implements ICommandContext {
    * @param channel the channel where the command was executed
    * @param event the event where the command was executed
    * @param messagesProvider the messages provider for this context
+   * @param registry the registry of the command context
    */
   public CommandContext(
       @NotNull Message message,
@@ -48,13 +50,15 @@ public class CommandContext implements ICommandContext {
       @NotNull String[] args,
       @NotNull MessageChannel channel,
       @Nullable MessageReceivedEvent event,
-      @NotNull MessagesProvider messagesProvider) {
+      @NotNull MessagesProvider messagesProvider,
+      ProvidersRegistry<CommandContext> registry) {
     this.message = message;
     this.sender = sender;
     this.strings = args;
     this.channel = channel;
     this.event = event;
     this.messagesProvider = messagesProvider;
+    this.registry = registry;
   }
 
   /**
@@ -114,9 +118,10 @@ public class CommandContext implements ICommandContext {
     return strings;
   }
 
+  @NotNull
   @Override
   public ProvidersRegistry<CommandContext> getRegistry() {
-    return ImplProvidersRegistry.getInstance();
+    return registry;
   }
 
   @NotNull

@@ -10,7 +10,7 @@ import com.starfishst.core.utils.math.geometry.Point;
 import com.starfishst.core.utils.math.geometry.Shape;
 import com.starfishst.core.utils.math.geometry.Sphere;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -160,7 +160,7 @@ public class TestCommands {
 
   public Result changeBlocks(
       @NotNull Player player, @NotNull Material material, @NotNull Shape shape, boolean faces) {
-    List<Point> points;
+    Set<Point> points;
     if (faces) {
       points = shape.getFacePoints().getPoints();
     } else {

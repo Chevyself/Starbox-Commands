@@ -252,4 +252,24 @@ public class Time {
   public boolean lowerThan(@NotNull Time time) {
     return this.millis() < time.millis();
   }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (object instanceof Long) {
+      return millis() == (long) object;
+    }
+    if (object instanceof Time) {
+      return millis() == ((Time) object).millis();
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    int result = (int) (value ^ (value >>> 32));
+    result = 31 * result + unit.hashCode();
+    return result;
+  }
 }

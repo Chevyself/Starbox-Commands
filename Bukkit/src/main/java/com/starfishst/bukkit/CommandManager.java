@@ -9,7 +9,6 @@ import com.starfishst.bukkit.providers.MaterialProvider;
 import com.starfishst.bukkit.providers.OfflinePlayerProvider;
 import com.starfishst.bukkit.providers.PlayerProvider;
 import com.starfishst.bukkit.providers.PlayerSenderProvider;
-import com.starfishst.bukkit.providers.registry.ImplProvidersRegistry;
 import com.starfishst.bukkit.result.Result;
 import com.starfishst.bukkit.topic.AnnotatedCommandHelpTopicFactory;
 import com.starfishst.bukkit.topic.PluginHelpTopic;
@@ -65,21 +64,26 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   /** The list of commands that this manager handles */
   @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
 
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
+
   /**
    * Create an instance
    *
    * @param plugin the plugin that will use the command manager
    * @param options the options for the command manager
    * @param messagesProvider the provider for messages
+   * @param registry the registry for the command context
    */
   public CommandManager(
       @NotNull Plugin plugin,
       @NotNull CommandManagerOptions options,
-      @NotNull MessagesProvider messagesProvider) {
+      @NotNull MessagesProvider messagesProvider,
+      ProvidersRegistry<CommandContext> registry) {
     this.plugin = plugin;
     this.options = options;
     this.messagesProvider = messagesProvider;
-    addProviders(ImplProvidersRegistry.getInstance(), messagesProvider);
+    this.registry = registry;
+    addProviders(registry, messagesProvider);
     CommandManager.helpMap.registerHelpTopicFactory(
         AnnotatedCommand.class, new AnnotatedCommandHelpTopicFactory(messagesProvider));
   }
@@ -172,6 +176,16 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     return Boolean.parseBoolean(settings.getOrDefault("async", "false"));
   }
 
+  /**
+   * Get the registry of the manager
+   *
+   * @return the registry for the command context
+   */
+  @NotNull
+  public ProvidersRegistry<CommandContext> getRegistry() {
+    return registry;
+  }
+
   @Override
   public @NotNull AnnotatedCommand parseCommand(
       @NotNull Object object, @NotNull Method method, boolean isParent) {
@@ -188,7 +202,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             options,
             messagesProvider,
             plugin,
-            isAsync(method));
+            isAsync(method),
+            registry);
       } else {
         return new AnnotatedCommand(
             object,
@@ -197,7 +212,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             command,
             messagesProvider,
             plugin,
-            isAsync(method));
+            isAsync(method),
+            registry);
       }
     } else {
       throw new CommandRegistrationException("{0} must return {1}");

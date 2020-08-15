@@ -5,30 +5,10 @@ import com.starfishst.commands.annotations.Exclude;
 import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.listener.CommandListener;
 import com.starfishst.commands.messages.MessagesProvider;
-import com.starfishst.commands.providers.CommandContextProvider;
-import com.starfishst.commands.providers.GuildCommandContextProvider;
-import com.starfishst.commands.providers.GuildProvider;
-import com.starfishst.commands.providers.MemberProvider;
-import com.starfishst.commands.providers.MemberSenderProvider;
-import com.starfishst.commands.providers.MessageProvider;
-import com.starfishst.commands.providers.RoleProvider;
-import com.starfishst.commands.providers.TextChannelExtraProvider;
-import com.starfishst.commands.providers.TextChannelProvider;
-import com.starfishst.commands.providers.UserProvider;
-import com.starfishst.commands.providers.UserSenderProvider;
-import com.starfishst.commands.providers.registry.ImplProvidersRegistry;
 import com.starfishst.commands.result.Result;
 import com.starfishst.core.ICommandManager;
 import com.starfishst.core.annotations.Parent;
 import com.starfishst.core.exceptions.CommandRegistrationException;
-import com.starfishst.core.providers.BooleanProvider;
-import com.starfishst.core.providers.DoubleProvider;
-import com.starfishst.core.providers.IntegerProvider;
-import com.starfishst.core.providers.JoinedNumberProvider;
-import com.starfishst.core.providers.JoinedStringsProvider;
-import com.starfishst.core.providers.LongProvider;
-import com.starfishst.core.providers.StringProvider;
-import com.starfishst.core.providers.TimeProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.utils.time.Time;
 import java.lang.annotation.Annotation;
@@ -54,6 +34,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @NotNull private final CommandListener listener;
   /** The temporal parent command for ticket registering */
   @Nullable private ParentCommand parent;
+  /** The providers registry for the commands */
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create an instance
@@ -62,48 +44,20 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * @param prefix the prefix to use in commands
    * @param options the options of the manager
    * @param messagesProvider the provider for messages
+   * @param registry the registry that the manager can use
    */
   public CommandManager(
       @NotNull JDA jda,
       @NotNull String prefix,
       @NotNull ManagerOptions options,
-      @NotNull MessagesProvider messagesProvider) {
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull ProvidersRegistry<CommandContext> registry) {
     this.jda = jda;
     this.managerOptions = options;
     this.messagesProvider = messagesProvider;
+    this.registry = registry;
     this.listener = new CommandListener(prefix, this, options, this.messagesProvider);
     jda.addEventListener(this.listener);
-    addProviders(ImplProvidersRegistry.getInstance(), this.messagesProvider);
-  }
-
-  /**
-   * Register the needed providers in the registry
-   *
-   * @param registry the registry of providers
-   * @param messagesProvider the message provider
-   */
-  private void addProviders(
-      @NotNull ProvidersRegistry<CommandContext> registry,
-      @NotNull MessagesProvider messagesProvider) {
-    registry.addProvider(new BooleanProvider<>(messagesProvider));
-    registry.addProvider(new DoubleProvider<>(messagesProvider));
-    registry.addProvider(new IntegerProvider<>(messagesProvider));
-    registry.addProvider(new JoinedStringsProvider<>());
-    registry.addProvider(new LongProvider<>(messagesProvider));
-    registry.addProvider(new StringProvider<>());
-    registry.addProvider(new TimeProvider<>(messagesProvider));
-    registry.addProvider(new CommandContextProvider());
-    registry.addProvider(new GuildCommandContextProvider(messagesProvider));
-    registry.addProvider(new GuildProvider(messagesProvider));
-    registry.addProvider(new MemberProvider(messagesProvider));
-    registry.addProvider(new MemberSenderProvider(messagesProvider));
-    registry.addProvider(new MessageProvider());
-    registry.addProvider(new RoleProvider(messagesProvider));
-    registry.addProvider(new TextChannelExtraProvider());
-    registry.addProvider(new TextChannelProvider(messagesProvider));
-    registry.addProvider(new UserProvider(messagesProvider));
-    registry.addProvider(new UserSenderProvider());
-    registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
   }
 
   /**
@@ -131,8 +85,12 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    */
   @Nullable
   public <O> O getCommand(@NotNull Class<O> clazz) {
-    return clazz.cast(
-        commands.stream().filter(command -> command.getClazz() == clazz).findFirst().orElse(null));
+    AnnotatedCommand cmd =
+        commands.stream()
+            .filter(command -> command.getClazz().getClass().equals(clazz))
+            .findFirst()
+            .orElse(null);
+    return cmd == null ? null : clazz.cast(cmd.getClazz());
   }
 
   /**
@@ -212,6 +170,23 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     }
   }
 
+  public void close(boolean closeJda) {
+    commands.clear();
+    if (closeJda) {
+      jda.shutdown();
+    }
+  }
+
+  /**
+   * Get the registry for this command manager
+   *
+   * @return the registry
+   */
+  @NotNull
+  public ProvidersRegistry<CommandContext> getRegistry() {
+    return registry;
+  }
+
   @NotNull
   @Override
   public AnnotatedCommand parseCommand(
@@ -230,7 +205,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             parseArguments(params, annotations),
             messagesProvider,
             cooldown,
-            hasAnnotation(method.getAnnotations(), Exclude.class));
+            hasAnnotation(method.getAnnotations(), Exclude.class),
+            registry);
       } else {
         return new AnnotatedCommand(
             object,
@@ -238,6 +214,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             cmd,
             parseArguments(params, annotations),
             messagesProvider,
+            registry,
             cooldown,
             hasAnnotation(method.getAnnotations(), Exclude.class));
       }

@@ -4,18 +4,13 @@ import com.starfishst.core.utils.time.Time;
 import com.starfishst.core.utils.time.Unit;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * This is an object that can be put inside the cache
- *
- * @author Chevy
- * @version 1.0.0
- */
+/** This is an object that can be put inside the cache */
 public abstract class Catchable {
 
   /** The time to remove the object from the cache */
-  @NotNull private final Time toRemove;
+  @NotNull private final transient Time toRemove;
   /** The seconds left of the object inside the cache */
-  private long secondsLeft;
+  private transient long secondsLeft;
 
   /**
    * Create an instance

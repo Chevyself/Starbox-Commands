@@ -2,9 +2,9 @@ package com.starfishst.core.utils.math.geometry.modifier;
 
 import com.starfishst.core.utils.math.geometry.Point;
 import com.starfishst.core.utils.math.geometry.Shape;
-import com.starfishst.core.utils.math.geometry.containers.InfinitePoints;
 import com.starfishst.core.utils.math.geometry.containers.Points;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public class Negative implements Modifier {
    */
   @Override
   public @NotNull Points getPointsInside() {
-    return new InfinitePoints();
+    return new Points(new HashSet<>());
   }
 
   /**
@@ -82,6 +82,11 @@ public class Negative implements Modifier {
 
   @Override
   public Collection<Shape> getShapes() {
-    return null;
+    return shapes;
+  }
+
+  @Override
+  public String toString() {
+    return "Negative{" + "id='" + id + '\'' + ", shapes=" + shapes + '}';
   }
 }

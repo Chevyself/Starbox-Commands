@@ -10,21 +10,21 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** A bunch of shapes */
-public class Union implements Modifier {
+/** Returns the area where the regions intersect */
+public class Intersect implements Modifier {
 
   /** The id of the shape */
   @Nullable private final String id;
-  /** The shapes inside the union */
+  /** The shapes to calculate where they intersect */
   private final Set<Shape> shapes;
 
   /**
-   * Create the union
+   * Create the intersect modifier
    *
-   * @param id the id of the union
-   * @param shapes the shapes inside the union
+   * @param id the id of the shape
+   * @param shapes the shapes to get the area where they intersect
    */
-  public Union(@Nullable String id, Set<Shape> shapes) {
+  public Intersect(@Nullable String id, Set<Shape> shapes) {
     this.id = id;
     this.shapes = shapes;
   }
@@ -46,12 +46,22 @@ public class Union implements Modifier {
    */
   @Override
   public @NotNull Points getPointsInside() {
-    Atomic<Points> points = new Atomic<>(new Points(new HashSet<>()));
+    Atomic<Points> atomic = new Atomic<>(new Points(new HashSet<>()));
     shapes.forEach(
         shape -> {
-          points.get().addAll(shape.getPointsInside());
+          shapes.forEach(
+              compare -> {
+                compare
+                    .getPointsInside()
+                    .forEach(
+                        point -> {
+                          if (shape.getPointsInside().contains(point)) {
+                            atomic.get().add(point);
+                          }
+                        });
+              });
         });
-    return points.get();
+    return atomic.get();
   }
 
   /**
@@ -81,11 +91,7 @@ public class Union implements Modifier {
    */
   @Override
   public double getVolume() {
-    double volume = 0;
-    for (Shape shape : shapes) {
-      volume += shape.getVolume();
-    }
-    return volume;
+    return 0;
   }
 
   @Override

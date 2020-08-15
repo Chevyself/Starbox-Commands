@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
@@ -146,5 +148,18 @@ public class Lots {
   @SafeVarargs
   public static <O> List<O> inmutable(@NotNull O... objects) {
     return Collections.unmodifiableList(list(objects));
+  }
+
+  /**
+   * Create a set of objects
+   *
+   * @param objects the objects to get as set
+   * @param <O> the type of the objects
+   * @return the created set of objects
+   */
+  @SafeVarargs
+  @NotNull
+  public static <O> Set<O> set(@NotNull O... objects) {
+    return new HashSet<>(Arrays.asList(objects));
   }
 }

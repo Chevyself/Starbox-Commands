@@ -3,7 +3,6 @@ package com.starfishst.core.utils.math.geometry.modifier;
 import com.starfishst.core.utils.math.geometry.Point;
 import com.starfishst.core.utils.math.geometry.Shape;
 import com.starfishst.core.utils.math.geometry.containers.Points;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class Complement implements Modifier {
    */
   @Override
   public @NotNull Points getPointsInside() {
-    Points points = new Points(new ArrayList<>());
+    Points points = new Points(new HashSet<>());
     shapes.forEach(
         shape -> {
           if (!shape.getPointsInside().isInfinite()) {

@@ -18,11 +18,12 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.IEventManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.internal.JDAImpl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** An adapter for creating a jda connection from a json configuration */
-public class JdaAdapter implements JsonSerializer<JDA>, JsonDeserializer<JDA> {
+public class JdaAdapter implements JsonSerializer<JDAImpl>, JsonDeserializer<JDA> {
 
   /** A logger used to print messages */
   @Nullable private final Logger logger;
@@ -33,7 +34,7 @@ public class JdaAdapter implements JsonSerializer<JDA>, JsonDeserializer<JDA> {
   /** The listeners that the instance of jda should use */
   @NotNull private final Collection<Object> listeners;
   /** The token used to connect to the bot */
-  @NotNull private String token = "";
+  @NotNull private static String token = "";
 
   /**
    * Create the adapter
@@ -83,9 +84,9 @@ public class JdaAdapter implements JsonSerializer<JDA>, JsonDeserializer<JDA> {
   @Override
   @NotNull
   public JsonElement serialize(
-      JDA jda, Type type, JsonSerializationContext jsonSerializationContext) {
+      JDAImpl jda, Type type, JsonSerializationContext jsonSerializationContext) {
     JsonObject object = new JsonObject();
-    object.addProperty("token", this.token);
+    object.addProperty("token", token);
     return object;
   }
 
@@ -96,7 +97,7 @@ public class JdaAdapter implements JsonSerializer<JDA>, JsonDeserializer<JDA> {
       throws JsonParseException {
     try {
       JsonObject object = jsonElement.getAsJsonObject();
-      this.token = object.get("token").getAsString();
+      token = object.get("token").getAsString();
       JDA jda =
           JDABuilder.create(token, this.intents)
               .setEventManager(this.eventManager)
@@ -111,8 +112,15 @@ public class JdaAdapter implements JsonSerializer<JDA>, JsonDeserializer<JDA> {
         } catch (InterruptedException e) {
           exception(e, "Interrupted while trying to connect to discord");
         }
+        if (millis > 2000) {
+          jda = null;
+          this.info("Discord could not be connected after 2 seconds");
+          break;
+        }
       }
-      this.info("Discord took " + Time.fromMillis(millis).toEffectiveString() + " to connect");
+      if (jda != null) {
+        this.info("Discord took " + Time.fromMillis(millis).toEffectiveString() + " to connect");
+      }
       return jda;
     } catch (LoginException e) {
       exception(e, null);

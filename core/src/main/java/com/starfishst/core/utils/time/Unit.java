@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 public enum Unit {
   /** The unit of milliseconds */
   MILLISECONDS("l", "millis", true, 1),
-  /** Many games uses ticks but this is minecraft ticks */
-  TICKS("t", "ticks", false, 50),
+  /** Minecraft ticks */
+  MINECRAFT_TICKS("t", "ticks", false, 50),
   /** The unit of seconds */
   SECONDS("s", "seconds", true, 1000),
   /** The unit of minutes */

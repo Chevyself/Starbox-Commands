@@ -2,10 +2,13 @@ package com.starfishst.core.utils.files;
 
 import com.starfishst.core.utils.Validate;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import org.jetbrains.annotations.NotNull;
@@ -224,6 +227,74 @@ public class CoreFiles {
   @NotNull
   public static FileReader getReader(@NotNull File file) throws FileNotFoundException {
     return new FileReader(file);
+  }
+
+  /**
+   * Get a directory or create it
+   *
+   * @param parent the path of the directory
+   * @return the directory
+   * @throws IOException if the directory cannot be created
+   */
+  @NotNull
+  public static File directoryOrCreate(@NotNull String parent) throws IOException {
+    File file = new File(validatePath(parent));
+    if (!file.exists()) {
+      if (file.mkdir()) {
+        return file;
+      } else {
+        throw new IOException("Directory could not be created");
+      }
+    }
+    if (file.isDirectory()) {
+      return file;
+    } else {
+      throw new IOException("There's already a file with the name of the directory");
+    }
+  }
+
+  /**
+   * Copies a directory
+   *
+   * @param source the source directory
+   * @param destination the destination directory
+   * @throws IOException if the destination directory could not be created
+   */
+  public static void copyDirectory(@NotNull File source, @NotNull File destination)
+      throws IOException {
+    String[] list = source.list();
+    if (source.isDirectory() && list != null) {
+      if (!destination.exists()) {
+        if (!destination.mkdir()) {
+          throw new IOException(destination + " could not be created");
+        }
+      }
+      for (String string : list) {
+        File sourceFile = new File(source, string);
+        File destinationFile = new File(destination, string);
+        copyDirectory(sourceFile, destinationFile);
+      }
+    } else {
+      copyFile(source, destination);
+    }
+  }
+
+  /**
+   * Copies a file
+   *
+   * @param source the source file
+   * @param destination the destination file
+   * @throws IOException if the files do not exist
+   */
+  public static void copyFile(@NotNull File source, @NotNull File destination) throws IOException {
+    try (InputStream input = new FileInputStream(source);
+        OutputStream output = new FileOutputStream(destination)) {
+      byte[] buffer = new byte[1024];
+      int length;
+      while ((length = input.read(buffer)) > 0) {
+        output.write(buffer, 0, length);
+      }
+    }
   }
 
   /** Validates the name/directory of a file to be compatible with every os */

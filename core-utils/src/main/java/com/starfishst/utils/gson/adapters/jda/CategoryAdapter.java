@@ -17,7 +17,7 @@ public class CategoryAdapter extends JdaObjectAdapter<Category> {
    *
    * @param api the api to use for the adaptation
    */
-  protected CategoryAdapter(@NotNull JDA api) {
+  public CategoryAdapter(@NotNull JDA api) {
     super(api);
   }
 

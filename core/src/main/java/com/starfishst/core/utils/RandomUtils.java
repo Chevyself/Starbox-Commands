@@ -44,6 +44,29 @@ public class RandomUtils {
   }
 
   /**
+   * Get a double integer inside a bound
+   *
+   * @param min the minimum number of the bound
+   * @param max the maximum number of the bound
+   * @return the random integer
+   */
+  public static int nextInt(int min, int max) {
+    return random.nextInt(((max - min) + 1) + min);
+  }
+
+  public static double nextDouble(double min, double max) {
+    if (max < min) {
+      return nextDouble(max, min);
+    } else {
+      return min + ((1 + max - min) * Math.random());
+    }
+  }
+
+  public static double nextDoubleFloor(double min, double max) {
+    return Math.floor(nextDouble(min, max));
+  }
+
+  /**
    * Create a random string only using letters
    *
    * @param length of the new string
@@ -82,6 +105,9 @@ public class RandomUtils {
    */
   @NotNull
   public static <O> O getRandom(@NotNull Set<O> set) {
+    if (set.isEmpty()) {
+      throw new IllegalArgumentException("The input is empty");
+    }
     return new ArrayList<>(set).get(random.nextInt(set.size()));
   }
 
@@ -109,5 +135,23 @@ public class RandomUtils {
       throw new IllegalArgumentException("List cannot be empty!");
     }
     return list.get(random.nextInt(list.size()));
+  }
+
+  @NotNull
+  public static <O> List<O> getRandom(@NotNull List<O> list, int amount) {
+    if (list.isEmpty()) {
+      throw new IllegalArgumentException("List cannot be empty!");
+    } else if (amount > list.size()) {
+      throw new IllegalArgumentException("The amount is bigger than the size of the list");
+    }
+    List<O> newList = new ArrayList<>(amount);
+    O toAdd = getRandom(list);
+    while (newList.size() != amount) {
+      while (newList.contains(toAdd)) {
+        toAdd = getRandom(list);
+      }
+      newList.add(toAdd);
+    }
+    return newList;
   }
 }

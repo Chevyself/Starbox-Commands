@@ -1,8 +1,9 @@
 package com.starfishst.core.utils.math.geometry;
 
+import com.starfishst.core.utils.RandomUtils;
 import com.starfishst.core.utils.math.geometry.containers.Points;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -117,7 +118,7 @@ public class Box implements Shape {
   @NotNull
   @Override
   public Points getPointsInside() {
-    List<Point> points = new ArrayList<>();
+    Set<Point> points = new HashSet<>();
     for (double x = getMinimum().getX(); x < getMaximum().getX(); x++) {
       for (double z = getMinimum().getZ(); z < getMaximum().getZ(); z++) {
         for (double y = getMinimum().getY(); y < getMaximum().getY(); y++) {
@@ -128,8 +129,37 @@ public class Box implements Shape {
     return new Points(points);
   }
 
+  /**
+   * Get a random point inside of the shape
+   *
+   * @return the random point
+   */
+  @Override
+  public @NotNull Point getRandomPoint() {
+    return new Point(
+        RandomUtils.nextDoubleFloor(minimum.getX(), maximum.getX()),
+        RandomUtils.nextDoubleFloor(minimum.getY(), maximum.getY()),
+        RandomUtils.nextDoubleFloor(minimum.getZ(), maximum.getZ()));
+  }
+
   @Override
   public String toString() {
     return "Box{" + "minimum=" + minimum + ", maximum=" + maximum + ", id='" + id + '\'' + '}';
+  }
+
+  /**
+   * Check if this shape contains a point inside of it
+   *
+   * @param point the point to check if it is inside this shape
+   * @return true if it is inside
+   */
+  @Override
+  public boolean contains(@NotNull Point point) {
+    return point.getX() >= minimum.getX()
+        && point.getX() <= maximum.getX()
+        && point.getY() >= minimum.getY()
+        && point.getY() <= maximum.getY()
+        && point.getZ() >= minimum.getZ()
+        && point.getZ() <= maximum.getZ();
   }
 }

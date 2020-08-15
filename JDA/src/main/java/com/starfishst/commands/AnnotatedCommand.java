@@ -3,7 +3,6 @@ package com.starfishst.commands;
 import com.starfishst.commands.annotations.Command;
 import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.messages.MessagesProvider;
-import com.starfishst.commands.providers.registry.ImplProvidersRegistry;
 import com.starfishst.commands.result.Result;
 import com.starfishst.commands.result.ResultType;
 import com.starfishst.core.ICommand;
@@ -45,6 +44,8 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The message provider for certain messages */
   @NotNull private final MessagesProvider messagesProvider;
+
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
   /** The time to cooldown the use of the message for the users */
   @NotNull private Time cooldown;
   /**
@@ -61,6 +62,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @param cmd the annotation of the method
    * @param arguments the arguments of the command
    * @param messagesProvider the provider of messages for the command
+   * @param registry the registry to get the providers from
    * @param cooldown the cooldown of the command
    * @param excluded if the command should be excluded from deleting its success
    */
@@ -70,6 +72,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
       Command cmd,
       @NotNull List<ISimpleArgument<?>> arguments,
       @NotNull MessagesProvider messagesProvider,
+      @NotNull ProvidersRegistry<CommandContext> registry,
       @NotNull Time cooldown,
       boolean excluded) {
     this.clazz = clazz;
@@ -80,6 +83,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
     this.permission = cmd.permission();
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
+    this.registry = registry;
     this.cooldown = cooldown;
     this.excluded = excluded;
   }
@@ -229,7 +233,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   @NotNull
   @Override
   public ProvidersRegistry<CommandContext> getRegistry() {
-    return ImplProvidersRegistry.getInstance();
+    return registry;
   }
 
   @NotNull

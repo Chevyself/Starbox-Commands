@@ -145,7 +145,7 @@ public class Cylinder implements Shape {
   public Points getPointsInside() {
     return new Points(
         new Box(getMinimum(), getMaximum(), null)
-            .getPointsInside().stream().filter(this::contains).collect(Collectors.toList()));
+            .getPointsInside().stream().filter(this::contains).collect(Collectors.toSet()));
   }
 
   @Override

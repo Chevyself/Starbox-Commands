@@ -17,7 +17,7 @@ public class GuildAdapter extends JdaObjectAdapter<Guild> {
    *
    * @param api the api to use for the adaptation
    */
-  protected GuildAdapter(@NotNull JDA api) {
+  public GuildAdapter(@NotNull JDA api) {
     super(api);
   }
 

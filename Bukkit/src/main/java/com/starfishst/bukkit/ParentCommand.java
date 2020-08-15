@@ -1,9 +1,11 @@
 package com.starfishst.bukkit;
 
 import com.starfishst.bukkit.annotations.Command;
+import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.type.ISimpleArgument;
+import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +37,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param messagesProvider the messages provider
    * @param plugin the plugin where this command was registered
    * @param async whether this command should execute asynchronously
+   * @param registry the providers registry for the command context
    */
   ParentCommand(
       @NotNull Object clazz,
@@ -44,8 +47,9 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NotNull CommandManagerOptions options,
       @NotNull MessagesProvider messagesProvider,
       @NotNull Plugin plugin,
-      boolean async) {
-    super(clazz, method, arguments, command, messagesProvider, plugin, async);
+      boolean async,
+      @NotNull ProvidersRegistry<CommandContext> registry) {
+    super(clazz, method, arguments, command, messagesProvider, plugin, async, registry);
     this.options = options;
   }
 

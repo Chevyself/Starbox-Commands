@@ -17,7 +17,7 @@ public class TextChannelAdapter extends JdaObjectAdapter<TextChannel> {
    *
    * @param api the api to use for the adaptation
    */
-  protected TextChannelAdapter(@NotNull JDA api) {
+  public TextChannelAdapter(@NotNull JDA api) {
     super(api);
   }
 

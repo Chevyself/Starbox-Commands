@@ -1,10 +1,9 @@
 package com.starfishst.core.utils.math.geometry;
 
 import com.starfishst.core.utils.RandomUtils;
-import com.starfishst.core.utils.math.geometry.containers.InfinitePoints;
 import com.starfishst.core.utils.math.geometry.containers.Points;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -68,17 +67,13 @@ public interface Shape {
    */
   @NotNull
   default Points intersectingPoints(@NotNull Shape another) {
-    if (another.getPointsInside().isInfinite()) {
-      return new InfinitePoints();
-    } else {
-      List<Point> points = new ArrayList<>();
-      for (Point point : another.getPointsInside().getPoints()) {
-        if (this.contains(point)) {
-          points.add(point);
-        }
+    Set<Point> points = new HashSet<>();
+    for (Point point : another.getPointsInside().getPoints()) {
+      if (this.contains(point)) {
+        points.add(point);
       }
-      return new Points(points);
     }
+    return new Points(points);
   }
 
   /**
@@ -127,7 +122,7 @@ public interface Shape {
           "There's infinite points. This operation would never end");
     } else {
       return new Points(
-          pointsInside.stream().filter(this::isFacePoint).collect(Collectors.toList()));
+          pointsInside.stream().filter(this::isFacePoint).collect(Collectors.toSet()));
     }
   }
 

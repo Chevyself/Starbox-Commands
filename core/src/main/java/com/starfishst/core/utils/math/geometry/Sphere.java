@@ -87,7 +87,7 @@ public class Sphere implements Shape {
   public @NotNull Points getPointsInside() {
     return new Points(
         new Box(getMinimum(), getMaximum(), null)
-            .getPointsInside().stream().filter(this::contains).collect(Collectors.toList()));
+            .getPointsInside().stream().filter(this::contains).collect(Collectors.toSet()));
   }
 
   @Override
@@ -98,5 +98,21 @@ public class Sphere implements Shape {
   @Override
   public @NotNull Point getMaximum() {
     return new Point(center.getX() + radius, center.getY() + radius, center.getZ() + radius);
+  }
+
+  @Override
+  public String toString() {
+    return "Sphere{" + "id='" + id + '\'' + ", center=" + center + ", radius=" + radius + '}';
+  }
+
+  /**
+   * Get a random point inside of the shape
+   *
+   * @return the random point
+   */
+  @Override
+  public @NotNull Point getRandomPoint() {
+
+    return null;
   }
 }

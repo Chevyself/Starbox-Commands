@@ -21,9 +21,11 @@ public class Cache {
   @NotNull private static final Timer timer = new Timer();
   /** The cache */
   @NotNull private static final List<Catchable> cache = new ArrayList<>();
+  /** The timer task that runs the cache */
+  @NotNull private static TimerTask task = new CacheTask();
 
   static {
-    timer.schedule(new CacheTask(), 0, 1000);
+    timer.schedule(task, 0, 1000);
   }
 
   /**
@@ -72,6 +74,21 @@ public class Cache {
   @NotNull
   public static List<Catchable> getCache() {
     return cache;
+  }
+
+  /** Cancels the task that runs the cache */
+  public static void cancelTask() {
+    task.cancel();
+  }
+
+  /**
+   * Get the task that the cache needs to run
+   *
+   * @return the task that the cache uses to run
+   */
+  @NotNull
+  public static TimerTask getTask() {
+    return task;
   }
 
   /** The task that run every second until the cache unloads */

@@ -164,6 +164,10 @@ public class Point {
     return "x=" + x + ", y=" + y + ", z=" + z;
   }
 
+  public boolean isInfinite() {
+    return Double.isInfinite(x) || Double.isInfinite(y) || Double.isInfinite(z);
+  }
+
   @Override
   public boolean equals(Object object) {
     if (this == object) return true;

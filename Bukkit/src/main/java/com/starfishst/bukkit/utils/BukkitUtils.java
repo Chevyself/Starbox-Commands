@@ -1,6 +1,7 @@
 package com.starfishst.bukkit.utils;
 
 import com.starfishst.core.utils.Strings;
+import com.starfishst.core.utils.cache.Cache;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
@@ -8,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +50,7 @@ public class BukkitUtils {
    */
   @NotNull
   public static String build(@Nullable String string) {
-    return ChatColor.translateAlternateColorCodes('$', Strings.buildMessage(string));
+    return ChatColor.translateAlternateColorCodes('&', Strings.buildMessage(string));
   }
 
   /**
@@ -143,5 +145,15 @@ public class BukkitUtils {
     final Field commandMapField = serverClass.getDeclaredField("commandMap");
     commandMapField.setAccessible(true);
     return (CommandMap) commandMapField.get(server);
+  }
+
+  /**
+   * Starts the cache task for bukkit
+   *
+   * @param plugin the plugin that will start the cache
+   */
+  public static void startCache(@NotNull Plugin plugin) {
+    Cache.cancelTask();
+    Bukkit.getServer().getScheduler().runTaskTimer(plugin, Cache.getTask(), 0, 20L);
   }
 }

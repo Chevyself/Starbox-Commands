@@ -3,7 +3,6 @@ package com.starfishst.bukkit;
 import com.starfishst.bukkit.annotations.Command;
 import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
-import com.starfishst.bukkit.providers.registry.ImplProvidersRegistry;
 import com.starfishst.bukkit.providers.type.BukkitArgumentProvider;
 import com.starfishst.bukkit.providers.type.BukkitMultiArgumentProvider;
 import com.starfishst.bukkit.result.Result;
@@ -43,6 +42,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   @NotNull protected final Plugin plugin;
   /** Whether the command should be executed asynchronously */
   private final boolean asynchronous;
+  /** The registry for the command */
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create an instance
@@ -54,6 +55,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
    * @param messagesProvider the provider for messages
    * @param plugin the plugin where this command was registered
    * @param asynchronous whether the command should execute asynchronously
+   * @param registry the registry for the command context
    */
   AnnotatedCommand(
       @NotNull Object clazz,
@@ -62,7 +64,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
       @NotNull Command command,
       @NotNull MessagesProvider messagesProvider,
       @NotNull Plugin plugin,
-      boolean asynchronous) {
+      boolean asynchronous,
+      @NotNull ProvidersRegistry<CommandContext> registry) {
     super(
         command.aliases()[0], command.description(), "", Lots.removeAndList(command.aliases(), 0));
     this.clazz = clazz;
@@ -71,6 +74,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     this.messagesProvider = messagesProvider;
     this.plugin = plugin;
     this.asynchronous = asynchronous;
+    this.registry = registry;
     final String permission = command.permission();
     if (!permission.isEmpty()) {
       this.setPermission(permission);
@@ -123,16 +127,6 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     return this.arguments;
   }
 
-  @Override
-  public @NotNull ProvidersRegistry<CommandContext> getRegistry() {
-    return ImplProvidersRegistry.getInstance();
-  }
-
-  @Override
-  public @NotNull IMessagesProvider<CommandContext> getMessagesProvider() {
-    return messagesProvider;
-  }
-
   /**
    * Run the command
    *
@@ -141,10 +135,21 @@ public class AnnotatedCommand extends org.bukkit.command.Command
    */
   private void run(@NotNull CommandSender commandSender, @NotNull String[] strings) {
     String message =
-        this.execute(new CommandContext(commandSender, strings, messagesProvider)).getMessage();
+        this.execute(new CommandContext(commandSender, strings, messagesProvider, registry))
+            .getMessage();
     if (message != null) {
       Chat.send(commandSender, message);
     }
+  }
+
+  @Override
+  public @NotNull IMessagesProvider<CommandContext> getMessagesProvider() {
+    return messagesProvider;
+  }
+
+  @Override
+  public @NotNull ProvidersRegistry<CommandContext> getRegistry() {
+    return registry;
   }
 
   @Override
@@ -162,7 +167,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   public @NotNull List<String> tabComplete(
       @NotNull CommandSender sender, @NotNull String alias, @NotNull String[] strings)
       throws IllegalArgumentException {
-    CommandContext context = new CommandContext(sender, strings, messagesProvider);
+    CommandContext context = new CommandContext(sender, strings, messagesProvider, registry);
     Argument<?> argument = this.getArgument(strings.length - 1);
     if (argument != null) {
       if (argument.getSuggestions(context).size() > 0) {

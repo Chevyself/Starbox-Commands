@@ -2,11 +2,14 @@ package com.starfishst.utils.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapterFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 /** Gson Provider and stuff */
@@ -14,6 +17,8 @@ public class GsonProvider {
 
   /** The map of adapters working in the gson instance */
   @NotNull private static final HashMap<Type, Object> adapters = new HashMap<>();
+  /** The type adapter factories to register in gson */
+  @NotNull private static final Set<TypeAdapterFactory> factories = new HashSet<>();
   /** The gson instance */
   @NotNull public static Gson GSON = build();
 
@@ -32,6 +37,7 @@ public class GsonProvider {
     GsonBuilder builder = new GsonBuilder();
     builder.setPrettyPrinting();
     adapters.forEach((builder::registerTypeAdapter));
+    factories.forEach(builder::registerTypeAdapterFactory);
     return builder.create();
   }
 
@@ -43,6 +49,16 @@ public class GsonProvider {
    */
   public static void addAdapter(@NotNull Type type, @NotNull Object adapter) {
     adapters.put(type, adapter);
+  }
+
+  /**
+   * Add a factory to the set
+   *
+   * @param factory the factory to add
+   * @return true if changes where made
+   */
+  public static boolean addFactory(@NotNull TypeAdapterFactory factory) {
+    return factories.add(factory);
   }
 
   /**
@@ -67,6 +83,4 @@ public class GsonProvider {
   public static HashMap<Type, Object> getAdapters() {
     return adapters;
   }
-
-
 }
