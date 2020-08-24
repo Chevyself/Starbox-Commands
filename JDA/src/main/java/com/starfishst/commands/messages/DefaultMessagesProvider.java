@@ -72,7 +72,10 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NotNull String missingArgument(
-      @NotNull String name, @NotNull String description, int position) {
+      @NotNull String name,
+      @NotNull String description,
+      int position,
+      @NotNull CommandContext commandContext) {
     return Strings.buildMessage(
         "Missing argument: {0} -> {1}, position: {2}", name, description, position);
   }

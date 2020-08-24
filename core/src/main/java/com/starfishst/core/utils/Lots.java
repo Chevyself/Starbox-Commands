@@ -11,7 +11,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
-/** Utils for {@link java.util.List} and {@link java.lang.reflect.Array} */
+/**
+ * Static utilities for groups of objects such as {@link List}, {@link java.lang.reflect.Array} or
+ * {@link Set}
+ */
 public class Lots {
 
   /**

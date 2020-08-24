@@ -6,8 +6,10 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class acts like a 'Cache' allowing programs to hold objects in memory
@@ -74,6 +76,25 @@ public class Cache {
   @NotNull
   public static List<Catchable> getCache() {
     return cache;
+  }
+
+  /**
+   * Get an object from cache
+   *
+   * @param predicate the boolean to match
+   * @param clazz the clazz of the catchable for casting
+   * @param <T> the type of the catchable
+   * @return the catchable if found else null
+   */
+  @Nullable
+  public static <T extends Catchable> T getCatchable(
+      @NotNull Predicate<Catchable> predicate, @NotNull Class<T> clazz) {
+    for (Catchable catchable : cache) {
+      if (predicate.test(catchable)) {
+        return clazz.cast(catchable);
+      }
+    }
+    return null;
   }
 
   /** Cancels the task that runs the cache */

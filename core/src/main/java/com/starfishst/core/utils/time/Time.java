@@ -26,7 +26,7 @@ public class Time {
   }
 
   /**
-   * Parse a string of time: Should look like '1s' -> one second
+   * Parse a string of time: Should look like '1s' = one second
    *
    * @param string the string to parse
    * @return a new time instance if correctly formatted

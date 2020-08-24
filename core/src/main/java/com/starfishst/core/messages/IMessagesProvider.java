@@ -66,10 +66,12 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param name the name of the argument
    * @param description the description of the argument
    * @param position the position of the argument
+   * @param context the context of the command
    * @return The error when the message is missing arguments
    */
   @NotNull
-  String missingArgument(@NotNull String name, @NotNull String description, int position);
+  String missingArgument(
+      @NotNull String name, @NotNull String description, int position, T context);
 
   /**
    * Get the message to send when a string is not a valid number

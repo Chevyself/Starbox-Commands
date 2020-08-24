@@ -104,15 +104,4 @@ public class Sphere implements Shape {
   public String toString() {
     return "Sphere{" + "id='" + id + '\'' + ", center=" + center + ", radius=" + radius + '}';
   }
-
-  /**
-   * Get a random point inside of the shape
-   *
-   * @return the random point
-   */
-  @Override
-  public @NotNull Point getRandomPoint() {
-
-    return null;
-  }
 }

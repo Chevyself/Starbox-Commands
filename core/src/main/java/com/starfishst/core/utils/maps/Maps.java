@@ -78,7 +78,7 @@ public class Maps {
 
   /**
    * Separates each element with a coma ',' and the key and value with a '.' also check {@link
-   * Maps##fromStringArray(String...)}
+   * Maps#fromStringArray(String...)}
    *
    * @param string to convert
    * @return the map

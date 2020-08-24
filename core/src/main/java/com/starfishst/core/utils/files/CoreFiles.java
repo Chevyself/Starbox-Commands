@@ -63,7 +63,7 @@ public class CoreFiles {
     File file = validator.getFile();
     File directory = validator.getDirectory();
     if (directory != null && !directory.exists()) {
-      if (!directory.mkdir()) {
+      if (!createFileParents(file)) {
         throw new IOException("Directory " + directory + " could not be created");
       }
     }
@@ -240,7 +240,7 @@ public class CoreFiles {
   public static File directoryOrCreate(@NotNull String parent) throws IOException {
     File file = new File(validatePath(parent));
     if (!file.exists()) {
-      if (file.mkdir()) {
+      if (createDirectories(file)) {
         return file;
       } else {
         throw new IOException("Directory could not be created");
@@ -295,6 +295,38 @@ public class CoreFiles {
         output.write(buffer, 0, length);
       }
     }
+  }
+
+  /**
+   * Create the parents of the file
+   *
+   * @param file the file that needs the parent
+   * @return true if the parents were created
+   */
+  public static boolean createFileParents(@NotNull File file) {
+    return createDirectories(file.getParentFile());
+  }
+
+  /**
+   * Create the directories for certain directory
+   *
+   * @param directory the directory that needs its parents
+   * @return true if the directories were created
+   */
+  public static boolean createDirectories(@NotNull File directory) {
+    File toCreate = directory;
+    while (!toCreate.exists()) {
+      if (toCreate.getParentFile() != null && !toCreate.getParentFile().exists()) {
+        toCreate = toCreate.getParentFile();
+        continue;
+      }
+      if (toCreate.mkdir()) {
+        toCreate = directory;
+      } else {
+        return false;
+      }
+    }
+    return true;
   }
 
   /** Validates the name/directory of a file to be compatible with every os */

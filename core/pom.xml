@@ -42,6 +42,24 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Javadoc plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}../../../javadocs/core</outputDirectory>
+                            <reportOutputDirectory>${project.build.directory}../../../javadocs/core</reportOutputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
