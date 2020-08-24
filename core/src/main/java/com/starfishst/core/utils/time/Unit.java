@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public enum Unit {
   /** The unit of milliseconds */
   MILLISECONDS("l", "millis", true, 1),
-  /** Minecraft ticks */
+  /** The unit of Minecraft ticks */
   MINECRAFT_TICKS("t", "ticks", false, 50),
   /** The unit of seconds */
   SECONDS("s", "seconds", true, 1000),
@@ -40,7 +40,7 @@ public enum Unit {
    * @param simple the simple denomination
    * @param complete the complete denomination
    * @param millisObtainable Whether it can be obtained from a {@link Unit#fromMillis(long)} query
-   * @param millis the unit in millis
+   * @param millis the unit milliseconds
    */
   Unit(@NotNull String simple, @NotNull String complete, boolean millisObtainable, long millis) {
     this.simple = simple;
@@ -54,6 +54,7 @@ public enum Unit {
    *
    * @param string the string to get the unit from
    * @return the matched string
+   * @throws IllegalArgumentException if the string did not match an unit.
    */
   @NotNull
   private static Unit fromString(final String string) {
@@ -66,20 +67,27 @@ public enum Unit {
   }
 
   /**
-   * Get the unit using a char, this means using the simple of the unit
+   * Get the unit using a char, this means using the {@link #simple}
    *
    * @param charAt the char to get the unit from
-   * @return the unit
+   * @return the matched unit
+   * @throws IllegalArgumentException if the character did not match an unit
    */
   public static Unit fromChar(final char charAt) {
     return Unit.fromString(String.valueOf(charAt));
   }
 
   /**
-   * Get a unit using milliseconds
+   * Get a unit using milliseconds. This will loop to get the highest unit with the milliseconds
+   * given this means that:
+   *
+   * <p>If the parameter is 300,000 the given unit would be {@link #MINUTES} as it is lower but the
+   * highest from the lower units.
+   *
+   * <p>This method ignores the units with {@link #millisObtainable} as false.
    *
    * @param millis the milliseconds to get the unit from
-   * @return the unit
+   * @return the unit given by the millis
    */
   public static Unit fromMillis(long millis) {
     if (millis < 0) {
@@ -96,7 +104,18 @@ public enum Unit {
   }
 
   /**
-   * Get whether it can be obtained from milliseconds
+   * Get an unit using a {@link TimeUnit}. It will use the {@link #fromMillis(long)} and the millis
+   * used are given using {@link TimeUnit#toMillis(long)} using a duration of "1"
+   *
+   * @param unit the java unit to get this type of unit from
+   * @return the unit that matches the milliseconds given by the java unit
+   */
+  public static Unit fromTimeUnit(@NotNull TimeUnit unit) {
+    return fromMillis(unit.toMillis(1));
+  }
+
+  /**
+   * Get whether this unit can be obtained from milliseconds
    *
    * @return true if it can be obtained from milliseconds
    */
@@ -105,33 +124,35 @@ public enum Unit {
   }
 
   /**
-   * Get a unit using a classic java unit
+   * Get this unit millis
    *
-   * @param unit the classic java unit
-   * @return the unit
-   */
-  public static Unit fromTimeUnit(@NotNull TimeUnit unit) {
-    return fromMillis(unit.toMillis(1));
-  }
-
-  /**
-   * Get the unit millis
-   *
-   * @return the unit millis
+   * @return this unit millis
    */
   public long millis() {
     return this.millis;
   }
 
   /**
-   * Get this unit as a classic java class
+   * Get this unit millis multiplied by the duration. Simple as it is this unit {@link #millis}
+   * multiplied by the duration
    *
-   * @return the time unit
+   * @param duration to multiply this unit millis to
+   * @return the millis of the unit given the duration
+   */
+  public long millis(long duration) {
+    return this.millis * duration;
+  }
+
+  /**
+   * Get this unit as {@link TimeUnit}. It will do a loop similar that the one made in {@link
+   * #fromMillis(long)} but given the {@link TimeUnit#values()}
+   *
+   * @return the time unit given by this unit
    */
   public TimeUnit toTimeUnit() {
     TimeUnit result = TimeUnit.NANOSECONDS;
     for (TimeUnit value : TimeUnit.values()) {
-      if (value.toMillis(1) <= millis) {
+      if (value.toMillis(1) <= this.millis) {
         result = value;
       }
     }
@@ -139,22 +160,22 @@ public enum Unit {
   }
 
   /**
-   * The single character representation of the unit
+   * Get the single character representation of the unit
    *
-   * @return the simple of the unit
+   * @return the {@link #simple} of the unit
    */
   @NotNull
   public String getSimple() {
-    return simple;
+    return this.simple;
   }
 
   /**
    * Get the complete name of the unit
    *
-   * @return the name of the unit
+   * @return the {@link #complete} of the unit
    */
   @NotNull
   public String getComplete() {
-    return complete;
+    return this.complete;
   }
 }

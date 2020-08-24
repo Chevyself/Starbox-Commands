@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class TimeUtils {
 
   /**
-   * Get local date from millis
+   * Get local date from millis.
    *
    * @param millis the millis to get the date from
    * @return the date
