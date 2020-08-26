@@ -48,6 +48,8 @@ public class ClassicTime {
   /**
    * Get this time instance in millis. Converted using {@link TimeUnit#toMillis(long)} given the
    * {@link #value}
+   *
+   * @return the classic time given in millis
    */
   public long millis() {
     return this.unit.toMillis(this.value);

@@ -3,7 +3,10 @@ package com.starfishst.core.utils.math.geometry;
 import com.starfishst.core.utils.math.MathUtils;
 import org.jetbrains.annotations.NotNull;
 
-/** A single point in a shape */
+/**
+ * An object that represents a point inside the cartesian coordinates system. This means this object
+ * is represented by an X, Y and Z value.
+ */
 public class Point {
 
   /** The x position of the point */
@@ -12,8 +15,9 @@ public class Point {
   private double y;
   /** The z position of the point */
   private double z;
+
   /**
-   * Create the point shape
+   * Create the point
    *
    * @param x the x position of the point
    * @param y the y position of the point
@@ -28,28 +32,30 @@ public class Point {
   /**
    * Creates a new instance of this same point
    *
-   * @return a new instance of this point
+   * @return the new instance of this point
    */
   @NotNull
   public Point duplicate() {
-    return new Point(x, y, z);
+    return new Point(this.x, this.y, this.z);
   }
 
   /**
    * Get the distance between two points
    *
-   * @param another the another point to check the distance
-   * @return the distance between the two
+   * @param another another point to check the distance
+   * @return the distance between the two points
    */
   public double distance(@NotNull Point another) {
     return Math.sqrt(
-        MathUtils.square(another.getX() - x)
-            + MathUtils.square(another.getY() - y)
-            + MathUtils.square(another.getZ() - z));
+        MathUtils.square(another.getX() - this.x)
+            + MathUtils.square(another.getY() - this.y)
+            + MathUtils.square(another.getZ() - this.z));
   }
 
   /**
-   * Sums this point with another
+   * Sums this point with another.
+   *
+   * <p>The three values ({@link #x}, {@link #y} and {@link #z}) will be summed for both points.
    *
    * @param point the other point to sum
    * @return the sum of the two points
@@ -63,7 +69,8 @@ public class Point {
   }
 
   /**
-   * Get the size of the point. The size if the sum of all the coordinates
+   * Get the size of the point. The size if the sum of all the coordinates <br>
+   * ({@link #x}, {@link #y} and {@link #z})
    *
    * @return the size of the point
    */
@@ -72,7 +79,9 @@ public class Point {
   }
 
   /**
-   * Subtracts this points with another
+   * Subtracts this points with another.
+   *
+   * <p>The three values ({@link #x}, {@link #y} and {@link #z}) will be subtracted for both points.
    *
    * @param point the other point to subtract
    * @return the subtraction of the two points
@@ -86,13 +95,13 @@ public class Point {
   }
 
   /**
-   * Checks if this point is smaller than another point
+   * Checks if this point is smaller than another point.
    *
    * @param point the point to check if it is bigger than this one
    * @return true if this point is smaller than the queried one
    */
   public boolean lowerThan(@NotNull Point point) {
-    return size() < point.size();
+    return this.size() < point.size();
   }
 
   /**
@@ -159,11 +168,25 @@ public class Point {
     return z;
   }
 
+  /** Floors the {@link #x}, {@link #y} and {@link #z} values. */
+  public void floor() {
+    this.x = Math.floor(this.x);
+    this.y = Math.floor(this.y);
+    this.z = Math.floor(this.z);
+  }
+
   @Override
   public String toString() {
     return "x=" + x + ", y=" + y + ", z=" + z;
   }
 
+  /**
+   * Get whether this point is infinite. If any of {@link #x}, {@link #y} and {@link #z} are {@link
+   * Double#NEGATIVE_INFINITY} or {@link Double#POSITIVE_INFINITY} it will be true. Using {@link
+   * Double#isInfinite()}
+   *
+   * @return true if the point is infinite if any of its coordinates
+   */
   public boolean isInfinite() {
     return Double.isInfinite(x) || Double.isInfinite(y) || Double.isInfinite(z);
   }

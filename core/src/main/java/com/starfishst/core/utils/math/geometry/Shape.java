@@ -4,11 +4,10 @@ import com.starfishst.core.utils.RandomUtils;
 import com.starfishst.core.utils.math.geometry.containers.Points;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** A geometry shape. */
+/** An object that represents a 3 dimensional shape */
 public interface Shape {
 
   /**
@@ -36,7 +35,7 @@ public interface Shape {
    * @return true if it is inside
    */
   default boolean contains(@NotNull Point point) {
-    return getPointsInside().contains(point);
+    return this.getPointsInside().contains(point);
   }
 
   /**
@@ -46,7 +45,7 @@ public interface Shape {
    * @return true if it is inside this shape
    */
   default boolean contains(@NotNull Shape another) {
-    return another.getPointsInside().size() == intersectingPoints(another).size();
+    return another.getPointsInside().size() == this.intersectingPoints(another).size();
   }
 
   /**
@@ -56,7 +55,7 @@ public interface Shape {
    * @return true if part of it is inside this shape
    */
   default boolean intersects(@NotNull Shape another) {
-    return !intersectingPoints(another).isEmpty();
+    return !this.intersectingPoints(another).isEmpty();
   }
 
   /**
@@ -121,8 +120,13 @@ public interface Shape {
       throw new UnsupportedOperationException(
           "There's infinite points. This operation would never end");
     } else {
-      return new Points(
-          pointsInside.stream().filter(this::isFacePoint).collect(Collectors.toSet()));
+      Set<Point> points = new HashSet<>();
+      for (Point point : this.getPointsInside().getPoints()) {
+        if (this.isFacePoint(point)) {
+          points.add(point);
+        }
+      }
+      return new Points(points);
     }
   }
 

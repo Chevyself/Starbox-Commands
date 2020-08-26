@@ -1,8 +1,10 @@
 package com.starfishst.core.utils.math.geometry;
 
+import com.starfishst.core.utils.RandomUtils;
 import com.starfishst.core.utils.math.MathUtils;
 import com.starfishst.core.utils.math.geometry.containers.Points;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -143,9 +145,32 @@ public class Cylinder implements Shape {
   @NotNull
   @Override
   public Points getPointsInside() {
-    return new Points(
-        new Box(getMinimum(), getMaximum(), null)
-            .getPointsInside().stream().filter(this::contains).collect(Collectors.toSet()));
+    Set<Point> set = new HashSet<>();
+    for (Point point :
+        new Box(this.getMinimum(), this.getMaximum(), null).getPointsInside().getPoints()) {
+      if (this.contains(point)) {
+        set.add(point);
+      }
+    }
+    return new Points(set);
+  }
+
+  /**
+   * Get a random point inside of the shape
+   *
+   * @return the random point
+   */
+  @Override
+  public @NotNull Point getRandomPoint() {
+    double x =
+        this.getBase().getX()
+            + RandomUtils.nextDouble(0, this.radius) * Math.sin(RandomUtils.nextDouble(0, 360));
+    double y =
+        RandomUtils.nextDouble(this.base.getY() - this.height, this.base.getY() + this.height);
+    double z =
+        this.getBase().getZ()
+            + RandomUtils.nextDouble(0, this.radius) * Math.sin(RandomUtils.nextDouble(0, 360));
+    return new Point(x, y, z);
   }
 
   @Override

@@ -1,8 +1,10 @@
 package com.starfishst.core.utils.math.geometry;
 
+import com.starfishst.core.utils.RandomUtils;
 import com.starfishst.core.utils.math.MathUtils;
 import com.starfishst.core.utils.math.geometry.containers.Points;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +54,7 @@ public class Sphere implements Shape {
    *
    * @return the center of the sphere
    */
+  @NotNull
   public Point getCenter() {
     return center;
   }
@@ -85,9 +88,14 @@ public class Sphere implements Shape {
 
   @Override
   public @NotNull Points getPointsInside() {
-    return new Points(
-        new Box(getMinimum(), getMaximum(), null)
-            .getPointsInside().stream().filter(this::contains).collect(Collectors.toSet()));
+    Set<Point> set = new HashSet<>();
+    for (Point point :
+        new Box(this.getMinimum(), this.getMaximum(), null).getPointsInside().getPoints()) {
+      if (this.contains(point)) {
+        set.add(point);
+      }
+    }
+    return new Points(set);
   }
 
   @Override
@@ -103,5 +111,24 @@ public class Sphere implements Shape {
   @Override
   public String toString() {
     return "Sphere{" + "id='" + id + '\'' + ", center=" + center + ", radius=" + radius + '}';
+  }
+
+  /**
+   * Get a random point inside of the shape
+   *
+   * @return the random point
+   */
+  @Override
+  public @NotNull Point getRandomPoint() {
+    double x =
+        this.getCenter().getX()
+            + RandomUtils.nextDouble(0, this.radius) * Math.sin(RandomUtils.nextDouble(0, 360));
+    double y =
+        this.getCenter().getY()
+            + RandomUtils.nextDouble(0, this.radius) * Math.sin(RandomUtils.nextDouble(0, 360));
+    double z =
+        this.getCenter().getZ()
+            + RandomUtils.nextDouble(0, this.radius) * Math.sin(RandomUtils.nextDouble(0, 360));
+    return new Point(x, y, z);
   }
 }

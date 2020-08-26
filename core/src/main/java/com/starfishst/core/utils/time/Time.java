@@ -50,8 +50,8 @@ public class Time {
   }
 
   /**
-   * Get a time instance using millis. It will create a new instance of time with {@link
-   * Unit#MILLISECONDS} as the provided value is given in millis
+   * Get a time instance using millis. It will create a new instance of time with <br>
+   * {@link Unit#MILLISECONDS} as the provided value is given in millis
    *
    * @param millis the millis that will be used as the value of time.
    * @return the new time instance
@@ -92,7 +92,9 @@ public class Time {
   }
 
   /**
-   * Get this time in millis. Basically multiply {@link #value} with the {@link #unit#millis()}
+   * Get this time in millis.
+   *
+   * <p>Basically multiply {@link #value} with the {@link Unit#millis()}
    *
    * @return the time in millis as a long
    */
@@ -276,8 +278,6 @@ public class Time {
   /**
    * Compares if this time is greater than another time instance. Calculated as follows:
    *
-   * <p>{@link #millis()} > param {@link #millis()}
-   *
    * @param time the time to check if is lower than this instance
    * @return true if the parameter time is lower than this instance
    */
@@ -286,8 +286,7 @@ public class Time {
   }
 
   /**
-   * Compares if this time is lower than another time. Calculated as follows {@link #millis()} <
-   * param {@link #millis()}
+   * Compares if this time is lower than another time
    *
    * @param time the time to check if is higher than this instance
    * @return true if the parameter time is higher than this instance

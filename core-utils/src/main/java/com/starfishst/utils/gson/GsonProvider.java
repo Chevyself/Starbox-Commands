@@ -12,7 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
-/** Gson Provider and stuff */
+/**
+ * Provides an static instance of Gson and static utilities for adapters and factories.
+ */
 public class GsonProvider {
 
   /** The map of adapters working in the gson instance */
@@ -28,7 +30,7 @@ public class GsonProvider {
   }
 
   /**
-   * Builds a gson instance using the map of adapters and pretty printing
+   * Builds a gson instance using the map of adapters, factories and pretty printing.
    *
    * @return a gson instance
    */
@@ -42,7 +44,8 @@ public class GsonProvider {
   }
 
   /**
-   * Adds and adapter to the map
+   * Adds and adapter to the map. This action does not update the gson instance after adding the adapter
+   * use {@link #refresh()}
    *
    * @param type the type that the adapter serializes and deserializes
    * @param adapter the adapter
@@ -52,7 +55,8 @@ public class GsonProvider {
   }
 
   /**
-   * Add a factory to the set
+   * Add a factory to the set. This action does not update the gson instance after adding the adapter
+   *  use {@link #refresh()}
    *
    * @param factory the factory to add
    * @return true if changes where made
@@ -66,7 +70,8 @@ public class GsonProvider {
    *
    * @param file the file to write
    * @param toWrite the object to write
-   * @throws IOException in case file handling goes wrong
+   * @throws IOException in case file handling goes wrong: it could be that the file does not exist
+   * or th file writer just fails. It will be closed at the end
    */
   public static void save(@NotNull File file, @NotNull Object toWrite) throws IOException {
     FileWriter fileWriter = new FileWriter(file);
@@ -77,7 +82,7 @@ public class GsonProvider {
   /**
    * Get the adapters inside the provider
    *
-   * @return the adapters
+   * @return the adapters in a map
    */
   @NotNull
   public static HashMap<Type, Object> getAdapters() {

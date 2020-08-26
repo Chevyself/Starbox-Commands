@@ -1,6 +1,6 @@
 package com.starfishst.core.utils.math;
 
-/** Utilities for math */
+/** Static utilities for math */
 public class MathUtils {
 
   /**

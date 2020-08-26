@@ -1,13 +1,16 @@
-package com.starfishst.utils.http;
+package com.starfishst.utils.gson;
 
 import com.starfishst.core.utils.http.Request;
-import com.starfishst.utils.gson.GsonProvider;
 import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 
-/** A json http request */
+/** This object represents a http json request. Just like its extended
+ * class, this heads to make request to an http to get certain objects.
+ */
 public class JsonRequest<O> extends Request {
 
   /**
@@ -25,7 +28,7 @@ public class JsonRequest<O> extends Request {
   }
 
   /**
-   * Reads the json response as the desired object
+   * Reads the json response as the desired object. This method uses {@link com.google.gson.Gson#fromJson(Reader, Type)}
    *
    * @return the object O
    * @throws IOException if the connection goes wrong

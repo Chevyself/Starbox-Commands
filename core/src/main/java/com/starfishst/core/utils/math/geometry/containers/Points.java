@@ -1,6 +1,5 @@
 package com.starfishst.core.utils.math.geometry.containers;
 
-import com.starfishst.core.utils.NullableAtomic;
 import com.starfishst.core.utils.math.geometry.Point;
 import java.util.Collection;
 import java.util.Set;
@@ -138,6 +137,7 @@ public class Points {
    *
    * @return the stream of points
    */
+  @Deprecated
   public Stream<Point> stream() {
     return points.stream();
   }
@@ -147,6 +147,7 @@ public class Points {
    *
    * @param action the action for each point
    */
+  @Deprecated
   public void forEach(Consumer<? super Point> action) {
     points.forEach(action);
   }
@@ -176,7 +177,7 @@ public class Points {
    * @return true if there's no points inside
    */
   public boolean isEmpty() {
-    return points.isEmpty();
+    return this.points.isEmpty();
   }
 
   /**
@@ -188,19 +189,13 @@ public class Points {
    */
   @NotNull
   public Point getMinimum() {
-    NullableAtomic<Point> minimum = new NullableAtomic<>();
-    this.forEach(
-        point -> {
-          Point minPoint = minimum.get();
-          if (minPoint == null) {
-            minimum.set(point);
-          } else {
-            if (point.lowerThan(minPoint)) {
-              minimum.set(point);
-            }
-          }
-        });
-    return minimum.getOr(new Point(0, 0, 0));
+    Point min = new Point(0, 0, 0);
+    for (Point point : this.points) {
+      if (point.lowerThan(min)) {
+        min = point;
+      }
+    }
+    return min;
   }
 
   /**
@@ -212,18 +207,12 @@ public class Points {
    */
   @NotNull
   public Point getMaximum() {
-    NullableAtomic<Point> maximum = new NullableAtomic<>();
-    this.forEach(
-        point -> {
-          Point minPoint = maximum.get();
-          if (minPoint == null) {
-            maximum.set(point);
-          } else {
-            if (point.greaterThan(minPoint)) {
-              maximum.set(point);
-            }
-          }
-        });
-    return maximum.getOr(new Point(0, 0, 0));
+    Point max = new Point(0, 0, 0);
+    for (Point point : this.points) {
+      if (point.greaterThan(max)) {
+        max = point;
+      }
+    }
+    return max;
   }
 }
