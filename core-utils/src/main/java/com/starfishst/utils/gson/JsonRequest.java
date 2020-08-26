@@ -8,8 +8,9 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 
-/** This object represents a http json request. Just like its extended
- * class, this heads to make request to an http to get certain objects.
+/**
+ * This object represents a http json request. Just like its extended class, this heads to make
+ * request to an http to get certain objects.
  */
 public class JsonRequest<O> extends Request {
 
@@ -28,7 +29,8 @@ public class JsonRequest<O> extends Request {
   }
 
   /**
-   * Reads the json response as the desired object. This method uses {@link com.google.gson.Gson#fromJson(Reader, Type)}
+   * Reads the json response as the desired object. This method uses {@link
+   * com.google.gson.Gson#fromJson(Reader, Type)}
    *
    * @return the object O
    * @throws IOException if the connection goes wrong
