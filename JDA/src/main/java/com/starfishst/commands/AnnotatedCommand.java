@@ -1,6 +1,7 @@
 package com.starfishst.commands;
 
 import com.starfishst.commands.annotations.Command;
+import com.starfishst.commands.annotations.Perm;
 import com.starfishst.commands.context.CommandContext;
 import com.starfishst.commands.messages.MessagesProvider;
 import com.starfishst.commands.result.Result;
@@ -20,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,11 +39,13 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   /** Other aliases of the command */
   @NotNull private final List<String> aliases;
   /** The permission required to execute the command */
-  @NotNull private final Permission permission;
+  @NotNull private final Perm permission;
   /** The list of arguments that the command requires */
   @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The message provider for certain messages */
   @NotNull private final MessagesProvider messagesProvider;
+  /** The permission checker for the permissions of the command sender */
+  @NotNull private final PermissionChecker permissionChecker;
 
   @NotNull private final ProvidersRegistry<CommandContext> registry;
   /** The time to cooldown the use of the message for the users */
@@ -62,6 +64,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @param cmd the annotation of the method
    * @param arguments the arguments of the command
    * @param messagesProvider the provider of messages for the command
+   * @param permissionChecker the permissions checker to check the command sender
    * @param registry the registry to get the providers from
    * @param cooldown the cooldown of the command
    * @param excluded if the command should be excluded from deleting its success
@@ -72,6 +75,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
       Command cmd,
       @NotNull List<ISimpleArgument<?>> arguments,
       @NotNull MessagesProvider messagesProvider,
+      PermissionChecker permissionChecker,
       @NotNull ProvidersRegistry<CommandContext> registry,
       @NotNull Time cooldown,
       boolean excluded) {
@@ -83,27 +87,10 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
     this.permission = cmd.permission();
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
+    this.permissionChecker = permissionChecker;
     this.registry = registry;
     this.cooldown = cooldown;
     this.excluded = excluded;
-  }
-
-  /**
-   * Check the permissions of a command execution
-   *
-   * @param context the context of the command
-   * @return an error result if user is not allowed to use the command else null
-   */
-  @Nullable
-  private Result checkPermissions(@NotNull CommandContext context) {
-    if (this.permission != Permission.UNKNOWN && context.getMessage().getMember() != null) {
-      if (!context.getMessage().getMember().hasPermission(this.permission)) {
-        return new Result(ResultType.PERMISSION, messagesProvider.notAllowed(context));
-      }
-    } else if (this.permission != Permission.UNKNOWN && context.getMessage().getMember() == null) {
-      return new Result(ResultType.ERROR, messagesProvider.guildOnly(context));
-    }
-    return null;
   }
 
   /**
@@ -165,7 +152,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
 
   @Override
   public @NotNull Result execute(@NotNull CommandContext context) {
-    Result result = checkPermissions(context);
+    Result result = this.permissionChecker.checkPermission(context, this.permission);
     if (result != null) {
       result = checkCooldown(context.getSender(), context);
     }

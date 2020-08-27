@@ -35,6 +35,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param cooldown the time of cooldown
    * @param excluded if the command should be excluded from deleting its success
    * @param registry the registry to get the providers from
+   * @param permissionChecker to check the permission of the command sender
    */
   public ParentCommand(
       @NotNull Object clazz,
@@ -44,8 +45,18 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NotNull MessagesProvider messagesProvider,
       @NotNull Time cooldown,
       boolean excluded,
-      ProvidersRegistry<CommandContext> registry) {
-    super(clazz, method, cmd, arguments, messagesProvider, registry, cooldown, excluded);
+      ProvidersRegistry<CommandContext> registry,
+      PermissionChecker permissionChecker) {
+    super(
+        clazz,
+        method,
+        cmd,
+        arguments,
+        messagesProvider,
+        permissionChecker,
+        registry,
+        cooldown,
+        excluded);
   }
 
   @Override

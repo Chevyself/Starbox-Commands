@@ -36,6 +36,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @Nullable private ParentCommand parent;
   /** The providers registry for the commands */
   @NotNull private final ProvidersRegistry<CommandContext> registry;
+  /** The permission checker for the commands */
+  @NotNull private final PermissionChecker permissionChecker;
 
   /**
    * Create an instance
@@ -45,17 +47,20 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * @param options the options of the manager
    * @param messagesProvider the provider for messages
    * @param registry the registry that the manager can use
+   * @param permissionChecker the permission checker for the commands
    */
   public CommandManager(
       @NotNull JDA jda,
       @NotNull String prefix,
       @NotNull ManagerOptions options,
       @NotNull MessagesProvider messagesProvider,
-      @NotNull ProvidersRegistry<CommandContext> registry) {
+      @NotNull ProvidersRegistry<CommandContext> registry,
+      @NotNull PermissionChecker permissionChecker) {
     this.jda = jda;
     this.managerOptions = options;
     this.messagesProvider = messagesProvider;
     this.registry = registry;
+    this.permissionChecker = permissionChecker;
     this.listener = new CommandListener(prefix, this, options, this.messagesProvider);
     jda.addEventListener(this.listener);
   }
@@ -206,7 +211,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             messagesProvider,
             cooldown,
             hasAnnotation(method.getAnnotations(), Exclude.class),
-            registry);
+            registry,
+            permissionChecker);
       } else {
         return new AnnotatedCommand(
             object,
@@ -214,6 +220,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             cmd,
             parseArguments(params, annotations),
             messagesProvider,
+            permissionChecker,
             registry,
             cooldown,
             hasAnnotation(method.getAnnotations(), Exclude.class));

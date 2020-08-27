@@ -35,7 +35,7 @@ public @interface Command {
    * @return the permission of the command
    */
   @NotNull
-  Permission permission() default Permission.UNKNOWN;
+  Perm permission() default @Perm;
 
   /**
    * The time for a user to use the command again
