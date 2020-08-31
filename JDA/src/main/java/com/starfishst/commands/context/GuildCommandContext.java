@@ -33,6 +33,7 @@ public class GuildCommandContext extends CommandContext {
    * @param event the event where the command was executed
    * @param messagesProvider the messages provider for this context
    * @param registry the registry of this context
+   * @param commandName the name of the command that is being executed
    */
   public GuildCommandContext(
       @NotNull Message message,
@@ -41,8 +42,9 @@ public class GuildCommandContext extends CommandContext {
       @NotNull MessageChannel channel,
       @Nullable MessageReceivedEvent event,
       @NotNull MessagesProvider messagesProvider,
-      ProvidersRegistry<CommandContext> registry) {
-    super(message, sender, args, channel, event, messagesProvider, registry);
+      ProvidersRegistry<CommandContext> registry,
+      String commandName) {
+    super(message, sender, args, channel, event, messagesProvider, registry, commandName);
     member =
         Objects.requireNonNull(
             message.getMember(), "Guild command context must have a valid member");

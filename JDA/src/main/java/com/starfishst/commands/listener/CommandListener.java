@@ -69,13 +69,14 @@ public class CommandListener implements EventListener {
   public void onMessageReceivedEvent(@NotNull MessageReceivedEvent event) {
     String[] strings = event.getMessage().getContentRaw().split(" +");
     String commandName = strings[0];
-    CommandContext context = getCommandContext(event, strings);
     if (!commandName.startsWith(this.prefix)) return;
     if (managerOptions.isDeleteCommands() && event.getChannelType() != ChannelType.PRIVATE) {
       event.getMessage().delete().queue();
     }
     commandName = commandName.substring(prefix.length());
     AnnotatedCommand command = manager.getCommand(commandName);
+    CommandContext context =
+        getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = getResult(command, commandName, context);
     Message response = getMessage(result, context);
     Consumer<Message> consumer = getConsumer(result);
@@ -168,7 +169,9 @@ public class CommandListener implements EventListener {
    */
   @NotNull
   private CommandContext getCommandContext(
-      @NotNull MessageReceivedEvent event, @NotNull String[] strings) {
+      @NotNull MessageReceivedEvent event,
+      @NotNull String[] strings,
+      @Nullable String commandName) {
     strings = Lots.arrayFrom(1, strings);
     if (event.getMember() != null) {
       return new GuildCommandContext(
@@ -178,7 +181,8 @@ public class CommandListener implements EventListener {
           event.getChannel(),
           event,
           messagesProvider,
-          manager.getRegistry());
+          manager.getRegistry(),
+          commandName);
     } else {
       return new CommandContext(
           event.getMessage(),
@@ -187,7 +191,8 @@ public class CommandListener implements EventListener {
           event.getChannel(),
           event,
           messagesProvider,
-          manager.getRegistry());
+          manager.getRegistry(),
+          commandName);
     }
   }
 

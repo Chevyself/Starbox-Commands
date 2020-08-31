@@ -11,11 +11,12 @@ import org.jetbrains.annotations.Nullable;
 public interface Shape {
 
   /**
-   * Whether a point is a face point or not
+   * Whether a point is a face point or not. Currently this method is broken
    *
    * @param point the point to check if it is a face point
    * @return true if it is
    */
+  @Deprecated
   default boolean isFacePoint(@NotNull Point point) {
     Point x = new Point(1, 0, 0);
     Point y = new Point(0, 1, 0);

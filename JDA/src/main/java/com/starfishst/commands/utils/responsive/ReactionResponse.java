@@ -1,6 +1,6 @@
 package com.starfishst.commands.utils.responsive;
 
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import org.jetbrains.annotations.NotNull;
 
 /** This class is the one that executes an action when the unicode matches */
@@ -18,7 +18,7 @@ public interface ReactionResponse {
    *
    * @param event the reaction event
    */
-  void onReaction(@NotNull GuildMessageReactionAddEvent event);
+  void onReaction(@NotNull MessageReactionAddEvent event);
 
   /**
    * The unicode to match and run the action

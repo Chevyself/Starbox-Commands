@@ -77,7 +77,7 @@ public class ListenerManager {
   public List<EventListener> getListeners(@NotNull Class<? extends Event> clazz) {
     List<EventListener> listeners = new ArrayList<>();
     for (EventListener listener : this.listeners) {
-      if (listener.getEvent().equals(clazz)) {
+      if (listener.getEvent().isAssignableFrom(clazz)) {
         listeners.add(listener);
       }
     }
@@ -104,11 +104,16 @@ public class ListenerManager {
   /**
    * Calls an event. As in {@link #call(Event)} but returns whether it was cancelled
    *
-   * @param event the event to be called
+   * @param cancellable the event to be called
    * @return true if the event was cancelled
+   * @throws IllegalArgumentException cancellable is not an instance of {@link Event}
    */
-  public boolean call(@NotNull Cancellable event) {
-    this.call((Event) event);
-    return event.isCancelled();
+  public boolean call(@NotNull Cancellable cancellable) {
+    if (cancellable instanceof Event) {
+      this.call((Event) cancellable);
+      return cancellable.isCancelled();
+    } else {
+      throw new IllegalArgumentException(cancellable + " must extend " + Event.class);
+    }
   }
 }

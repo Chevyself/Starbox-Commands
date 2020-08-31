@@ -1,7 +1,7 @@
 package com.starfishst.utils.events;
 
 /** An event that can be cancelled */
-public interface Cancellable extends Event {
+public interface Cancellable {
 
   /**
    * Sets whether the event is cancelled

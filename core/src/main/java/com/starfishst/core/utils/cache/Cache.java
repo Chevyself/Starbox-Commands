@@ -117,25 +117,23 @@ public class Cache {
 
     @Override
     public void run() {
-      cache.forEach(
-          catchable -> {
-            catchable.reduceTime();
-            if (catchable.getSecondsLeft() > 0) {
-              catchable.onSecondsPassed();
-            } else {
-              try {
-                catchable.onRemove();
-              } catch (ConcurrentModificationException e) {
-                Fallback.addError(
-                    catchable
-                        + " caused a "
-                        + ConcurrentModificationException.class
-                        + " please check your Catchable#onRemove()");
-                e.printStackTrace();
-              }
-            }
-          });
-
+      for (Catchable catchable : cache) {
+        catchable.reduceTime();
+        if (catchable.getSecondsLeft() > 0) {
+          catchable.onSecondsPassed();
+        } else {
+          try {
+            catchable.onRemove();
+          } catch (ConcurrentModificationException e) {
+            Fallback.addError(
+                catchable
+                    + " caused a "
+                    + ConcurrentModificationException.class
+                    + " please check your Catchable#onRemove()");
+            e.printStackTrace();
+          }
+        }
+      }
       cache.removeIf(catchable -> catchable.getSecondsLeft() <= 0);
     }
   }

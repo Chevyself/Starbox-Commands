@@ -120,15 +120,12 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    */
   @Nullable
   public CooldownUser getCooldownUser(@NotNull User sender) {
-    return (CooldownUser)
-        Cache.getCache().stream()
-            .filter(
-                catchable ->
-                    catchable instanceof CooldownUser
-                        && sender.getIdLong() == ((CooldownUser) catchable).getId()
-                        && ((CooldownUser) catchable).getCommand() == this)
-            .findFirst()
-            .orElse(null);
+    return Cache.getCatchable(
+        catchable ->
+            catchable instanceof CooldownUser
+                && sender.getIdLong() == ((CooldownUser) catchable).getId()
+                && ((CooldownUser) catchable).getCommand() == this,
+        CooldownUser.class);
   }
 
   /**

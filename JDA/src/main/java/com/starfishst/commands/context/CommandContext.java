@@ -33,6 +33,9 @@ public class CommandContext implements ICommandContext {
   /** The registry of the command context */
   @NotNull private final ProvidersRegistry<CommandContext> registry;
 
+  /** The name of the command that is being executed */
+  @Nullable private final String commandName;
+
   /**
    * Create an instance
    *
@@ -43,6 +46,7 @@ public class CommandContext implements ICommandContext {
    * @param event the event where the command was executed
    * @param messagesProvider the messages provider for this context
    * @param registry the registry of the command context
+   * @param commandName the name of the command that is being executed
    */
   public CommandContext(
       @NotNull Message message,
@@ -51,7 +55,8 @@ public class CommandContext implements ICommandContext {
       @NotNull MessageChannel channel,
       @Nullable MessageReceivedEvent event,
       @NotNull MessagesProvider messagesProvider,
-      ProvidersRegistry<CommandContext> registry) {
+      @NotNull ProvidersRegistry<CommandContext> registry,
+      @Nullable String commandName) {
     this.message = message;
     this.sender = sender;
     this.strings = args;
@@ -59,6 +64,7 @@ public class CommandContext implements ICommandContext {
     this.event = event;
     this.messagesProvider = messagesProvider;
     this.registry = registry;
+    this.commandName = commandName;
   }
 
   /**
@@ -154,5 +160,15 @@ public class CommandContext implements ICommandContext {
         + ", event="
         + event
         + '}';
+  }
+
+  /**
+   * Get the name of the command that is being executed
+   *
+   * @return the name of the command that is being executed or null if the command is not found
+   */
+  @Nullable
+  public String getCommandName() {
+    return commandName;
   }
 }

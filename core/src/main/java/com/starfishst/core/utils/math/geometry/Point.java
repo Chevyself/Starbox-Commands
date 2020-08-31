@@ -58,14 +58,14 @@ public class Point {
    * <p>The three values ({@link #x}, {@link #y} and {@link #z}) will be summed for both points.
    *
    * @param point the other point to sum
-   * @return the sum of the two points
+   * @return this point with the sum of the two points
    */
   @NotNull
   public Point sum(@NotNull Point point) {
-    double x = this.x + point.getX();
-    double y = this.y + point.getY();
-    double z = this.z + point.getZ();
-    return new Point(x, y, z);
+    this.x += point.getX();
+    this.y += point.getY();
+    this.z += point.getZ();
+    return this;
   }
 
   /**
@@ -84,14 +84,14 @@ public class Point {
    * <p>The three values ({@link #x}, {@link #y} and {@link #z}) will be subtracted for both points.
    *
    * @param point the other point to subtract
-   * @return the subtraction of the two points
+   * @return this point with the subtraction of the two points
    */
   @NotNull
   public Point subtract(@NotNull Point point) {
-    double x = this.x - point.getX();
-    double y = this.y - point.getY();
-    double z = this.z - point.getZ();
-    return new Point(x, y, z);
+    this.x = -point.getX();
+    this.y = -point.getY();
+    this.z = -point.getZ();
+    return this;
   }
 
   /**
@@ -189,6 +189,28 @@ public class Point {
    */
   public boolean isInfinite() {
     return Double.isInfinite(x) || Double.isInfinite(y) || Double.isInfinite(z);
+  }
+
+  /**
+   * Get the magnitude of this point. The magnitude of the point is the square root of x, y and z
+   * squared using {@link MathUtils#square(double)}
+   *
+   * @return the magnitude
+   */
+  public double magnitude() {
+    return Math.sqrt(
+        MathUtils.square(this.x) + MathUtils.square(this.y) + MathUtils.square(this.z));
+  }
+
+  /**
+   * Get the dot component with another point. The dot component is each component multiplied and
+   * then summed
+   *
+   * @param point the other point to get the dot component
+   * @return the dot component between the points
+   */
+  public double dot(@NotNull Point point) {
+    return (this.x * point.getX()) + (this.y * point.getY()) + (this.z * point.getZ());
   }
 
   @Override

@@ -19,7 +19,7 @@ public @interface Perm {
    *
    * @return the string permission
    */
-  String string() default "";
+  String node() default "";
 
   /**
    * Get the permission as a discord permission. IF this is left in {@link Permission#UNKNOWN} and
