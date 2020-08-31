@@ -13,4 +13,14 @@ public class SimpleRuntimeException extends RuntimeException {
   public SimpleRuntimeException(@NotNull String message) {
     super(message);
   }
+
+  /**
+   * Throw a simple runtime exception
+   *
+   * @param message the message
+   * @param cause the cause of the exception
+   */
+  public SimpleRuntimeException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

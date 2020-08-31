@@ -4,18 +4,13 @@ import com.starfishst.core.utils.time.Time;
 import com.starfishst.core.utils.time.Unit;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * This is an object that can be put inside the cache
- *
- * @author Chevy
- * @version 1.0.0
- */
+/** This is an object that can be put inside the cache */
 public abstract class Catchable {
 
   /** The time to remove the object from the cache */
-  @NotNull private final Time toRemove;
+  @NotNull private final transient Time toRemove;
   /** The seconds left of the object inside the cache */
-  private long secondsLeft;
+  private transient long secondsLeft;
 
   /**
    * Create an instance
@@ -24,7 +19,12 @@ public abstract class Catchable {
    */
   public Catchable(@NotNull Time toRemove) {
     this.toRemove = toRemove;
-    Cache.addToCache(refresh());
+    addToCache();
+  }
+
+  /** Adds this object to the cache */
+  public void addToCache() {
+    Cache.add(refresh());
   }
 
   /**
@@ -33,7 +33,7 @@ public abstract class Catchable {
    * @return for convenience return this same object
    */
   public Catchable refresh() {
-    secondsLeft = this.toRemove.getValue(Unit.SECONDS).getValue();
+    secondsLeft = this.toRemove.getAs(Unit.SECONDS).getValue();
     return this;
   }
 
@@ -44,7 +44,7 @@ public abstract class Catchable {
 
   /** Unloads this from the cache */
   public void unload() {
-    Cache.getCache().remove(this);
+    Cache.remove(this);
   }
 
   /** When seconds have passed inside the cache this method will be called */

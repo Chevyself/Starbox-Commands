@@ -6,7 +6,10 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class acts like a 'Cache' allowing programs to hold objects in memory
@@ -20,9 +23,11 @@ public class Cache {
   @NotNull private static final Timer timer = new Timer();
   /** The cache */
   @NotNull private static final List<Catchable> cache = new ArrayList<>();
+  /** The timer task that runs the cache */
+  @NotNull private static TimerTask task = new CacheTask();
 
   static {
-    timer.schedule(new CacheTask(), 0, 1000);
+    timer.schedule(task, 0, 1000);
   }
 
   /**
@@ -30,8 +35,37 @@ public class Cache {
    *
    * @param catchable the object to put inside the cache
    */
-  public static void addToCache(@NotNull Catchable catchable) {
+  public static void add(@NotNull Catchable catchable) {
     cache.add(catchable);
+  }
+
+  /**
+   * Removes an object from the cache
+   *
+   * @param catchable the object to remove
+   */
+  public static void remove(@NotNull Catchable catchable) {
+    cache.remove(catchable);
+  }
+
+  /**
+   * Check if the cache contains an object
+   *
+   * @param catchable to check
+   * @return true if the cache contains it
+   */
+  public static boolean contains(@NotNull Catchable catchable) {
+    return cache.contains(catchable);
+  }
+
+  /**
+   * Get the stream of catchables
+   *
+   * @return the stream
+   */
+  @NotNull
+  public static Stream<Catchable> stream() {
+    return cache.stream();
   }
 
   /**
@@ -44,30 +78,62 @@ public class Cache {
     return cache;
   }
 
+  /**
+   * Get an object from cache
+   *
+   * @param predicate the boolean to match
+   * @param clazz the clazz of the catchable for casting
+   * @param <T> the type of the catchable
+   * @return the catchable if found else null
+   */
+  @Nullable
+  public static <T extends Catchable> T getCatchable(
+      @NotNull Predicate<Catchable> predicate, @NotNull Class<T> clazz) {
+    for (Catchable catchable : cache) {
+      if (predicate.test(catchable)) {
+        return clazz.cast(catchable);
+      }
+    }
+    return null;
+  }
+
+  /** Cancels the task that runs the cache */
+  public static void cancelTask() {
+    task.cancel();
+  }
+
+  /**
+   * Get the task that the cache needs to run
+   *
+   * @return the task that the cache uses to run
+   */
+  @NotNull
+  public static TimerTask getTask() {
+    return task;
+  }
+
   /** The task that run every second until the cache unloads */
   static class CacheTask extends TimerTask {
 
     @Override
     public void run() {
-      cache.forEach(
-          catchable -> {
-            catchable.reduceTime();
-            if (catchable.getSecondsLeft() > 0) {
-              catchable.onSecondsPassed();
-            } else {
-              try {
-                catchable.onRemove();
-              } catch (ConcurrentModificationException e) {
-                Fallback.addError(
-                    catchable
-                        + " caused a "
-                        + ConcurrentModificationException.class
-                        + " please check your Catchable#onRemove()");
-                e.printStackTrace();
-              }
-            }
-          });
-
+      for (Catchable catchable : cache) {
+        catchable.reduceTime();
+        if (catchable.getSecondsLeft() > 0) {
+          catchable.onSecondsPassed();
+        } else {
+          try {
+            catchable.onRemove();
+          } catch (ConcurrentModificationException e) {
+            Fallback.addError(
+                catchable
+                    + " caused a "
+                    + ConcurrentModificationException.class
+                    + " please check your Catchable#onRemove()");
+            e.printStackTrace();
+          }
+        }
+      }
       cache.removeIf(catchable -> catchable.getSecondsLeft() <= 0);
     }
   }

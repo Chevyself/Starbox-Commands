@@ -3,10 +3,18 @@ package com.starfishst.core.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
-/** Utils for {@link java.util.List} and {@link java.lang.reflect.Array} */
+/**
+ * Static utilities for groups of objects such as {@link List}, {@link java.lang.reflect.Array} or
+ * {@link Set}
+ */
 public class Lots {
 
   /**
@@ -117,5 +125,44 @@ public class Lots {
   @NotNull
   public static <O> String pretty(Collection<O> collection) {
     return collection.toString().replace("[", "").replace("]", "");
+  }
+
+  /**
+   * Adds all the elements from another list that assert the predicate
+   *
+   * @param list the list to add the matching elements
+   * @param toAdd the elements to test
+   * @param bol the predicate to assert
+   * @param <O> the type of the objects
+   * @return the list that got the elements added
+   */
+  public static <O> List<O> addIf(@NotNull List<O> list, @NotNull List<O> toAdd, Predicate<O> bol) {
+    list.addAll(toAdd.stream().filter(bol).collect(Collectors.toList()));
+    return list;
+  }
+
+  /**
+   * Create an immutable list
+   *
+   * @param objects the objects to put inside the list
+   * @param <O> the type of objects inside the list
+   * @return the immutable list
+   */
+  @SafeVarargs
+  public static <O> List<O> inmutable(@NotNull O... objects) {
+    return Collections.unmodifiableList(list(objects));
+  }
+
+  /**
+   * Create a set of objects
+   *
+   * @param objects the objects to get as set
+   * @param <O> the type of the objects
+   * @return the created set of objects
+   */
+  @SafeVarargs
+  @NotNull
+  public static <O> Set<O> set(@NotNull O... objects) {
+    return new HashSet<>(Arrays.asList(objects));
   }
 }

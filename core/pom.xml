@@ -13,6 +13,7 @@
     <groupId>com.starfishst.core</groupId>
     <artifactId>core</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <description>Main utils and command frameworks core</description>
 
     <build>
         <plugins>
@@ -37,6 +38,24 @@
                                     </excludes>
                                 </filter>
                             </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Javadoc plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}../../../javadocs/core</outputDirectory>
+                            <reportOutputDirectory>${project.build.directory}../../../javadocs/core</reportOutputDirectory>
                         </configuration>
                     </execution>
                 </executions>

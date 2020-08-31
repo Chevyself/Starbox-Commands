@@ -6,11 +6,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import org.jetbrains.annotations.NotNull;
 
-/** Utilities for time */
+/** Static utilities for time */
 public class TimeUtils {
 
   /**
-   * Get local date from millis
+   * Get local date from millis.
    *
    * @param millis the millis to get the date from
    * @return the date

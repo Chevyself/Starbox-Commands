@@ -1,0 +1,3 @@
+name: Easy-Commands-Bukkit
+main: com.starfishst.bukkit.plugin.Main
+version: ${project.version}
