@@ -61,7 +61,6 @@ public class Lots {
           list.add(array[i]);
         }
       }
-
       return list;
     }
   }
@@ -86,7 +85,6 @@ public class Lots {
           newArr[i - 1] = array[i];
         }
       }
-
       return newArr;
     }
   }
@@ -150,7 +148,7 @@ public class Lots {
    */
   @SafeVarargs
   public static <O> List<O> inmutable(@NotNull O... objects) {
-    return Collections.unmodifiableList(list(objects));
+    return Collections.unmodifiableList(Lots.list(objects));
   }
 
   /**
@@ -163,6 +161,6 @@ public class Lots {
   @SafeVarargs
   @NotNull
   public static <O> Set<O> set(@NotNull O... objects) {
-    return new HashSet<>(Arrays.asList(objects));
+    return new HashSet<>(Lots.list(objects));
   }
 }

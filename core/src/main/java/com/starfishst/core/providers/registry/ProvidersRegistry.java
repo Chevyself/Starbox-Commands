@@ -8,7 +8,6 @@ import com.starfishst.core.providers.type.IExtraArgumentProvider;
 import com.starfishst.core.providers.type.IMultipleArgumentProvider;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -27,7 +26,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
    * @param provider the provider to register
    */
   public void addProvider(@NotNull IContextualProvider<?, T> provider) {
-    providers.add(provider);
+    this.providers.add(provider);
   }
 
   /**
@@ -37,9 +36,13 @@ public class ProvidersRegistry<T extends ICommandContext> {
    * @return a list of providers for the queried class
    */
   public List<IContextualProvider<?, T>> getProviders(@NotNull Class<?> clazz) {
-    return providers.stream()
-        .filter(provider -> provider.provides(clazz))
-        .collect(Collectors.toList());
+    List<IContextualProvider<?, T>> list = new ArrayList<>();
+    for (IContextualProvider<?, T> provider : this.providers) {
+      if (provider.provides(clazz)) {
+        list.add(provider);
+      }
+    }
+    return list;
   }
 
   /**

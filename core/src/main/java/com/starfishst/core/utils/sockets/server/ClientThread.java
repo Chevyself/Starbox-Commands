@@ -1,5 +1,6 @@
 package com.starfishst.core.utils.sockets.server;
 
+import com.starfishst.core.fallback.Fallback;
 import com.starfishst.core.utils.cache.Catchable;
 import com.starfishst.core.utils.sockets.messaging.ISocketMessenger;
 import com.starfishst.core.utils.sockets.messaging.SocketRequest;
@@ -36,7 +37,8 @@ public class ClientThread extends Catchable implements ISocketMessenger {
    * @param toRemove the time to remove the object from the cache
    * @param server the server that the client connected to
    * @param client the client that connected to the server
-   * @throws IOException if the client connection goes wrong
+   * @throws IOException if the client connection goes wrong. Check {@link Socket#getOutputStream()}
+   *     and {@link Socket#getInputStream()}
    */
   public ClientThread(@NotNull Time toRemove, @NotNull Server server, @NotNull Socket client)
       throws IOException {
@@ -68,18 +70,6 @@ public class ClientThread extends Catchable implements ISocketMessenger {
     return out;
   }
 
-  @Override
-  public @NotNull SocketResponse sendRequest(@NotNull SocketRequest request) throws IOException {
-    refresh();
-    return ISocketMessenger.super.sendRequest(request);
-  }
-
-  @Override
-  public void sendResponse(@NotNull SocketResponse response) {
-    refresh();
-    ISocketMessenger.super.sendResponse(response);
-  }
-
   /**
    * Get the actual socket client
    *
@@ -87,7 +77,7 @@ public class ClientThread extends Catchable implements ISocketMessenger {
    */
   @NotNull
   public Socket getClient() {
-    return client;
+    return this.client;
   }
 
   /**
@@ -97,7 +87,19 @@ public class ClientThread extends Catchable implements ISocketMessenger {
    */
   @NotNull
   public Server getServer() {
-    return server;
+    return this.server;
+  }
+
+  @Override
+  public @NotNull SocketResponse sendRequest(@NotNull SocketRequest request) throws IOException {
+    this.refresh();
+    return ISocketMessenger.super.sendRequest(request);
+  }
+
+  @Override
+  public void sendResponse(@NotNull SocketResponse response) {
+    this.refresh();
+    ISocketMessenger.super.sendResponse(response);
   }
 
   @Override
@@ -106,10 +108,11 @@ public class ClientThread extends Catchable implements ISocketMessenger {
   @Override
   public void onRemove() {
     try {
-      sendRequest(new DisconnectedRequest("Time exceeded"));
+      this.sendRequest(new DisconnectedRequest("Time exceeded"));
       server.disconnectClient(this);
-      close();
+      this.close();
     } catch (IOException e) {
+      Fallback.addError("IOException: " + e.getMessage() + " in: " + this);
       e.printStackTrace();
     }
   }
