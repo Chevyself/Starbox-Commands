@@ -2,7 +2,7 @@ package com.starfishst.core.context;
 
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
-import com.starfishst.core.utils.Lots;
+import me.googas.commons.Lots;
 import org.jetbrains.annotations.NotNull;
 
 /** The context of a command */

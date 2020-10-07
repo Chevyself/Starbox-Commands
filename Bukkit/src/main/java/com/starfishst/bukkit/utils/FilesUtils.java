@@ -1,9 +1,9 @@
 package com.starfishst.bukkit.utils;
 
-import com.starfishst.core.utils.Validate;
-import com.starfishst.core.utils.files.CoreFiles;
 import java.io.File;
 import java.io.IOException;
+import me.googas.commons.CoreFiles;
+import me.googas.commons.Validate;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

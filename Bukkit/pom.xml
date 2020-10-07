@@ -6,8 +6,8 @@
 
     <parent>
         <groupId>com.starfishst</groupId>
-        <artifactId>EasyCommands</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <artifactId>Easy-Commands</artifactId>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <groupId>com.starfishst.bukkit</groupId>
@@ -17,6 +17,7 @@
 
     <build>
         <plugins>
+            <!-- The shading plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -33,16 +34,13 @@
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
                             <artifactSet>
                                 <includes>
                                     <include>com.starfishst.core:core</include>
-                                    <include>com.starfishst.utils:core-utils</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
@@ -50,12 +48,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <finalName>Easy-Commands-${project.artifactId}</finalName>
     </build>
 
@@ -63,19 +55,13 @@
         <dependency>
             <artifactId>spigot-api</artifactId>
             <groupId>org.spigotmc</groupId>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.starfishst.core</groupId>
             <artifactId>core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.starfishst.utils</groupId>
-            <artifactId>core-utils</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0-PRE3</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

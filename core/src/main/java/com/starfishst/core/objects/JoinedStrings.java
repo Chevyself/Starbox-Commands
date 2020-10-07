@@ -1,7 +1,7 @@
 package com.starfishst.core.objects;
 
-import com.starfishst.core.utils.Strings;
 import java.util.Arrays;
+import me.googas.commons.Strings;
 import org.jetbrains.annotations.NotNull;
 
 /**

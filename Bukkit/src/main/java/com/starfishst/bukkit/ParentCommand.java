@@ -4,7 +4,7 @@ import com.starfishst.bukkit.annotations.Command;
 import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.core.IParentCommand;
-import com.starfishst.core.arguments.type.ISimpleArgument;
+import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

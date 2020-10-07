@@ -3,26 +3,25 @@ package com.starfishst.bungee;
 import com.starfishst.bungee.annotations.Command;
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
-import com.starfishst.bungee.providers.registry.ImplProvidersRegistry;
 import com.starfishst.bungee.providers.type.BungeeArgumentProvider;
 import com.starfishst.bungee.providers.type.BungeeMultiArgumentProvider;
 import com.starfishst.bungee.result.Result;
-import com.starfishst.bungee.utils.Chat;
 import com.starfishst.core.ICommandArray;
 import com.starfishst.core.arguments.Argument;
-import com.starfishst.core.arguments.type.ISimpleArgument;
+import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.providers.type.IContextualProvider;
-import com.starfishst.core.utils.Lots;
-import com.starfishst.core.utils.Strings;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import me.googas.commons.Lots;
+import me.googas.commons.Strings;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +42,10 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   @NotNull protected final Plugin plugin;
   /** Whether the command should be executed asynchronously */
   private final boolean asynchronous;
+
+  /** The providers registry for commands */
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
+
   /**
    * Create an instance
    *
@@ -53,6 +56,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
    * @param messagesProvider the messages provider
    * @param plugin the plugin where this command was registered
    * @param asynchronous whether this command should run asynchronously
+   * @param registry the registry for commands
    */
   public AnnotatedCommand(
       @NotNull Object clazz,
@@ -61,7 +65,8 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
       @NotNull Command command,
       @NotNull MessagesProvider messagesProvider,
       @NotNull Plugin plugin,
-      boolean asynchronous) {
+      boolean asynchronous,
+      ProvidersRegistry<CommandContext> registry) {
     super(
         command.aliases()[0],
         command.permission().isEmpty() ? null : command.permission(),
@@ -72,33 +77,19 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     this.messagesProvider = messagesProvider;
     this.plugin = plugin;
     this.asynchronous = asynchronous;
+    this.registry = registry;
   }
 
-  @Override
-  public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
-    CommandContext context = new CommandContext(commandSender, strings, messagesProvider);
-    Argument<?> argument = getArgument(strings.length - 1);
-    if (argument != null) {
-      if (argument.getSuggestions(context).size() > 0) {
-        return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
-      } else {
-        List<IContextualProvider<?, CommandContext>> providers =
-            getRegistry().getProviders(argument.getClazz());
-        for (IContextualProvider<?, CommandContext> provider : providers) {
-          if (provider instanceof BungeeArgumentProvider) {
-            return Strings.copyPartials(
-                strings[strings.length - 1],
-                ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
-          } else if (provider instanceof BungeeMultiArgumentProvider) {
-            return Strings.copyPartials(
-                strings[strings.length - 1],
-                ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));
-          }
-        }
-        return new ArrayList<>();
-      }
-    } else {
-      return new ArrayList<>();
+  /**
+   * Run the command
+   *
+   * @param sender the sender of the command
+   * @param strings the arguments of the command
+   */
+  private void run(CommandSender sender, String[] strings) {
+    Result result = this.execute(new CommandContext(sender, strings, messagesProvider, registry));
+    for (BaseComponent component : result.getComponents()) {
+      sender.sendMessage(component);
     }
   }
 
@@ -129,17 +120,31 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
-  /**
-   * Run the command
-   *
-   * @param sender the sender of the command
-   * @param strings the arguments of the command
-   */
-  private void run(CommandSender sender, String[] strings) {
-    String message =
-        this.execute(new CommandContext(sender, strings, messagesProvider)).getMessage();
-    if (message != null) {
-      Chat.send(sender, message);
+  @Override
+  public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
+    CommandContext context = new CommandContext(commandSender, strings, messagesProvider, registry);
+    Argument<?> argument = getArgument(strings.length - 1);
+    if (argument != null) {
+      if (argument.getSuggestions(context).size() > 0) {
+        return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
+      } else {
+        List<IContextualProvider<?, CommandContext>> providers =
+            getRegistry().getProviders(argument.getClazz());
+        for (IContextualProvider<?, CommandContext> provider : providers) {
+          if (provider instanceof BungeeArgumentProvider) {
+            return Strings.copyPartials(
+                strings[strings.length - 1],
+                ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
+          } else if (provider instanceof BungeeMultiArgumentProvider) {
+            return Strings.copyPartials(
+                strings[strings.length - 1],
+                ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));
+          }
+        }
+        return new ArrayList<>();
+      }
+    } else {
+      return new ArrayList<>();
     }
   }
 
@@ -181,7 +186,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
 
   @Override
   public @NotNull ProvidersRegistry<CommandContext> getRegistry() {
-    return ImplProvidersRegistry.getInstance();
+    return this.registry;
   }
 
   @Override

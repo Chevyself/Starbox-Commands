@@ -3,8 +3,8 @@ package com.starfishst.bukkit.context;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
-import com.starfishst.core.utils.Lots;
-import com.starfishst.core.utils.Strings;
+import me.googas.commons.Lots;
+import me.googas.commons.Strings;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

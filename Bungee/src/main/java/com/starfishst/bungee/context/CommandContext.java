@@ -1,11 +1,10 @@
 package com.starfishst.bungee.context;
 
 import com.starfishst.bungee.messages.MessagesProvider;
-import com.starfishst.bungee.providers.registry.ImplProvidersRegistry;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
-import com.starfishst.core.utils.Lots;
-import com.starfishst.core.utils.Strings;
+import me.googas.commons.Lots;
+import me.googas.commons.Strings;
 import net.md_5.bungee.api.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,21 +20,27 @@ public class CommandContext implements ICommandContext {
   /** The provider of messages for this context */
   @NotNull private final MessagesProvider messagesProvider;
 
+  /** The registry used in the context */
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
+
   /**
    * Create an instance
    *
    * @param sender the sender of the command
    * @param strings the command line in separated strings
    * @param messagesProvider the messages provider for this context
+   * @param registry the registry used in the context
    */
   public CommandContext(
       @NotNull CommandSender sender,
       @NotNull String[] strings,
-      @NotNull MessagesProvider messagesProvider) {
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull ProvidersRegistry<CommandContext> registry) {
     this.sender = sender;
     this.string = Strings.fromArray(strings);
     this.strings = strings;
     this.messagesProvider = messagesProvider;
+    this.registry = registry;
   }
 
   @NotNull
@@ -56,11 +61,13 @@ public class CommandContext implements ICommandContext {
     return this.strings;
   }
 
+  @NotNull
   @Override
   public ProvidersRegistry<CommandContext> getRegistry() {
-    return ImplProvidersRegistry.getInstance();
+    return this.registry;
   }
 
+  @NotNull
   @Override
   public MessagesProvider getMessagesProvider() {
     return messagesProvider;

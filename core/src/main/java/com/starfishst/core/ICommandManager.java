@@ -7,8 +7,8 @@ import com.starfishst.core.annotations.settings.Setting;
 import com.starfishst.core.annotations.settings.Settings;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.arguments.ExtraArgument;
+import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.arguments.MultipleArgument;
-import com.starfishst.core.arguments.type.ISimpleArgument;
 import com.starfishst.core.exceptions.CommandRegistrationException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The core or "heart" interface of the framework. It is used to register the commands using
@@ -55,11 +56,16 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
     int position = 0;
     for (int i = 0; i < parameters.length; i++) {
       Annotation[] paramAnnotations = annotations[i];
-      if (isEmpty(paramAnnotations)) {
+      if (this.isEmpty(paramAnnotations)) {
         arguments.add(i, new ExtraArgument<>(parameters[i]));
       } else {
-        arguments.add(i, this.parseArgument(parameters[i], annotations[i], position));
-        position++;
+        Argument<?> argument = this.parseArgument(parameters[i], annotations[i], position);
+        arguments.add(i, argument);
+        if (argument instanceof MultipleArgument) {
+          position = +((MultipleArgument<?>) argument).getMinSize();
+        } else {
+          position++;
+        }
       }
     }
     return arguments;
@@ -101,7 +107,7 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
   @NotNull
   default Argument<?> parseArgument(
       @NotNull Class<?> parameter, @NotNull Annotation[] annotations, int position) {
-    boolean multiple = hasAnnotation(annotations, Multiple.class);
+    Multiple multiple = this.getMultiple(annotations);
     for (Annotation annotation : annotations) {
       if (annotation instanceof Required) {
         String name = ((Required) annotation).name();
@@ -125,6 +131,22 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
   }
 
   /**
+   * Get the annotation {@link Multiple} from an array of annotations
+   *
+   * @param annotations the array of annotations
+   * @return the annotation if the array contains it else null
+   */
+  @Nullable
+  default Multiple getMultiple(@NotNull Annotation[] annotations) {
+    for (Annotation annotation : annotations) {
+      if (annotation instanceof Multiple) {
+        return (Multiple) annotation;
+      }
+    }
+    return null;
+  }
+
+  /**
    * This gets the final instance of the argument. Called by {@link #parseArgument(Class,
    * Annotation[], int)} basically this gives either {@link MultipleArgument} or {@link Argument} it
    * is check in the {@link #parseArgument(Class, Annotation[], int)} method if the parameter
@@ -132,7 +154,7 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    *
    * @param parameter the parameter where the argument came from
    * @param position the position of the argument
-   * @param multiple whether or not has the annotation {@link Multiple}
+   * @param multiple the annotation required to get an {@link MultipleArgument} it can be null
    * @param required whether the argument is required (if it has the annotation {@link Required} it
    *     is required)
    * @param name the name of the argument
@@ -145,13 +167,21 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
   default Argument<?> getArgument(
       @NotNull Class<?> parameter,
       int position,
-      boolean multiple,
+      @Nullable Multiple multiple,
       boolean required,
       @NotNull String name,
       @NotNull String description,
       @NotNull List<String> suggestions) {
-    if (multiple) {
-      return new MultipleArgument<>(name, description, suggestions, parameter, true, position);
+    if (multiple != null) {
+      return new MultipleArgument<>(
+          name,
+          description,
+          suggestions,
+          parameter,
+          true,
+          position,
+          multiple.min(),
+          multiple.max());
     } else {
       return new Argument<>(name, description, suggestions, parameter, required, position);
     }

@@ -23,7 +23,7 @@ public class IntegerProvider<T extends ICommandContext> implements IArgumentProv
 
   @Override
   public @NotNull Class<Integer> getClazz() {
-    return int.class;
+    return Integer.class;
   }
 
   @NotNull
@@ -35,5 +35,16 @@ public class IntegerProvider<T extends ICommandContext> implements IArgumentProv
     } catch (NumberFormatException e) {
       throw new ArgumentProviderException(messagesProvider.invalidInteger(string, context));
     }
+  }
+
+  /**
+   * Get if the provider provides with the queried class
+   *
+   * @param clazz the queried class
+   * @return true if it provides it
+   */
+  @Override
+  public boolean provides(@NotNull Class<?> clazz) {
+    return clazz == Integer.class || clazz == int.class;
   }
 }

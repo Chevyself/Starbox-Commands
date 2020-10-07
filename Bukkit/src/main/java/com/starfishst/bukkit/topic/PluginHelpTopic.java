@@ -2,7 +2,7 @@ package com.starfishst.bukkit.topic;
 
 import com.starfishst.bukkit.CommandManager;
 import com.starfishst.bukkit.messages.MessagesProvider;
-import com.starfishst.core.utils.Strings;
+import me.googas.commons.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.plugin.Plugin;

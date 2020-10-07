@@ -4,7 +4,7 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
-import com.starfishst.core.utils.time.Time;
+import me.googas.commons.time.Time;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Time} */

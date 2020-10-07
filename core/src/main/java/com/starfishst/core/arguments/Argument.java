@@ -1,7 +1,6 @@
 package com.starfishst.core.arguments;
 
 import com.starfishst.core.ICommand;
-import com.starfishst.core.arguments.type.ISimpleArgument;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.context.IMappable;
 import com.starfishst.core.context.ISuggestible;

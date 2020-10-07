@@ -23,7 +23,7 @@ public class DoubleProvider<T extends ICommandContext> implements IArgumentProvi
 
   @Override
   public @NotNull Class<Double> getClazz() {
-    return double.class;
+    return Double.class;
   }
 
   @NotNull
@@ -35,5 +35,10 @@ public class DoubleProvider<T extends ICommandContext> implements IArgumentProvi
     } catch (NumberFormatException e) {
       throw new ArgumentProviderException(messagesProvider.invalidDouble(string, context));
     }
+  }
+
+  @Override
+  public boolean provides(@NotNull Class<?> clazz) {
+    return clazz == Double.class || clazz == double.class;
   }
 }

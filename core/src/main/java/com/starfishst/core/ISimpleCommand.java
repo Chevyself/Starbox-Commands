@@ -2,8 +2,8 @@ package com.starfishst.core;
 
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.arguments.ExtraArgument;
+import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.arguments.MultipleArgument;
-import com.starfishst.core.arguments.type.ISimpleArgument;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
@@ -88,12 +88,23 @@ public interface ISimpleCommand<C extends ICommandContext> {
       if (argument instanceof ExtraArgument<?>) {
         objects[i] = getRegistry().getObject(argument.getClazz(), context);
       } else if (argument instanceof MultipleArgument<?>) {
-        objects[i] =
-            getRegistry()
-                .fromStrings(
-                    context.getStringsFrom(((MultipleArgument<?>) argument).getPosition()),
-                    argument.getClazz(),
-                    context);
+        String[] strings = context.getStringsFrom(((MultipleArgument<?>) argument).getPosition());
+        if (strings.length < ((MultipleArgument<?>) argument).getMinSize()) {
+          throw new MissingArgumentException(
+              this.getMessagesProvider()
+                  .missingStrings(
+                      ((MultipleArgument<?>) argument).getName(),
+                      ((MultipleArgument<?>) argument).getDescription(),
+                      ((MultipleArgument<?>) argument).getPosition(),
+                      ((MultipleArgument<?>) argument).getMinSize(),
+                      ((MultipleArgument<?>) argument).getMinSize() - strings.length,
+                      context));
+        }
+        if (((MultipleArgument<?>) argument).getMaxSize() != -1
+            && ((MultipleArgument<?>) argument).getMaxSize() < strings.length) {
+          i = ((MultipleArgument<?>) argument).getMaxSize();
+        }
+        objects[i] = getRegistry().fromStrings(strings, argument.getClazz(), context);
       } else if (argument instanceof Argument<?>) {
         String string = getArgument((Argument<?>) argument, context);
         if (string == null && ((Argument<?>) argument).isRequired()) {

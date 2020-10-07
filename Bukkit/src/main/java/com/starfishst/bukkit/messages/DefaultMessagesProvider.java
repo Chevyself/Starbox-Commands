@@ -3,9 +3,9 @@ package com.starfishst.bukkit.messages;
 import com.starfishst.bukkit.AnnotatedCommand;
 import com.starfishst.bukkit.ParentCommand;
 import com.starfishst.bukkit.context.CommandContext;
+import com.starfishst.bukkit.utils.BukkitUtils;
 import com.starfishst.core.arguments.Argument;
-import com.starfishst.core.utils.Strings;
-import com.starfishst.core.utils.maps.Maps;
+import me.googas.commons.maps.Maps;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,27 +14,27 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NotNull String invalidLong(@NotNull String string, @NotNull CommandContext context) {
-    return string + " is not a valid long!";
+    return BukkitUtils.build("&e" + string + " &cis not a valid long");
   }
 
   @Override
   public @NotNull String invalidInteger(@NotNull String string, @NotNull CommandContext context) {
-    return string + " is not a valid integer!";
+    return BukkitUtils.build("&e" + string + " &cis not a valid integer");
   }
 
   @Override
   public @NotNull String invalidDouble(@NotNull String string, @NotNull CommandContext context) {
-    return string + " is not a valid double!";
+    return BukkitUtils.build("&e" + string + " &cis not a valid double");
   }
 
   @Override
   public @NotNull String invalidBoolean(@NotNull String string, @NotNull CommandContext context) {
-    return string + " is not a valid boolean!";
+    return BukkitUtils.build("&e" + string + " &cis not a valid boolean");
   }
 
   @Override
   public @NotNull String invalidTime(@NotNull String string, @NotNull CommandContext context) {
-    return string + " is not valid time!";
+    return BukkitUtils.build("&e" + string + " &cis not valid time");
   }
 
   @Override
@@ -43,36 +43,51 @@ public class DefaultMessagesProvider implements MessagesProvider {
       @NotNull String description,
       int position,
       @NotNull CommandContext context) {
-    return Strings.buildMessage(
-        "Missing argument: {0} -> {1}, position: {2}", name, description, position);
+    return BukkitUtils.build(
+        "&cMissing argument: &e%name% &c-> &e%description%&c, position: &e%position%",
+        Maps.builder("name", name)
+            .append("description", description)
+            .append("position", String.valueOf(position))
+            .build());
   }
 
   @Override
   public @NotNull String invalidNumber(@NotNull String string, @NotNull CommandContext context) {
-    return string + " is not a valid number!";
+    return BukkitUtils.build("&e" + string + " &cis not a valid number");
   }
 
   @Override
   public @NotNull String emptyDouble(@NotNull CommandContext context) {
-    return "Doubles cannot be empty!";
+    return BukkitUtils.build("&cDoubles cannot be empty!");
+  }
+
+  @Override
+  public @NotNull String missingStrings(
+      @NotNull String name,
+      @NotNull String description,
+      int position,
+      int minSize,
+      int missing,
+      @NotNull CommandContext context) {
+    return BukkitUtils.build("&cYou are missing &e" + missing + " &cstrings in &e" + name);
   }
 
   @NotNull
   @Override
   public String invalidPlayer(@NotNull String string, @NotNull CommandContext context) {
-    return string + " wasn't found";
+    return BukkitUtils.build("&e" + string + "  &cisn't online");
   }
 
   @NotNull
   @Override
   public String playersOnly(@NotNull CommandContext context) {
-    return "Console cannot use this command";
+    return BukkitUtils.build("&cConsole cannot use this command");
   }
 
   @NotNull
   @Override
   public String notAllowed(@NotNull CommandContext context) {
-    return "You are not allowed to use this command";
+    return BukkitUtils.build("&cYou are not allowed to use this command");
   }
 
   @Override
@@ -83,7 +98,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
   @Override
   public @NotNull String helpTopicFull(
       @NotNull String shortText, @NotNull String commands, @NotNull Plugin plugin) {
-    return Strings.buildMessage(
+    return BukkitUtils.build(
         "&7%short% \n &7Title: &e%name% \n &7Version: &e%version% \n &7Description: &e%description% \n &7Commands (use /help <command>): &e%commands%",
         Maps.builder("short", shortText)
             .append("name", plugin.getName())
@@ -93,29 +108,30 @@ public class DefaultMessagesProvider implements MessagesProvider {
                     ? "None"
                     : plugin.getDescription().getDescription())
             .append("version", plugin.getDescription().getVersion())
-            .append("commands", commands));
+            .append("commands", commands)
+            .build());
   }
 
   @Override
   public @NotNull String helpTopicCommand(@NotNull AnnotatedCommand command) {
-    return "&7- &e" + command.getName();
+    return BukkitUtils.build("&7- &e" + command.getName());
   }
 
   @Override
   public @NotNull String entitiesOnly(@NotNull CommandContext context) {
-    return "&cThis command may only be used by entities!";
+    return BukkitUtils.build("&cThis command may only be used by entities!");
   }
 
   @Override
   public @NotNull String missingArgumentSelectorSeparator(
       @NotNull String argument, @NotNull CommandContext context) {
-    return "&c" + argument + " is missing the separator (=)!";
+    return BukkitUtils.build("&e" + argument + " &cis missing the separator (=)!");
   }
 
   @Override
   public @NotNull String nullSelectorArgument(
       @NotNull String argument, @NotNull CommandContext context) {
-    return "&c" + argument + " must have a value!";
+    return BukkitUtils.build("&e" + argument + " &cmust have a value!");
   }
 
   @Override
@@ -202,11 +218,11 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NotNull String invalidMaterialEmpty(@NotNull CommandContext context) {
-    return "&cThe name of materials cannot be empty!";
+    return BukkitUtils.build("&cThe name of materials cannot be empty!");
   }
 
   @Override
   public @NotNull String invalidMaterial(@NotNull String string, @NotNull CommandContext context) {
-    return string + " is not a valid material!";
+    return BukkitUtils.build("&e" + string + " &cis not a valid material!");
   }
 }

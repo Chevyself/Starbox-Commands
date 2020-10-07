@@ -3,10 +3,10 @@ package com.starfishst.bungee;
 import com.starfishst.bungee.annotations.Command;
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
+import com.starfishst.bungee.providers.CommandContextProvider;
 import com.starfishst.bungee.providers.CommandSenderProvider;
 import com.starfishst.bungee.providers.ProxiedPlayerProvider;
 import com.starfishst.bungee.providers.ProxiedPlayerSenderProvider;
-import com.starfishst.bungee.providers.registry.ImplProvidersRegistry;
 import com.starfishst.bungee.result.Result;
 import com.starfishst.core.ICommandManager;
 import com.starfishst.core.annotations.Parent;
@@ -14,7 +14,6 @@ import com.starfishst.core.exceptions.CommandRegistrationException;
 import com.starfishst.core.providers.BooleanProvider;
 import com.starfishst.core.providers.DoubleProvider;
 import com.starfishst.core.providers.IntegerProvider;
-import com.starfishst.core.providers.JoinedNumberProvider;
 import com.starfishst.core.providers.JoinedStringsProvider;
 import com.starfishst.core.providers.LongProvider;
 import com.starfishst.core.providers.StringProvider;
@@ -39,18 +38,25 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @NotNull private final MessagesProvider messagesProvider;
   /** The temporal command for registering commands there and not in the manager */
   @Nullable private ParentCommand parent;
+  /** The registry for the commands */
+  @NotNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create an instance
    *
    * @param plugin the plugin that will create the commands
    * @param messagesProvider the messages provider
+   * @param registry the registry for commands
    */
-  public CommandManager(@NotNull Plugin plugin, @NotNull MessagesProvider messagesProvider) {
+  public CommandManager(
+      @NotNull Plugin plugin,
+      @NotNull MessagesProvider messagesProvider,
+      @NotNull ProvidersRegistry<CommandContext> registry) {
     this.plugin = plugin;
     this.manager = plugin.getProxy().getPluginManager();
     this.messagesProvider = messagesProvider;
-    this.addProviders(ImplProvidersRegistry.getInstance(), messagesProvider);
+    this.registry = registry;
+    this.addProviders(this.registry, messagesProvider);
   }
 
   /**
@@ -69,7 +75,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new LongProvider<>(messagesProvider));
     registry.addProvider(new StringProvider<>());
     registry.addProvider(new TimeProvider<>(messagesProvider));
-    registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
+    registry.addProvider(new CommandContextProvider());
     registry.addProvider(new CommandSenderProvider());
     registry.addProvider(new ProxiedPlayerProvider(messagesProvider));
     registry.addProvider(new ProxiedPlayerSenderProvider(messagesProvider));
@@ -124,7 +130,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             command,
             messagesProvider,
             plugin,
-            isAsync(method));
+            isAsync(method),
+            registry);
       } else {
         return new AnnotatedCommand(
             object,
@@ -133,7 +140,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             command,
             messagesProvider,
             plugin,
-            isAsync(method));
+            isAsync(method),
+            registry);
       }
     } else {
       throw new CommandRegistrationException("{0} must return {1}");

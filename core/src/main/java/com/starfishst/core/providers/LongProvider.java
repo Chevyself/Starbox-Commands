@@ -23,7 +23,7 @@ public class LongProvider<T extends ICommandContext> implements IArgumentProvide
 
   @Override
   public @NotNull Class<Long> getClazz() {
-    return long.class;
+    return Long.class;
   }
 
   @NotNull
@@ -35,5 +35,16 @@ public class LongProvider<T extends ICommandContext> implements IArgumentProvide
     } catch (NumberFormatException e) {
       throw new ArgumentProviderException(messagesProvider.invalidLong(string, context));
     }
+  }
+
+  /**
+   * Get if the provider provides with the queried class
+   *
+   * @param clazz the queried class
+   * @return true if it provides it
+   */
+  @Override
+  public boolean provides(@NotNull Class<?> clazz) {
+    return clazz == Long.class || clazz == long.class;
   }
 }

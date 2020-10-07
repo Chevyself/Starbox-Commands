@@ -1,5 +1,6 @@
 package com.starfishst.core.messages;
 
+import com.starfishst.core.arguments.MultipleArgument;
 import com.starfishst.core.context.ICommandContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -91,4 +92,25 @@ public interface IMessagesProvider<T extends ICommandContext> {
    */
   @NotNull
   String emptyDouble(@NotNull T context);
+
+  /**
+   * Get the message sent when a {@link MultipleArgument#getMinSize()} is bigger than the context
+   * strings
+   *
+   * @param name the name of the argument
+   * @param description the description of the argument
+   * @param position the position of the argument
+   * @param minSize the minimum size of the strings
+   * @param missing how many strings are missing
+   * @param context the context of the command
+   * @return the message
+   */
+  @NotNull
+  String missingStrings(
+      @NotNull String name,
+      @NotNull String description,
+      int position,
+      int minSize,
+      int missing,
+      @NotNull T context);
 }

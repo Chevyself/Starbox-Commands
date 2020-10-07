@@ -1,7 +1,7 @@
 package com.starfishst.bungee.messages;
 
 import com.starfishst.bungee.context.CommandContext;
-import com.starfishst.core.utils.Strings;
+import me.googas.commons.Strings;
 import org.jetbrains.annotations.NotNull;
 
 /** The default messages provider for bungee */
@@ -50,6 +50,17 @@ public class DefaultMessagesProvider implements MessagesProvider {
   @Override
   public @NotNull String emptyDouble(@NotNull CommandContext context) {
     return "Doubles cannot be empty!";
+  }
+
+  @Override
+  public @NotNull String missingStrings(
+      @NotNull String name,
+      @NotNull String description,
+      int position,
+      int minSize,
+      int missing,
+      @NotNull CommandContext context) {
+    return "You are missing " + missing + " strings in " + name;
   }
 
   @NotNull

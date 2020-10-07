@@ -1,15 +1,14 @@
 package com.starfishst.bukkit.providers;
 
 import com.starfishst.bukkit.context.CommandContext;
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
+import com.starfishst.bukkit.providers.type.BukkitExtraArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Provides the {@link com.starfishst.bukkit.CommandManager} with the object of {@link
  * CommandContext}
  */
-public class CommandContextProvider
-    implements IExtraArgumentProvider<CommandContext, CommandContext> {
+public class CommandContextProvider implements BukkitExtraArgumentProvider<CommandContext> {
 
   @Override
   public @NotNull Class<CommandContext> getClazz() {

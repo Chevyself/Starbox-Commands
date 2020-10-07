@@ -1,9 +1,9 @@
 package com.starfishst.bukkit.utils;
 
-import com.starfishst.core.utils.Strings;
-import com.starfishst.core.utils.cache.Cache;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import me.googas.commons.Strings;
+import me.googas.commons.cache.Cache;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;

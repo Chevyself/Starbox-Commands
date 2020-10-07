@@ -5,9 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.starfishst</groupId>
-    <artifactId>EasyCommands</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>Easy-Commands</artifactId>
+    <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <description>An easy to use command framework for Bukkit, Bungee or JDA (Discord)</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,12 +19,12 @@
         <module>Bukkit</module>
         <module>Bungee</module>
         <module>core</module>
-        <module>core-utils</module>
         <module>JDA</module>
     </modules>
 
     <build>
         <plugins>
+            <!-- Use Java 8 -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -33,6 +34,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>3.8.1</version>
             </plugin>
+            <!-- Format to google -->
             <plugin>
                 <artifactId>fmt-maven-plugin</artifactId>
                 <executions>
@@ -48,19 +50,27 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <artifactId>annotations</artifactId>
-            <groupId>org.jetbrains</groupId>
-            <version>17.0.0</version>
-        </dependency>
-    </dependencies>
-
     <repositories>
+        <!-- Spigot repository -->
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
     </repositories>
+
+    <dependencies>
+        <!-- Jetbrains annotations -->
+        <dependency>
+            <artifactId>annotations</artifactId>
+            <groupId>org.jetbrains</groupId>
+            <version>17.0.0</version>
+        </dependency>
+        <!-- Commons -->
+        <dependency>
+            <groupId>me.googas.commons</groupId>
+            <artifactId>Commons</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -19,7 +19,6 @@ import com.starfishst.core.exceptions.CommandRegistrationException;
 import com.starfishst.core.providers.BooleanProvider;
 import com.starfishst.core.providers.DoubleProvider;
 import com.starfishst.core.providers.IntegerProvider;
-import com.starfishst.core.providers.JoinedNumberProvider;
 import com.starfishst.core.providers.JoinedStringsProvider;
 import com.starfishst.core.providers.LongProvider;
 import com.starfishst.core.providers.StringProvider;
@@ -64,6 +63,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   /** The list of commands that this manager handles */
   @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
 
+  /** The registry for commands */
   @NotNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
@@ -110,7 +110,6 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     registry.addProvider(new OfflinePlayerProvider());
     registry.addProvider(new PlayerProvider(messagesProvider));
     registry.addProvider(new PlayerSenderProvider(messagesProvider));
-    registry.addProvider(new JoinedNumberProvider<>(messagesProvider));
   }
 
   /**

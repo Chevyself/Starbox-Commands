@@ -2,15 +2,14 @@ package com.starfishst.bungee.providers;
 
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
+import com.starfishst.bungee.providers.type.BungeeExtraArgumentProvider;
 import com.starfishst.core.arguments.ExtraArgument;
 import com.starfishst.core.exceptions.ArgumentProviderException;
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides with the player that executed the command */
-public class ProxiedPlayerSenderProvider
-    implements IExtraArgumentProvider<ProxiedPlayer, CommandContext> {
+public class ProxiedPlayerSenderProvider implements BungeeExtraArgumentProvider<ProxiedPlayer> {
 
   /** The provider for the error message */
   @NotNull private final MessagesProvider messagesProvider;

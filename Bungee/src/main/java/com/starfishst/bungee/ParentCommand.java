@@ -1,14 +1,16 @@
 package com.starfishst.bungee;
 
 import com.starfishst.bungee.annotations.Command;
+import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
 import com.starfishst.core.IParentCommand;
-import com.starfishst.core.arguments.type.ISimpleArgument;
-import com.starfishst.core.utils.Strings;
+import com.starfishst.core.arguments.ISimpleArgument;
+import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import me.googas.commons.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +34,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param messagesProvider the messages provider
    * @param plugin the plugin where this command was registered
    * @param async whether the command should be executed async
+   * @param registry the registry for the commands
    */
   public ParentCommand(
       @NotNull Object object,
@@ -40,8 +43,9 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NotNull Command command,
       @NotNull MessagesProvider messagesProvider,
       @NotNull Plugin plugin,
-      boolean async) {
-    super(object, method, arguments, command, messagesProvider, plugin, async);
+      boolean async,
+      ProvidersRegistry<CommandContext> registry) {
+    super(object, method, arguments, command, messagesProvider, plugin, async, registry);
   }
 
   @Override

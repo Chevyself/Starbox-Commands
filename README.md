@@ -51,7 +51,7 @@ mvn clean install
 ```xml
 <dependency>
   <artifactId>JDA-Command-Framework</artifactId>
-  <groupId>com.starfishst.commands</groupId>
+  <groupId>com.starfishst.jdacom.starfishst.jda</groupId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ```

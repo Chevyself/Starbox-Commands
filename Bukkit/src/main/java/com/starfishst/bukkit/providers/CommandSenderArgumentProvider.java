@@ -1,7 +1,7 @@
 package com.starfishst.bukkit.providers;
 
 import com.starfishst.bukkit.context.CommandContext;
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
+import com.starfishst.bukkit.providers.type.BukkitExtraArgumentProvider;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,8 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * Provides the {@link com.starfishst.bukkit.CommandManager} with the object of {@link
  * CommandSender}
  */
-public class CommandSenderArgumentProvider
-    implements IExtraArgumentProvider<CommandSender, CommandContext> {
+public class CommandSenderArgumentProvider implements BukkitExtraArgumentProvider<CommandSender> {
 
   @Override
   public @NotNull Class<CommandSender> getClazz() {

@@ -20,7 +20,16 @@ public class SimpleException extends Exception {
    * @param message the message
    * @param cause the cause of the exception
    */
-  public SimpleException(String message, Throwable cause) {
+  public SimpleException(@NotNull String message, @NotNull Throwable cause) {
     super(message, cause);
+  }
+
+  /**
+   * Throw a simple exception
+   *
+   * @param cause the cause of the exception
+   */
+  public SimpleException(@NotNull Throwable cause) {
+    super(cause);
   }
 }

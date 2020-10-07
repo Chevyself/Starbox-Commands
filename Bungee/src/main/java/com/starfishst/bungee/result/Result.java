@@ -1,34 +1,73 @@
 package com.starfishst.bungee.result;
 
-import com.starfishst.core.result.SimpleResult;
-import com.starfishst.core.utils.Strings;
+import com.starfishst.core.result.IResult;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import me.googas.commons.Strings;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-/** Result for bungee command execution */
-public class Result extends SimpleResult {
+/** The result that can be send by the execution of the command */
+public class Result implements IResult {
+
+  /** The components that will be send after the execution */
+  @NotNull private final List<BaseComponent> components = new ArrayList<>();
 
   /**
-   * A result with a message
+   * Create the result with a component
    *
-   * @param string the message to send as result
+   * @param component the component to send as result
    */
-  public Result(@NotNull String string) {
-    super(string);
+  public Result(@NotNull BaseComponent component) {
+    this.components.add(component);
   }
 
   /**
-   * A result with a message that contains placeholders
+   * Create the result with many components
    *
-   * @param string the message to send as result
-   * @param placeholders the placeholders to change in the message
+   * @param components the components to send as result
    */
-  public Result(@NotNull String string, @NotNull HashMap<String, String> placeholders) {
-    this(Strings.buildMessage(string, placeholders));
+  public Result(@NotNull BaseComponent... components) {
+    this.components.addAll(Arrays.asList(components));
   }
 
-  /** A result without message */
-  public Result() {
-    super();
+  /**
+   * Create a result with a text
+   *
+   * @param text the text to send
+   */
+  public Result(@NotNull String text) {
+    this(new TextComponent(ChatColor.translateAlternateColorCodes('&', text)));
+  }
+
+  /**
+   * Create the result with a text
+   *
+   * @param text the text to send but has placeholders that will be changed using the map
+   * @param map the map to change the placeholders
+   */
+  public Result(@NotNull String text, @NotNull HashMap<String, String> map) {
+    this(Strings.buildMessage(text, map));
+  }
+
+  /**
+   * Get the components in the result
+   *
+   * @return the components
+   */
+  @NotNull
+  public List<BaseComponent> getComponents() {
+    return components;
+  }
+
+  @Override
+  public @Nullable String getMessage() {
+    return ComponentSerializer.toString(this.components);
   }
 }

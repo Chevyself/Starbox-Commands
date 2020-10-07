@@ -2,6 +2,14 @@ package com.starfishst.core.providers.registry;
 
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
+import com.starfishst.core.messages.IMessagesProvider;
+import com.starfishst.core.providers.BooleanProvider;
+import com.starfishst.core.providers.DoubleProvider;
+import com.starfishst.core.providers.IntegerProvider;
+import com.starfishst.core.providers.JoinedStringsProvider;
+import com.starfishst.core.providers.LongProvider;
+import com.starfishst.core.providers.StringProvider;
+import com.starfishst.core.providers.TimeProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
 import com.starfishst.core.providers.type.IContextualProvider;
 import com.starfishst.core.providers.type.IExtraArgumentProvider;
@@ -19,6 +27,24 @@ public class ProvidersRegistry<T extends ICommandContext> {
 
   /** The providers that must be given with a context */
   protected final List<IContextualProvider<?, T>> providers = new ArrayList<>();
+
+  /**
+   * Create the registry with the default providers
+   *
+   * @param messages the messages providers for the messages sent in the provider
+   */
+  public ProvidersRegistry(@NotNull IMessagesProvider<T> messages) {
+    this.addProvider(new BooleanProvider<>(messages));
+    this.addProvider(new DoubleProvider<>(messages));
+    this.addProvider(new IntegerProvider<>(messages));
+    this.addProvider(new JoinedStringsProvider<>());
+    this.addProvider(new LongProvider<>(messages));
+    this.addProvider(new StringProvider<>());
+    this.addProvider(new TimeProvider<>(messages));
+  }
+
+  /** Create the registry with the default providers */
+  public ProvidersRegistry() {}
 
   /**
    * Registers a provider in the providers registry

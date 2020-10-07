@@ -6,20 +6,20 @@ import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.bukkit.providers.type.BukkitArgumentProvider;
 import com.starfishst.bukkit.providers.type.BukkitMultiArgumentProvider;
 import com.starfishst.bukkit.result.Result;
-import com.starfishst.bukkit.utils.Chat;
 import com.starfishst.core.ICommand;
 import com.starfishst.core.arguments.Argument;
-import com.starfishst.core.arguments.type.ISimpleArgument;
+import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.providers.type.IContextualProvider;
-import com.starfishst.core.utils.Lots;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import me.googas.commons.Lots;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -81,31 +81,17 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     }
   }
 
-  @Override
-  public @NotNull Result execute(@NotNull CommandContext context) {
-    CommandSender sender = context.getSender();
-    final String permission = this.getPermission();
-    if (permission != null && !permission.isEmpty()) {
-      if (!sender.hasPermission(permission)) {
-        return new Result(messagesProvider.notAllowed(context));
-      }
-    }
-    try {
-      return (Result) this.method.invoke(this.clazz, getObjects(context));
-    } catch (final IllegalAccessException e) {
-      e.printStackTrace();
-      return new Result("&cIllegalAccessException, e");
-    } catch (final InvocationTargetException e) {
-      e.printStackTrace();
-
-      final String message = e.getMessage();
-      if (message != null && !message.isEmpty()) {
-        return new Result("&c{0}");
-      } else {
-        return new Result("&cInvocationTargetException, e");
-      }
-    } catch (MissingArgumentException | ArgumentProviderException e) {
-      return new Result(e.getMessage());
+  /**
+   * Run the command
+   *
+   * @param commandSender the sender of the command
+   * @param strings the strings of the command
+   */
+  private void run(@NotNull CommandSender commandSender, @NotNull String[] strings) {
+    Result result =
+        this.execute(new CommandContext(commandSender, strings, messagesProvider, registry));
+    for (BaseComponent component : result.getComponents()) {
+      commandSender.spigot().sendMessage(component);
     }
   }
 
@@ -127,18 +113,31 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     return this.arguments;
   }
 
-  /**
-   * Run the command
-   *
-   * @param commandSender the sender of the command
-   * @param strings the strings of the command
-   */
-  private void run(@NotNull CommandSender commandSender, @NotNull String[] strings) {
-    String message =
-        this.execute(new CommandContext(commandSender, strings, messagesProvider, registry))
-            .getMessage();
-    if (message != null) {
-      Chat.send(commandSender, message);
+  @Override
+  public @NotNull Result execute(@NotNull CommandContext context) {
+    CommandSender sender = context.getSender();
+    final String permission = this.getPermission();
+    if (permission != null && !permission.isEmpty()) {
+      if (!sender.hasPermission(permission)) {
+        return new Result(messagesProvider.notAllowed(context));
+      }
+    }
+    try {
+      return (Result) this.method.invoke(this.clazz, this.getObjects(context));
+    } catch (final IllegalAccessException e) {
+      e.printStackTrace();
+      return new Result("&cIllegalAccessException, e");
+    } catch (final InvocationTargetException e) {
+      e.printStackTrace();
+
+      final String message = e.getMessage();
+      if (message != null && !message.isEmpty()) {
+        return new Result("&c{0}");
+      } else {
+        return new Result("&cInvocationTargetException, e");
+      }
+    } catch (MissingArgumentException | ArgumentProviderException e) {
+      return new Result(e.getMessage());
     }
   }
 
