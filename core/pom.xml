@@ -12,7 +12,7 @@
 
     <groupId>com.starfishst.core</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.0-PRE3</version>
+    <version>1.0.1-PRE3</version>
     <description>Main utils and command frameworks core</description>
 
     <build>

@@ -47,6 +47,6 @@ public class BooleanProvider<T extends ICommandContext> implements IArgumentProv
 
   @Override
   public boolean provides(@NotNull Class<?> clazz) {
-    return clazz == Long.class || clazz == long.class;
+    return clazz == Boolean.class || clazz == boolean.class;
   }
 }
