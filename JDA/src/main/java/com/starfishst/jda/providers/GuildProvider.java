@@ -1,15 +1,15 @@
 package com.starfishst.jda.providers;
 
 import com.starfishst.core.exceptions.ArgumentProviderException;
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.context.GuildCommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
+import com.starfishst.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Guild} */
-public class GuildProvider implements IExtraArgumentProvider<Guild, CommandContext> {
+public class GuildProvider implements JdaExtraArgumentProvider<Guild> {
 
   /** The provider to give the error message */
   private final MessagesProvider messagesProvider;

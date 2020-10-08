@@ -1,12 +1,11 @@
 package com.starfishst.jda.providers;
 
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
 import com.starfishst.jda.context.CommandContext;
+import com.starfishst.jda.providers.type.JdaExtraArgumentProvider;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link CommandContext} */
-public class CommandContextProvider
-    implements IExtraArgumentProvider<CommandContext, CommandContext> {
+public class CommandContextProvider implements JdaExtraArgumentProvider<CommandContext> {
 
   @NotNull
   @Override

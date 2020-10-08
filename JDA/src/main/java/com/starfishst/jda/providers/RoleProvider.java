@@ -1,14 +1,14 @@
 package com.starfishst.jda.providers;
 
 import com.starfishst.core.exceptions.ArgumentProviderException;
-import com.starfishst.core.providers.type.IArgumentProvider;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
+import com.starfishst.jda.providers.type.JdaArgumentProvider;
 import net.dv8tion.jda.api.entities.Role;
 import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Role} */
-public class RoleProvider implements IArgumentProvider<Role, CommandContext> {
+public class RoleProvider implements JdaArgumentProvider<Role> {
 
   /** The provider to give the error message */
   private final MessagesProvider messagesProvider;
