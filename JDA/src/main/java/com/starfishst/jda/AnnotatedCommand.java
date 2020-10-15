@@ -154,6 +154,16 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
     return permission;
   }
 
+  /**
+   * Check whether the context has the permission to execute the command
+   *
+   * @param context the context to check the command
+   * @return true if the context has the permission to execute the command
+   */
+  public boolean hasPermission(@NotNull CommandContext context) {
+    return this.permissionChecker.checkPermission(context, this.permission) == null;
+  }
+
   @Override
   public @NotNull Result execute(@NotNull CommandContext context) {
     Result result = this.permissionChecker.checkPermission(context, this.permission);

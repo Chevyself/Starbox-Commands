@@ -12,7 +12,7 @@
 
     <groupId>com.starfishst.bungee</groupId>
     <artifactId>bungee</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <description>Bungee utils and command framework</description>
 
     <build>
