@@ -26,8 +26,8 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.1" level="project" />
-    <orderEntry type="module" module-name="core" />
+    <orderEntry type="library" name="Maven: com.starfishst.core:core:1.0.1-PRE3" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:17.0.0" level="project" />
-    <orderEntry type="library" name="Maven: me.googas.commons:Commons:1.0.2-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: me.googas.commons:Commons:1.0.5-SNAPSHOT" level="project" />
   </component>
 </module>

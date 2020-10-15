@@ -12,7 +12,7 @@
 
     <groupId>com.starfishst.bungee</groupId>
     <artifactId>bungee</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <description>Bungee utils and command framework</description>
 
     <build>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.starfishst.core</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.1-PRE3</version>
+            <version>1.0.1-PRE4</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

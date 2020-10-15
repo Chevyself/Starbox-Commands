@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.starfishst</groupId>
         <artifactId>Easy-Commands</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <groupId>com.starfishst.bukkit</groupId>
     <artifactId>Bukkit</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <description>Bukkit utils and command framework</description>
 
     <build>
