@@ -91,7 +91,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     Result result =
         this.execute(new CommandContext(commandSender, strings, messagesProvider, registry));
     for (BaseComponent component : result.getComponents()) {
-      commandSender.spigot().sendMessage(component);
+      commandSender.sendMessage(component.toLegacyText());
     }
   }
 
