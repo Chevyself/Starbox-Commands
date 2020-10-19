@@ -118,23 +118,6 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String entitiesOnly(@NotNull CommandContext context) {
-    return BukkitUtils.build("&cThis command may only be used by entities!");
-  }
-
-  @Override
-  public @NotNull String missingArgumentSelectorSeparator(
-      @NotNull String argument, @NotNull CommandContext context) {
-    return BukkitUtils.build("&e" + argument + " &cis missing the separator (=)!");
-  }
-
-  @Override
-  public @NotNull String nullSelectorArgument(
-      @NotNull String argument, @NotNull CommandContext context) {
-    return BukkitUtils.build("&e" + argument + " &cmust have a value!");
-  }
-
-  @Override
   public @NotNull String commandShortText(@NotNull AnnotatedCommand command) {
     return command.getDescription();
   }

@@ -70,36 +70,6 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
   String helpTopicCommand(@NotNull AnnotatedCommand command);
 
   /**
-   * Get the error message when the selector '@s' is used but the sender was not an entity
-   *
-   * @param context the context of the command
-   * @return the error message
-   */
-  @NotNull
-  String entitiesOnly(@NotNull CommandContext context);
-
-  /**
-   * Get the error message when an selector argument is missing its value
-   *
-   * @param argument the argument that is missing the value
-   * @param context the context of the command
-   * @return the error message
-   */
-  @NotNull
-  String missingArgumentSelectorSeparator(
-      @NotNull String argument, @NotNull CommandContext context);
-
-  /**
-   * Get the error message when a selector argument does not exist
-   *
-   * @param argument the name of the argument which does not exist
-   * @param context the context of the command
-   * @return the error message
-   */
-  @NotNull
-  String nullSelectorArgument(@NotNull String argument, @NotNull CommandContext context);
-
-  /**
    * The short text for a command help topic
    *
    * @param command the command that is being built the help topic to
