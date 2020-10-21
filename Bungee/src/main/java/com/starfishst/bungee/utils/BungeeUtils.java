@@ -46,7 +46,7 @@ public class BungeeUtils {
   @NotNull
   public static BaseComponent[] getComponent(@NotNull String string) {
     if (JsonUtils.isJson(string)) {
-      ComponentSerializer.parse(string);
+      return ComponentSerializer.parse(string);
     }
     return new BaseComponent[] {new TextComponent(string)};
   }
