@@ -46,18 +46,18 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String footer(@NotNull CommandContext context) {
+  public @NotNull String footer(@Nullable CommandContext context) {
     return "";
   }
 
   @Override
-  public @NotNull String getTitle(@NotNull ResultType type, @NotNull CommandContext context) {
+  public @NotNull String getTitle(@NotNull ResultType type, @Nullable CommandContext context) {
     return type.getTitle(null, context);
   }
 
   @Override
   public @NotNull String response(
-      @NotNull String title, @NotNull String message, @NotNull CommandContext context) {
+      @NotNull String title, @NotNull String message, @Nullable CommandContext context) {
     return Strings.buildMessage("{0} -> {1}", title, message);
   }
 
@@ -88,7 +88,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NotNull String emptyDouble(@NotNull CommandContext context) {
-    return "Doubles cannot be emtpy!";
+    return "Doubles cannot be empty!";
   }
 
   @Override
