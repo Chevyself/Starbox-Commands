@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.starfishst</groupId>
         <artifactId>Easy-Commands</artifactId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.2.1-SNAPSHOT</version>
     </parent>
 
     <groupId>com.starfishst.jda</groupId>
     <artifactId>JDA</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.7-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>com.starfishst.core</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.1-PRE5</version>
+            <version>1.0.1-PRE6</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
