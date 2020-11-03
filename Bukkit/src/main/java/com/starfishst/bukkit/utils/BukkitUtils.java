@@ -2,6 +2,7 @@ package com.starfishst.bukkit.utils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Map;
 import me.googas.commons.Strings;
 import me.googas.commons.cache.Cache;
 import org.bukkit.Bukkit;
@@ -33,12 +34,11 @@ public class BukkitUtils {
    *
    * @param string the message to build
    * @param placeholders the placeholders of the message. See {@link Strings#buildMessage(String,
-   *     HashMap)}
+   *     Map)}
    * @return the built message
    */
   @NotNull
-  public static String build(
-      @Nullable String string, @NotNull HashMap<String, String> placeholders) {
+  public static String build(@Nullable String string, @NotNull Map<String, String> placeholders) {
     return ChatColor.translateAlternateColorCodes('&', Strings.buildMessage(string, placeholders));
   }
 

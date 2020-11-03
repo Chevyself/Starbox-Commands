@@ -25,6 +25,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /** The annotated command for bungee */
 public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
@@ -88,13 +89,15 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
    */
   private void run(CommandSender sender, String[] strings) {
     Result result = this.execute(new CommandContext(sender, strings, messagesProvider, registry));
-    for (BaseComponent component : result.getComponents()) {
-      sender.sendMessage(component);
+    if (result != null) {
+      for (BaseComponent component : result.getComponents()) {
+        sender.sendMessage(component);
+      }
     }
   }
 
   @Override
-  public @NotNull Result execute(@NotNull CommandContext context) {
+  public @Nullable Result execute(@NotNull CommandContext context) {
     CommandSender sender = context.getSender();
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
@@ -103,7 +106,11 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
       }
     }
     try {
-      return (Result) this.method.invoke(this.clazz, getObjects(context));
+      Object invoke = this.method.invoke(this.clazz, getObjects(context));
+      if (invoke instanceof Result) {
+        return (Result) invoke;
+      }
+      return null;
     } catch (final IllegalAccessException e) {
       e.printStackTrace();
       return new Result("&cIllegalAccessException, e");

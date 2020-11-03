@@ -118,8 +118,8 @@ public class CommandListener implements EventListener {
    * @return the message
    */
   @Nullable
-  private Message getMessage(@NotNull Result result, CommandContext context) {
-    if (result.getDiscordMessage() == null) {
+  private Message getMessage(@Nullable Result result, CommandContext context) {
+    if (result != null && result.getDiscordMessage() == null) {
       if (managerOptions.isEmbedMessages()) {
         if (result.getMessage() != null) {
           return EmbedFactory.fromResult(result, this, context).getAsMessageQuery().getMessage();
@@ -139,9 +139,10 @@ public class CommandListener implements EventListener {
           return null;
         }
       }
-    } else {
+    } else if (result != null) {
       return result.getDiscordMessage();
     }
+    return null;
   }
 
   /**
@@ -152,7 +153,7 @@ public class CommandListener implements EventListener {
    * @param context the context of the command
    * @return the result of the command execution
    */
-  @NotNull
+  @Nullable
   private Result getResult(
       @Nullable AnnotatedCommand command, @NotNull String commandName, CommandContext context) {
     if (command != null) {

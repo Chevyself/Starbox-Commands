@@ -196,7 +196,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @Override
   public AnnotatedCommand parseCommand(
       @NotNull Object object, @NotNull Method method, boolean isParent) {
-    if (method.getReturnType() == Result.class) {
+    if (method.getReturnType() == Result.class || method.getReturnType().equals(Void.TYPE)) {
       final Class<?>[] params = method.getParameterTypes();
       final Annotation[][] annotations = method.getParameterAnnotations();
       final Command cmd = method.getAnnotation(Command.class);
@@ -227,7 +227,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
       }
     } else {
       throw new CommandRegistrationException(
-          "The method of the command must return Result @ " + method);
+          "The method of the command must return Result or void @ " + method);
     }
   }
 }

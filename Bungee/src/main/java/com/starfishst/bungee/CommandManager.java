@@ -22,6 +22,7 @@ import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import me.googas.commons.Strings;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -118,7 +119,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @Override
   public AnnotatedCommand parseCommand(
       @NotNull Object object, @NotNull Method method, boolean isParent) {
-    if (method.getReturnType() == Result.class) {
+    if (method.getReturnType() == Result.class || method.getReturnType().equals(Void.TYPE)) {
       Annotation[][] annotations = method.getParameterAnnotations();
       Class<?>[] parameters = method.getParameterTypes();
       Command command = method.getAnnotation(Command.class);
@@ -144,7 +145,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             registry);
       }
     } else {
-      throw new CommandRegistrationException("{0} must return {1}");
+      throw new CommandRegistrationException(
+          Strings.buildMessage("{0} must return {1} or void", method, Result.class));
     }
   }
 }

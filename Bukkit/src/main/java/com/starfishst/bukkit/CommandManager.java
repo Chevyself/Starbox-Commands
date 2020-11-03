@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import me.googas.commons.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.help.HelpMap;
@@ -78,7 +79,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
       @NotNull Plugin plugin,
       @NotNull CommandManagerOptions options,
       @NotNull MessagesProvider messagesProvider,
-      ProvidersRegistry<CommandContext> registry) {
+      @NotNull ProvidersRegistry<CommandContext> registry) {
     this.plugin = plugin;
     this.options = options;
     this.messagesProvider = messagesProvider;
@@ -188,7 +189,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @Override
   public @NotNull AnnotatedCommand parseCommand(
       @NotNull Object object, @NotNull Method method, boolean isParent) {
-    if (method.getReturnType() == Result.class) {
+    if (method.getReturnType() == Result.class || method.getReturnType().equals(Void.TYPE)) {
       Annotation[][] annotations = method.getParameterAnnotations();
       Class<?>[] parameters = method.getParameterTypes();
       Command command = method.getAnnotation(Command.class);
@@ -215,7 +216,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             registry);
       }
     } else {
-      throw new CommandRegistrationException("{0} must return {1}");
+      throw new CommandRegistrationException(
+          Strings.buildMessage("{0} must return {1} or void", method, Result.class));
     }
   }
 }

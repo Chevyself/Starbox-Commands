@@ -165,7 +165,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   }
 
   @Override
-  public @NotNull Result execute(@NotNull CommandContext context) {
+  public @Nullable Result execute(@NotNull CommandContext context) {
     Result result = this.permissionChecker.checkPermission(context, this.permission);
     if (result != null) {
       return result;
@@ -176,16 +176,21 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
     }
     try {
       Object[] objects = getObjects(context);
-      result = (Result) this.method.invoke(this.clazz, objects);
-      if (cooldown.millis() != 0) {
-        new CooldownUser(cooldown, this, context.getSender().getIdLong());
+      Object object = this.method.invoke(this.clazz, objects);
+      if (object instanceof Result) {
+        result = (Result) object;
+        if (cooldown.millis() != 0) {
+          new CooldownUser(cooldown, this, context.getSender().getIdLong());
+        }
+        if (result.getSuccess() == null && excluded) {
+          result =
+              new Result(
+                  result.getType(), result.getDiscordMessage(), result.getMessage(), message -> {});
+        }
+        return result;
+      } else {
+        return null;
       }
-      if (result.getSuccess() == null && excluded) {
-        result =
-            new Result(
-                result.getType(), result.getDiscordMessage(), result.getMessage(), message -> {});
-      }
-      return result;
     } catch (final IllegalAccessException e) {
       e.printStackTrace();
       return new Result(ResultType.UNKNOWN, "IllegalAccessException, e");

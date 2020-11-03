@@ -54,7 +54,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    * @param context the context of the command
    * @return the result of the command execution
    */
-  @NotNull
+  @Nullable
   default IResult execute(@NotNull C context) {
     try {
       return (IResult) getMethod().invoke(getClazz(), getObjects(context));
