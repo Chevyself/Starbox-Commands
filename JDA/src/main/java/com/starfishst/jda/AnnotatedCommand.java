@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import me.googas.commons.cache.Cache;
+import me.googas.commons.cache.thread.Cache;
 import me.googas.commons.time.Time;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
@@ -120,7 +120,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    */
   @Nullable
   public CooldownUser getCooldownUser(@NotNull User sender) {
-    return Cache.getCatchable(
+    return Cache.getNotRefresh(
         CooldownUser.class,
         user -> user.getCommand() == this && user.getId() == sender.getIdLong());
   }

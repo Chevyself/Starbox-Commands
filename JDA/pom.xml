@@ -12,7 +12,7 @@
 
     <groupId>com.starfishst.jda</groupId>
     <artifactId>JDA</artifactId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.9-SNAPSHOT</version>
 
     <build>
         <plugins>

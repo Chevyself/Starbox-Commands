@@ -25,7 +25,8 @@ public interface ResponsiveMessageController {
           this.getResponsiveMessage(null, event.getMessageIdLong());
       if (responsiveMessage != null) {
         Set<ReactionResponse> reactions =
-            responsiveMessage.getReactions(this.unicodeFromReaction(event.getReactionEmote()));
+            responsiveMessage.getReactions(
+                this.getIdentificationFromReaction(event.getReactionEmote()));
         if (!reactions.isEmpty()) {
           boolean removed = false;
           for (ReactionResponse reaction : reactions) {
@@ -58,14 +59,18 @@ public interface ResponsiveMessageController {
   }
 
   /**
-   * Get the unicode from a reaction event
+   * Get the unicode or the name of the emote from a reaction event
    *
    * @param emote the emote of the reaction that was added
    * @return the unicode
    */
   @NotNull
-  default String unicodeFromReaction(MessageReaction.ReactionEmote emote) {
-    return emote.toString().replace("RE:", "");
+  default String getIdentificationFromReaction(MessageReaction.ReactionEmote emote) {
+    if (emote.isEmote()) {
+      return emote.getEmote().getName();
+    } else {
+      return emote.toString().replace("RE:", "");
+    }
   }
 
   /**

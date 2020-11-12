@@ -98,16 +98,17 @@ public class CommandListener implements EventListener {
    * @return the action from the result or null if it doesn't have any
    */
   @Nullable
-  public Consumer<Message> getConsumer(@NotNull Result result) {
-    if (result.getSuccess() != null) {
-      return result.getSuccess();
-    } else if (managerOptions.isDeleteErrors() && result.getType().isError()) {
-      return managerOptions.getErrorDeleteConsumer();
-    } else if (managerOptions.isDeleteSuccess() && !result.getType().isError()) {
-      return managerOptions.getSuccessDeleteConsumer();
-    } else {
-      return null;
+  public Consumer<Message> getConsumer(@Nullable Result result) {
+    if (result != null) {
+      if (result.getSuccess() != null) {
+        return result.getSuccess();
+      } else if (managerOptions.isDeleteErrors() && result.getType().isError()) {
+        return managerOptions.getErrorDeleteConsumer();
+      } else if (managerOptions.isDeleteSuccess() && !result.getType().isError()) {
+        return managerOptions.getSuccessDeleteConsumer();
+      }
     }
+    return null;
   }
 
   /**
