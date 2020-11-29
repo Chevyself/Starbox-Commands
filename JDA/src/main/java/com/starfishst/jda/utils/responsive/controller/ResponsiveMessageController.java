@@ -4,11 +4,10 @@ import com.starfishst.jda.utils.responsive.ReactionResponse;
 import com.starfishst.jda.utils.responsive.ResponsiveMessage;
 import java.util.Collection;
 import java.util.Set;
+import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The controller to use the responsive messages */
 public interface ResponsiveMessageController {
@@ -22,7 +21,7 @@ public interface ResponsiveMessageController {
     if (event.getUser() != null
         && (!event.getUser().isBot() || event.getUser().isBot() && acceptBots())) {
       ResponsiveMessage responsiveMessage =
-          this.getResponsiveMessage(null, event.getMessageIdLong());
+          this.getResponsiveMessage(event.getGuild(), event.getMessageIdLong());
       if (responsiveMessage != null) {
         Set<ReactionResponse> reactions =
             responsiveMessage.getReactions(
@@ -30,8 +29,8 @@ public interface ResponsiveMessageController {
         if (!reactions.isEmpty()) {
           boolean removed = false;
           for (ReactionResponse reaction : reactions) {
-            reaction.onReaction(event);
-            if (reaction.removeReaction() && !removed) {
+            boolean remove = reaction.onReaction(event);
+            if (remove && !removed) {
               event.getReaction().removeReaction(event.getUser()).queue();
               removed = true;
             }
@@ -48,7 +47,6 @@ public interface ResponsiveMessageController {
    * @param messageId the id to match
    * @return the message if found else null
    */
-  @Nullable
   default ResponsiveMessage getResponsiveMessage(Guild guild, long messageId) {
     for (ResponsiveMessage message : this.getResponsiveMessages(guild)) {
       if (message != null && message.getId() == messageId) {
@@ -64,7 +62,7 @@ public interface ResponsiveMessageController {
    * @param emote the emote of the reaction that was added
    * @return the unicode
    */
-  @NotNull
+  @NonNull
   default String getIdentificationFromReaction(MessageReaction.ReactionEmote emote) {
     if (emote.isEmote()) {
       return emote.getEmote().getName();
@@ -79,7 +77,7 @@ public interface ResponsiveMessageController {
    * @param guild the guild where the message is from
    * @param message the message to remove
    */
-  default void removeMessage(@Nullable Guild guild, @NotNull ResponsiveMessage message) {
+  default void removeMessage(Guild guild, @NonNull ResponsiveMessage message) {
     this.getResponsiveMessages(guild).remove(message);
   }
 
@@ -96,6 +94,6 @@ public interface ResponsiveMessageController {
    * @param guild the guild that requires the messages
    * @return the responsive messages
    */
-  @NotNull
-  Collection<ResponsiveMessage> getResponsiveMessages(@Nullable Guild guild);
+  @NonNull
+  Collection<ResponsiveMessage> getResponsiveMessages(Guild guild);
 }

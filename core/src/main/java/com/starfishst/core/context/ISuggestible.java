@@ -1,7 +1,7 @@
 package com.starfishst.core.context;
 
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * If a class can have a list of suggestions (mostly used for tab complete in case of Bukkit
@@ -15,6 +15,6 @@ public interface ISuggestible {
    * @param context the command context
    * @return the list of suggestions
    */
-  @NotNull
-  List<String> getSuggestions(@NotNull ICommandContext context);
+  @NonNull
+  List<String> getSuggestions(@NonNull ICommandContext context);
 }

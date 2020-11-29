@@ -1,6 +1,6 @@
 package com.starfishst.core.exceptions.type;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Represent a simple exception to easily create messages */
 public class SimpleException extends Exception {
@@ -10,7 +10,7 @@ public class SimpleException extends Exception {
    *
    * @param message the message
    */
-  public SimpleException(@NotNull String message) {
+  public SimpleException(@NonNull String message) {
     super(message);
   }
 
@@ -20,7 +20,7 @@ public class SimpleException extends Exception {
    * @param message the message
    * @param cause the cause of the exception
    */
-  public SimpleException(@NotNull String message, @NotNull Throwable cause) {
+  public SimpleException(@NonNull String message, @NonNull Throwable cause) {
     super(message, cause);
   }
 
@@ -29,7 +29,7 @@ public class SimpleException extends Exception {
    *
    * @param cause the cause of the exception
    */
-  public SimpleException(@NotNull Throwable cause) {
+  public SimpleException(@NonNull Throwable cause) {
     super(cause);
   }
 }

@@ -5,23 +5,24 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.context.IMappable;
 import com.starfishst.core.context.ISuggestible;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.Getter;
+import lombok.NonNull;
 
 /** An argument is a parameter for the {@link ICommand} different results can be given by them */
 public class Argument<O> implements ISuggestible, ISimpleArgument<O>, IMappable {
 
   /** The name of the argument */
-  @NotNull private final String name;
+  @NonNull private final String name;
   /** The description of the argument */
-  @NotNull private final String description;
+  @NonNull private final String description;
   /** A list of suggestions for the user that will need to input the argument */
-  @NotNull private final List<String> suggestions;
+  @NonNull private final List<String> suggestions;
   /** Get the class that represents the argument */
-  @NotNull private final Class<O> clazz;
+  @NonNull private final Class<O> clazz;
   /** If the argument is required */
-  private final boolean required;
+  @Getter private final boolean required;
   /** The position of the argument */
-  private final int position;
+  @Getter private final int position;
 
   /**
    * Get a new instance of {@link Argument}
@@ -34,10 +35,10 @@ public class Argument<O> implements ISuggestible, ISimpleArgument<O>, IMappable 
    * @param position the position of the argument in the command
    */
   public Argument(
-      @NotNull String name,
-      @NotNull String description,
-      @NotNull List<String> suggestions,
-      @NotNull Class<O> clazz,
+      @NonNull String name,
+      @NonNull String description,
+      @NonNull List<String> suggestions,
+      @NonNull Class<O> clazz,
       boolean required,
       int position) {
     this.name = name;
@@ -48,40 +49,22 @@ public class Argument<O> implements ISuggestible, ISimpleArgument<O>, IMappable 
     this.position = position;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public String getName() {
     return this.name;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public String getDescription() {
     return this.description;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public Class<O> getClazz() {
     return this.clazz;
-  }
-
-  /**
-   * Get if the argument is required
-   *
-   * @return is the argument required
-   */
-  public boolean isRequired() {
-    return this.required;
-  }
-
-  /**
-   * Get the position of the argument
-   *
-   * @return the position of the argument
-   */
-  public int getPosition() {
-    return this.position;
   }
 
   @Override
@@ -105,7 +88,7 @@ public class Argument<O> implements ISuggestible, ISimpleArgument<O>, IMappable 
   }
 
   @Override
-  public @NotNull List<String> getSuggestions(@NotNull ICommandContext context) {
+  public @NonNull List<String> getSuggestions(@NonNull ICommandContext context) {
     return this.suggestions;
   }
 }

@@ -5,25 +5,26 @@ import com.starfishst.bukkit.ParentCommand;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.core.arguments.Argument;
 import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.googas.commons.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpMap;
 import org.bukkit.help.HelpTopic;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The {@link HelpTopic} for the commands generated with annotations */
 class AnnotatedCommandHelpTopic extends HelpTopic {
 
   /** The server to get the {@link HelpMap} from */
-  @NotNull private static final Server server = Bukkit.getServer();
+  @NonNull private static final Server server = Bukkit.getServer();
   /** The HelpMap to register the command */
-  @NotNull private static final HelpMap helpMap = AnnotatedCommandHelpTopic.server.getHelpMap();
+  @NonNull private static final HelpMap helpMap = AnnotatedCommandHelpTopic.server.getHelpMap();
 
   /** The messages provider to build messages for the help topic */
-  @NotNull private final MessagesProvider provider;
+  @NonNull @Getter @Setter private MessagesProvider provider;
 
   /**
    * Create the topic
@@ -33,9 +34,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    * @param provider the messages provider to build messages for the help topic
    */
   AnnotatedCommandHelpTopic(
-      @NotNull AnnotatedCommand command,
-      @Nullable ParentCommand parent,
-      @NotNull MessagesProvider provider) {
+      @NonNull AnnotatedCommand command, ParentCommand parent, @NonNull MessagesProvider provider) {
     this.provider = provider;
     final String permission = command.getPermission();
     this.amendedPermission = permission == null ? null : permission.isEmpty() ? null : permission;
@@ -75,9 +74,9 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    * @param command the command to build the arguments from
    * @return the arguments built help
    */
-  @NotNull
+  @NonNull
   private static String buildArguments(
-      @NotNull MessagesProvider provider, @NotNull AnnotatedCommand command) {
+      @NonNull MessagesProvider provider, @NonNull AnnotatedCommand command) {
     StringBuilder builder = Strings.getBuilder();
     command.getArguments().stream()
         .filter(argument -> argument instanceof Argument)
@@ -98,8 +97,8 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    * @param command the parent to get the children help from
    * @return the help as string
    */
-  @NotNull
-  private String buildChildren(@NotNull ParentCommand command) {
+  @NonNull
+  private String buildChildren(@NonNull ParentCommand command) {
     StringBuilder builder = Strings.getBuilder();
     final List<AnnotatedCommand> commands = command.getCommands();
     commands.forEach(
@@ -108,7 +107,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
   }
 
   @Override
-  public boolean canSee(@NotNull CommandSender commandSender) {
+  public boolean canSee(@NonNull CommandSender commandSender) {
     if (this.amendedPermission == null) {
       return true;
     } else {

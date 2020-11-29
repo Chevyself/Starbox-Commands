@@ -5,9 +5,8 @@ import com.starfishst.jda.CommandManager;
 import com.starfishst.jda.ManagerOptions;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.result.ResultType;
+import lombok.NonNull;
 import me.googas.commons.time.Time;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** Provides messages to results */
 public interface MessagesProvider extends IMessagesProvider<CommandContext> {
@@ -17,23 +16,23 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return The message when a command is not found in {@link CommandManager}
    */
-  @NotNull
-  String commandNotFound(@NotNull String command, @NotNull CommandContext context);
+  @NonNull
+  String commandNotFound(@NonNull String command, @NonNull CommandContext context);
 
   /**
    * @param context the context of the command
    * @return The footer in case {@link ManagerOptions#isEmbedMessages()} is true
    */
-  @NotNull
-  String footer(@Nullable CommandContext context);
+  @NonNull
+  String footer(CommandContext context);
 
   /**
    * @param type the type of result
    * @param context the context of the command
    * @return the title to use for a result
    */
-  @NotNull
-  String getTitle(@NotNull ResultType type, @Nullable CommandContext context);
+  @NonNull
+  String getTitle(@NonNull ResultType type, CommandContext context);
 
   /**
    * @param title the title of the response
@@ -41,23 +40,23 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message when the result has a message
    */
-  @NotNull
-  String response(@NotNull String title, @NotNull String message, @Nullable CommandContext context);
+  @NonNull
+  String response(@NonNull String title, @NonNull String message, CommandContext context);
 
   /**
    * @param context the context of the command
    * @return the message when the sender does not have a permission
    */
-  @NotNull
-  String notAllowed(@NotNull CommandContext context);
+  @NonNull
+  String notAllowed(@NonNull CommandContext context);
 
   /**
    * @param context the context of the command
    * @return the message when the command has to be executed in a {@link
    *     net.dv8tion.jda.api.entities.Guild}
    */
-  @NotNull
-  String guildOnly(@NotNull CommandContext context);
+  @NonNull
+  String guildOnly(@NonNull CommandContext context);
 
   /**
    * Get the url to use as thumbnail
@@ -65,8 +64,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the url to use as thumbnail
    */
-  @NotNull
-  String thumbnailUrl(@Nullable CommandContext context);
+  @NonNull
+  String thumbnailUrl(CommandContext context);
 
   /**
    * Get the message sent when the user is still on cooldown
@@ -75,8 +74,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the built string
    */
-  @NotNull
-  String cooldown(@NotNull Time timeLeft, @Nullable CommandContext context);
+  @NonNull
+  String cooldown(@NonNull Time timeLeft, CommandContext context);
 
   /**
    * The message sent when a string is not a valid user
@@ -85,8 +84,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidUser(@NotNull String string, @NotNull CommandContext context);
+  @NonNull
+  String invalidUser(@NonNull String string, @NonNull CommandContext context);
 
   /**
    * The message sent when a string is not a valid user
@@ -95,8 +94,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidMember(@NotNull String string, @NotNull CommandContext context);
+  @NonNull
+  String invalidMember(@NonNull String string, @NonNull CommandContext context);
 
   /**
    * The message sent when a string is not a valid role
@@ -105,8 +104,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidRole(@NotNull String string, @NotNull CommandContext context);
+  @NonNull
+  String invalidRole(@NonNull String string, @NonNull CommandContext context);
 
   /**
    * The message sent when a string is not a valid role
@@ -115,6 +114,6 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context ofo the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
+  @NonNull
   String invalidTextChannel(String string, CommandContext context);
 }

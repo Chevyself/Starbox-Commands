@@ -4,7 +4,7 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Integer} */
 public class IntegerProvider<T extends ICommandContext> implements IArgumentProvider<Integer, T> {
@@ -22,13 +22,13 @@ public class IntegerProvider<T extends ICommandContext> implements IArgumentProv
   }
 
   @Override
-  public @NotNull Class<Integer> getClazz() {
+  public @NonNull Class<Integer> getClazz() {
     return Integer.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Integer fromString(@NotNull String string, @NotNull T context)
+  public Integer fromString(@NonNull String string, @NonNull T context)
       throws ArgumentProviderException {
     try {
       return Integer.parseInt(string);
@@ -44,7 +44,7 @@ public class IntegerProvider<T extends ICommandContext> implements IArgumentProv
    * @return true if it provides it
    */
   @Override
-  public boolean provides(@NotNull Class<?> clazz) {
+  public boolean provides(@NonNull Class<?> clazz) {
     return clazz == Integer.class || clazz == int.class;
   }
 }

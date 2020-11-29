@@ -2,11 +2,10 @@ package com.starfishst.bungee.utils;
 
 import java.io.File;
 import java.io.IOException;
+import lombok.NonNull;
 import me.googas.commons.CoreFiles;
 import me.googas.commons.Validate;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** File utility for bungee */
 public class FilesUtils {
@@ -20,10 +19,9 @@ public class FilesUtils {
    * @return the file
    * @throws IOException if the parent directory of the file could not be created
    */
-  @NotNull
+  @NonNull
   public static File getFileOrResource(
-      @NotNull Plugin plugin, @Nullable String parent, @NotNull String fileName)
-      throws IOException {
+      @NonNull Plugin plugin, String parent, @NonNull String fileName) throws IOException {
     return CoreFiles.getFileOrResource(
         parent,
         fileName,
@@ -40,8 +38,8 @@ public class FilesUtils {
    * @return the file if found else null
    * @throws IOException if the parent directory (if it exists) could not be created
    */
-  @NotNull
-  public static File getFileOrResource(@NotNull Plugin plugin, @NotNull String fileName)
+  @NonNull
+  public static File getFileOrResource(@NonNull Plugin plugin, @NonNull String fileName)
       throws IOException {
     return getFileOrResource(plugin, plugin.getDataFolder().getPath(), fileName);
   }

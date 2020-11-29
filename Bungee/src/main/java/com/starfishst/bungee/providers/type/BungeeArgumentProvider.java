@@ -3,7 +3,7 @@ package com.starfishst.bungee.providers.type;
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.core.providers.type.IArgumentProvider;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * A provider made for bungee commands
@@ -18,6 +18,6 @@ public interface BungeeArgumentProvider<O> extends IArgumentProvider<O, CommandC
    * @param context the context of the command
    * @return the suggestions
    */
-  @NotNull
+  @NonNull
   List<String> getSuggestions(CommandContext context);
 }

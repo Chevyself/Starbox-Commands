@@ -3,7 +3,7 @@ package com.starfishst.core.providers.type;
 import com.starfishst.core.ICommand;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * A provider gives to the {@link ICommand} the object requested by it
@@ -20,6 +20,6 @@ public interface IArgumentProvider<O, T extends ICommandContext> extends IContex
    * @return a new instance of {@link O}
    * @throws ArgumentProviderException when the object could not be obtained
    */
-  @NotNull
-  O fromString(@NotNull String string, @NotNull T context) throws ArgumentProviderException;
+  @NonNull
+  O fromString(@NonNull String string, @NonNull T context) throws ArgumentProviderException;
 }

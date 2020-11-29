@@ -4,8 +4,7 @@ import com.starfishst.jda.ManagerOptions;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
 import java.awt.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import lombok.NonNull;
 
 /** The different types of results */
 public enum ResultType {
@@ -21,7 +20,7 @@ public enum ResultType {
   PERMISSION("**Error**: → No permission", true);
 
   /** The tile of the type for messages */
-  @NotNull private final String title;
+  @NonNull private final String title;
   /** Whether the result is an error */
   private final boolean isError;
 
@@ -31,7 +30,7 @@ public enum ResultType {
    * @param title the title of the result
    * @param isError whether this type of result is an error
    */
-  ResultType(@NotNull String title, boolean isError) {
+  ResultType(@NonNull String title, boolean isError) {
     this.title = title;
     this.isError = isError;
   }
@@ -43,8 +42,8 @@ public enum ResultType {
    * @param context the context of the command
    * @return the title
    */
-  @NotNull
-  public String getTitle(@Nullable MessagesProvider provider, @Nullable CommandContext context) {
+  @NonNull
+  public String getTitle(MessagesProvider provider, CommandContext context) {
     if (provider != null) return provider.getTitle(this, context);
     return title;
   }
@@ -56,8 +55,8 @@ public enum ResultType {
    * @param options the manager options to get the color from
    * @return the color
    */
-  @NotNull
-  public Color getColor(@NotNull ManagerOptions options) {
+  @NonNull
+  public Color getColor(@NonNull ManagerOptions options) {
     if (isError) {
       return options.getError();
     } else {

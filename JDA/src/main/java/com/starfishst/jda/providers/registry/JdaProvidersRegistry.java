@@ -16,7 +16,7 @@ import com.starfishst.jda.providers.TextChannelProvider;
 import com.starfishst.jda.providers.UserProvider;
 import com.starfishst.jda.providers.UserSenderProvider;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** The providers registry for jda */
 public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
@@ -26,7 +26,7 @@ public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
    *
    * @param messages the messages provider for the registry
    */
-  public JdaProvidersRegistry(@NotNull MessagesProvider messages) {
+  public JdaProvidersRegistry(@NonNull MessagesProvider messages) {
     super(messages);
     this.addProvider(new CommandContextProvider());
     this.addProvider(new GuildCommandContextProvider(messages));
@@ -48,7 +48,7 @@ public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
    * @return a list of providers for the queried class
    */
   @Override
-  public List<IContextualProvider<?, CommandContext>> getProviders(@NotNull Class<?> clazz) {
+  public List<IContextualProvider<?, CommandContext>> getProviders(@NonNull Class<?> clazz) {
     return super.getProviders(clazz);
   }
 }

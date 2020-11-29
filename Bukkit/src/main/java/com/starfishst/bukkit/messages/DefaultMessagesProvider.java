@@ -5,44 +5,44 @@ import com.starfishst.bukkit.ParentCommand;
 import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.utils.BukkitUtils;
 import com.starfishst.core.arguments.Argument;
+import lombok.NonNull;
 import me.googas.commons.maps.Maps;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 /** The default messages provider for bukkit */
 public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
-  public @NotNull String invalidLong(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + " &cis not a valid long");
   }
 
   @Override
-  public @NotNull String invalidInteger(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidInteger(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + " &cis not a valid integer");
   }
 
   @Override
-  public @NotNull String invalidDouble(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidDouble(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + " &cis not a valid double");
   }
 
   @Override
-  public @NotNull String invalidBoolean(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidBoolean(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + " &cis not a valid boolean");
   }
 
   @Override
-  public @NotNull String invalidTime(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + " &cis not valid time");
   }
 
   @Override
-  public @NotNull String missingArgument(
-      @NotNull String name,
-      @NotNull String description,
+  public @NonNull String missingArgument(
+      @NonNull String name,
+      @NonNull String description,
       int position,
-      @NotNull CommandContext context) {
+      @NonNull CommandContext context) {
     return BukkitUtils.build(
         "&cMissing argument: &e%name% &c-> &e%description%&c, position: &e%position%",
         Maps.builder("name", name)
@@ -52,52 +52,52 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String invalidNumber(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidNumber(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + " &cis not a valid number");
   }
 
   @Override
-  public @NotNull String emptyDouble(@NotNull CommandContext context) {
+  public @NonNull String emptyDouble(@NonNull CommandContext context) {
     return BukkitUtils.build("&cDoubles cannot be empty!");
   }
 
   @Override
-  public @NotNull String missingStrings(
-      @NotNull String name,
-      @NotNull String description,
+  public @NonNull String missingStrings(
+      @NonNull String name,
+      @NonNull String description,
       int position,
       int minSize,
       int missing,
-      @NotNull CommandContext context) {
+      @NonNull CommandContext context) {
     return BukkitUtils.build("&cYou are missing &e" + missing + " &cstrings in &e" + name);
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public String invalidPlayer(@NotNull String string, @NotNull CommandContext context) {
+  public String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + "  &cisn't online");
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public String playersOnly(@NotNull CommandContext context) {
+  public String playersOnly(@NonNull CommandContext context) {
     return BukkitUtils.build("&cConsole cannot use this command");
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public String notAllowed(@NotNull CommandContext context) {
+  public String notAllowed(@NonNull CommandContext context) {
     return BukkitUtils.build("&cYou are not allowed to use this command");
   }
 
   @Override
-  public @NotNull String helpTopicShort(@NotNull Plugin plugin) {
+  public @NonNull String helpTopicShort(@NonNull Plugin plugin) {
     return "Get help for " + plugin.getName();
   }
 
   @Override
-  public @NotNull String helpTopicFull(
-      @NotNull String shortText, @NotNull String commands, @NotNull Plugin plugin) {
+  public @NonNull String helpTopicFull(
+      @NonNull String shortText, @NonNull String commands, @NonNull Plugin plugin) {
     return BukkitUtils.build(
         "&7%short% \n &7Title: &e%name% \n &7Version: &e%version% \n &7Description: &e%description% \n &7Commands (use /help <command>): &e%commands%",
         Maps.builder("short", shortText)
@@ -113,26 +113,26 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String helpTopicCommand(@NotNull AnnotatedCommand command) {
+  public @NonNull String helpTopicCommand(@NonNull AnnotatedCommand command) {
     return BukkitUtils.build("&7- &e" + command.getName());
   }
 
   @Override
-  public @NotNull String commandShortText(@NotNull AnnotatedCommand command) {
+  public @NonNull String commandShortText(@NonNull AnnotatedCommand command) {
     return command.getDescription();
   }
 
   @Override
-  public @NotNull String commandName(AnnotatedCommand command) {
+  public @NonNull String commandName(AnnotatedCommand command) {
     return "/" + command.getName();
   }
 
   @Override
-  public @NotNull String parentCommandFull(
-      @NotNull ParentCommand command,
-      @NotNull String shortText,
-      @NotNull String buildChildren,
-      @NotNull String buildArguments) {
+  public @NonNull String parentCommandFull(
+      @NonNull ParentCommand command,
+      @NonNull String shortText,
+      @NonNull String buildChildren,
+      @NonNull String buildArguments) {
     return shortText
         + "\n Permission: "
         + command.getPermission()
@@ -143,37 +143,37 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String parentCommandShort(
-      @NotNull ParentCommand command, @NotNull String shortText) {
+  public @NonNull String parentCommandShort(
+      @NonNull ParentCommand command, @NonNull String shortText) {
     return "(Parent) " + shortText;
   }
 
   @Override
-  public @NotNull String commandFull(
-      @NotNull AnnotatedCommand command,
-      @NotNull String shortText,
-      @NotNull String buildArguments) {
+  public @NonNull String commandFull(
+      @NonNull AnnotatedCommand command,
+      @NonNull String shortText,
+      @NonNull String buildArguments) {
     return shortText + "\n Permission: " + command.getPermission() + "\n Usage: " + buildArguments;
   }
 
   @Override
-  public @NotNull String childCommandName(
-      @NotNull AnnotatedCommand command, @NotNull ParentCommand parent) {
+  public @NonNull String childCommandName(
+      @NonNull AnnotatedCommand command, @NonNull ParentCommand parent) {
     return "/" + parent.getName() + "." + command.getName();
   }
 
   @Override
-  public @NotNull String childCommandShort(
-      @NotNull AnnotatedCommand command, @NotNull ParentCommand parent) {
+  public @NonNull String childCommandShort(
+      @NonNull AnnotatedCommand command, @NonNull ParentCommand parent) {
     return command.getDescription();
   }
 
   @Override
-  public @NotNull String childCommandFull(
-      @NotNull AnnotatedCommand command,
-      @NotNull ParentCommand parent,
-      @NotNull String shortText,
-      @NotNull String buildArguments) {
+  public @NonNull String childCommandFull(
+      @NonNull AnnotatedCommand command,
+      @NonNull ParentCommand parent,
+      @NonNull String shortText,
+      @NonNull String buildArguments) {
     return shortText
         + "\n Permission: "
         + command.getPermission()
@@ -184,28 +184,28 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NotNull String requiredArgumentHelp(@NotNull Argument<?> argument) {
+  public @NonNull String requiredArgumentHelp(@NonNull Argument<?> argument) {
     return "- <" + argument.getName() + "> " + argument.getDescription() + "\n";
   }
 
   @Override
-  public @NotNull String optionalArgumentHelp(@NotNull Argument<?> argument) {
+  public @NonNull String optionalArgumentHelp(@NonNull Argument<?> argument) {
     return "- (" + argument.getName() + ") " + argument.getDescription() + "\n";
   }
 
   @Override
-  public @NotNull String childCommand(
-      @NotNull AnnotatedCommand command, @NotNull ParentCommand parent) {
+  public @NonNull String childCommand(
+      @NonNull AnnotatedCommand command, @NonNull ParentCommand parent) {
     return "- " + command.getName();
   }
 
   @Override
-  public @NotNull String invalidMaterialEmpty(@NotNull CommandContext context) {
+  public @NonNull String invalidMaterialEmpty(@NonNull CommandContext context) {
     return BukkitUtils.build("&cThe name of materials cannot be empty!");
   }
 
   @Override
-  public @NotNull String invalidMaterial(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidMaterial(@NonNull String string, @NonNull CommandContext context) {
     return BukkitUtils.build("&e" + string + " &cis not a valid material!");
   }
 }

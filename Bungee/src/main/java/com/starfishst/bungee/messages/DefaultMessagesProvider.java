@@ -1,95 +1,81 @@
 package com.starfishst.bungee.messages;
 
 import com.starfishst.bungee.context.CommandContext;
+import lombok.NonNull;
 import me.googas.commons.Strings;
-import org.jetbrains.annotations.NotNull;
 
 /** The default messages provider for bungee */
 public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
-  public @NotNull String invalidLong(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not a valid long!";
   }
 
   @Override
-  public @NotNull String invalidInteger(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidInteger(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not a valid integer!";
   }
 
   @Override
-  public @NotNull String invalidDouble(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidDouble(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not a valid double!";
   }
 
   @Override
-  public @NotNull String invalidBoolean(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidBoolean(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not a valid boolean!";
   }
 
   @Override
-  public @NotNull String invalidTime(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not valid time!";
   }
 
   @Override
-  public @NotNull String missingArgument(
-      @NotNull String name,
-      @NotNull String description,
+  public @NonNull String missingArgument(
+      @NonNull String name,
+      @NonNull String description,
       int position,
-      @NotNull CommandContext commandContext) {
-    return Strings.buildMessage(
+      @NonNull CommandContext commandContext) {
+    return Strings.build(
         "Missing argument: {0} -> {1}, position: {2}", name, description, position);
   }
 
   @Override
-  public @NotNull String invalidNumber(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidNumber(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not a valid number";
   }
 
   @Override
-  public @NotNull String emptyDouble(@NotNull CommandContext context) {
+  public @NonNull String emptyDouble(@NonNull CommandContext context) {
     return "Doubles cannot be empty!";
   }
 
   @Override
-  public @NotNull String missingStrings(
-      @NotNull String name,
-      @NotNull String description,
+  public @NonNull String missingStrings(
+      @NonNull String name,
+      @NonNull String description,
       int position,
       int minSize,
       int missing,
-      @NotNull CommandContext context) {
+      @NonNull CommandContext context) {
     return "You are missing " + missing + " strings in " + name;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public String notAllowed(CommandContext context) {
     return "You are not allowed to use this command";
   }
 
-  /**
-   * The message to send when the string does not match a proxied player
-   *
-   * @param string the string
-   * @param context the context of the command
-   * @return the message to send
-   */
   @Override
-  public @NotNull String invalidPlayer(@NotNull String string, @NotNull CommandContext context) {
+  public @NonNull String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not a valid player!";
   }
 
-  /**
-   * The message to send when a command that is required that the sender is a player happens to be
-   * something else
-   *
-   * @param context the context of the command
-   * @return the message
-   */
   @Override
-  public @NotNull String onlyPlayers(CommandContext context) {
+  public @NonNull String onlyPlayers(CommandContext context) {
     return "Only players can use this command!";
   }
 }

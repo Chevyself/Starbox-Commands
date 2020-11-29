@@ -11,6 +11,9 @@ import com.starfishst.jda.result.ResultType;
 import com.starfishst.jda.utils.embeds.EmbedFactory;
 import com.starfishst.jda.utils.message.MessagesFactory;
 import java.util.function.Consumer;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.googas.commons.Lots;
 import me.googas.commons.Strings;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -20,19 +23,18 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The main listener of command execution */
 public class CommandListener implements EventListener {
 
-  /** The prefix to start commands */
-  @NotNull private final String prefix;
   /** The manager of commands */
-  @NotNull private final CommandManager manager;
+  @NonNull @Getter private final CommandManager manager;
   /** The options of the manager */
-  @NotNull private final ManagerOptions managerOptions;
+  @NonNull @Getter private final ManagerOptions managerOptions;
   /** The provider of messages */
-  @NotNull private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final MessagesProvider messagesProvider;
+  /** The prefix to start commands */
+  @NonNull @Getter @Setter private String prefix;
 
   /**
    * Create an instance
@@ -43,21 +45,14 @@ public class CommandListener implements EventListener {
    * @param messagesProvider the provider of messages
    */
   public CommandListener(
-      @NotNull String prefix,
-      @NotNull CommandManager manager,
-      @NotNull ManagerOptions managerOptions,
-      @NotNull MessagesProvider messagesProvider) {
+      @NonNull String prefix,
+      @NonNull CommandManager manager,
+      @NonNull ManagerOptions managerOptions,
+      @NonNull MessagesProvider messagesProvider) {
     this.prefix = prefix;
     this.manager = manager;
     this.managerOptions = managerOptions;
     this.messagesProvider = messagesProvider;
-  }
-
-  @Override
-  public void onEvent(@NotNull final GenericEvent genericEvent) {
-    if (genericEvent instanceof MessageReceivedEvent) {
-      this.onMessageReceivedEvent((MessageReceivedEvent) genericEvent);
-    }
   }
 
   /**
@@ -66,7 +61,7 @@ public class CommandListener implements EventListener {
    * @param event the event of a message received
    */
   @SubscribeEvent
-  public void onMessageReceivedEvent(@NotNull MessageReceivedEvent event) {
+  public void onMessageReceivedEvent(@NonNull MessageReceivedEvent event) {
     String[] strings = event.getMessage().getContentRaw().split(" +");
     String commandName = strings[0];
     if (!commandName.startsWith(this.prefix)) {
@@ -97,8 +92,7 @@ public class CommandListener implements EventListener {
    * @param result the result to get the action from
    * @return the action from the result or null if it doesn't have any
    */
-  @Nullable
-  public Consumer<Message> getConsumer(@Nullable Result result) {
+  public Consumer<Message> getConsumer(Result result) {
     if (result != null) {
       if (result.getSuccess() != null) {
         return result.getSuccess();
@@ -118,24 +112,23 @@ public class CommandListener implements EventListener {
    * @param context the context of the command
    * @return the message
    */
-  @Nullable
-  private Message getMessage(@Nullable Result result, CommandContext context) {
+  private Message getMessage(Result result, CommandContext context) {
     if (result != null && result.getDiscordMessage() == null) {
       if (managerOptions.isEmbedMessages()) {
         if (result.getMessage() != null) {
-          return EmbedFactory.fromResult(result, this, context).getAsMessageQuery().getMessage();
+          return EmbedFactory.fromResult(result, this, context).getAsMessageQuery().build();
         } else {
           return null;
         }
       } else {
         if (result.getMessage() != null) {
           return MessagesFactory.fromString(
-                  Strings.buildMessage(
+                  Strings.build(
                       messagesProvider.response(
                           result.getType().getTitle(messagesProvider, context),
                           result.getMessage(),
                           context)))
-              .getMessage();
+              .build();
         } else {
           return null;
         }
@@ -154,9 +147,8 @@ public class CommandListener implements EventListener {
    * @param context the context of the command
    * @return the result of the command execution
    */
-  @Nullable
   private Result getResult(
-      @Nullable AnnotatedCommand command, @NotNull String commandName, CommandContext context) {
+      AnnotatedCommand command, @NonNull String commandName, CommandContext context) {
     if (command != null) {
       return command.execute(context);
     } else {
@@ -172,11 +164,9 @@ public class CommandListener implements EventListener {
    * @param commandName the name of the command
    * @return the context of the command
    */
-  @NotNull
+  @NonNull
   private CommandContext getCommandContext(
-      @NotNull MessageReceivedEvent event,
-      @NotNull String[] strings,
-      @Nullable String commandName) {
+      @NonNull MessageReceivedEvent event, @NonNull String[] strings, String commandName) {
     strings = Lots.arrayFrom(1, strings);
     if (event.getMember() != null) {
       return new GuildCommandContext(
@@ -200,33 +190,10 @@ public class CommandListener implements EventListener {
     }
   }
 
-  /**
-   * Get the manager executing the commands
-   *
-   * @return the command manager
-   */
-  @NotNull
-  public CommandManager getManager() {
-    return manager;
-  }
-
-  /**
-   * Get the messages provider of the listener
-   *
-   * @return the messages provider
-   */
-  @NotNull
-  public MessagesProvider getMessagesProvider() {
-    return messagesProvider;
-  }
-
-  /**
-   * Get the options of the manager
-   *
-   * @return the options
-   */
-  @NotNull
-  public ManagerOptions getManagerOptions() {
-    return managerOptions;
+  @Override
+  public void onEvent(@NonNull @NotNull final GenericEvent genericEvent) {
+    if (genericEvent instanceof MessageReceivedEvent) {
+      this.onMessageReceivedEvent((MessageReceivedEvent) genericEvent);
+    }
   }
 }

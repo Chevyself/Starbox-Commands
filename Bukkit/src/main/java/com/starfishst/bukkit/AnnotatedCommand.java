@@ -18,33 +18,33 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
 import me.googas.commons.Lots;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The annotated command for bukkit */
 public class AnnotatedCommand extends org.bukkit.command.Command
     implements ICommand<CommandContext> {
 
-  /** The object that owns the method to invoke */
-  @NotNull private final Object clazz;
-  /** The method to invoke. The method to invoke is the one annotated */
-  @NotNull private final Method method;
-  /** The arguments of the command */
-  @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The provider for messages */
-  @NotNull protected final MessagesProvider messagesProvider;
+  @NonNull protected final MessagesProvider messagesProvider;
   /** The plugin where this command was registered */
-  @NotNull protected final Plugin plugin;
+  @NonNull protected final Plugin plugin;
+  /** The object that owns the method to invoke */
+  @NonNull private final Object clazz;
+  /** The method to invoke. The method to invoke is the one annotated */
+  @NonNull private final Method method;
+  /** The arguments of the command */
+  @NonNull private final List<ISimpleArgument<?>> arguments;
   /** Whether the command should be executed asynchronously */
-  private final boolean asynchronous;
+  @Getter private final boolean asynchronous;
   /** The registry for the command */
-  @NotNull private final ProvidersRegistry<CommandContext> registry;
+  @NonNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create an instance
@@ -59,14 +59,14 @@ public class AnnotatedCommand extends org.bukkit.command.Command
    * @param registry the registry for the command context
    */
   AnnotatedCommand(
-      @NotNull Object clazz,
-      @NotNull Method method,
-      @NotNull List<ISimpleArgument<?>> arguments,
-      @NotNull Command command,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull Plugin plugin,
+      @NonNull Object clazz,
+      @NonNull Method method,
+      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull Command command,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull Plugin plugin,
       boolean asynchronous,
-      @NotNull ProvidersRegistry<CommandContext> registry) {
+      @NonNull ProvidersRegistry<CommandContext> registry) {
     super(
         command.aliases()[0], command.description(), "", Lots.removeAndList(command.aliases(), 0));
     this.clazz = clazz;
@@ -88,7 +88,7 @@ public class AnnotatedCommand extends org.bukkit.command.Command
    * @param commandSender the sender of the command
    * @param strings the strings of the command
    */
-  private void run(@NotNull CommandSender commandSender, @NotNull String[] strings) {
+  private void run(@NonNull CommandSender commandSender, @NonNull String[] strings) {
     Result result =
         this.execute(new CommandContext(commandSender, strings, messagesProvider, registry));
     if (result != null) {
@@ -98,26 +98,26 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     }
   }
 
-  @NotNull
+  @NonNull
   @Override
   public Object getClazz() {
     return this.clazz;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public Method getMethod() {
     return this.method;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public List<ISimpleArgument<?>> getArguments() {
     return this.arguments;
   }
 
   @Override
-  public @Nullable Result execute(@NotNull CommandContext context) {
+  public Result execute(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
@@ -150,18 +150,18 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   }
 
   @Override
-  public @NotNull IMessagesProvider<CommandContext> getMessagesProvider() {
+  public @NonNull IMessagesProvider<CommandContext> getMessagesProvider() {
     return messagesProvider;
   }
 
   @Override
-  public @NotNull ProvidersRegistry<CommandContext> getRegistry() {
+  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
     return registry;
   }
 
   @Override
   public boolean execute(
-      @NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
+      @NonNull CommandSender commandSender, @NonNull String s, @NonNull String[] strings) {
     if (asynchronous) {
       Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> run(commandSender, strings));
     } else {
@@ -171,8 +171,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   }
 
   @Override
-  public @NotNull List<String> tabComplete(
-      @NotNull CommandSender sender, @NotNull String alias, @NotNull String[] strings)
+  public @NonNull List<String> tabComplete(
+      @NonNull CommandSender sender, @NonNull String alias, @NonNull String[] strings)
       throws IllegalArgumentException {
     CommandContext context = new CommandContext(sender, strings, messagesProvider, registry);
     Argument<?> argument = this.getArgument(strings.length - 1);

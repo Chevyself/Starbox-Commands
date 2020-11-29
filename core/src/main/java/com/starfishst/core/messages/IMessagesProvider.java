@@ -2,7 +2,7 @@ package com.starfishst.core.messages;
 
 import com.starfishst.core.arguments.MultipleArgument;
 import com.starfishst.core.context.ICommandContext;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * Provides messages for different instances of the manager
@@ -18,8 +18,8 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message to tell the user that the input is wrong
    */
-  @NotNull
-  String invalidLong(@NotNull String string, @NotNull T context);
+  @NonNull
+  String invalidLong(@NonNull String string, @NonNull T context);
 
   /**
    * The message sent when a string is not valid as a integer
@@ -28,8 +28,8 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidInteger(@NotNull String string, @NotNull T context);
+  @NonNull
+  String invalidInteger(@NonNull String string, @NonNull T context);
 
   /**
    * The message sent when a string is not valid as a double
@@ -38,8 +38,8 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidDouble(@NotNull String string, @NotNull T context);
+  @NonNull
+  String invalidDouble(@NonNull String string, @NonNull T context);
 
   /**
    * The message sent when a string is not valid as a boolean
@@ -48,8 +48,8 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidBoolean(@NotNull String string, @NotNull T context);
+  @NonNull
+  String invalidBoolean(@NonNull String string, @NonNull T context);
 
   /**
    * The message sent when a string is not valid as Time
@@ -58,8 +58,8 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidTime(@NotNull String string, @NotNull T context);
+  @NonNull
+  String invalidTime(@NonNull String string, @NonNull T context);
 
   /**
    * Get the message to send when there's a missing a argument
@@ -70,9 +70,9 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return The error when the message is missing arguments
    */
-  @NotNull
+  @NonNull
   String missingArgument(
-      @NotNull String name, @NotNull String description, int position, T context);
+      @NonNull String name, @NonNull String description, int position, T context);
 
   /**
    * Get the message to send when a string is not a valid number
@@ -81,8 +81,8 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
-  @NotNull
-  String invalidNumber(@NotNull String string, @NotNull T context);
+  @NonNull
+  String invalidNumber(@NonNull String string, @NonNull T context);
 
   /**
    * Get the message sent when the input string for a double is empty
@@ -90,8 +90,8 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message to tell the user that a double cannot be empty
    */
-  @NotNull
-  String emptyDouble(@NotNull T context);
+  @NonNull
+  String emptyDouble(@NonNull T context);
 
   /**
    * Get the message sent when a {@link MultipleArgument#getMinSize()} is bigger than the context
@@ -105,12 +105,12 @@ public interface IMessagesProvider<T extends ICommandContext> {
    * @param context the context of the command
    * @return the message
    */
-  @NotNull
+  @NonNull
   String missingStrings(
-      @NotNull String name,
-      @NotNull String description,
+      @NonNull String name,
+      @NonNull String description,
       int position,
       int minSize,
       int missing,
-      @NotNull T context);
+      @NonNull T context);
 }

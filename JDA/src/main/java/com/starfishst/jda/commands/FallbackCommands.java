@@ -7,20 +7,29 @@ import com.starfishst.jda.result.ResultType;
 import com.starfishst.jda.utils.embeds.EmbedFactory;
 import java.util.LinkedHashMap;
 import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.googas.commons.fallback.Fallback;
 
 /** The commands related to fallback */
 public class FallbackCommands {
 
+  @NonNull @Getter @Setter private Fallback fallback;
+
   /**
-   * Get the errors that were cached by the fallback
+   * Create the fallback commands
    *
-   * @return a message displaying errors
+   * @param fallback the fallback that will be managed by these commands
    */
+  public FallbackCommands(@NonNull Fallback fallback) {
+    this.fallback = fallback;
+  }
+
   @Command(aliases = "errors", description = "See what errors does the Command Manager have")
   @Parent
   public Result error() {
-    List<String> list = Fallback.getErrors().getList();
+    List<String> list = fallback.getErrors();
     if (list.isEmpty()) {
       return new Result(ResultType.GENERIC, "There's no errors :)");
     } else {
@@ -33,7 +42,7 @@ public class FallbackCommands {
           EmbedFactory.newEmbed(
                   "Errors", "This is a list of errors", null, null, null, null, errors, true)
               .getAsMessageQuery()
-              .getMessage());
+              .build());
     }
   }
 
@@ -44,7 +53,7 @@ public class FallbackCommands {
    */
   @Command(aliases = "clear", description = "Clear the list of errors")
   public Result clear() {
-    Fallback.clear();
+    fallback.getErrors().clear();
     return new Result("Errors cleared");
   }
 }

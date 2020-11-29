@@ -3,24 +3,26 @@ package com.starfishst.jda.utils.message;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.utils.Chat;
 import java.util.function.Consumer;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.experimental.Delegate;
+import me.googas.commons.builder.Builder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** An easy way to use the messages from {@link MessagesFactory} */
-public class MessageQuery {
+public class MessageQuery implements Builder<Message> {
 
   /** The builder of the message */
-  @NotNull private final MessageBuilder builder;
+  @NonNull @Delegate @Getter private final MessageBuilder builder;
 
   /**
    * Create an instance
    *
    * @param builder the builder of the message
    */
-  public MessageQuery(@NotNull MessageBuilder builder) {
+  public MessageQuery(@NonNull MessageBuilder builder) {
     this.builder = builder;
   }
 
@@ -30,8 +32,8 @@ public class MessageQuery {
    * @param channel the channel to send the message
    * @param success the action to execute after the message is send
    */
-  public void send(@NotNull MessageChannel channel, @Nullable Consumer<Message> success) {
-    Chat.send(channel, getMessage(), success);
+  public void send(@NonNull MessageChannel channel, Consumer<Message> success) {
+    Chat.send(channel, build(), success);
   }
 
   /**
@@ -39,8 +41,8 @@ public class MessageQuery {
    *
    * @param channel the channel to send the message
    */
-  public void send(@NotNull MessageChannel channel) {
-    Chat.send(channel, getMessage());
+  public void send(@NonNull MessageChannel channel) {
+    Chat.send(channel, build());
   }
 
   /**
@@ -49,8 +51,8 @@ public class MessageQuery {
    * @param context the context to get the channel from
    * @param success the action to execute after the message is send
    */
-  public void send(@NotNull CommandContext context, @Nullable Consumer<Message> success) {
-    Chat.send(context, getMessage(), success);
+  public void send(@NonNull CommandContext context, Consumer<Message> success) {
+    Chat.send(context, build(), success);
   }
 
   /**
@@ -58,27 +60,7 @@ public class MessageQuery {
    *
    * @param context the context to get the channel from
    */
-  public void send(@NotNull CommandContext context) {
-    Chat.send(context, getMessage());
-  }
-
-  /**
-   * Get the builder of the query
-   *
-   * @return the message builder of the query
-   */
-  @NotNull
-  public MessageBuilder getBuilder() {
-    return builder;
-  }
-
-  /**
-   * Get the built message using the builder of the query
-   *
-   * @return the built message
-   */
-  @NotNull
-  public Message getMessage() {
-    return builder.build();
+  public void send(@NonNull CommandContext context) {
+    Chat.send(context, build());
   }
 }

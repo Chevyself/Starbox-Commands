@@ -16,7 +16,7 @@ import com.starfishst.core.providers.type.IExtraArgumentProvider;
 import com.starfishst.core.providers.type.IMultipleArgumentProvider;
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * Contains all the providers ready for the context to use and serialize objects
@@ -33,7 +33,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
    *
    * @param messages the messages providers for the messages sent in the provider
    */
-  public ProvidersRegistry(@NotNull IMessagesProvider<T> messages) {
+  public ProvidersRegistry(@NonNull IMessagesProvider<T> messages) {
     this.addProvider(new BooleanProvider<>(messages));
     this.addProvider(new DoubleProvider<>(messages));
     this.addProvider(new IntegerProvider<>(messages));
@@ -51,7 +51,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
    *
    * @param provider the provider to register
    */
-  public void addProvider(@NotNull IContextualProvider<?, T> provider) {
+  public void addProvider(@NonNull IContextualProvider<?, T> provider) {
     this.providers.add(provider);
   }
 
@@ -61,7 +61,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
    * @param clazz the queried class
    * @return a list of providers for the queried class
    */
-  public List<IContextualProvider<?, T>> getProviders(@NotNull Class<?> clazz) {
+  public List<IContextualProvider<?, T>> getProviders(@NonNull Class<?> clazz) {
     List<IContextualProvider<?, T>> list = new ArrayList<>();
     for (IContextualProvider<?, T> provider : this.providers) {
       if (provider.provides(clazz)) {
@@ -84,8 +84,8 @@ public class ProvidersRegistry<T extends ICommandContext> {
    *     correct
    */
   @SuppressWarnings("unchecked")
-  @NotNull
-  public Object getObject(@NotNull Class<?> clazz, @NotNull T context)
+  @NonNull
+  public Object getObject(@NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
     for (IContextualProvider<?, T> provider : getProviders(clazz)) {
       if (provider instanceof IExtraArgumentProvider) {
@@ -110,8 +110,8 @@ public class ProvidersRegistry<T extends ICommandContext> {
    *     correct
    */
   @SuppressWarnings("unchecked")
-  @NotNull
-  public Object fromString(@NotNull String string, @NotNull Class<?> clazz, @NotNull T context)
+  @NonNull
+  public Object fromString(@NonNull String string, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
     for (IContextualProvider<?, T> provider : getProviders(clazz)) {
       if (provider instanceof IArgumentProvider) {
@@ -135,8 +135,8 @@ public class ProvidersRegistry<T extends ICommandContext> {
    *     correct
    */
   @SuppressWarnings("unchecked")
-  @NotNull
-  public Object fromStrings(@NotNull String[] strings, @NotNull Class<?> clazz, @NotNull T context)
+  @NonNull
+  public Object fromStrings(@NonNull String[] strings, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
     for (IContextualProvider<?, T> provider : getProviders(clazz)) {
       if (provider instanceof IMultipleArgumentProvider) {

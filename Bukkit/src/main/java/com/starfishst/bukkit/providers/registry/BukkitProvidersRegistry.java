@@ -9,7 +9,7 @@ import com.starfishst.bukkit.providers.OfflinePlayerProvider;
 import com.starfishst.bukkit.providers.PlayerProvider;
 import com.starfishst.bukkit.providers.PlayerSenderProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** The providers registry for bukkit */
 public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
@@ -19,7 +19,7 @@ public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
    *
    * @param messages the messages providers for the messages sent in the provider
    */
-  public BukkitProvidersRegistry(@NotNull MessagesProvider messages) {
+  public BukkitProvidersRegistry(@NonNull MessagesProvider messages) {
     super(messages);
     this.addProvider(new CommandContextProvider());
     this.addProvider(new CommandSenderArgumentProvider());

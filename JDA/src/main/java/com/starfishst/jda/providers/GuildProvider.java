@@ -5,8 +5,8 @@ import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.context.GuildCommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
 import com.starfishst.jda.providers.type.JdaExtraArgumentProvider;
+import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Guild;
-import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Guild} */
 public class GuildProvider implements JdaExtraArgumentProvider<Guild> {
@@ -23,9 +23,9 @@ public class GuildProvider implements JdaExtraArgumentProvider<Guild> {
     this.messagesProvider = messagesProvider;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Guild getObject(@NotNull CommandContext context) throws ArgumentProviderException {
+  public Guild getObject(@NonNull CommandContext context) throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
       throw new ArgumentProviderException(messagesProvider.guildOnly(context));
     }
@@ -33,7 +33,7 @@ public class GuildProvider implements JdaExtraArgumentProvider<Guild> {
   }
 
   @Override
-  public @NotNull Class<Guild> getClazz() {
+  public @NonNull Class<Guild> getClazz() {
     return Guild.class;
   }
 }

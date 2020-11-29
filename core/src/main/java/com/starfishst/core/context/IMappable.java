@@ -1,6 +1,6 @@
 package com.starfishst.core.context;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** It's a class that can be added to a help map */
 public interface IMappable {
@@ -10,7 +10,7 @@ public interface IMappable {
    *
    * @return the name
    */
-  @NotNull
+  @NonNull
   String getName();
 
   /**
@@ -18,6 +18,6 @@ public interface IMappable {
    *
    * @return the description
    */
-  @NotNull
+  @NonNull
   String getDescription();
 }

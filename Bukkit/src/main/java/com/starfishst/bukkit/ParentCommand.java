@@ -10,21 +10,21 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The annotated parent command for bukkit */
 public class ParentCommand extends AnnotatedCommand implements IParentCommand<AnnotatedCommand> {
 
   /** The command manager options */
-  @NotNull private final CommandManagerOptions options;
+  @NonNull @Getter private final CommandManagerOptions options;
   /** The list of children commands */
-  @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
+  @NonNull private final List<AnnotatedCommand> commands = new ArrayList<>();
   /** The alias of the command */
-  @NotNull private final List<String> commandsAlias = new ArrayList<>();
+  @NonNull private final List<String> commandsAlias = new ArrayList<>();
 
   /**
    * Create an instance
@@ -40,26 +40,26 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param registry the providers registry for the command context
    */
   ParentCommand(
-      @NotNull Object clazz,
-      @NotNull Method method,
-      @NotNull List<ISimpleArgument<?>> arguments,
-      @NotNull Command command,
-      @NotNull CommandManagerOptions options,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull Plugin plugin,
+      @NonNull Object clazz,
+      @NonNull Method method,
+      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull Command command,
+      @NonNull CommandManagerOptions options,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull Plugin plugin,
       boolean async,
-      @NotNull ProvidersRegistry<CommandContext> registry) {
+      @NonNull ProvidersRegistry<CommandContext> registry) {
     super(clazz, method, arguments, command, messagesProvider, plugin, async, registry);
     this.options = options;
   }
 
   @Override
-  public @NotNull List<AnnotatedCommand> getCommands() {
+  public @NonNull List<AnnotatedCommand> getCommands() {
     return this.commands;
   }
 
   @Override
-  public @Nullable AnnotatedCommand getCommand(@NotNull String name) {
+  public AnnotatedCommand getCommand(@NonNull String name) {
     return this.commands.stream()
         .filter(
             annotatedCommand ->
@@ -74,7 +74,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
   }
 
   @Override
-  public void addCommand(@NotNull AnnotatedCommand command) {
+  public void addCommand(@NonNull AnnotatedCommand command) {
     this.commands.add(command);
     this.commandsAlias.add(command.getName());
 
@@ -85,7 +85,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
 
   @Override
   public boolean execute(
-      @NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) {
+      @NonNull CommandSender commandSender, @NonNull String s, @NonNull String[] strings) {
     if (strings.length >= 1) {
       AnnotatedCommand command = this.getCommand(strings[0]);
       if (command != null) {
@@ -98,12 +98,12 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
     }
   }
 
-  @NotNull
+  @NonNull
   @Override
   public List<String> tabComplete(
-      @NotNull final CommandSender sender,
-      @NotNull final String alias,
-      @NotNull final String[] strings)
+      @NonNull final CommandSender sender,
+      @NonNull final String alias,
+      @NonNull final String[] strings)
       throws IllegalArgumentException {
     if (strings.length == 1) {
       return StringUtil.copyPartialMatches(

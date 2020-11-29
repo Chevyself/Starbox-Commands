@@ -1,60 +1,46 @@
 package com.starfishst.jda;
 
-import me.googas.commons.cache.thread.Catchable;
+import lombok.Getter;
+import lombok.NonNull;
 import me.googas.commons.time.Time;
-import org.jetbrains.annotations.NotNull;
+import me.googas.commons.time.Unit;
 
 /** An user that is inside the cooldown of a command */
-public class CooldownUser extends Catchable {
+public class CooldownUser {
 
-  /** The time to remove the user from cache */
-  @NotNull private final Time toRemove;
-  /** The command where the user is cooled down */
-  @NotNull private final AnnotatedCommand command;
+  /** The time when the user can execute the command again */
+  @Getter private final long expires;
   /** The id of the user */
-  private final long id;
+  @Getter private final long id;
 
   /**
    * Create an instance
    *
    * @param toRemove the time to remove the user from the cooldown
-   * @param command the command where the user is cooled down
    * @param id the id of the user
    */
-  public CooldownUser(@NotNull Time toRemove, @NotNull AnnotatedCommand command, long id) {
-    this.toRemove = toRemove;
-    this.command = command;
+  public CooldownUser(@NonNull Time toRemove, long id) {
+    this.expires = System.currentTimeMillis() + toRemove.millis();
     this.id = id;
-    this.addToCache();
   }
 
   /**
-   * Get the id of the user
+   * Get whether the user can execute the command again
    *
-   * @return the id of the user
+   * @return true if the cooldown time has expired
    */
-  public long getId() {
-    return id;
+  public boolean isExpired() {
+    return expires < System.currentTimeMillis();
   }
 
   /**
-   * Get the command where the user is cooled down
+   * Get the time in which the user can execute the command again
    *
-   * @return the command
+   * @return the time in which the user can execute the command again
    */
-  @NotNull
-  public AnnotatedCommand getCommand() {
-    return command;
-  }
-
-  @Override
-  public void onSecondPassed() {}
-
-  @Override
-  public void onRemove() {}
-
-  @Override
-  public @NotNull Time getToRemove() {
-    return this.toRemove;
+  @NonNull
+  public Time getTimeLeft() {
+    if (this.isExpired()) return new Time(0, Unit.SECONDS);
+    return Time.fromMillis(expires - System.currentTimeMillis());
   }
 }

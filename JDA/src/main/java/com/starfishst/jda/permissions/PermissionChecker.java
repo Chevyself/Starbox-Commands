@@ -1,13 +1,11 @@
-package com.starfishst.jda;
+package com.starfishst.jda.permissions;
 
-import com.starfishst.jda.annotations.Perm;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
 import com.starfishst.jda.result.Result;
 import com.starfishst.jda.result.ResultType;
+import lombok.NonNull;
 import net.dv8tion.jda.api.Permission;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** Checks for the permissions of an user when executing a command */
 public interface PermissionChecker {
@@ -25,9 +23,8 @@ public interface PermissionChecker {
    *     {@link net.dv8tion.jda.api.entities.Member#hasPermission(Permission...)} a result will be
    *     given
    */
-  @Nullable
-  default Result checkPermission(@NotNull CommandContext context, @NotNull Perm perm) {
-    Permission permission = perm.permission();
+  default Result checkPermission(@NonNull CommandContext context, @NonNull JdaPermission perm) {
+    Permission permission = perm.getPermission();
     if (permission != Permission.UNKNOWN && context.getMessage().getMember() != null) {
       if (!context.getMessage().getMember().hasPermission(permission)) {
         return new Result(ResultType.PERMISSION, this.getMessagesProvider().notAllowed(context));
@@ -39,11 +36,11 @@ public interface PermissionChecker {
   }
 
   /**
-   * Get the messages provider in case that the {@link #checkPermission(CommandContext, Perm)} has
-   * to return a result with a message.
+   * Get the messages provider in case that the {@link #checkPermission(CommandContext,
+   * JdaPermission)} has to return a result with a message.
    *
    * @return the messages provider
    */
-  @NotNull
+  @NonNull
   MessagesProvider getMessagesProvider();
 }

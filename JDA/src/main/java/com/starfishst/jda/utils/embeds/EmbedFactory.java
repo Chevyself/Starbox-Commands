@@ -8,11 +8,10 @@ import com.starfishst.jda.result.Result;
 import com.starfishst.jda.result.ResultType;
 import java.awt.*;
 import java.util.LinkedHashMap;
+import lombok.NonNull;
 import me.googas.commons.Validate;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** Easily create embeds */
 public class EmbedFactory {
@@ -29,7 +28,7 @@ public class EmbedFactory {
    * @return an embed query built from the result
    */
   public static EmbedQuery fromResult(
-      @NotNull Result result, @NotNull CommandListener listener, @Nullable CommandContext context) {
+      @NonNull Result result, @NonNull CommandListener listener, CommandContext context) {
     MessagesProvider messagesProvider = listener.getMessagesProvider();
     ManagerOptions managerOptions = listener.getManagerOptions();
     ResultType type = result.getType();
@@ -59,13 +58,13 @@ public class EmbedFactory {
    * @return a built query
    */
   public static EmbedQuery newEmbed(
-      @Nullable String title,
-      @Nullable String description,
-      @Nullable String thumbnail,
-      @Nullable String image,
-      @Nullable String footer,
-      @Nullable Color color,
-      @Nullable LinkedHashMap<String, String> fields,
+      String title,
+      String description,
+      String thumbnail,
+      String image,
+      String footer,
+      Color color,
+      LinkedHashMap<String, String> fields,
       boolean inline) {
     EmbedBuilder builder = getEmbedBuilder();
     if (title != null) {
@@ -129,7 +128,7 @@ public class EmbedFactory {
    *
    * @return the embed builder used
    */
-  public static @NotNull EmbedBuilder getEmbedBuilder() {
+  public static @NonNull EmbedBuilder getEmbedBuilder() {
     return EmbedFactory.embedBuilder.clear();
   }
 }

@@ -7,54 +7,58 @@ import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.exceptions.type.SimpleException;
 import com.starfishst.core.exceptions.type.SimpleRuntimeException;
-import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.jda.annotations.Command;
-import com.starfishst.jda.annotations.Perm;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
+import com.starfishst.jda.permissions.PermissionChecker;
+import com.starfishst.jda.permissions.SimplePermission;
 import com.starfishst.jda.result.Result;
 import com.starfishst.jda.result.ResultType;
+import com.starfishst.jda.utils.Annotations;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import me.googas.commons.cache.thread.Cache;
+import java.util.Set;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.googas.commons.time.Time;
 import net.dv8tion.jda.api.entities.User;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** An annotated command for discord */
 public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
 
   /** The class that contains the method that executes the command */
-  @NotNull private final Object clazz;
+  @NonNull private final Object clazz;
   /** The method that executes the command */
-  @NotNull private final Method method;
+  @NonNull private final Method method;
   /** The name of the command */
-  @NotNull private final String name;
+  @NonNull private final String name;
   /** The description of the command */
-  @NotNull private final String description;
+  @NonNull private final String description;
   /** Other aliases of the command */
-  @NotNull private final List<String> aliases;
+  @NonNull private final List<String> aliases;
   /** The permission required to execute the command */
-  @NotNull private final Perm permission;
+  @NonNull @Getter private final SimplePermission permission;
   /** The list of arguments that the command requires */
-  @NotNull private final List<ISimpleArgument<?>> arguments;
+  @NonNull private final List<ISimpleArgument<?>> arguments;
   /** The message provider for certain messages */
-  @NotNull private final MessagesProvider messagesProvider;
+  @NonNull private final MessagesProvider messagesProvider;
   /** The permission checker for the permissions of the command sender */
-  @NotNull private final PermissionChecker permissionChecker;
+  @NonNull private final PermissionChecker permissionChecker;
 
-  @NotNull private final ProvidersRegistry<CommandContext> registry;
-  /** The time to cooldown the use of the message for the users */
-  @NotNull private Time cooldown;
+  @NonNull private final ProvidersRegistry<CommandContext> registry;
   /**
    * Whether or not if it should be excluded from being deleted it's success check {@link
    * com.starfishst.jda.annotations.Exclude}
    */
-  private final boolean excluded;
+  @Getter private final boolean excluded;
+  /** The users that have executed the command */
+  @NonNull @Getter private final Set<CooldownUser> cooldownUsers;
+  /** The time to cooldown the use of the message for the users */
+  @NonNull @Getter @Setter private Time cooldown;
 
   /**
    * Create an instance
@@ -68,29 +72,32 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @param registry the registry to get the providers from
    * @param cooldown the cooldown of the command
    * @param excluded if the command should be excluded from deleting its success
+   * @param cooldownUsers the list of users that are in cooldown
    */
   public AnnotatedCommand(
-      @NotNull Object clazz,
-      @NotNull Method method,
+      @NonNull Object clazz,
+      @NonNull Method method,
       Command cmd,
-      @NotNull List<ISimpleArgument<?>> arguments,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull PermissionChecker permissionChecker,
-      @NotNull ProvidersRegistry<CommandContext> registry,
-      @NotNull Time cooldown,
-      boolean excluded) {
+      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull PermissionChecker permissionChecker,
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull Time cooldown,
+      boolean excluded,
+      @NonNull Set<CooldownUser> cooldownUsers) {
     this.clazz = clazz;
     this.method = method;
     this.name = cmd.aliases()[0];
     this.description = cmd.description();
     this.aliases = Arrays.asList(cmd.aliases());
-    this.permission = cmd.permission();
+    this.permission = Annotations.getPermission(cmd);
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
     this.permissionChecker = permissionChecker;
     this.registry = registry;
     this.cooldown = cooldown;
     this.excluded = excluded;
+    this.cooldownUsers = cooldownUsers;
   }
 
   /**
@@ -100,11 +107,11 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @param context the context of the command
    * @return an usage error if the sender is not allowed to use the command yet else null
    */
-  @Nullable
-  public Result checkCooldown(@NotNull User sender, @Nullable CommandContext context) {
+  public Result checkCooldown(@NonNull User sender, CommandContext context) {
     if (cooldown.millis() != 0) {
       CooldownUser cooldownUser = getCooldownUser(sender);
-      if (cooldownUser != null) {
+      // TODO make them ignore if the user has certain permission
+      if (cooldownUser != null && !cooldownUser.isExpired()) {
         return new Result(
             ResultType.USAGE, messagesProvider.cooldown(cooldownUser.getTimeLeft(), context));
       }
@@ -118,40 +125,11 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @param sender the sender to check the cooldown
    * @return a cooldown user if it exists
    */
-  @Nullable
-  public CooldownUser getCooldownUser(@NotNull User sender) {
-    return Cache.getNotRefresh(
-        CooldownUser.class,
-        user -> user.getCommand() == this && user.getId() == sender.getIdLong());
-  }
-
-  /**
-   * Set the cooldown of the command
-   *
-   * @param cooldown the new cooldown
-   */
-  public void setCooldown(@NotNull Time cooldown) {
-    this.cooldown = cooldown;
-  }
-
-  /**
-   * Get the cooldown of the command
-   *
-   * @return the cooldown
-   */
-  @NotNull
-  public Time getCooldown() {
-    return cooldown;
-  }
-
-  /**
-   * Get the permission of the command
-   *
-   * @return the permission of the command
-   */
-  @NotNull
-  public Perm getPermission() {
-    return permission;
+  public CooldownUser getCooldownUser(@NonNull User sender) {
+    for (CooldownUser user : this.cooldownUsers) {
+      if (user.getId() == sender.getIdLong()) return user;
+    }
+    return null;
   }
 
   /**
@@ -160,12 +138,12 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @param context the context to check the command
    * @return true if the context has the permission to execute the command
    */
-  public boolean hasPermission(@NotNull CommandContext context) {
+  public boolean hasPermission(@NonNull CommandContext context) {
     return this.permissionChecker.checkPermission(context, this.permission) == null;
   }
 
   @Override
-  public @Nullable Result execute(@NotNull CommandContext context) {
+  public Result execute(@NonNull CommandContext context) {
     Result result = this.permissionChecker.checkPermission(context, this.permission);
     if (result != null) {
       return result;
@@ -180,7 +158,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
       if (object instanceof Result) {
         result = (Result) object;
         if (cooldown.millis() != 0) {
-          new CooldownUser(cooldown, this, context.getSender().getIdLong());
+          this.cooldownUsers.add(new CooldownUser(cooldown, context.getSender().getIdLong()));
         }
         if (result.getSuccess() == null && excluded) {
           result =
@@ -213,49 +191,49 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
     }
   }
 
-  @NotNull
+  @NonNull
   @Override
   public List<String> getAliases() {
     return aliases;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public Object getClazz() {
     return clazz;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public Method getMethod() {
     return method;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public List<ISimpleArgument<?>> getArguments() {
     return arguments;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public ProvidersRegistry<CommandContext> getRegistry() {
     return registry;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public IMessagesProvider<CommandContext> getMessagesProvider() {
+  public MessagesProvider getMessagesProvider() {
     return messagesProvider;
   }
 
   @Override
-  public @NotNull String getName() {
+  public @NonNull String getName() {
     return name;
   }
 
   @Override
-  public @NotNull String getDescription() {
+  public @NonNull String getDescription() {
     return description;
   }
 

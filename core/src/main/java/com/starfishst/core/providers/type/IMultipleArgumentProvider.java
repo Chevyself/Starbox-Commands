@@ -2,7 +2,7 @@ package com.starfishst.core.providers.type;
 
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * Gets the object using multiple strings from the command
@@ -20,6 +20,6 @@ public interface IMultipleArgumentProvider<O, T extends ICommandContext>
    * @return the object
    * @throws ArgumentProviderException if the argument could not be provided
    */
-  @NotNull
-  O fromStrings(@NotNull String[] strings, @NotNull T context) throws ArgumentProviderException;
+  @NonNull
+  O fromStrings(@NonNull String[] strings, @NonNull T context) throws ArgumentProviderException;
 }

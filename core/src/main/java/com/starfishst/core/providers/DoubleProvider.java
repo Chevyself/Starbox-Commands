@@ -4,7 +4,7 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Double} */
 public class DoubleProvider<T extends ICommandContext> implements IArgumentProvider<Double, T> {
@@ -22,13 +22,13 @@ public class DoubleProvider<T extends ICommandContext> implements IArgumentProvi
   }
 
   @Override
-  public @NotNull Class<Double> getClazz() {
+  public @NonNull Class<Double> getClazz() {
     return Double.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Double fromString(@NotNull String string, @NotNull T context)
+  public Double fromString(@NonNull String string, @NonNull T context)
       throws ArgumentProviderException {
     try {
       return Double.parseDouble(string);
@@ -38,7 +38,7 @@ public class DoubleProvider<T extends ICommandContext> implements IArgumentProvi
   }
 
   @Override
-  public boolean provides(@NotNull Class<?> clazz) {
+  public boolean provides(@NonNull Class<?> clazz) {
     return clazz == Double.class || clazz == double.class;
   }
 }

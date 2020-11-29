@@ -2,8 +2,7 @@ package com.starfishst.core;
 
 import com.starfishst.core.context.ICommandContext;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import lombok.NonNull;
 
 /**
  * This object is just a {@link ISimpleCommand} but it contains commands inside of it, so that when
@@ -27,8 +26,7 @@ public interface IParentCommand<C extends ISimpleCommand<?>> {
    * @param name the name that has to match
    * @return the command or null if not found
    */
-  @Nullable
-  C getCommand(@NotNull String name);
+  C getCommand(@NonNull String name);
 
   /**
    * Add a command to the parent. Instead of containing in {@link ICommandManager} it will be in
@@ -36,7 +34,7 @@ public interface IParentCommand<C extends ISimpleCommand<?>> {
    *
    * @param command the command to add in the list
    */
-  default void addCommand(@NotNull C command) {
+  default void addCommand(@NonNull C command) {
     getCommands().add(command);
   }
 
@@ -46,6 +44,6 @@ public interface IParentCommand<C extends ISimpleCommand<?>> {
    *
    * @return the {@link List} of {@link C}
    */
-  @NotNull
+  @NonNull
   List<C> getCommands();
 }

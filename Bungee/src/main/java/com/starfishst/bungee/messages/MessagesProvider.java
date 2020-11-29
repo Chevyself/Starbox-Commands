@@ -2,7 +2,7 @@ package com.starfishst.bungee.messages;
 
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.core.messages.IMessagesProvider;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** The messages provider for bungee */
 public interface MessagesProvider extends IMessagesProvider<CommandContext> {
@@ -13,7 +13,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to send
    */
-  @NotNull
+  @NonNull
   String notAllowed(CommandContext context);
 
   /**
@@ -23,8 +23,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to send
    */
-  @NotNull
-  String invalidPlayer(@NotNull String string, @NotNull CommandContext context);
+  @NonNull
+  String invalidPlayer(@NonNull String string, @NonNull CommandContext context);
 
   /**
    * The message to send when a command that is required that the sender is a player happens to be
@@ -33,6 +33,6 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message
    */
-  @NotNull
+  @NonNull
   String onlyPlayers(CommandContext context);
 }

@@ -3,14 +3,14 @@ package com.starfishst.jda.context;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.jda.messages.MessagesProvider;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This context is used when the command is executed inside of a guild the context is still a {@link
@@ -19,9 +19,9 @@ import org.jetbrains.annotations.Nullable;
 public class GuildCommandContext extends CommandContext {
 
   /** The sender of the command as a member */
-  @NotNull private final Member member;
+  @NonNull @Getter private final Member member;
   /** The guild where the command was executed */
-  @NotNull private final Guild guild;
+  @NonNull @Getter private final Guild guild;
 
   /**
    * Create an instance
@@ -36,12 +36,12 @@ public class GuildCommandContext extends CommandContext {
    * @param commandName the name of the command that is being executed
    */
   public GuildCommandContext(
-      @NotNull Message message,
-      @NotNull User sender,
-      @NotNull String[] args,
-      @NotNull MessageChannel channel,
-      @Nullable MessageReceivedEvent event,
-      @NotNull MessagesProvider messagesProvider,
+      @NonNull Message message,
+      @NonNull User sender,
+      @NonNull String[] args,
+      @NonNull MessageChannel channel,
+      MessageReceivedEvent event,
+      @NonNull MessagesProvider messagesProvider,
       ProvidersRegistry<CommandContext> registry,
       String commandName) {
     super(message, sender, args, channel, messagesProvider, registry, commandName);
@@ -49,26 +49,6 @@ public class GuildCommandContext extends CommandContext {
         Objects.requireNonNull(
             message.getMember(), "Guild command context must have a valid member");
     guild = message.getGuild();
-  }
-
-  /**
-   * Get the sender of the command as a member
-   *
-   * @return the sender of the command
-   */
-  @NotNull
-  public Member getMember() {
-    return member;
-  }
-
-  /**
-   * Get the guild where the command was executed
-   *
-   * @return the guild
-   */
-  @NotNull
-  public Guild getGuild() {
-    return guild;
   }
 
   @Override

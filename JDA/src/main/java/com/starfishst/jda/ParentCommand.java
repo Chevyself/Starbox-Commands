@@ -6,14 +6,15 @@ import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.jda.annotations.Command;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
+import com.starfishst.jda.permissions.PermissionChecker;
 import com.starfishst.jda.result.Result;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import lombok.NonNull;
 import me.googas.commons.Lots;
 import me.googas.commons.time.Time;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Just like {@link AnnotatedCommand} but has children commands that are executed just like any
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class ParentCommand extends AnnotatedCommand implements IParentCommand<AnnotatedCommand> {
 
   /** The list of registered commands */
-  @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
+  @NonNull private final List<AnnotatedCommand> commands = new ArrayList<>();
 
   /**
    * Create an instance
@@ -36,17 +37,19 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param excluded if the command should be excluded from deleting its success
    * @param registry the registry to get the providers from
    * @param permissionChecker to check the permission of the command sender
+   * @param cooldownUsers the collection of users that have executed the command
    */
   public ParentCommand(
-      @NotNull Object clazz,
-      @NotNull Method method,
+      @NonNull Object clazz,
+      @NonNull Method method,
       Command cmd,
-      @NotNull List<ISimpleArgument<?>> arguments,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull Time cooldown,
+      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull Time cooldown,
       boolean excluded,
       ProvidersRegistry<CommandContext> registry,
-      PermissionChecker permissionChecker) {
+      PermissionChecker permissionChecker,
+      Set<CooldownUser> cooldownUsers) {
     super(
         clazz,
         method,
@@ -56,32 +59,28 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
         permissionChecker,
         registry,
         cooldown,
-        excluded);
+        excluded,
+        cooldownUsers);
   }
 
   @Override
-  public @NotNull List<AnnotatedCommand> getCommands() {
+  public @NonNull List<AnnotatedCommand> getCommands() {
     return commands;
   }
 
-  @Nullable
   @Override
-  public AnnotatedCommand getCommand(@NotNull String name) {
+  public AnnotatedCommand getCommand(@NonNull String name) {
     for (AnnotatedCommand command : this.commands) {
-      if (command.getName().equalsIgnoreCase(name)) {
-        return command;
-      }
+      if (command.getName().equalsIgnoreCase(name)) return command;
       for (String alias : command.getAliases()) {
-        if (alias.equalsIgnoreCase(name)) {
-          return command;
-        }
+        if (alias.equalsIgnoreCase(name)) return command;
       }
     }
     return null;
   }
 
   @Override
-  public @NotNull Result execute(@NotNull CommandContext context) {
+  public Result execute(@NonNull CommandContext context) {
     String[] strings = context.getStrings();
     if (strings.length >= 1) {
       AnnotatedCommand command = this.getCommand(strings[0]);

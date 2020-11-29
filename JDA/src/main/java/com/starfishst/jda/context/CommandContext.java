@@ -4,31 +4,31 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.jda.messages.MessagesProvider;
 import java.util.Arrays;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.googas.commons.Strings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** This context is used for every command {@link User being the sender} */
 public class CommandContext implements ICommandContext {
 
   /** The message that executed the command */
-  @NotNull private final Message message;
+  @NonNull @Getter private final Message message;
   /** The user that executed the command */
-  @NotNull private final User sender;
+  @NonNull private final User sender;
   /** The channel where the command was invoked */
-  @NotNull private final MessageChannel channel;
-  /** The strings of the command execution */
-  @NotNull private String[] strings;
+  @NonNull @Getter private final MessageChannel channel;
   /** The messages provider of this context */
-  @NotNull private final MessagesProvider messagesProvider;
+  @NonNull private final MessagesProvider messagesProvider;
   /** The registry of the command context */
-  @NotNull private final ProvidersRegistry<CommandContext> registry;
-
+  @NonNull private final ProvidersRegistry<CommandContext> registry;
   /** The name of the command that is being executed */
-  @Nullable private final String commandName;
+  @Getter private final String commandName;
+  /** The strings of the command execution */
+  @NonNull @Setter private String[] strings;
 
   /**
    * Create an instance
@@ -42,13 +42,13 @@ public class CommandContext implements ICommandContext {
    * @param commandName the name of the command that is being executed
    */
   public CommandContext(
-      @NotNull Message message,
-      @NotNull User sender,
-      @NotNull String[] args,
-      @NotNull MessageChannel channel,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull ProvidersRegistry<CommandContext> registry,
-      @Nullable String commandName) {
+      @NonNull Message message,
+      @NonNull User sender,
+      @NonNull String[] args,
+      @NonNull MessageChannel channel,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      String commandName) {
     this.message = message;
     this.sender = sender;
     this.strings = args;
@@ -58,67 +58,38 @@ public class CommandContext implements ICommandContext {
     this.commandName = commandName;
   }
 
-  /**
-   * This method is mostly used when the command is a child to remove the child alias.
-   *
-   * @param strings the new strings
-   */
-  public void setStrings(@NotNull String[] strings) {
-    this.strings = strings;
-  }
-
-  /**
-   * Get the message that executed the command
-   *
-   * @return the message
-   */
-  @NotNull
-  public Message getMessage() {
-    return message;
-  }
-
-  /**
-   * Get the channel where the command was executed
-   *
-   * @return the channel
-   */
-  @NotNull
-  public MessageChannel getChannel() {
-    return channel;
-  }
-
-  @NotNull
+  @NonNull
   @Override
   public User getSender() {
     return sender;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public String getString() {
     return Strings.fromArray(strings);
   }
 
-  @NotNull
+  @NonNull
   @Override
   public String[] getStrings() {
     return strings;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public ProvidersRegistry<CommandContext> getRegistry() {
     return registry;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public MessagesProvider getMessagesProvider() {
     return messagesProvider;
   }
 
   @Override
-  public boolean hasFlag(@NotNull String flag) {
+  public boolean hasFlag(@NonNull String flag) {
     for (String string : this.strings) {
       if (string.equalsIgnoreCase(flag)) {
         return true;
@@ -139,15 +110,5 @@ public class CommandContext implements ICommandContext {
         + ", channel="
         + channel
         + '}';
-  }
-
-  /**
-   * Get the name of the command that is being executed
-   *
-   * @return the name of the command that is being executed or null if the command is not found
-   */
-  @Nullable
-  public String getCommandName() {
-    return commandName;
   }
 }

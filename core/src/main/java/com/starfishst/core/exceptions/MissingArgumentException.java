@@ -1,7 +1,7 @@
 package com.starfishst.core.exceptions;
 
 import com.starfishst.core.exceptions.type.SimpleException;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** An exception that is thrown when the user does not input an argument that is required */
 public class MissingArgumentException extends SimpleException {
@@ -10,7 +10,7 @@ public class MissingArgumentException extends SimpleException {
    *
    * @param message the message
    */
-  public MissingArgumentException(@NotNull String message) {
+  public MissingArgumentException(@NonNull String message) {
     super(message);
   }
 }

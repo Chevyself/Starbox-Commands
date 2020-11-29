@@ -2,7 +2,7 @@ package com.starfishst.bukkit.providers;
 
 import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.providers.type.BukkitExtraArgumentProvider;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * Provides the {@link com.starfishst.bukkit.CommandManager} with the object of {@link
@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 public class CommandContextProvider implements BukkitExtraArgumentProvider<CommandContext> {
 
   @Override
-  public @NotNull Class<CommandContext> getClazz() {
+  public @NonNull Class<CommandContext> getClazz() {
     return CommandContext.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public CommandContext getObject(@NotNull CommandContext context) {
+  public CommandContext getObject(@NonNull CommandContext context) {
     return context;
   }
 }

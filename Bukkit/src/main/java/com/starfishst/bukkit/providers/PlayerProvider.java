@@ -6,22 +6,22 @@ import com.starfishst.bukkit.providers.type.BukkitArgumentProvider;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.bukkit.CommandManager} with the object of {@link Player} */
 public class PlayerProvider implements BukkitArgumentProvider<Player> {
 
   /** The provider of the message in case the player is not found */
-  @NotNull private final MessagesProvider messagesProvider;
+  @NonNull private final MessagesProvider messagesProvider;
 
   /**
    * Create an instance
    *
    * @param messagesProvider the provider of the message in case the player is not found
    */
-  public PlayerProvider(@NotNull MessagesProvider messagesProvider) {
+  public PlayerProvider(@NonNull MessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 
@@ -30,25 +30,25 @@ public class PlayerProvider implements BukkitArgumentProvider<Player> {
    *
    * @return the name of the players that are online the server
    */
-  public static @NotNull List<String> getPlayerNames() {
+  public static @NonNull List<String> getPlayerNames() {
     List<String> names = new ArrayList<>();
     Bukkit.getOnlinePlayers().forEach(player -> names.add(player.getName()));
     return names;
   }
 
   @Override
-  public @NotNull List<String> getSuggestions(@NotNull String string, CommandContext context) {
+  public @NonNull List<String> getSuggestions(@NonNull String string, CommandContext context) {
     return getPlayerNames();
   }
 
   @Override
-  public @NotNull Class<Player> getClazz() {
+  public @NonNull Class<Player> getClazz() {
     return Player.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Player fromString(@NotNull String string, @NotNull CommandContext context)
+  public Player fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
     Player player = Bukkit.getPlayer(string);
     if (player != null) {

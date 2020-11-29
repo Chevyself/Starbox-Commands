@@ -10,19 +10,19 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
 import me.googas.commons.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** Parent command for bungee commands */
 public class ParentCommand extends AnnotatedCommand implements IParentCommand<AnnotatedCommand> {
 
   /** The list of children commands */
-  @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
+  @NonNull private final List<AnnotatedCommand> commands = new ArrayList<>();
   /** A list of the names of the commands registered in this parent */
-  @NotNull private final List<String> commandAliases = new ArrayList<>();
+  @NonNull @Getter private final List<String> commandAliases = new ArrayList<>();
 
   /**
    * Create an instance
@@ -37,19 +37,19 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param registry the registry for the commands
    */
   public ParentCommand(
-      @NotNull Object object,
-      @NotNull Method method,
-      @NotNull List<ISimpleArgument<?>> arguments,
-      @NotNull Command command,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull Plugin plugin,
+      @NonNull Object object,
+      @NonNull Method method,
+      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull Command command,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull Plugin plugin,
       boolean async,
       ProvidersRegistry<CommandContext> registry) {
     super(object, method, arguments, command, messagesProvider, plugin, async, registry);
   }
 
   @Override
-  public @NotNull List<AnnotatedCommand> getCommands() {
+  public @NonNull List<AnnotatedCommand> getCommands() {
     return commands;
   }
 
@@ -83,29 +83,19 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
     }
   }
 
-  @Nullable
   @Override
-  public AnnotatedCommand getCommand(@NotNull String name) {
-    return this.commands.stream()
-        .filter(
-            command -> {
-              if (command.getName().equalsIgnoreCase(name)) {
-                return true;
-              } else {
-                for (String alias : command.getAliases()) {
-                  if (alias.equalsIgnoreCase(name)) {
-                    return true;
-                  }
-                }
-              }
-              return false;
-            })
-        .findFirst()
-        .orElse(null);
+  public AnnotatedCommand getCommand(@NonNull String name) {
+    for (AnnotatedCommand command : this.commands) {
+      if (command.getName().equalsIgnoreCase(name)) return command;
+      for (String alias : command.getAliases()) {
+        if (alias.equalsIgnoreCase(name)) return command;
+      }
+    }
+    return null;
   }
 
   @Override
-  public void addCommand(@NotNull AnnotatedCommand command) {
+  public void addCommand(@NonNull AnnotatedCommand command) {
     this.commands.add(command);
     this.commandAliases.add(command.getName());
   }

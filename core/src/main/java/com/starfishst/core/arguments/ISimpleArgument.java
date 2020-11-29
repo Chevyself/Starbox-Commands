@@ -1,6 +1,6 @@
 package com.starfishst.core.arguments;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** A simple argument only requires the class of the argument */
 public interface ISimpleArgument<O> {
@@ -10,6 +10,6 @@ public interface ISimpleArgument<O> {
    *
    * @return the class of the argument
    */
-  @NotNull
+  @NonNull
   Class<O> getClazz();
 }

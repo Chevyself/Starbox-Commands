@@ -4,8 +4,8 @@ import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
 import com.starfishst.jda.providers.type.JdaArgumentProvider;
+import lombok.NonNull;
 import net.dv8tion.jda.api.entities.User;
-import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link User} */
 public class UserProvider implements JdaArgumentProvider<User> {
@@ -23,13 +23,13 @@ public class UserProvider implements JdaArgumentProvider<User> {
   }
 
   @Override
-  public @NotNull Class<User> getClazz() {
+  public @NonNull Class<User> getClazz() {
     return User.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public User fromString(@NotNull String string, @NotNull CommandContext context)
+  public User fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
     for (User user : context.getMessage().getMentionedUsers()) {
       if (string.contains(user.getId())) {

@@ -13,8 +13,7 @@ import com.starfishst.core.result.IResult;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import lombok.NonNull;
 
 /**
  * This object represents a command this is the way to invoke the method.
@@ -34,8 +33,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    *     null else it will return the first suggestion. If the string in the context is not null
    *     then it will return that one
    */
-  @Nullable
-  static String getArgument(@NotNull Argument<?> argument, @NotNull ICommandContext context) {
+  static String getArgument(@NonNull Argument<?> argument, @NonNull ICommandContext context) {
     String[] strings = context.getStrings();
     if (strings.length - 1 < argument.getPosition()) {
       if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
@@ -54,8 +52,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    * @param context the context of the command
    * @return the result of the command execution
    */
-  @Nullable
-  default IResult execute(@NotNull C context) {
+  default IResult execute(@NonNull C context) {
     try {
       return (IResult) getMethod().invoke(getClazz(), getObjects(context));
     } catch (MissingArgumentException
@@ -79,7 +76,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    * @throws MissingArgumentException if the command is missing an argument. Also it will try to
    *     return the result as a help message to get a correct input from the user
    */
-  @NotNull
+  @NonNull
   default Object[] getObjects(C context)
       throws MissingArgumentException, ArgumentProviderException {
     Object[] objects = new Object[getArguments().size()];
@@ -135,7 +132,6 @@ public interface ISimpleCommand<C extends ICommandContext> {
    * @param position the position to get the argument from
    * @return the argument if exists else null
    */
-  @Nullable
   default Argument<?> getArgument(int position) {
     for (ISimpleArgument<?> argument : this.getArguments()) {
       if (argument instanceof Argument && ((Argument<?>) argument).getPosition() == position) {
@@ -152,7 +148,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    *
    * @return the class instance of a command method
    */
-  @NotNull
+  @NonNull
   Object getClazz();
 
   /**
@@ -161,7 +157,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    *
    * @return the method of a command
    */
-  @NotNull
+  @NonNull
   Method getMethod();
 
   /**
@@ -170,7 +166,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    *
    * @return the {@link List} of {@link ISimpleArgument}
    */
-  @NotNull
+  @NonNull
   List<ISimpleArgument<?>> getArguments();
 
   /**
@@ -178,7 +174,7 @@ public interface ISimpleCommand<C extends ICommandContext> {
    *
    * @return the registry of providers for the command
    */
-  @NotNull
+  @NonNull
   ProvidersRegistry<C> getRegistry();
 
   /**
@@ -187,6 +183,6 @@ public interface ISimpleCommand<C extends ICommandContext> {
    *
    * @return the messages provider
    */
-  @NotNull
+  @NonNull
   IMessagesProvider<C> getMessagesProvider();
 }

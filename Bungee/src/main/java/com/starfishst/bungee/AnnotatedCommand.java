@@ -18,34 +18,34 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
 import me.googas.commons.Lots;
 import me.googas.commons.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The annotated command for bungee */
 public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     implements ICommandArray<CommandContext>, TabExecutor {
 
-  /** The object that contains the method that invokes the command */
-  @NotNull private final Object clazz;
-  /** The method that is the command */
-  @NotNull private final Method method;
-  /** The arguments to get the parameters for the method */
-  @NotNull private final List<ISimpleArgument<?>> arguments;
   /** The messages provider */
-  @NotNull protected final MessagesProvider messagesProvider;
+  @NonNull protected final MessagesProvider messagesProvider;
   /** The plugin where this command was registered */
-  @NotNull protected final Plugin plugin;
+  @NonNull @Getter protected final Plugin plugin;
+  /** The object that contains the method that invokes the command */
+  @NonNull private final Object clazz;
+  /** The method that is the command */
+  @NonNull private final Method method;
+  /** The arguments to get the parameters for the method */
+  @NonNull private final List<ISimpleArgument<?>> arguments;
   /** Whether the command should be executed asynchronously */
-  private final boolean asynchronous;
+  @Getter private final boolean asynchronous;
 
   /** The providers registry for commands */
-  @NotNull private final ProvidersRegistry<CommandContext> registry;
+  @NonNull private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create an instance
@@ -60,12 +60,12 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
    * @param registry the registry for commands
    */
   public AnnotatedCommand(
-      @NotNull Object clazz,
-      @NotNull Method method,
-      @NotNull List<ISimpleArgument<?>> arguments,
-      @NotNull Command command,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull Plugin plugin,
+      @NonNull Object clazz,
+      @NonNull Method method,
+      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull Command command,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull Plugin plugin,
       boolean asynchronous,
       ProvidersRegistry<CommandContext> registry) {
     super(
@@ -97,7 +97,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   }
 
   @Override
-  public @Nullable Result execute(@NotNull CommandContext context) {
+  public Result execute(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
@@ -155,15 +155,6 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
-  /**
-   * Get if this command is asynchronous
-   *
-   * @return true if it is
-   */
-  public boolean isAsynchronous() {
-    return this.asynchronous;
-  }
-
   @Override
   public void execute(CommandSender sender, String[] strings) {
     if (this.isAsynchronous()) {
@@ -173,31 +164,31 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
-  @NotNull
+  @NonNull
   @Override
   public Object getClazz() {
     return clazz;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public Method getMethod() {
     return method;
   }
 
-  @NotNull
+  @NonNull
   @Override
   public List<ISimpleArgument<?>> getArguments() {
     return arguments;
   }
 
   @Override
-  public @NotNull ProvidersRegistry<CommandContext> getRegistry() {
+  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
     return this.registry;
   }
 
   @Override
-  public @NotNull IMessagesProvider<CommandContext> getMessagesProvider() {
+  public @NonNull IMessagesProvider<CommandContext> getMessagesProvider() {
     return messagesProvider;
   }
 }

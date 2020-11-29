@@ -9,35 +9,37 @@ import com.starfishst.jda.annotations.Exclude;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.listener.CommandListener;
 import com.starfishst.jda.messages.MessagesProvider;
+import com.starfishst.jda.permissions.PermissionChecker;
 import com.starfishst.jda.result.Result;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
 import me.googas.commons.time.Time;
 import net.dv8tion.jda.api.JDA;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The command manager for discord commands */
 public class CommandManager implements ICommandManager<AnnotatedCommand> {
 
   /** The list of registered commands */
-  @NotNull private final List<AnnotatedCommand> commands = new ArrayList<>();
+  @NonNull @Getter private final List<AnnotatedCommand> commands = new ArrayList<>();
   /** The instance of jda where the manager is working */
-  @NotNull private final JDA jda;
+  @NonNull @Getter private final JDA jda;
   /** The options used for the manager */
-  @NotNull private final ManagerOptions managerOptions;
+  @NonNull @Getter private final ManagerOptions managerOptions;
   /** The provider of messages for the manager */
-  @NotNull private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final MessagesProvider messagesProvider;
   /** The listener of command execution */
-  @NotNull private final CommandListener listener;
-  /** The temporal parent command for ticket registering */
-  @Nullable private ParentCommand parent;
+  @NonNull @Getter private final CommandListener listener;
   /** The providers registry for the commands */
-  @NotNull private final ProvidersRegistry<CommandContext> registry;
+  @NonNull @Getter private final ProvidersRegistry<CommandContext> registry;
   /** The permission checker for the commands */
-  @NotNull private final PermissionChecker permissionChecker;
+  @NonNull @Getter private final PermissionChecker permissionChecker;
+  /** The temporal parent command for ticket registering */
+  private ParentCommand parent;
 
   /**
    * Create an instance
@@ -50,12 +52,12 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * @param permissionChecker the permission checker for the commands
    */
   public CommandManager(
-      @NotNull JDA jda,
-      @NotNull String prefix,
-      @NotNull ManagerOptions options,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull ProvidersRegistry<CommandContext> registry,
-      @NotNull PermissionChecker permissionChecker) {
+      @NonNull JDA jda,
+      @NonNull String prefix,
+      @NonNull ManagerOptions options,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull PermissionChecker permissionChecker) {
     this.jda = jda;
     this.managerOptions = options;
     this.messagesProvider = messagesProvider;
@@ -71,8 +73,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * @param cmd the name of the command
    * @return the command if found or else null
    */
-  @Nullable
-  public AnnotatedCommand getCommand(@NotNull String cmd) {
+  public AnnotatedCommand getCommand(@NonNull String cmd) {
     for (final AnnotatedCommand command : this.commands) {
       for (final String alias : command.getAliases()) {
         if (alias.equalsIgnoreCase(cmd)) return command;
@@ -88,8 +89,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * @param <O> the class that contains the method
    * @return the command if found else null
    */
-  @Nullable
-  public <O> O getCommand(@NotNull Class<O> clazz) {
+  public <O> O getCommand(@NonNull Class<O> clazz) {
     AnnotatedCommand cmd =
         commands.stream()
             .filter(command -> command.getClazz().getClass().equals(clazz))
@@ -98,58 +98,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     return cmd == null ? null : clazz.cast(cmd.getClazz());
   }
 
-  /**
-   * Get the listener that the manager is using
-   *
-   * @return the listener that the command is using
-   */
-  @NotNull
-  public CommandListener getListener() {
-    return listener;
-  }
-
-  /**
-   * Get the list of registered commands
-   *
-   * @return the list of registered commands
-   */
-  @NotNull
-  public List<AnnotatedCommand> getCommands() {
-    return commands;
-  }
-
-  /**
-   * Get the messages providers that the command manager is using
-   *
-   * @return the provider of messages
-   */
-  @NotNull
-  public MessagesProvider getMessagesProvider() {
-    return messagesProvider;
-  }
-
-  /**
-   * Get the jda instance that the manager is using
-   *
-   * @return the instance of jda
-   */
-  @NotNull
-  public JDA getJda() {
-    return jda;
-  }
-
-  /**
-   * Get the manager options that the manager is using
-   *
-   * @return the manager options
-   */
-  @NotNull
-  public ManagerOptions getManagerOptions() {
-    return managerOptions;
-  }
-
   @Override
-  public void registerCommand(@NotNull Object object) {
+  public void registerCommand(@NonNull Object object) {
     final Class<?> clazz = object.getClass();
     if (clazz != null) {
       for (final Method method : clazz.getDeclaredMethods()) {
@@ -182,20 +132,10 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     }
   }
 
-  /**
-   * Get the registry for this command manager
-   *
-   * @return the registry
-   */
-  @NotNull
-  public ProvidersRegistry<CommandContext> getRegistry() {
-    return registry;
-  }
-
-  @NotNull
+  @NonNull
   @Override
   public AnnotatedCommand parseCommand(
-      @NotNull Object object, @NotNull Method method, boolean isParent) {
+      @NonNull Object object, @NonNull Method method, boolean isParent) {
     if (method.getReturnType() == Result.class || method.getReturnType().equals(Void.TYPE)) {
       final Class<?>[] params = method.getParameterTypes();
       final Annotation[][] annotations = method.getParameterAnnotations();
@@ -212,7 +152,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             cooldown,
             hasAnnotation(method.getAnnotations(), Exclude.class),
             registry,
-            permissionChecker);
+            permissionChecker,
+            new HashSet<>());
       } else {
         return new AnnotatedCommand(
             object,
@@ -223,7 +164,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             permissionChecker,
             registry,
             cooldown,
-            hasAnnotation(method.getAnnotations(), Exclude.class));
+            hasAnnotation(method.getAnnotations(), Exclude.class),
+            new HashSet<>());
       }
     } else {
       throw new CommandRegistrationException(

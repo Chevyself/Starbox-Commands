@@ -6,7 +6,7 @@
 
     <groupId>com.starfishst</groupId>
     <artifactId>Easy-Commands</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>An easy to use command framework for Bukkit, Bungee or JDA (Discord)</description>
 
@@ -59,17 +59,18 @@
     </repositories>
 
     <dependencies>
-        <!-- Jetbrains annotations -->
+        <!-- Dependency to the Lombok annotations -->
         <dependency>
-            <artifactId>annotations</artifactId>
-            <groupId>org.jetbrains</groupId>
-            <version>17.0.0</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+            <scope>compile</scope>
         </dependency>
         <!-- Commons -->
         <dependency>
             <groupId>me.googas.commons</groupId>
             <artifactId>Commons</artifactId>
-            <version>1.0.10-SNAPSHOT</version>
+            <version>1.1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

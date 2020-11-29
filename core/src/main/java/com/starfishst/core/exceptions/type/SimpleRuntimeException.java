@@ -1,6 +1,6 @@
 package com.starfishst.core.exceptions.type;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** A runtime exception that can be handled in commands */
 public class SimpleRuntimeException extends RuntimeException {
@@ -10,7 +10,7 @@ public class SimpleRuntimeException extends RuntimeException {
    *
    * @param message the message
    */
-  public SimpleRuntimeException(@NotNull String message) {
+  public SimpleRuntimeException(@NonNull String message) {
     super(message);
   }
 
@@ -20,7 +20,7 @@ public class SimpleRuntimeException extends RuntimeException {
    * @param message the message
    * @param cause the cause of the exception
    */
-  public SimpleRuntimeException(@NotNull String message, @NotNull Throwable cause) {
+  public SimpleRuntimeException(@NonNull String message, @NonNull Throwable cause) {
     super(message, cause);
   }
 
@@ -29,7 +29,7 @@ public class SimpleRuntimeException extends RuntimeException {
    *
    * @param cause the cause of the exception
    */
-  public SimpleRuntimeException(@NotNull Throwable cause) {
+  public SimpleRuntimeException(@NonNull Throwable cause) {
     super(cause);
   }
 }

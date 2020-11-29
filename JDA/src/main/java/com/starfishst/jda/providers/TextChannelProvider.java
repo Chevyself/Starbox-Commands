@@ -4,9 +4,9 @@ import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.messages.MessagesProvider;
 import com.starfishst.jda.providers.type.JdaArgumentProvider;
+import lombok.NonNull;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
-import org.jetbrains.annotations.NotNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link User} */
 public class TextChannelProvider implements JdaArgumentProvider<TextChannel> {
@@ -23,9 +23,9 @@ public class TextChannelProvider implements JdaArgumentProvider<TextChannel> {
     this.messagesProvider = messagesProvider;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public TextChannel fromString(@NotNull String string, @NotNull CommandContext context)
+  public TextChannel fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
     for (TextChannel channel : context.getMessage().getMentionedChannels()) {
       if (string.contains(channel.getId())) {
@@ -36,7 +36,7 @@ public class TextChannelProvider implements JdaArgumentProvider<TextChannel> {
   }
 
   @Override
-  public @NotNull Class<TextChannel> getClazz() {
+  public @NonNull Class<TextChannel> getClazz() {
     return TextChannel.class;
   }
 }

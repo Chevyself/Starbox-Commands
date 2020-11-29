@@ -2,8 +2,8 @@ package com.starfishst.core.context;
 
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
+import lombok.NonNull;
 import me.googas.commons.Lots;
-import org.jetbrains.annotations.NotNull;
 
 /** The context of a command */
 public interface ICommandContext {
@@ -14,7 +14,7 @@ public interface ICommandContext {
    * @param flag the flag to check
    * @return true if the command was executed with a flag
    */
-  boolean hasFlag(@NotNull String flag);
+  boolean hasFlag(@NonNull String flag);
 
   /**
    * Get the joined strings from a certain position
@@ -22,7 +22,7 @@ public interface ICommandContext {
    * @param position the position to get the string from
    * @return an array of strings empty if none
    */
-  @NotNull
+  @NonNull
   default String[] getStringsFrom(int position) {
     return Lots.arrayFrom(position, this.getStrings());
   }
@@ -32,7 +32,7 @@ public interface ICommandContext {
    *
    * @return the sender of the command
    */
-  @NotNull
+  @NonNull
   Object getSender();
 
   /**
@@ -40,7 +40,7 @@ public interface ICommandContext {
    *
    * @return the joined strings
    */
-  @NotNull
+  @NonNull
   String getString();
 
   /**
@@ -48,7 +48,7 @@ public interface ICommandContext {
    *
    * @return the joined strings
    */
-  @NotNull
+  @NonNull
   String[] getStrings();
 
   /**

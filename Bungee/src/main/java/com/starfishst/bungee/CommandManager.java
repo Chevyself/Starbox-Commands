@@ -3,44 +3,33 @@ package com.starfishst.bungee;
 import com.starfishst.bungee.annotations.Command;
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
-import com.starfishst.bungee.providers.CommandContextProvider;
-import com.starfishst.bungee.providers.CommandSenderProvider;
-import com.starfishst.bungee.providers.ProxiedPlayerProvider;
-import com.starfishst.bungee.providers.ProxiedPlayerSenderProvider;
 import com.starfishst.bungee.result.Result;
 import com.starfishst.core.ICommandManager;
 import com.starfishst.core.annotations.Parent;
 import com.starfishst.core.exceptions.CommandRegistrationException;
-import com.starfishst.core.providers.BooleanProvider;
-import com.starfishst.core.providers.DoubleProvider;
-import com.starfishst.core.providers.IntegerProvider;
-import com.starfishst.core.providers.JoinedStringsProvider;
-import com.starfishst.core.providers.LongProvider;
-import com.starfishst.core.providers.StringProvider;
-import com.starfishst.core.providers.TimeProvider;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import lombok.Getter;
+import lombok.NonNull;
 import me.googas.commons.Strings;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** The command manager for bungee commands */
 public class CommandManager implements ICommandManager<AnnotatedCommand> {
 
   /** The plugin that is running the manager */
-  @NotNull private final Plugin plugin;
+  @NonNull @Getter private final Plugin plugin;
   /** The plugin manager for registering commands */
-  @NotNull private final PluginManager manager;
+  @NonNull @Getter private final PluginManager manager;
   /** The messages provider */
-  @NotNull private final MessagesProvider messagesProvider;
-  /** The temporal command for registering commands there and not in the manager */
-  @Nullable private ParentCommand parent;
+  @NonNull private final MessagesProvider messagesProvider;
   /** The registry for the commands */
-  @NotNull private final ProvidersRegistry<CommandContext> registry;
+  @NonNull private final ProvidersRegistry<CommandContext> registry;
+  /** The temporal command for registering commands there and not in the manager */
+  private ParentCommand parent;
 
   /**
    * Create an instance
@@ -50,40 +39,28 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
    * @param registry the registry for commands
    */
   public CommandManager(
-      @NotNull Plugin plugin,
-      @NotNull MessagesProvider messagesProvider,
-      @NotNull ProvidersRegistry<CommandContext> registry) {
+      @NonNull Plugin plugin,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull ProvidersRegistry<CommandContext> registry) {
     this.plugin = plugin;
     this.manager = plugin.getProxy().getPluginManager();
     this.messagesProvider = messagesProvider;
     this.registry = registry;
-    this.addProviders(this.registry, messagesProvider);
   }
 
   /**
-   * Register the needed providers in the registry
+   * Get if a command is async
    *
-   * @param registry the registry of providers
-   * @param messagesProvider the message provider
+   * @param method the method of the command
+   * @return true if the command is async
    */
-  private void addProviders(
-      @NotNull ProvidersRegistry<CommandContext> registry,
-      @NotNull MessagesProvider messagesProvider) {
-    registry.addProvider(new BooleanProvider<>(messagesProvider));
-    registry.addProvider(new DoubleProvider<>(messagesProvider));
-    registry.addProvider(new IntegerProvider<>(messagesProvider));
-    registry.addProvider(new JoinedStringsProvider<>());
-    registry.addProvider(new LongProvider<>(messagesProvider));
-    registry.addProvider(new StringProvider<>());
-    registry.addProvider(new TimeProvider<>(messagesProvider));
-    registry.addProvider(new CommandContextProvider());
-    registry.addProvider(new CommandSenderProvider());
-    registry.addProvider(new ProxiedPlayerProvider(messagesProvider));
-    registry.addProvider(new ProxiedPlayerSenderProvider(messagesProvider));
+  private boolean isAsync(@NonNull Method method) {
+    HashMap<String, String> settings = parseSettings(method);
+    return Boolean.parseBoolean(settings.getOrDefault("async", "false"));
   }
 
   @Override
-  public void registerCommand(@NotNull Object object) {
+  public void registerCommand(@NonNull Object object) {
     final Class<?> clazz = object.getClass();
     for (final Method method : clazz.getDeclaredMethods()) {
       if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
@@ -104,21 +81,10 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     this.parent = null;
   }
 
-  /**
-   * Get if a command is async
-   *
-   * @param method the method of the command
-   * @return true if the command is async
-   */
-  private boolean isAsync(@NotNull Method method) {
-    HashMap<String, String> settings = parseSettings(method);
-    return Boolean.parseBoolean(settings.getOrDefault("async", "false"));
-  }
-
-  @NotNull
+  @NonNull
   @Override
   public AnnotatedCommand parseCommand(
-      @NotNull Object object, @NotNull Method method, boolean isParent) {
+      @NonNull Object object, @NonNull Method method, boolean isParent) {
     if (method.getReturnType() == Result.class || method.getReturnType().equals(Void.TYPE)) {
       Annotation[][] annotations = method.getParameterAnnotations();
       Class<?>[] parameters = method.getParameterTypes();
@@ -146,7 +112,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
       }
     } else {
       throw new CommandRegistrationException(
-          Strings.buildMessage("{0} must return {1} or void", method, Result.class));
+          Strings.build("{0} must return {1} or void", method, Result.class));
     }
   }
 }

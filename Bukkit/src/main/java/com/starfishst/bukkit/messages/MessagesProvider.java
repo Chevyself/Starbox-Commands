@@ -5,8 +5,8 @@ import com.starfishst.bukkit.ParentCommand;
 import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.messages.IMessagesProvider;
+import lombok.NonNull;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 /** Provides the messages for bukkit responses */
 public interface MessagesProvider extends IMessagesProvider<CommandContext> {
@@ -18,8 +18,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to send
    */
-  @NotNull
-  String invalidPlayer(@NotNull String string, @NotNull CommandContext context);
+  @NonNull
+  String invalidPlayer(@NonNull String string, @NonNull CommandContext context);
 
   /**
    * The message sent when a command is executed by another entity rather than a player
@@ -27,8 +27,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to send
    */
-  @NotNull
-  String playersOnly(@NotNull CommandContext context);
+  @NonNull
+  String playersOnly(@NonNull CommandContext context);
 
   /**
    * The message sent when the user that executed the command is not allowed to use it
@@ -36,8 +36,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to send
    */
-  @NotNull
-  String notAllowed(@NotNull CommandContext context);
+  @NonNull
+  String notAllowed(@NonNull CommandContext context);
 
   /**
    * The short message of the help topic in the plugin
@@ -45,8 +45,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param plugin the plugin requesting the short message for its help topic
    * @return the short message of the help topic in the plugin
    */
-  @NotNull
-  String helpTopicShort(@NotNull Plugin plugin);
+  @NonNull
+  String helpTopicShort(@NonNull Plugin plugin);
 
   /**
    * A full message of the help topic in the plugin
@@ -56,8 +56,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param plugin the plugin that needs the full message for the help topic
    * @return the full message for the help topic
    */
-  @NotNull
-  String helpTopicFull(@NotNull String shortText, @NotNull String commands, @NotNull Plugin plugin);
+  @NonNull
+  String helpTopicFull(@NonNull String shortText, @NonNull String commands, @NonNull Plugin plugin);
 
   /**
    * Get how a command should be appended in a help topic
@@ -66,8 +66,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @return the string that should be appended to give information about a command in the help
    *     topic
    */
-  @NotNull
-  String helpTopicCommand(@NotNull AnnotatedCommand command);
+  @NonNull
+  String helpTopicCommand(@NonNull AnnotatedCommand command);
 
   /**
    * The short text for a command help topic
@@ -75,8 +75,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param command the command that is being built the help topic to
    * @return the short text
    */
-  @NotNull
-  String commandShortText(@NotNull AnnotatedCommand command);
+  @NonNull
+  String commandShortText(@NonNull AnnotatedCommand command);
 
   /**
    * The name of the command in the help topic
@@ -84,7 +84,7 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param command the command that is being built the help topic to
    * @return the command
    */
-  @NotNull
+  @NonNull
   String commandName(AnnotatedCommand command);
 
   /**
@@ -96,12 +96,12 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param buildArguments the arguments of the parent command
    * @return the full text of the help topic
    */
-  @NotNull
+  @NonNull
   String parentCommandFull(
-      @NotNull ParentCommand command,
-      @NotNull String shortText,
-      @NotNull String buildChildren,
-      @NotNull String buildArguments);
+      @NonNull ParentCommand command,
+      @NonNull String shortText,
+      @NonNull String buildChildren,
+      @NonNull String buildArguments);
 
   /**
    * Get the short text for parent commands
@@ -110,8 +110,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param shortText the short text for every command
    * @return the short text for the parent command
    */
-  @NotNull
-  String parentCommandShort(@NotNull ParentCommand command, @NotNull String shortText);
+  @NonNull
+  String parentCommandShort(@NonNull ParentCommand command, @NonNull String shortText);
 
   /**
    * Get the full text for a command
@@ -121,9 +121,9 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param buildArguments the arguments of the command
    * @return the built full text for a child command
    */
-  @NotNull
+  @NonNull
   String commandFull(
-      @NotNull AnnotatedCommand command, @NotNull String shortText, @NotNull String buildArguments);
+      @NonNull AnnotatedCommand command, @NonNull String shortText, @NonNull String buildArguments);
 
   /**
    * Get the name of a child command help topic
@@ -132,8 +132,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param parent the parent of this child
    * @return the name for the command help topic
    */
-  @NotNull
-  String childCommandName(@NotNull AnnotatedCommand command, @NotNull ParentCommand parent);
+  @NonNull
+  String childCommandName(@NonNull AnnotatedCommand command, @NonNull ParentCommand parent);
 
   /**
    * Get the short text for a child command help topic
@@ -142,8 +142,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param parent the parent of this child
    * @return the short text of the child command help topic
    */
-  @NotNull
-  String childCommandShort(@NotNull AnnotatedCommand command, @NotNull ParentCommand parent);
+  @NonNull
+  String childCommandShort(@NonNull AnnotatedCommand command, @NonNull ParentCommand parent);
 
   /**
    * Get the full text for a child command help topic
@@ -154,12 +154,12 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param buildArguments the arguments of the command
    * @return the full text for the command help topic
    */
-  @NotNull
+  @NonNull
   String childCommandFull(
-      @NotNull AnnotatedCommand command,
-      @NotNull ParentCommand parent,
-      @NotNull String shortText,
-      @NotNull String buildArguments);
+      @NonNull AnnotatedCommand command,
+      @NonNull ParentCommand parent,
+      @NonNull String shortText,
+      @NonNull String buildArguments);
 
   /**
    * Get the help for a required argument
@@ -167,8 +167,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param argument the required argument that needs the help for a command help topic
    * @return the help to append in the command help topic
    */
-  @NotNull
-  String requiredArgumentHelp(@NotNull Argument<?> argument);
+  @NonNull
+  String requiredArgumentHelp(@NonNull Argument<?> argument);
 
   /**
    * Get the help for an optional argument
@@ -176,8 +176,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param argument the optional argument that needs the help for a command help topic
    * @return the help to append in the command help topic
    */
-  @NotNull
-  String optionalArgumentHelp(@NotNull Argument<?> argument);
+  @NonNull
+  String optionalArgumentHelp(@NonNull Argument<?> argument);
 
   /**
    * A simple description for a child command for its parents help topic
@@ -186,8 +186,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param parent the parent of the command
    * @return the child command description
    */
-  @NotNull
-  String childCommand(@NotNull AnnotatedCommand command, @NotNull ParentCommand parent);
+  @NonNull
+  String childCommand(@NonNull AnnotatedCommand command, @NonNull ParentCommand parent);
 
   /**
    * The message to tell the users that materials have a name and it cannot be empty
@@ -195,8 +195,8 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to tell the user
    */
-  @NotNull
-  String invalidMaterialEmpty(@NotNull CommandContext context);
+  @NonNull
+  String invalidMaterialEmpty(@NonNull CommandContext context);
 
   /**
    * The message to tell the users that the material is not found
@@ -205,6 +205,6 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
    * @param context the context of the command
    * @return the message to tell the user
    */
-  @NotNull
-  String invalidMaterial(@NotNull String string, @NotNull CommandContext context);
+  @NonNull
+  String invalidMaterial(@NonNull String string, @NonNull CommandContext context);
 }

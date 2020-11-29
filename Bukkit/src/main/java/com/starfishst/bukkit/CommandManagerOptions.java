@@ -1,10 +1,13 @@
 package com.starfishst.bukkit;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /** Some options for the manager to use */
 public class CommandManagerOptions {
 
   /** Whether or not {@link ParentCommand} should add all the aliases in the tab complete */
-  private final boolean includeAliases;
+  @Getter @Setter private boolean includeAliases;
 
   /**
    * Create an instance
@@ -13,14 +16,5 @@ public class CommandManagerOptions {
    */
   public CommandManagerOptions(boolean includeAliases) {
     this.includeAliases = includeAliases;
-  }
-
-  /**
-   * Get if parent commands should add all the aliases in tab complete
-   *
-   * @return true if it should add all of them
-   */
-  public boolean isIncludeAliases() {
-    return this.includeAliases;
   }
 }

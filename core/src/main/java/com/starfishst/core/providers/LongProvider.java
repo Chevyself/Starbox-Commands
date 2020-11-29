@@ -4,7 +4,7 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Long} */
 public class LongProvider<T extends ICommandContext> implements IArgumentProvider<Long, T> {
@@ -22,13 +22,13 @@ public class LongProvider<T extends ICommandContext> implements IArgumentProvide
   }
 
   @Override
-  public @NotNull Class<Long> getClazz() {
+  public @NonNull Class<Long> getClazz() {
     return Long.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Long fromString(@NotNull String string, @NotNull T context)
+  public Long fromString(@NonNull String string, @NonNull T context)
       throws ArgumentProviderException {
     try {
       return Long.parseLong(string);
@@ -44,7 +44,7 @@ public class LongProvider<T extends ICommandContext> implements IArgumentProvide
    * @return true if it provides it
    */
   @Override
-  public boolean provides(@NotNull Class<?> clazz) {
+  public boolean provides(@NonNull Class<?> clazz) {
     return clazz == Long.class || clazz == long.class;
   }
 }

@@ -3,7 +3,7 @@ package com.starfishst.bukkit.providers.type;
 import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.core.providers.type.IMultipleArgumentProvider;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** It's a provider made for bukkit commands */
 public interface BukkitMultiArgumentProvider<O>
@@ -15,6 +15,6 @@ public interface BukkitMultiArgumentProvider<O>
    * @param context the context of the command
    * @return a list of suggestions of the command
    */
-  @NotNull
-  List<String> getSuggestions(@NotNull CommandContext context);
+  @NonNull
+  List<String> getSuggestions(@NonNull CommandContext context);
 }

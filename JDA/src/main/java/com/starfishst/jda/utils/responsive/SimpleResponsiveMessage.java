@@ -1,13 +1,13 @@
 package com.starfishst.jda.utils.responsive;
 
 import java.util.Set;
+import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Message;
-import org.jetbrains.annotations.NotNull;
 
 public class SimpleResponsiveMessage implements ResponsiveMessage {
 
   /** The set of reactions to which this message will respond */
-  @NotNull protected final transient Set<ReactionResponse> reactions;
+  @NonNull protected final transient Set<ReactionResponse> reactions;
   /** The id of this message */
   private final long id;
 
@@ -18,7 +18,7 @@ public class SimpleResponsiveMessage implements ResponsiveMessage {
    * @param id the id of the responsive message
    * @param reactions the reactions to add in the message
    */
-  public SimpleResponsiveMessage(long id, @NotNull Set<ReactionResponse> reactions) {
+  public SimpleResponsiveMessage(long id, @NonNull Set<ReactionResponse> reactions) {
     this.id = id;
     this.reactions = reactions;
   }
@@ -31,7 +31,7 @@ public class SimpleResponsiveMessage implements ResponsiveMessage {
    * @param reactions the reactions to use
    */
   public SimpleResponsiveMessage(
-      @NotNull Message message, @NotNull Set<ReactionResponse> reactions) {
+      @NonNull Message message, @NonNull Set<ReactionResponse> reactions) {
     this(message.getIdLong(), reactions);
     for (ReactionResponse reaction : this.reactions) {
       if (!reaction.getUnicode().equalsIgnoreCase("any")) {
@@ -40,21 +40,13 @@ public class SimpleResponsiveMessage implements ResponsiveMessage {
     }
   }
 
-  /**
-   * Get the id of the message
-   *
-   * @return the id
-   */
+  @Override
   public long getId() {
     return id;
   }
 
-  /**
-   * Get the reactions of the message
-   *
-   * @return the reactions
-   */
-  @NotNull
+  @NonNull
+  @Override
   public Set<ReactionResponse> getReactions() {
     return reactions;
   }

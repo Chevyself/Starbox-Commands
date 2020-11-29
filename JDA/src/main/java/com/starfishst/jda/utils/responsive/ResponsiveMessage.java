@@ -1,9 +1,11 @@
 package com.starfishst.jda.utils.responsive;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import lombok.NonNull;
+import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message;
-import org.jetbrains.annotations.NotNull;
 
 /** A responsive message is created for the user to react to the message with an */
 public interface ResponsiveMessage {
@@ -14,8 +16,8 @@ public interface ResponsiveMessage {
    * @return the reactions
    * @param unicode the unicode to match
    */
-  @NotNull
-  default Set<ReactionResponse> getReactions(@NotNull String unicode) {
+  @NonNull
+  default Set<ReactionResponse> getReactions(@NonNull String unicode) {
     Set<ReactionResponse> reactions = new HashSet<>();
     for (ReactionResponse reaction : this.getReactions()) {
       if (reaction.getUnicode().equalsIgnoreCase("any")
@@ -31,7 +33,7 @@ public interface ResponsiveMessage {
    *
    * @param response the reaction response to add to the set
    */
-  default void addReactionResponse(@NotNull ReactionResponse response) {
+  default void addReactionResponse(@NonNull ReactionResponse response) {
     this.getReactions().add(response);
   }
 
@@ -41,9 +43,21 @@ public interface ResponsiveMessage {
    * @param response the reaction response to add to the set
    * @param message the message to add the reaction
    */
-  default void addReactionResponse(@NotNull ReactionResponse response, @NotNull Message message) {
+  default void addReactionResponse(@NonNull ReactionResponse response, @NonNull Message message) {
     this.addReactionResponse(response);
-    message.addReaction(response.getUnicode()).queue();
+    String unicode = response.getUnicode();
+    if (unicode.startsWith("U+") || unicode.startsWith("u+")) {
+      message.addReaction(unicode).queue();
+    } else {
+      List<Emote> emotes = message.getGuild().getEmotesByName(unicode, true);
+      if (!emotes.isEmpty()) {
+        for (Emote emote : emotes) {
+          message.addReaction(emote).queue();
+        }
+      } else {
+        throw new IllegalStateException("There's no emotes with the name " + unicode);
+      }
+    }
   }
 
   /**
@@ -58,6 +72,6 @@ public interface ResponsiveMessage {
    *
    * @return the reactions
    */
-  @NotNull
+  @NonNull
   Set<ReactionResponse> getReactions();
 }

@@ -4,7 +4,7 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Boolean} */
 public class BooleanProvider<T extends ICommandContext> implements IArgumentProvider<Boolean, T> {
@@ -22,13 +22,13 @@ public class BooleanProvider<T extends ICommandContext> implements IArgumentProv
   }
 
   @Override
-  public @NotNull Class<Boolean> getClazz() {
+  public @NonNull Class<Boolean> getClazz() {
     return boolean.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Boolean fromString(@NotNull String string, @NotNull T context)
+  public Boolean fromString(@NonNull String string, @NonNull T context)
       throws ArgumentProviderException {
     boolean result;
     if (string.equalsIgnoreCase("true")) {
@@ -46,7 +46,7 @@ public class BooleanProvider<T extends ICommandContext> implements IArgumentProv
   }
 
   @Override
-  public boolean provides(@NotNull Class<?> clazz) {
+  public boolean provides(@NonNull Class<?> clazz) {
     return clazz == Boolean.class || clazz == boolean.class;
   }
 }

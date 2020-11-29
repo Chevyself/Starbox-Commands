@@ -2,20 +2,18 @@ package com.starfishst.bungee.providers;
 
 import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.providers.type.BungeeExtraArgumentProvider;
-import com.starfishst.core.exceptions.ArgumentProviderException;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Provides the command context to commands */
 public class CommandContextProvider implements BungeeExtraArgumentProvider<CommandContext> {
   @Override
-  public @NotNull Class<CommandContext> getClazz() {
+  public @NonNull Class<CommandContext> getClazz() {
     return CommandContext.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public CommandContext getObject(@NotNull CommandContext context)
-      throws ArgumentProviderException {
+  public CommandContext getObject(@NonNull CommandContext context) {
     return context;
   }
 }

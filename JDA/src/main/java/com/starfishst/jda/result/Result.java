@@ -4,21 +4,22 @@ import com.starfishst.core.result.IResult;
 import com.starfishst.jda.utils.embeds.EmbedQuery;
 import com.starfishst.jda.utils.message.MessageQuery;
 import java.util.function.Consumer;
+import lombok.Getter;
+import lombok.NonNull;
+import me.googas.commons.builder.ToStringBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** This is your general type of result */
 public class Result implements IResult {
 
   /** The type of the result */
-  @NotNull private final ResultType type;
+  @NonNull @Getter private final ResultType type;
   /** The message send as a result. The discord message will be send over the message string */
-  @Nullable private final Message discordMessage;
+  @Getter private final Message discordMessage;
   /** A more simple message to send as a result */
-  @Nullable private final String message;
+  private final String message;
   /** The action to do with the message after it is sent */
-  @Nullable private final Consumer<Message> success;
+  @Getter private final Consumer<Message> success;
 
   /**
    * Create an instance
@@ -29,10 +30,7 @@ public class Result implements IResult {
    * @param success the action to do after the message
    */
   public Result(
-      @NotNull ResultType type,
-      @Nullable Message discordMessage,
-      @Nullable String message,
-      @Nullable Consumer<Message> success) {
+      @NonNull ResultType type, Message discordMessage, String message, Consumer<Message> success) {
     this.type = type;
     this.discordMessage = discordMessage;
     this.message = message;
@@ -47,9 +45,7 @@ public class Result implements IResult {
    * @param success the action to do after the message
    */
   public Result(
-      @NotNull ResultType type,
-      @NotNull Message discordMessage,
-      @Nullable Consumer<Message> success) {
+      @NonNull ResultType type, @NonNull Message discordMessage, Consumer<Message> success) {
     this(type, discordMessage, null, success);
   }
 
@@ -59,7 +55,7 @@ public class Result implements IResult {
    * @param type the type of the result
    * @param discordMessage the discord message to send
    */
-  public Result(@NotNull ResultType type, @NotNull Message discordMessage) {
+  public Result(@NonNull ResultType type, @NonNull Message discordMessage) {
     this(type, discordMessage, null);
   }
 
@@ -70,8 +66,7 @@ public class Result implements IResult {
    * @param message the message to send
    * @param success the action to do after the message
    */
-  public Result(
-      @NotNull ResultType type, @NotNull String message, @Nullable Consumer<Message> success) {
+  public Result(@NonNull ResultType type, @NonNull String message, Consumer<Message> success) {
     this(type, null, message, success);
   }
 
@@ -81,7 +76,7 @@ public class Result implements IResult {
    * @param type the type of the result
    * @param message the message to send
    */
-  public Result(@NotNull ResultType type, @NotNull String message) {
+  public Result(@NonNull ResultType type, @NonNull String message) {
     this(type, message, null);
   }
 
@@ -92,9 +87,8 @@ public class Result implements IResult {
    * @param query the message query to send
    * @param success the action to do after the message
    */
-  public Result(
-      @NotNull ResultType type, @NotNull MessageQuery query, @Nullable Consumer<Message> success) {
-    this(type, query.getMessage(), null, success);
+  public Result(@NonNull ResultType type, @NonNull MessageQuery query, Consumer<Message> success) {
+    this(type, query.build(), null, success);
   }
 
   /**
@@ -103,7 +97,7 @@ public class Result implements IResult {
    * @param type the type of the result
    * @param query the message query to send
    */
-  public Result(@NotNull ResultType type, @NotNull MessageQuery query) {
+  public Result(@NonNull ResultType type, @NonNull MessageQuery query) {
     this(type, query, null);
   }
 
@@ -114,9 +108,8 @@ public class Result implements IResult {
    * @param query the embed query to send
    * @param success the action to do after the message
    */
-  public Result(
-      @NotNull ResultType type, @NotNull EmbedQuery query, @Nullable Consumer<Message> success) {
-    this(type, query.getAsMessageQuery().getMessage(), null, success);
+  public Result(@NonNull ResultType type, @NonNull EmbedQuery query, Consumer<Message> success) {
+    this(type, query.getAsMessageQuery().build(), null, success);
   }
 
   /**
@@ -125,8 +118,8 @@ public class Result implements IResult {
    * @param type the type of the result
    * @param query the embed query to send
    */
-  public Result(@NotNull ResultType type, @NotNull EmbedQuery query) {
-    this(type, query.getAsMessageQuery().getMessage(), null);
+  public Result(@NonNull ResultType type, @NonNull EmbedQuery query) {
+    this(type, query.getAsMessageQuery().build(), null);
   }
 
   /**
@@ -135,7 +128,7 @@ public class Result implements IResult {
    * @param discordMessage the message to send
    * @param success the action to do after the message
    */
-  public Result(@NotNull Message discordMessage, @Nullable Consumer<Message> success) {
+  public Result(@NonNull Message discordMessage, Consumer<Message> success) {
     this(ResultType.GENERIC, discordMessage, success);
   }
 
@@ -144,7 +137,7 @@ public class Result implements IResult {
    *
    * @param discordMessage the message to send
    */
-  public Result(@NotNull Message discordMessage) {
+  public Result(@NonNull Message discordMessage) {
     this(ResultType.GENERIC, discordMessage);
   }
 
@@ -154,7 +147,7 @@ public class Result implements IResult {
    * @param message the message to send
    * @param success the action to do after the message
    */
-  public Result(@NotNull String message, @Nullable Consumer<Message> success) {
+  public Result(@NonNull String message, Consumer<Message> success) {
     this(ResultType.GENERIC, message, success);
   }
 
@@ -163,7 +156,7 @@ public class Result implements IResult {
    *
    * @param message the message to send
    */
-  public Result(@NotNull String message) {
+  public Result(@NonNull String message) {
     this(ResultType.GENERIC, message);
   }
 
@@ -173,7 +166,7 @@ public class Result implements IResult {
    * @param query the message query to send
    * @param success the action to do after the message
    */
-  public Result(@NotNull MessageQuery query, @Nullable Consumer<Message> success) {
+  public Result(@NonNull MessageQuery query, Consumer<Message> success) {
     this(ResultType.GENERIC, query, success);
   }
 
@@ -182,7 +175,7 @@ public class Result implements IResult {
    *
    * @param query the message query to send
    */
-  public Result(@NotNull MessageQuery query) {
+  public Result(@NonNull MessageQuery query) {
     this(ResultType.GENERIC, query);
   }
 
@@ -192,7 +185,7 @@ public class Result implements IResult {
    * @param query the embed query to send
    * @param success the action to do after the message
    */
-  public Result(@NotNull EmbedQuery query, @Nullable Consumer<Message> success) {
+  public Result(@NonNull EmbedQuery query, Consumer<Message> success) {
     this(ResultType.GENERIC, query, success);
   }
 
@@ -201,7 +194,7 @@ public class Result implements IResult {
    *
    * @param query the embed query to send
    */
-  public Result(@NotNull EmbedQuery query) {
+  public Result(@NonNull EmbedQuery query) {
     this(ResultType.GENERIC, query);
   }
 
@@ -210,58 +203,18 @@ public class Result implements IResult {
     this(ResultType.GENERIC, null, null, null);
   }
 
-  /**
-   * Get the type of the result
-   *
-   * @return the type of the result
-   */
-  @NotNull
-  public ResultType getType() {
-    return this.type;
-  }
-
-  /**
-   * This success is a callback for when the process is completed
-   *
-   * @return the callback
-   */
-  @Nullable
-  public Consumer<Message> getSuccess() {
-    return this.success;
-  }
-
-  /**
-   * Get the discord message of the result
-   *
-   * @return the message of the result
-   */
-  @Nullable
-  public Message getDiscordMessage() {
-    return discordMessage;
-  }
-
-  /**
-   * Get the message of the result
-   *
-   * @return the message of the result
-   */
   @Override
-  public @Nullable String getMessage() {
+  public String getMessage() {
     return message;
   }
 
   @Override
   public String toString() {
-    return "Result{"
-        + "type="
-        + type
-        + ", discordMessage="
-        + discordMessage
-        + ", message='"
-        + message
-        + '\''
-        + ", success="
-        + success
-        + '}';
+    return new ToStringBuilder(this)
+        .append("type", type)
+        .append("discordMessage", discordMessage)
+        .append("message", message)
+        .append("success", success)
+        .build();
   }
 }

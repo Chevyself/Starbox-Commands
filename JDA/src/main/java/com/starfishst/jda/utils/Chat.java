@@ -2,10 +2,9 @@ package com.starfishst.jda.utils;
 
 import com.starfishst.jda.context.CommandContext;
 import java.util.function.Consumer;
+import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** Utils for sending messages in discord */
 public class Chat {
@@ -18,9 +17,9 @@ public class Chat {
    * @param success the callback
    */
   public static void send(
-      @NotNull final MessageChannel channel,
-      @NotNull final Message message,
-      @Nullable final Consumer<Message> success) {
+      @NonNull final MessageChannel channel,
+      @NonNull final Message message,
+      final Consumer<Message> success) {
     if (success != null) {
       channel.sendMessage(message).queue(success);
     } else {
@@ -34,7 +33,7 @@ public class Chat {
    * @param channel the channel to send the message
    * @param message the message to send
    */
-  public static void send(@NotNull final MessageChannel channel, @NotNull final Message message) {
+  public static void send(@NonNull final MessageChannel channel, @NonNull final Message message) {
     Chat.send(channel, message, null);
   }
 
@@ -46,9 +45,9 @@ public class Chat {
    * @param success the callback of the message
    */
   public static void send(
-      @NotNull final CommandContext context,
-      @NotNull final Message message,
-      @Nullable final Consumer<Message> success) {
+      @NonNull final CommandContext context,
+      @NonNull final Message message,
+      final Consumer<Message> success) {
     Chat.send(context.getChannel(), message, success);
   }
 
@@ -58,7 +57,7 @@ public class Chat {
    * @param context the context of the message
    * @param message the message to send
    */
-  public static void send(@NotNull final CommandContext context, @NotNull final Message message) {
+  public static void send(@NonNull final CommandContext context, @NonNull final Message message) {
     Chat.send(context, message, null);
   }
 }
