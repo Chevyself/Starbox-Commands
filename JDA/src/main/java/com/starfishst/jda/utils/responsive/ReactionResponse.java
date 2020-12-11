@@ -31,7 +31,7 @@ public interface ReactionResponse {
    */
   default void onReactionRemoved(@NonNull MessageReactionRemoveEvent event) {}
 
-    /**
+  /**
    * The unicode to match and run the action
    *
    * @return the unicode. It can also be 'any' to accept any kind of emote

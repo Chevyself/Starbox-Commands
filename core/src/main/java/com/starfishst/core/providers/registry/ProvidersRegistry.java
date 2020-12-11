@@ -43,7 +43,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
     this.addProvider(new TimeProvider<>(messages));
   }
 
-  /** Create the registry with the default providers */
+  /** Create the registry with no providers */
   public ProvidersRegistry() {}
 
   /**
