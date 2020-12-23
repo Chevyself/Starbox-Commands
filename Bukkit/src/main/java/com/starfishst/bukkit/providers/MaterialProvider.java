@@ -12,7 +12,6 @@ import org.bukkit.Material;
 /** Provides commands with materials */
 public class MaterialProvider implements BukkitArgumentProvider<Material> {
 
-  /** The provider of the message in case the material is not found */
   @NonNull private final MessagesProvider messagesProvider;
 
   /**

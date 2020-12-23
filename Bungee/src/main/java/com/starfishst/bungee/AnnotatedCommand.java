@@ -12,6 +12,7 @@ import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.messages.IMessagesProvider;
+import com.starfishst.core.objects.CommandSettings;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.providers.type.IContextualProvider;
 import java.lang.reflect.InvocationTargetException;
@@ -31,21 +32,15 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     implements ICommandArray<CommandContext>, TabExecutor {
 
-  /** The messages provider */
   @NonNull protected final MessagesProvider messagesProvider;
   /** The plugin where this command was registered */
   @NonNull @Getter protected final Plugin plugin;
-  /** The object that contains the method that invokes the command */
-  @NonNull private final Object clazz;
-  /** The method that is the command */
-  @NonNull private final Method method;
-  /** The arguments to get the parameters for the method */
-  @NonNull private final List<ISimpleArgument<?>> arguments;
-  /** Whether the command should be executed asynchronously */
-  @Getter private final boolean asynchronous;
 
-  /** The providers registry for commands */
+  @NonNull private final Object clazz;
+  @NonNull private final Method method;
+  @NonNull private final List<ISimpleArgument<?>> arguments;
   @NonNull private final ProvidersRegistry<CommandContext> registry;
+  @NonNull private final CommandSettings settings;
 
   /**
    * Create an instance
@@ -56,8 +51,8 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
    * @param command the annotation of the command to get the parameters
    * @param messagesProvider the messages provider
    * @param plugin the plugin where this command was registered
-   * @param asynchronous whether this command should run asynchronously
    * @param registry the registry for commands
+   * @param settings the settings of the command
    */
   public AnnotatedCommand(
       @NonNull Object clazz,
@@ -66,8 +61,8 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
       @NonNull Command command,
       @NonNull MessagesProvider messagesProvider,
       @NonNull Plugin plugin,
-      boolean asynchronous,
-      ProvidersRegistry<CommandContext> registry) {
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull CommandSettings settings) {
     super(
         command.aliases()[0],
         command.permission().isEmpty() ? null : command.permission(),
@@ -77,8 +72,8 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
     this.plugin = plugin;
-    this.asynchronous = asynchronous;
     this.registry = registry;
+    this.settings = settings;
   }
 
   /**
@@ -164,6 +159,10 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
+  private boolean isAsynchronous() {
+    return settings.containsFlag("-async", true) || settings.containsFlag("async", true);
+  }
+
   @NonNull
   @Override
   public Object getClazz() {
@@ -190,5 +189,10 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   @Override
   public @NonNull IMessagesProvider<CommandContext> getMessagesProvider() {
     return messagesProvider;
+  }
+
+  @Override
+  public @NonNull CommandSettings getCommandArguments() {
+    return this.settings;
   }
 }

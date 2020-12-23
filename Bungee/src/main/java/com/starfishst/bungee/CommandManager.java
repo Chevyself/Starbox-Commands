@@ -10,7 +10,6 @@ import com.starfishst.core.exceptions.CommandRegistrationException;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commons.Strings;
@@ -46,17 +45,6 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     this.manager = plugin.getProxy().getPluginManager();
     this.messagesProvider = messagesProvider;
     this.registry = registry;
-  }
-
-  /**
-   * Get if a command is async
-   *
-   * @param method the method of the command
-   * @return true if the command is async
-   */
-  private boolean isAsync(@NonNull Method method) {
-    HashMap<String, String> settings = parseSettings(method);
-    return Boolean.parseBoolean(settings.getOrDefault("async", "false"));
   }
 
   @Override
@@ -97,8 +85,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             command,
             messagesProvider,
             plugin,
-            isAsync(method),
-            registry);
+            registry,
+            this.parseSettings(method));
       } else {
         return new AnnotatedCommand(
             object,
@@ -107,8 +95,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             command,
             messagesProvider,
             plugin,
-            isAsync(method),
-            registry);
+            registry,
+            this.parseSettings(method));
       }
     } else {
       throw new CommandRegistrationException(

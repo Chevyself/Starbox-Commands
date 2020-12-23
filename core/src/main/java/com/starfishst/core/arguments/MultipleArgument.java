@@ -11,10 +11,7 @@ import lombok.NonNull;
  */
 public class MultipleArgument<O> extends Argument<O> {
 
-  /** The minimum size of the strings that the argument accepts */
   @Getter private final int minSize;
-
-  /** The maximum size of strings that the argument accepts */
   @Getter private final int maxSize;
 
   /**

@@ -10,7 +10,6 @@ import me.googas.commons.time.Time;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Time} */
 public class TimeProvider<T extends ICommandContext> implements IArgumentProvider<Time, T> {
 
-  /** The provider to give the error message */
   private final IMessagesProvider<T> messagesProvider;
 
   /**

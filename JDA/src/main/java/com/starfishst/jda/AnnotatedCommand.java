@@ -2,11 +2,12 @@ package com.starfishst.jda;
 
 import com.starfishst.core.ICommand;
 import com.starfishst.core.arguments.ISimpleArgument;
-import com.starfishst.core.context.IMappable;
+import com.starfishst.core.context.Mappable;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.exceptions.type.SimpleException;
 import com.starfishst.core.exceptions.type.SimpleRuntimeException;
+import com.starfishst.core.objects.CommandSettings;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.jda.annotations.Command;
 import com.starfishst.jda.context.CommandContext;
@@ -28,37 +29,24 @@ import me.googas.commons.time.Time;
 import net.dv8tion.jda.api.entities.User;
 
 /** An annotated command for discord */
-public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
+public class AnnotatedCommand implements ICommand<CommandContext>, Mappable {
 
-  /** The class that contains the method that executes the command */
   @NonNull private final Object clazz;
-  /** The method that executes the command */
   @NonNull private final Method method;
-  /** The name of the command */
   @NonNull private final String name;
-  /** The description of the command */
   @NonNull private final String description;
-  /** Other aliases of the command */
   @NonNull private final List<String> aliases;
-  /** The permission required to execute the command */
   @NonNull @Getter private final SimplePermission permission;
-  /** The list of arguments that the command requires */
   @NonNull private final List<ISimpleArgument<?>> arguments;
-  /** The message provider for certain messages */
   @NonNull private final MessagesProvider messagesProvider;
-  /** The permission checker for the permissions of the command sender */
   @NonNull private final PermissionChecker permissionChecker;
-
   @NonNull private final ProvidersRegistry<CommandContext> registry;
-  /**
-   * Whether or not if it should be excluded from being deleted it's success check {@link
-   * com.starfishst.jda.annotations.Exclude}
-   */
-  @Getter private final boolean excluded;
   /** The users that have executed the command */
   @NonNull @Getter private final Set<CooldownUser> cooldownUsers;
   /** The time to cooldown the use of the message for the users */
   @NonNull @Getter @Setter private Time cooldown;
+
+  @NonNull private final CommandSettings settings;
 
   /**
    * Create an instance
@@ -71,8 +59,8 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
    * @param permissionChecker the permissions checker to check the command sender
    * @param registry the registry to get the providers from
    * @param cooldown the cooldown of the command
-   * @param excluded if the command should be excluded from deleting its success
    * @param cooldownUsers the list of users that are in cooldown
+   * @param settings
    */
   public AnnotatedCommand(
       @NonNull Object clazz,
@@ -83,8 +71,8 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
       @NonNull PermissionChecker permissionChecker,
       @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull Time cooldown,
-      boolean excluded,
-      @NonNull Set<CooldownUser> cooldownUsers) {
+      @NonNull Set<CooldownUser> cooldownUsers,
+      @NonNull CommandSettings settings) {
     this.clazz = clazz;
     this.method = method;
     this.name = cmd.aliases()[0];
@@ -96,8 +84,8 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
     this.permissionChecker = permissionChecker;
     this.registry = registry;
     this.cooldown = cooldown;
-    this.excluded = excluded;
     this.cooldownUsers = cooldownUsers;
+    this.settings = settings;
   }
 
   /**
@@ -142,6 +130,10 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
     return this.permissionChecker.checkPermission(context, this.permission) == null;
   }
 
+  private boolean isExcluded() {
+    return settings.containsFlag("-exclude", true) || settings.containsFlag("exclude", true);
+  }
+
   @Override
   public Result execute(@NonNull CommandContext context) {
     Result result = this.permissionChecker.checkPermission(context, this.permission);
@@ -160,7 +152,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
         if (cooldown.millis() != 0) {
           this.cooldownUsers.add(new CooldownUser(cooldown, context.getSender().getIdLong()));
         }
-        if (result.getSuccess() == null && excluded) {
+        if (result.getSuccess() == null && this.isExcluded()) {
           result =
               new Result(
                   result.getType(), result.getDiscordMessage(), result.getMessage(), message -> {});
@@ -225,6 +217,11 @@ public class AnnotatedCommand implements ICommand<CommandContext>, IMappable {
   @Override
   public MessagesProvider getMessagesProvider() {
     return messagesProvider;
+  }
+
+  @Override
+  public @NonNull CommandSettings getCommandArguments() {
+    return this.settings;
   }
 
   @Override

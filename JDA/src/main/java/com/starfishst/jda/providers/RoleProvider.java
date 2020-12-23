@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.entities.Role;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Role} */
 public class RoleProvider implements JdaArgumentProvider<Role> {
 
-  /** The provider to give the error message */
   private final MessagesProvider messagesProvider;
 
   /**

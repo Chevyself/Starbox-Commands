@@ -7,6 +7,7 @@ import java.util.Arrays;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.experimental.Delegate;
 import me.googas.commons.Strings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -17,17 +18,12 @@ public class CommandContext implements ICommandContext {
 
   /** The message that executed the command */
   @NonNull @Getter private final Message message;
-  /** The user that executed the command */
+
   @NonNull private final User sender;
-  /** The channel where the command was invoked */
   @NonNull @Getter private final MessageChannel channel;
-  /** The messages provider of this context */
   @NonNull private final MessagesProvider messagesProvider;
-  /** The registry of the command context */
-  @NonNull private final ProvidersRegistry<CommandContext> registry;
-  /** The name of the command that is being executed */
+  @NonNull @Delegate private final ProvidersRegistry<CommandContext> registry;
   @Getter private final String commandName;
-  /** The strings of the command execution */
   @NonNull @Setter private String[] strings;
 
   /**

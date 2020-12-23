@@ -4,6 +4,7 @@ import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import lombok.NonNull;
+import lombok.experimental.Delegate;
 import me.googas.commons.Lots;
 import me.googas.commons.Strings;
 import org.bukkit.command.CommandSender;
@@ -11,16 +12,11 @@ import org.bukkit.command.CommandSender;
 /** The context of a bukkit command */
 public class CommandContext implements ICommandContext {
 
-  /** The sender of the command */
   @NonNull private final CommandSender sender;
-  /** The command line that the sender executed */
   @NonNull private final String string;
-  /** The command line slitted */
   @NonNull private final String[] strings;
-  /** The messages provider of this context */
   @NonNull private final MessagesProvider messagesProvider;
-  /** The registry for the command context to use */
-  @NonNull private final ProvidersRegistry<CommandContext> registry;
+  @NonNull @Delegate private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create a bukkit context

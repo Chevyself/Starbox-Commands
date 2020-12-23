@@ -5,6 +5,7 @@ import com.starfishst.bungee.context.CommandContext;
 import com.starfishst.bungee.messages.MessagesProvider;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.ISimpleArgument;
+import com.starfishst.core.objects.CommandSettings;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param command the annotations to get the parameters of the command
    * @param messagesProvider the messages provider
    * @param plugin the plugin where this command was registered
-   * @param async whether the command should be executed async
    * @param registry the registry for the commands
+   * @param settings the settings of the command
    */
   public ParentCommand(
       @NonNull Object object,
@@ -43,9 +44,9 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NonNull Command command,
       @NonNull MessagesProvider messagesProvider,
       @NonNull Plugin plugin,
-      boolean async,
-      ProvidersRegistry<CommandContext> registry) {
-    super(object, method, arguments, command, messagesProvider, plugin, async, registry);
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull CommandSettings settings) {
+    super(object, method, arguments, command, messagesProvider, plugin, registry, settings);
   }
 
   @Override

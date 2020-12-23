@@ -13,10 +13,6 @@ import org.bukkit.entity.Player;
  */
 public class PlayerSenderProvider implements BukkitExtraArgumentProvider<Player> {
 
-  /**
-   * The provider of the message in case the command is executed by other entity rather than a
-   * player
-   */
   @NonNull private final MessagesProvider messagesProvider;
 
   /**

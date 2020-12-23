@@ -7,7 +7,7 @@ import lombok.NonNull;
  * If a class can have a list of suggestions (mostly used for tab complete in case of Bukkit
  * commands)
  */
-public interface ISuggestible {
+public interface Suggestible {
 
   /**
    * Get a list of suggestions

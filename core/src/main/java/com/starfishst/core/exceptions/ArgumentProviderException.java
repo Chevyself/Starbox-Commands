@@ -8,12 +8,17 @@ import lombok.NonNull;
  */
 public class ArgumentProviderException extends SimpleException {
 
-  /**
-   * Throw the exception using a message with place holders
-   *
-   * @param message the message
-   */
+  public ArgumentProviderException() {}
+
   public ArgumentProviderException(@NonNull String message) {
     super(message);
+  }
+
+  public ArgumentProviderException(String message, @NonNull Throwable cause) {
+    super(message, cause);
+  }
+
+  public ArgumentProviderException(@NonNull Throwable cause) {
+    super(cause);
   }
 }

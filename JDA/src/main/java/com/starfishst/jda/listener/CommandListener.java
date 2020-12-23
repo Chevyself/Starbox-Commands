@@ -27,13 +27,9 @@ import org.jetbrains.annotations.NotNull;
 /** The main listener of command execution */
 public class CommandListener implements EventListener {
 
-  /** The manager of commands */
   @NonNull @Getter private final CommandManager manager;
-  /** The options of the manager */
   @NonNull @Getter private final ManagerOptions managerOptions;
-  /** The provider of messages */
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  /** The prefix to start commands */
   @NonNull @Getter @Setter private String prefix;
 
   /**

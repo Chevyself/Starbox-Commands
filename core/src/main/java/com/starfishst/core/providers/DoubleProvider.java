@@ -9,7 +9,6 @@ import lombok.NonNull;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Double} */
 public class DoubleProvider<T extends ICommandContext> implements IArgumentProvider<Double, T> {
 
-  /** The provider to give the error message */
   private final IMessagesProvider<T> messagesProvider;
 
   /**

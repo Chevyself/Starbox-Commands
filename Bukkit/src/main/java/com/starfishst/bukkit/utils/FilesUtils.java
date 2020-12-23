@@ -7,7 +7,11 @@ import me.googas.commons.CoreFiles;
 import me.googas.commons.Validate;
 import org.bukkit.plugin.Plugin;
 
-/** Utilities for files while using bukkit */
+/**
+ * Utilities for files while using bukkit
+ *
+ * @deprecated since PRE8 since its not very useful just use {@link CoreFiles}
+ */
 public class FilesUtils {
 
   /**

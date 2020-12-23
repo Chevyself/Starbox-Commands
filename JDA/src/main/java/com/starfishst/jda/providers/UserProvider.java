@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.entities.User;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link User} */
 public class UserProvider implements JdaArgumentProvider<User> {
 
-  /** The provider to give the error message */
   private final MessagesProvider messagesProvider;
 
   /**

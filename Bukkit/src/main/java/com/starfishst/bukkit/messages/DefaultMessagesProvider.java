@@ -52,16 +52,6 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String invalidNumber(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + " &cis not a valid number");
-  }
-
-  @Override
-  public @NonNull String emptyDouble(@NonNull CommandContext context) {
-    return BukkitUtils.build("&cDoubles cannot be empty!");
-  }
-
-  @Override
   public @NonNull String missingStrings(
       @NonNull String name,
       @NonNull String description,

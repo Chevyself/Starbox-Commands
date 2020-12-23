@@ -146,4 +146,24 @@ public class ProvidersRegistry<T extends ICommandContext> {
     throw new ArgumentProviderException(
         IMultipleArgumentProvider.class + " was not found for " + clazz);
   }
+
+  /** @see #getObject(Class, ICommandContext) */
+  @NonNull
+  public <O> O get(@NonNull Class<O> clazz, @NonNull T context) throws ArgumentProviderException {
+    return clazz.cast(this.getObject(clazz, context));
+  }
+
+  /** @see #fromString(String, Class, ICommandContext) */
+  @NonNull
+  public <O> O get(@NonNull String string, @NonNull Class<O> clazz, @NonNull T context)
+      throws ArgumentProviderException {
+    return clazz.cast(this.fromString(string, clazz, context));
+  }
+
+  /** @see #fromStrings(String[], Class, ICommandContext) */
+  @NonNull
+  public <O> O get(@NonNull String[] strings, @NonNull Class<O> clazz, @NonNull T context)
+      throws ArgumentProviderException {
+    return clazz.cast(this.fromStrings(strings, clazz, context));
+  }
 }

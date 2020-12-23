@@ -3,13 +3,13 @@ package com.starfishst.core;
 import com.starfishst.core.annotations.Multiple;
 import com.starfishst.core.annotations.Optional;
 import com.starfishst.core.annotations.Required;
-import com.starfishst.core.annotations.settings.Setting;
-import com.starfishst.core.annotations.settings.Settings;
+import com.starfishst.core.annotations.Settings;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.arguments.ExtraArgument;
 import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.arguments.MultipleArgument;
 import com.starfishst.core.exceptions.CommandRegistrationException;
+import com.starfishst.core.objects.CommandSettings;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -225,13 +225,10 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @return the settings as a {@link HashMap}
    */
   @NonNull
-  default HashMap<String, String> parseSettings(@NonNull Method method) {
-    HashMap<String, String> settings = new HashMap<>();
+  default CommandSettings parseSettings(@NonNull Method method) {
     if (method.isAnnotationPresent(Settings.class)) {
-      for (Setting setting : method.getAnnotation(Settings.class).settings()) {
-        settings.put(setting.key(), setting.value());
-      }
+      return CommandSettings.constructCommand(method.getAnnotation(Settings.class).value());
     }
-    return settings;
+    return new CommandSettings();
   }
 }

@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 /** Provides the {@link com.starfishst.bukkit.CommandManager} with the object of {@link Player} */
 public class PlayerProvider implements BukkitArgumentProvider<Player> {
 
-  /** The provider of the message in case the player is not found */
   @NonNull private final MessagesProvider messagesProvider;
 
   /**

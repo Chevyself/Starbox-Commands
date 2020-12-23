@@ -13,7 +13,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 /** Provides a proxied player */
 public class ProxiedPlayerProvider implements BungeeArgumentProvider<ProxiedPlayer> {
 
-  /** The message provider for the error */
   @NonNull private final MessagesProvider messagesProvider;
 
   /**
@@ -43,10 +42,8 @@ public class ProxiedPlayerProvider implements BungeeArgumentProvider<ProxiedPlay
   @Override
   public ProxiedPlayer fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
-    return ProxyServer.getInstance().getPlayers().stream()
-        .filter(player -> player.getName().equalsIgnoreCase(string))
-        .findFirst()
-        .orElseThrow(
-            () -> new ArgumentProviderException(messagesProvider.invalidPlayer(string, context)));
+    ProxiedPlayer player = ProxyServer.getInstance().getPlayer(string);
+    if (player != null) return player;
+    throw new ArgumentProviderException(messagesProvider.invalidPlayer(string, context));
   }
 }

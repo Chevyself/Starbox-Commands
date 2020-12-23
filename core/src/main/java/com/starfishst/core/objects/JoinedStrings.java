@@ -3,16 +3,15 @@ package com.starfishst.core.objects;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commons.Strings;
+import me.googas.commons.builder.Builder;
 import me.googas.commons.builder.ToStringBuilder;
 
 /**
  * Its a class that stores the strings joined from a command execution (from it's argument position)
  */
-public class JoinedStrings {
+public class JoinedStrings implements Builder<String> {
 
-  /** The split of strings from an executed command */
   @NonNull @Getter private final String[] strings;
-  /** The single string of an executed command */
   @NonNull @Getter private final String string;
 
   /**
@@ -23,6 +22,11 @@ public class JoinedStrings {
   public JoinedStrings(@NonNull String[] strings) {
     this.strings = strings;
     this.string = Strings.fromArray(strings);
+  }
+
+  @Override
+  public @NonNull String build() {
+    return this.string;
   }
 
   @Override

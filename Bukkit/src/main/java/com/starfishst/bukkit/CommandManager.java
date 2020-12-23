@@ -14,7 +14,6 @@ import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
@@ -84,17 +83,6 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   }
 
   /**
-   * Get if a command is async
-   *
-   * @param method the method of the command
-   * @return true if the command is async
-   */
-  private boolean isAsync(@NonNull Method method) {
-    HashMap<String, String> settings = parseSettings(method);
-    return Boolean.parseBoolean(settings.getOrDefault("async", "false"));
-  }
-
-  /**
    * Get the registry of the manager
    *
    * @return the registry for the command context
@@ -144,8 +132,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             options,
             messagesProvider,
             plugin,
-            isAsync(method),
-            registry);
+            registry,
+            this.parseSettings(method));
       } else {
         return new AnnotatedCommand(
             object,
@@ -154,8 +142,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             command,
             messagesProvider,
             plugin,
-            isAsync(method),
-            registry);
+            registry,
+            this.parseSettings(method));
       }
     } else {
       throw new CommandRegistrationException(

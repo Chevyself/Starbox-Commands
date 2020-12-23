@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.entities.Member;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Member} */
 public class MemberProvider implements JdaArgumentProvider<Member> {
 
-  /** The provider to give the error message */
   private final MessagesProvider messagesProvider;
 
   /**

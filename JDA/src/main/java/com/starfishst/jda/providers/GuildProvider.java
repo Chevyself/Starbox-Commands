@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.entities.Guild;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Guild} */
 public class GuildProvider implements JdaExtraArgumentProvider<Guild> {
 
-  /** The provider to give the error message */
   private final MessagesProvider messagesProvider;
 
   /**

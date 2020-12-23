@@ -7,7 +7,11 @@ import me.googas.commons.CoreFiles;
 import me.googas.commons.Validate;
 import net.md_5.bungee.api.plugin.Plugin;
 
-/** File utility for bungee */
+/**
+ * File utility for bungee
+ *
+ * @deprecated since 1.0.9 use {@link CoreFiles}
+ */
 public class FilesUtils {
 
   /**

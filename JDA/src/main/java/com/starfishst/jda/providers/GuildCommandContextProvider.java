@@ -10,7 +10,6 @@ import lombok.NonNull;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link GuildCommandContext} */
 public class GuildCommandContextProvider implements JdaExtraArgumentProvider<GuildCommandContext> {
 
-  /** The provider to give the error message */
   private final MessagesProvider messagesProvider;
 
   /**

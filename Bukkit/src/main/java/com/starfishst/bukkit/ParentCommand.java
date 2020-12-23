@@ -5,6 +5,7 @@ import com.starfishst.bukkit.context.CommandContext;
 import com.starfishst.bukkit.messages.MessagesProvider;
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.ISimpleArgument;
+import com.starfishst.core.objects.CommandSettings;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -19,11 +20,8 @@ import org.bukkit.util.StringUtil;
 /** The annotated parent command for bukkit */
 public class ParentCommand extends AnnotatedCommand implements IParentCommand<AnnotatedCommand> {
 
-  /** The command manager options */
   @NonNull @Getter private final CommandManagerOptions options;
-  /** The list of children commands */
   @NonNull private final List<AnnotatedCommand> commands = new ArrayList<>();
-  /** The alias of the command */
   @NonNull private final List<String> commandsAlias = new ArrayList<>();
 
   /**
@@ -36,7 +34,6 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param options the options for the command
    * @param messagesProvider the messages provider
    * @param plugin the plugin where this command was registered
-   * @param async whether this command should execute asynchronously
    * @param registry the providers registry for the command context
    */
   ParentCommand(
@@ -47,9 +44,9 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NonNull CommandManagerOptions options,
       @NonNull MessagesProvider messagesProvider,
       @NonNull Plugin plugin,
-      boolean async,
-      @NonNull ProvidersRegistry<CommandContext> registry) {
-    super(clazz, method, arguments, command, messagesProvider, plugin, async, registry);
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull CommandSettings settings) {
+    super(clazz, method, arguments, command, messagesProvider, plugin, registry, settings);
     this.options = options;
   }
 

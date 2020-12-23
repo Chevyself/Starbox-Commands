@@ -70,7 +70,7 @@
         <dependency>
             <groupId>me.googas.commons</groupId>
             <artifactId>Commons</artifactId>
-            <version>1.1.2-SNAPSHOT</version>
+            <version>1.1.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

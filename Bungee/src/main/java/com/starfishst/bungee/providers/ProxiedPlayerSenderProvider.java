@@ -10,7 +10,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 /** Provides with the player that executed the command */
 public class ProxiedPlayerSenderProvider implements BungeeExtraArgumentProvider<ProxiedPlayer> {
 
-  /** The provider for the error message */
   @NonNull private final MessagesProvider messagesProvider;
 
   /**

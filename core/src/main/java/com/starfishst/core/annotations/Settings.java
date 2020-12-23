@@ -1,9 +1,10 @@
-package com.starfishst.core.annotations.settings;
+package com.starfishst.core.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import lombok.NonNull;
 
 /** The settings for a command */
 @Retention(RetentionPolicy.RUNTIME)
@@ -11,9 +12,11 @@ import java.lang.annotation.Target;
 public @interface Settings {
 
   /**
-   * Get the settings which were annotated to the command method
+   * Settings are now like program arguments. It is a single string which is then parsed by {@link
+   * me.googas.commons.ProgramArguments}
    *
-   * @return the settings array
+   * @return the string value of the command settings
    */
-  Setting[] settings();
+  @NonNull
+  String value() default "";
 }

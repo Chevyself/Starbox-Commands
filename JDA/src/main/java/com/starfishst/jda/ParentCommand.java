@@ -2,6 +2,7 @@ package com.starfishst.jda;
 
 import com.starfishst.core.IParentCommand;
 import com.starfishst.core.arguments.ISimpleArgument;
+import com.starfishst.core.objects.CommandSettings;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.jda.annotations.Command;
 import com.starfishst.jda.context.CommandContext;
@@ -34,10 +35,10 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
    * @param arguments the arguments of the command
    * @param messagesProvider the provider of messages
    * @param cooldown the time of cooldown
-   * @param excluded if the command should be excluded from deleting its success
    * @param registry the registry to get the providers from
    * @param permissionChecker to check the permission of the command sender
    * @param cooldownUsers the collection of users that have executed the command
+   * @param settings the parsed settings of the command
    */
   public ParentCommand(
       @NonNull Object clazz,
@@ -46,10 +47,10 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       @NonNull List<ISimpleArgument<?>> arguments,
       @NonNull MessagesProvider messagesProvider,
       @NonNull Time cooldown,
-      boolean excluded,
-      ProvidersRegistry<CommandContext> registry,
-      PermissionChecker permissionChecker,
-      Set<CooldownUser> cooldownUsers) {
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull PermissionChecker permissionChecker,
+      @NonNull Set<CooldownUser> cooldownUsers,
+      @NonNull CommandSettings settings) {
     super(
         clazz,
         method,
@@ -59,8 +60,8 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
         permissionChecker,
         registry,
         cooldown,
-        excluded,
-        cooldownUsers);
+        cooldownUsers,
+        settings);
   }
 
   @Override

@@ -3,7 +3,7 @@ package com.starfishst.core.context;
 import lombok.NonNull;
 
 /** It's a class that can be added to a help map */
-public interface IMappable {
+public interface Mappable {
 
   /**
    * Get the name for help

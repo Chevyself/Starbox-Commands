@@ -9,7 +9,6 @@ import lombok.NonNull;
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Boolean} */
 public class BooleanProvider<T extends ICommandContext> implements IArgumentProvider<Boolean, T> {
 
-  /** The provider to give the error message */
   private final IMessagesProvider<T> messagesProvider;
 
   /**

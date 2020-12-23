@@ -81,16 +81,6 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String invalidNumber(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid number";
-  }
-
-  @Override
-  public @NonNull String emptyDouble(@NonNull CommandContext context) {
-    return "Doubles cannot be empt-y!";
-  }
-
-  @Override
   public @NonNull String missingStrings(
       @NonNull String name,
       @NonNull String description,

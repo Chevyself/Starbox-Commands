@@ -12,6 +12,7 @@ import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.messages.IMessagesProvider;
+import com.starfishst.core.objects.CommandSettings;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.providers.type.IContextualProvider;
 import java.lang.reflect.InvocationTargetException;
@@ -34,17 +35,13 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   /** The provider for messages */
   @NonNull protected final MessagesProvider messagesProvider;
   /** The plugin where this command was registered */
-  @NonNull protected final Plugin plugin;
-  /** The object that owns the method to invoke */
+  @NonNull @Getter protected final Plugin plugin;
+
   @NonNull private final Object clazz;
-  /** The method to invoke. The method to invoke is the one annotated */
   @NonNull private final Method method;
-  /** The arguments of the command */
   @NonNull private final List<ISimpleArgument<?>> arguments;
-  /** Whether the command should be executed asynchronously */
-  @Getter private final boolean asynchronous;
-  /** The registry for the command */
   @NonNull private final ProvidersRegistry<CommandContext> registry;
+  @NonNull private final CommandSettings commandSettings;
 
   /**
    * Create an instance
@@ -55,8 +52,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
    * @param command the annotation that has all the command information
    * @param messagesProvider the provider for messages
    * @param plugin the plugin where this command was registered
-   * @param asynchronous whether the command should execute asynchronously
    * @param registry the registry for the command context
+   * @param commandSettings
    */
   AnnotatedCommand(
       @NonNull Object clazz,
@@ -65,8 +62,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
       @NonNull Command command,
       @NonNull MessagesProvider messagesProvider,
       @NonNull Plugin plugin,
-      boolean asynchronous,
-      @NonNull ProvidersRegistry<CommandContext> registry) {
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull CommandSettings commandSettings) {
     super(
         command.aliases()[0], command.description(), "", Lots.removeAndList(command.aliases(), 0));
     this.clazz = clazz;
@@ -74,8 +71,8 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     this.arguments = arguments;
     this.messagesProvider = messagesProvider;
     this.plugin = plugin;
-    this.asynchronous = asynchronous;
     this.registry = registry;
+    this.commandSettings = commandSettings;
     final String permission = command.permission();
     if (!permission.isEmpty()) {
       this.setPermission(permission);
@@ -154,15 +151,25 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     return messagesProvider;
   }
 
+  private boolean isAsynchronous() {
+    return commandSettings.containsFlag("-async", true)
+        || commandSettings.containsFlag("async", true);
+  }
+
   @Override
   public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
     return registry;
   }
 
   @Override
+  public @NonNull CommandSettings getCommandArguments() {
+    return this.commandSettings;
+  }
+
+  @Override
   public boolean execute(
       @NonNull CommandSender commandSender, @NonNull String s, @NonNull String[] strings) {
-    if (asynchronous) {
+    if (isAsynchronous()) {
       Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> run(commandSender, strings));
     } else {
       run(commandSender, strings);

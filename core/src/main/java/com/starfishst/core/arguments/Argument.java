@@ -2,26 +2,20 @@ package com.starfishst.core.arguments;
 
 import com.starfishst.core.ICommand;
 import com.starfishst.core.context.ICommandContext;
-import com.starfishst.core.context.IMappable;
-import com.starfishst.core.context.ISuggestible;
+import com.starfishst.core.context.Mappable;
+import com.starfishst.core.context.Suggestible;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 
 /** An argument is a parameter for the {@link ICommand} different results can be given by them */
-public class Argument<O> implements ISuggestible, ISimpleArgument<O>, IMappable {
+public class Argument<O> implements Suggestible, ISimpleArgument<O>, Mappable {
 
-  /** The name of the argument */
   @NonNull private final String name;
-  /** The description of the argument */
   @NonNull private final String description;
-  /** A list of suggestions for the user that will need to input the argument */
   @NonNull private final List<String> suggestions;
-  /** Get the class that represents the argument */
   @NonNull private final Class<O> clazz;
-  /** If the argument is required */
   @Getter private final boolean required;
-  /** The position of the argument */
   @Getter private final int position;
 
   /**

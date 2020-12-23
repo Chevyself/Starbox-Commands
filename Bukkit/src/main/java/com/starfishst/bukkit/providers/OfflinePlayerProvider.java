@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 /**
  * Provides the command with an offline player. It queries the players that have played in the
@@ -29,8 +30,7 @@ public class OfflinePlayerProvider implements BukkitArgumentProvider<OfflinePlay
         return player;
       }
     }
-    throw new ArgumentProviderException(
-        context.getMessagesProvider().invalidPlayer(context.getString(), context));
+    return context.get(string, Player.class, context);
   }
 
   @Override

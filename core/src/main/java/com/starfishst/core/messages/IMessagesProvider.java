@@ -75,25 +75,6 @@ public interface IMessagesProvider<T extends ICommandContext> {
       @NonNull String name, @NonNull String description, int position, T context);
 
   /**
-   * Get the message to send when a string is not a valid number
-   *
-   * @param string the string that is not a valid number
-   * @param context the context of the command
-   * @return the message to tell that the input is wrong
-   */
-  @NonNull
-  String invalidNumber(@NonNull String string, @NonNull T context);
-
-  /**
-   * Get the message sent when the input string for a double is empty
-   *
-   * @param context the context of the command
-   * @return the message to tell the user that a double cannot be empty
-   */
-  @NonNull
-  String emptyDouble(@NonNull T context);
-
-  /**
    * Get the message sent when a {@link MultipleArgument#getMinSize()} is bigger than the context
    * strings
    *

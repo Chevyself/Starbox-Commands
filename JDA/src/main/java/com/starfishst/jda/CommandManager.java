@@ -5,7 +5,6 @@ import com.starfishst.core.annotations.Parent;
 import com.starfishst.core.exceptions.CommandRegistrationException;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.jda.annotations.Command;
-import com.starfishst.jda.annotations.Exclude;
 import com.starfishst.jda.context.CommandContext;
 import com.starfishst.jda.listener.CommandListener;
 import com.starfishst.jda.messages.MessagesProvider;
@@ -150,10 +149,10 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             parseArguments(params, annotations),
             messagesProvider,
             cooldown,
-            hasAnnotation(method.getAnnotations(), Exclude.class),
             registry,
             permissionChecker,
-            new HashSet<>());
+            new HashSet<>(),
+            parseSettings(method));
       } else {
         return new AnnotatedCommand(
             object,
@@ -164,8 +163,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
             permissionChecker,
             registry,
             cooldown,
-            hasAnnotation(method.getAnnotations(), Exclude.class),
-            new HashSet<>());
+            new HashSet<>(),
+            parseSettings(method));
       }
     } else {
       throw new CommandRegistrationException(

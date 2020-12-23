@@ -8,6 +8,7 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.exceptions.MissingArgumentException;
 import com.starfishst.core.messages.IMessagesProvider;
+import com.starfishst.core.objects.CommandSettings;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import com.starfishst.core.result.IResult;
 import java.lang.reflect.InvocationTargetException;
@@ -185,4 +186,13 @@ public interface ISimpleCommand<C extends ICommandContext> {
    */
   @NonNull
   IMessagesProvider<C> getMessagesProvider();
+
+  /**
+   * Get the arguments which were used to create this command.
+   *
+   * @see CommandSettings
+   * @return the arguments of the command
+   */
+  @NonNull
+  CommandSettings getCommandArguments();
 }

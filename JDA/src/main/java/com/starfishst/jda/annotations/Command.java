@@ -29,16 +29,6 @@ public @interface Command {
   String description() default "No description provided";
 
   /**
-   * The permission of the command to be used. If it is kept as {@link Permission#UNKNOWN} it wont
-   * have one
-   *
-   * @return the permission of the command
-   */
-  @Deprecated
-  @NonNull
-  Perm permissionA() default @Perm;
-
-  /**
    * Get the permission as a string node. If this is left empty then it will use the {@link}
    *
    * @return the string permission
