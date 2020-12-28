@@ -12,7 +12,7 @@
 
     <groupId>com.starfishst.bukkit</groupId>
     <artifactId>Bukkit</artifactId>
-    <version>1.0.10-SNAPSHOT</version>
+    <version>1.0.9-SNAPSHOT</version>
     <description>Bukkit utils and command framework</description>
 
     <build>

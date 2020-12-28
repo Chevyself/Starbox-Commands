@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.entities.Message;
 public class SimpleResponsiveMessage implements ResponsiveMessage {
 
   /** The set of reactions to which this message will respond */
-  @NonNull protected final transient Set<ReactionResponse> reactions;
+  @NonNull protected final Set<ReactionResponse> reactions;
   /** The id of this message */
   private final long id;
 

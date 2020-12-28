@@ -9,15 +9,19 @@ import com.starfishst.jda.messages.MessagesProvider;
 import com.starfishst.jda.result.Result;
 import com.starfishst.jda.result.ResultType;
 import com.starfishst.jda.utils.embeds.EmbedFactory;
+import com.starfishst.jda.utils.message.FakeMessage;
 import com.starfishst.jda.utils.message.MessagesFactory;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import me.googas.annotations.Nullable;
 import me.googas.commons.Lots;
 import me.googas.commons.Strings;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -51,6 +55,11 @@ public class CommandListener implements EventListener {
     this.messagesProvider = messagesProvider;
   }
 
+  public void dispatch(@NonNull User user, @Nullable Member member, Message message) {
+    this.onMessageReceivedEvent(
+        new MessageReceivedEvent(this.manager.getJda(), 0, new FakeMessage(user, member, message)));
+  }
+
   /**
    * On the event of a message received
    *
@@ -74,7 +83,7 @@ public class CommandListener implements EventListener {
     Message response = getMessage(result, context);
     Consumer<Message> consumer = getConsumer(result);
     if (response != null) {
-      if (consumer != null) {
+      if (consumer != null && !(event.getMessage() instanceof FakeMessage)) {
         event.getChannel().sendMessage(response).queue(consumer);
       } else {
         event.getChannel().sendMessage(response).queue();

@@ -8,21 +8,14 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 public interface ReactionResponse {
 
   /**
-   * Whether or not the reaction should be removed
-   *
-   * @return true if it should be removed
-   * @deprecated you can now decide whether to remove the reaction in {@link
-   *     #onReaction(MessageReactionAddEvent)}
-   */
-  boolean removeReaction();
-
-  /**
    * If unicode matches this is the action to run
    *
    * @param event the reaction event
    * @return whether to remove the reaction. true to remove it false otherwise
    */
-  boolean onReaction(@NonNull MessageReactionAddEvent event);
+  default boolean onReaction(@NonNull MessageReactionAddEvent event) {
+    return true;
+  }
 
   /**
    * If unicode matches this is the action to run
