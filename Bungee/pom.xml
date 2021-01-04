@@ -11,50 +11,9 @@
     </parent>
 
     <groupId>com.starfishst.bungee</groupId>
-    <artifactId>bungee</artifactId>
-    <version>1.0.9-SNAPSHOT</version>
+    <artifactId>Bungee</artifactId>
+    <version>1.0.10-SNAPSHOT</version>
     <description>Bungee utils and command framework</description>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/**</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <artifactSet>
-                                <includes>
-                                    <include>com.starfishst.core:core</include>
-                                </includes>
-                            </artifactSet>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-        <finalName>Easy-Commands-${project.artifactId}</finalName>
-    </build>
 
     <repositories>
         <repository>
