@@ -4,10 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.starfishst</groupId>
-    <artifactId>EasyCommands</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.starfishst.commands</groupId>
+    <artifactId>easy-commands</artifactId>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
+    <description>An easy to use command framework for Bukkit, Bungee or JDA (Discord)</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,15 +16,24 @@
     </properties>
 
     <modules>
-        <module>Bukkit</module>
-        <module>Bungee</module>
+        <module>bukkit</module>
+        <module>bungee</module>
         <module>core</module>
-        <module>core-utils</module>
-        <module>JDA</module>
+        <module>jda</module>
     </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-xchevy-Starfish</id>
+            <name>xchevy-Starfish</name>
+            <url>https://api.bintray.com/maven/xchevy/Starfish/Easy-Commands/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
 
     <build>
         <plugins>
+            <!-- Use Java 8 -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -33,6 +43,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>3.8.1</version>
             </plugin>
+            <!-- Format to google -->
             <plugin>
                 <artifactId>fmt-maven-plugin</artifactId>
                 <executions>
@@ -48,19 +59,29 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <dependency>
-            <artifactId>annotations</artifactId>
-            <groupId>org.jetbrains</groupId>
-            <version>17.0.0</version>
-        </dependency>
-    </dependencies>
-
     <repositories>
+        <!-- Commons repo -->
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>bintray-xchevy-Starfish</id>
+            <name>xchevy-Starfish</name>
+            <url>https://dl.bintray.com/xchevy/Starfish</url>
         </repository>
     </repositories>
+
+    <dependencies>
+        <!-- Dependency to the Lombok annotations -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Commons -->
+        <dependency>
+            <groupId>me.googas.commons</groupId>
+            <artifactId>commons</artifactId>
+            <version>1.0.0_0</version>
+        </dependency>
+    </dependencies>
 
 </project>

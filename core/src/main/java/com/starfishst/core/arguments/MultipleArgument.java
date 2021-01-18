@@ -1,7 +1,8 @@
 package com.starfishst.core.arguments;
 
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * Is an arguments that requires multiple string to function
@@ -9,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
  * @param <O> the type that requires the argument
  */
 public class MultipleArgument<O> extends Argument<O> {
+
+  @Getter private final int minSize;
+  @Getter private final int maxSize;
 
   /**
    * Get a new instance of {@link MultipleArgument}
@@ -19,14 +23,20 @@ public class MultipleArgument<O> extends Argument<O> {
    * @param clazz the class of the argument
    * @param required is the argument required by the command
    * @param position the position of the argument in the command
+   * @param minSize minimum size of the strings that the argument accepts
+   * @param maxSize maximum size of strings that the argument accepts
    */
   public MultipleArgument(
-      @NotNull String name,
-      @NotNull String description,
-      @NotNull List<String> suggestions,
-      @NotNull Class<O> clazz,
+      @NonNull String name,
+      @NonNull String description,
+      @NonNull List<String> suggestions,
+      @NonNull Class<O> clazz,
       boolean required,
-      int position) {
+      int position,
+      int minSize,
+      int maxSize) {
     super(name, description, suggestions, clazz, required, position);
+    this.minSize = minSize;
+    this.maxSize = maxSize;
   }
 }

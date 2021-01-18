@@ -1,7 +1,7 @@
 package com.starfishst.core;
 
 import com.starfishst.core.context.ICommandContext;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * Represents a command. This one contains the names/aliases in an {@link java.lang.reflect.Array}
@@ -17,6 +17,6 @@ public interface ICommandArray<C extends ICommandContext> extends ISimpleCommand
    *
    * @return the array of aliases
    */
-  @NotNull
+  @NonNull
   String[] getAliases();
 }

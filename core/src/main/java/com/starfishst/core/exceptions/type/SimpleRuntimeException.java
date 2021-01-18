@@ -1,26 +1,21 @@
 package com.starfishst.core.exceptions.type;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** A runtime exception that can be handled in commands */
 public class SimpleRuntimeException extends RuntimeException {
 
-  /**
-   * Throw a simple runtime exception
-   *
-   * @param message the message
-   */
-  public SimpleRuntimeException(@NotNull String message) {
+  public SimpleRuntimeException() {}
+
+  public SimpleRuntimeException(@NonNull String message) {
     super(message);
   }
 
-  /**
-   * Throw a simple runtime exception
-   *
-   * @param message the message
-   * @param cause the cause of the exception
-   */
-  public SimpleRuntimeException(String message, Throwable cause) {
+  public SimpleRuntimeException(String message, @NonNull Throwable cause) {
     super(message, cause);
+  }
+
+  public SimpleRuntimeException(@NonNull Throwable cause) {
+    super(cause);
   }
 }

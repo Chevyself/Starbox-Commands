@@ -1,17 +1,9 @@
 package com.starfishst.core.providers.type;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** A simple provider only requires the class of the object */
 public interface ISimpleArgumentProvider<O> {
-
-  /**
-   * Get the class to provide
-   *
-   * @return the class to provide
-   */
-  @NotNull
-  Class<O> getClazz();
 
   /**
    * Get if the provider provides with the queried class
@@ -19,7 +11,15 @@ public interface ISimpleArgumentProvider<O> {
    * @param clazz the queried class
    * @return true if it provides it
    */
-  default boolean provides(@NotNull Class<?> clazz) {
+  default boolean provides(@NonNull Class<?> clazz) {
     return clazz.isAssignableFrom(getClazz());
   }
+
+  /**
+   * Get the class to provide
+   *
+   * @return the class to provide
+   */
+  @NonNull
+  Class<O> getClazz();
 }

@@ -4,12 +4,11 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Long} */
 public class LongProvider<T extends ICommandContext> implements IArgumentProvider<Long, T> {
 
-  /** The provider to give the error message */
   private final IMessagesProvider<T> messagesProvider;
 
   /**
@@ -22,18 +21,29 @@ public class LongProvider<T extends ICommandContext> implements IArgumentProvide
   }
 
   @Override
-  public @NotNull Class<Long> getClazz() {
-    return long.class;
+  public @NonNull Class<Long> getClazz() {
+    return Long.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Long fromString(@NotNull String string, @NotNull T context)
+  public Long fromString(@NonNull String string, @NonNull T context)
       throws ArgumentProviderException {
     try {
       return Long.parseLong(string);
     } catch (NumberFormatException e) {
       throw new ArgumentProviderException(messagesProvider.invalidLong(string, context));
     }
+  }
+
+  /**
+   * Get if the provider provides with the queried class
+   *
+   * @param clazz the queried class
+   * @return true if it provides it
+   */
+  @Override
+  public boolean provides(@NonNull Class<?> clazz) {
+    return clazz == Long.class || clazz == long.class;
   }
 }

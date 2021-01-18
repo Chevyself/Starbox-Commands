@@ -1,7 +1,7 @@
 package com.starfishst.core.exceptions;
 
 import com.starfishst.core.exceptions.type.SimpleRuntimeException;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** Thrown when there's been an issue trying to register a command */
 public class CommandRegistrationException extends SimpleRuntimeException {
@@ -11,7 +11,7 @@ public class CommandRegistrationException extends SimpleRuntimeException {
    *
    * @param message the message
    */
-  public CommandRegistrationException(@NotNull String message) {
+  public CommandRegistrationException(@NonNull String message) {
     super(message);
   }
 }

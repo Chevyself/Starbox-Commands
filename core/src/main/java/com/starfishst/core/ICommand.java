@@ -2,7 +2,7 @@ package com.starfishst.core;
 
 import com.starfishst.core.context.ICommandContext;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * Represents a command. This one contains the names/aliases in a {@link List} because there could
@@ -18,6 +18,6 @@ public interface ICommand<C extends ICommandContext> extends ISimpleCommand<C> {
    *
    * @return the {@link List} of aliases
    */
-  @NotNull
+  @NonNull
   List<String> getAliases();
 }

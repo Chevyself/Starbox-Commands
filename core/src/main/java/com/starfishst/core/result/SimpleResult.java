@@ -1,19 +1,17 @@
 package com.starfishst.core.result;
 
-import org.jetbrains.annotations.Nullable;
-
 /** A simple result given by a command */
 public class SimpleResult implements IResult {
 
   /** A message sent by the execution of a command */
-  @Nullable private final String message;
+  private final String message;
 
   /**
    * Create a new instance of {@link SimpleResult} with a message with place holders
    *
    * @param message the message with place holders
    */
-  protected SimpleResult(@Nullable String message) {
+  protected SimpleResult(String message) {
     this.message = message;
   }
 
@@ -22,7 +20,6 @@ public class SimpleResult implements IResult {
     this.message = null;
   }
 
-  @Nullable
   @Override
   public String getMessage() {
     return this.message;

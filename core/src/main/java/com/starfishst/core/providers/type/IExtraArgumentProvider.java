@@ -2,7 +2,7 @@ package com.starfishst.core.providers.type;
 
 import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /** An extra argument will be in the command method but it is not needed in the command string */
 public interface IExtraArgumentProvider<O, T extends ICommandContext>
@@ -15,6 +15,6 @@ public interface IExtraArgumentProvider<O, T extends ICommandContext>
    * @return the {@link com.starfishst.core.arguments.ExtraArgument} object
    * @throws ArgumentProviderException in case that the object could not be given
    */
-  @NotNull
-  O getObject(@NotNull T context) throws ArgumentProviderException;
+  @NonNull
+  O getObject(@NonNull T context) throws ArgumentProviderException;
 }

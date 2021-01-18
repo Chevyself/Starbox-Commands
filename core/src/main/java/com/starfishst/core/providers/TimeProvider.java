@@ -4,13 +4,12 @@ import com.starfishst.core.context.ICommandContext;
 import com.starfishst.core.exceptions.ArgumentProviderException;
 import com.starfishst.core.messages.IMessagesProvider;
 import com.starfishst.core.providers.type.IArgumentProvider;
-import com.starfishst.core.utils.time.Time;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
+import me.googas.commons.time.Time;
 
 /** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Time} */
 public class TimeProvider<T extends ICommandContext> implements IArgumentProvider<Time, T> {
 
-  /** The provider to give the error message */
   private final IMessagesProvider<T> messagesProvider;
 
   /**
@@ -23,13 +22,13 @@ public class TimeProvider<T extends ICommandContext> implements IArgumentProvide
   }
 
   @Override
-  public @NotNull Class<Time> getClazz() {
+  public @NonNull Class<Time> getClazz() {
     return Time.class;
   }
 
-  @NotNull
+  @NonNull
   @Override
-  public Time fromString(@NotNull String string, @NotNull T context)
+  public Time fromString(@NonNull String string, @NonNull T context)
       throws ArgumentProviderException {
     try {
       return Time.fromString(string);

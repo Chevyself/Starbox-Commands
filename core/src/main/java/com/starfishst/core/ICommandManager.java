@@ -3,20 +3,20 @@ package com.starfishst.core;
 import com.starfishst.core.annotations.Multiple;
 import com.starfishst.core.annotations.Optional;
 import com.starfishst.core.annotations.Required;
-import com.starfishst.core.annotations.settings.Setting;
-import com.starfishst.core.annotations.settings.Settings;
+import com.starfishst.core.annotations.Settings;
 import com.starfishst.core.arguments.Argument;
 import com.starfishst.core.arguments.ExtraArgument;
+import com.starfishst.core.arguments.ISimpleArgument;
 import com.starfishst.core.arguments.MultipleArgument;
-import com.starfishst.core.arguments.type.ISimpleArgument;
 import com.starfishst.core.exceptions.CommandRegistrationException;
+import com.starfishst.core.objects.CommandSettings;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 
 /**
  * The core or "heart" interface of the framework. It is used to register the commands using
@@ -34,7 +34,7 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @param object the class instance of the command. It will be used to invoke the methods and also
    *     to get the class and therefore the methods to invoke for a command
    */
-  void registerCommand(@NotNull Object object);
+  void registerCommand(@NonNull Object object);
 
   /**
    * Parse the arguments of a command. This method looks for the parameters of the method using
@@ -48,18 +48,23 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @param annotations the annotations of the parameters of the command method
    * @return the list of parsed {@link ISimpleArgument} empty if there's none
    */
-  @NotNull
+  @NonNull
   default List<ISimpleArgument<?>> parseArguments(
-      @NotNull final Class<?>[] parameters, @NotNull final Annotation[][] annotations) {
+      @NonNull final Class<?>[] parameters, @NonNull final Annotation[][] annotations) {
     List<ISimpleArgument<?>> arguments = new ArrayList<>();
     int position = 0;
     for (int i = 0; i < parameters.length; i++) {
       Annotation[] paramAnnotations = annotations[i];
-      if (isEmpty(paramAnnotations)) {
+      if (this.isEmpty(paramAnnotations)) {
         arguments.add(i, new ExtraArgument<>(parameters[i]));
       } else {
-        arguments.add(i, this.parseArgument(parameters[i], annotations[i], position));
-        position++;
+        Argument<?> argument = this.parseArgument(parameters[i], annotations[i], position);
+        arguments.add(i, argument);
+        if (argument instanceof MultipleArgument) {
+          position = +((MultipleArgument<?>) argument).getMinSize();
+        } else {
+          position++;
+        }
       }
     }
     return arguments;
@@ -80,8 +85,8 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @return the new instance of {@link ICommand} if it was parsed correctly, method is accessible,
    *     etc, etc.
    */
-  @NotNull
-  C parseCommand(@NotNull Object object, @NotNull Method method, boolean isParent);
+  @NonNull
+  C parseCommand(@NonNull Object object, @NonNull Method method, boolean isParent);
 
   /**
    * Parse the argument using the parameter class and the annotation. It is called by <br>
@@ -98,10 +103,10 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @throws CommandRegistrationException if the parameter does not contain an annotation such as
    *     {@link Required} or {@link Optional}
    */
-  @NotNull
+  @NonNull
   default Argument<?> parseArgument(
-      @NotNull Class<?> parameter, @NotNull Annotation[] annotations, int position) {
-    boolean multiple = hasAnnotation(annotations, Multiple.class);
+      @NonNull Class<?> parameter, @NonNull Annotation[] annotations, int position) {
+    Multiple multiple = this.getMultiple(annotations);
     for (Annotation annotation : annotations) {
       if (annotation instanceof Required) {
         String name = ((Required) annotation).name();
@@ -125,6 +130,21 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
   }
 
   /**
+   * Get the annotation {@link Multiple} from an array of annotations
+   *
+   * @param annotations the array of annotations
+   * @return the annotation if the array contains it else null
+   */
+  default Multiple getMultiple(@NonNull Annotation[] annotations) {
+    for (Annotation annotation : annotations) {
+      if (annotation instanceof Multiple) {
+        return (Multiple) annotation;
+      }
+    }
+    return null;
+  }
+
+  /**
    * This gets the final instance of the argument. Called by {@link #parseArgument(Class,
    * Annotation[], int)} basically this gives either {@link MultipleArgument} or {@link Argument} it
    * is check in the {@link #parseArgument(Class, Annotation[], int)} method if the parameter
@@ -132,7 +152,7 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    *
    * @param parameter the parameter where the argument came from
    * @param position the position of the argument
-   * @param multiple whether or not has the annotation {@link Multiple}
+   * @param multiple the annotation required to get an {@link MultipleArgument} it can be null
    * @param required whether the argument is required (if it has the annotation {@link Required} it
    *     is required)
    * @param name the name of the argument
@@ -141,17 +161,25 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @return the argument instance if multiple is tru it will be a {@link MultipleArgument} else
    *     just a {@link Argument}
    */
-  @NotNull
+  @NonNull
   default Argument<?> getArgument(
-      @NotNull Class<?> parameter,
+      @NonNull Class<?> parameter,
       int position,
-      boolean multiple,
+      Multiple multiple,
       boolean required,
-      @NotNull String name,
-      @NotNull String description,
-      @NotNull List<String> suggestions) {
-    if (multiple) {
-      return new MultipleArgument<>(name, description, suggestions, parameter, true, position);
+      @NonNull String name,
+      @NonNull String description,
+      @NonNull List<String> suggestions) {
+    if (multiple != null) {
+      return new MultipleArgument<>(
+          name,
+          description,
+          suggestions,
+          parameter,
+          true,
+          position,
+          multiple.min(),
+          multiple.max());
     } else {
       return new Argument<>(name, description, suggestions, parameter, required, position);
     }
@@ -168,11 +196,9 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @param <T> the type of annotation to match
    */
   default <T extends Annotation> boolean hasAnnotation(
-      @NotNull Annotation[] annotations, @NotNull Class<T> search) {
+      @NonNull Annotation[] annotations, @NonNull Class<T> search) {
     for (Annotation annotation : annotations) {
-      if (search.isAssignableFrom(annotation.getClass())) {
-        return true;
-      }
+      if (search.isAssignableFrom(annotation.getClass())) return true;
     }
     return false;
   }
@@ -184,11 +210,9 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @param annotations the array of annotations to check
    * @return true if the method does not contain either of both annotations
    */
-  default boolean isEmpty(@NotNull Annotation[] annotations) {
+  default boolean isEmpty(@NonNull Annotation[] annotations) {
     for (Annotation annotation : annotations) {
-      if (annotation instanceof Required || annotation instanceof Optional) {
-        return false;
-      }
+      if (annotation instanceof Required || annotation instanceof Optional) return false;
     }
     return true;
   }
@@ -200,14 +224,11 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @param method the method of a command to get the annotations
    * @return the settings as a {@link HashMap}
    */
-  @NotNull
-  default HashMap<String, String> parseSettings(@NotNull Method method) {
-    HashMap<String, String> settings = new HashMap<>();
+  @NonNull
+  default CommandSettings parseSettings(@NonNull Method method) {
     if (method.isAnnotationPresent(Settings.class)) {
-      for (Setting setting : method.getAnnotation(Settings.class).settings()) {
-        settings.put(setting.key(), setting.value());
-      }
+      return CommandSettings.constructCommand(method.getAnnotation(Settings.class).value());
     }
-    return settings;
+    return new CommandSettings();
   }
 }
