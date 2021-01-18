@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.starfishst</groupId>
-        <artifactId>Easy-Commands</artifactId>
-        <version>1.2.2-SNAPSHOT</version>
+        <groupId>com.starfishst.commands</groupId>
+        <artifactId>easy-commands</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <groupId>com.starfishst.core</groupId>
+    <groupId>com.starfishst.commands.core</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.1-PRE8</version>
+    <version>1.0.0</version>
     <description>Main utils and command frameworks core</description>
 
 </project>

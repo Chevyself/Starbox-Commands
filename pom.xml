@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.starfishst</groupId>
-    <artifactId>Easy-Commands</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <groupId>com.starfishst.commands</groupId>
+    <artifactId>easy-commands</artifactId>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <description>An easy to use command framework for Bukkit, Bungee or JDA (Discord)</description>
 
@@ -16,11 +16,20 @@
     </properties>
 
     <modules>
-        <module>Bukkit</module>
-        <module>Bungee</module>
+        <module>bukkit</module>
+        <module>bungee</module>
         <module>core</module>
-        <module>JDA</module>
+        <module>jda</module>
     </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-xchevy-Starfish</id>
+            <name>xchevy-Starfish</name>
+            <url>https://api.bintray.com/maven/xchevy/Starfish/Easy-Commands/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
 
     <build>
         <plugins>
@@ -51,10 +60,11 @@
     </build>
 
     <repositories>
-        <!-- Spigot repository -->
+        <!-- Commons repo -->
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>bintray-xchevy-Starfish</id>
+            <name>xchevy-Starfish</name>
+            <url>https://dl.bintray.com/xchevy/Starfish</url>
         </repository>
     </repositories>
 
@@ -69,8 +79,8 @@
         <!-- Commons -->
         <dependency>
             <groupId>me.googas.commons</groupId>
-            <artifactId>Commons</artifactId>
-            <version>1.1.5-SNAPSHOT</version>
+            <artifactId>commons</artifactId>
+            <version>1.0.0_0</version>
         </dependency>
     </dependencies>
 
