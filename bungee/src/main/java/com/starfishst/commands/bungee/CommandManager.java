@@ -10,8 +10,12 @@ import com.starfishst.core.exceptions.CommandRegistrationException;
 import com.starfishst.core.providers.registry.ProvidersRegistry;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.annotations.Nullable;
 import me.googas.commons.Strings;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -27,8 +31,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
   @NonNull private final MessagesProvider messagesProvider;
   /** The registry for the commands */
   @NonNull private final ProvidersRegistry<CommandContext> registry;
-  /** The temporal command for registering commands there and not in the manager */
-  private ParentCommand parent;
+  /** THe list of registered commands */
+  @NonNull @Getter private final List<AnnotatedCommand> commands = new ArrayList<>();
 
   /**
    * Create an instance
@@ -49,24 +53,73 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
 
   @Override
   public void registerCommand(@NonNull Object object) {
-    final Class<?> clazz = object.getClass();
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        this.parent = (ParentCommand) this.parseCommand(object, method, true);
-        this.manager.registerCommand(this.plugin, this.parent);
-      }
-    }
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Command.class) & !method.isAnnotationPresent(Parent.class)) {
-        final AnnotatedCommand cmd = this.parseCommand(object, method, false);
-        if (this.parent != null) {
-          this.parent.addCommand(cmd);
+    Collection<AnnotatedCommand> commands = parseCommands(object);
+    ParentCommand command = null;
+    for (AnnotatedCommand annotatedCommand : commands) {
+      if (annotatedCommand instanceof ParentCommand) {
+        command = (ParentCommand) annotatedCommand;
+        this.manager.registerCommand(this.plugin, annotatedCommand);
+        this.commands.add(annotatedCommand);
+      } else {
+        if (command != null) {
+          command.addCommand(annotatedCommand);
         } else {
-          this.manager.registerCommand(this.plugin, cmd);
+          this.manager.registerCommand(this.plugin, annotatedCommand);
+          this.commands.add(annotatedCommand);
         }
       }
     }
-    this.parent = null;
+  }
+
+  @Override
+  public @NonNull Collection<AnnotatedCommand> parseCommands(@NonNull Object object) {
+    List<AnnotatedCommand> commands = new ArrayList<>();
+    ParentCommand parent = null;
+    final Class<?> clazz = object.getClass();
+    for (final Method method : clazz.getDeclaredMethods()) {
+      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
+        parent = (ParentCommand) this.parseCommand(object, method, true);
+        commands.add(parent);
+        break;
+      }
+    }
+    for (final Method method : clazz.getDeclaredMethods()) {
+      if (method.isAnnotationPresent(Command.class)) {
+        final AnnotatedCommand cmd = this.parseCommand(object, method, false);
+        if (parent != null) {
+          parent.addCommand(cmd);
+        } else {
+          commands.add(cmd);
+        }
+      }
+    }
+    return commands;
+  }
+
+  @Nullable
+  @Override
+  public ParentCommand getParent(@NonNull String alias) {
+    for (AnnotatedCommand command : this.commands) {
+      if (command instanceof ParentCommand) {
+        if (command.getName().equalsIgnoreCase(alias)) {
+          return (ParentCommand) command;
+        }
+        for (String commandAlias : command.getAliases()) {
+          if (commandAlias.equalsIgnoreCase(alias)) {
+            return (ParentCommand) command;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public void unregister() {
+    for (AnnotatedCommand command : this.commands) {
+      manager.unregisterCommand(command);
+    }
+    this.commands.clear();
   }
 
   @NonNull

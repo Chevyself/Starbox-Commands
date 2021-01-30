@@ -12,7 +12,7 @@
 
     <groupId>com.starfishst.commands.bungee</groupId>
     <artifactId>bungee</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0_0</version>
     <description>Bungee utils and command framework</description>
 
     <repositories>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.starfishst.commands.core</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.0_1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

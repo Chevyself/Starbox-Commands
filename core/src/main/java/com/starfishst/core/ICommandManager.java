@@ -14,9 +14,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.annotations.Nullable;
 
 /**
  * The core or "heart" interface of the framework. It is used to register the commands using
@@ -69,6 +71,37 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
     }
     return arguments;
   }
+
+  /**
+   * Parse all the commands from the given object. Please note that this commands will not be
+   * registered, to do so please
+   *
+   * @see #registerCommand(Object)
+   * @param object the object to get the commands
+   * @return a collection with the parsed commands
+   */
+  @NonNull
+  Collection<C> parseCommands(@NonNull Object object);
+
+  /**
+   * Get a parent command using its alias
+   *
+   * @param alias the alias of the parent
+   * @return the prent command if it is registered else null
+   */
+  @Nullable
+  IParentCommand<C> getParent(@NonNull String alias);
+
+  /** Unregister this command manager and all of its commands */
+  void unregister();
+
+  /**
+   * Get all the commands that have been registered in this manager
+   *
+   * @return a collection of commands
+   */
+  @NonNull
+  Collection<C> getCommands();
 
   /**
    * This should be executed from {@link #registerCommand(Object)} to get a command from a method
