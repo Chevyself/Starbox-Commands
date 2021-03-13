@@ -1,4 +1,4 @@
-package com.starfishst.commands.bungee.result;
+package me.googas.commands.bungee.result;
 
 import me.googas.commands.result.IResult;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.starfishst.commands.bungee.utils;
+package me.googas.commands.bungee.utils;
 
 import java.util.HashMap;
 import lombok.NonNull;

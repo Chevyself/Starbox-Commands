@@ -1,6 +1,6 @@
-package com.starfishst.commands.bungee.providers.type;
+package me.googas.commands.bungee.providers.type;
 
-import com.starfishst.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.providers.type.IArgumentProvider;
 import java.util.List;
 import lombok.NonNull;

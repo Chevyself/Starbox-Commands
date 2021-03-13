@@ -1,11 +1,11 @@
-package com.starfishst.commands.bungee.providers.registry;
+package me.googas.commands.bungee.providers.registry;
 
-import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.commands.bungee.messages.MessagesProvider;
-import com.starfishst.commands.bungee.providers.CommandContextProvider;
-import com.starfishst.commands.bungee.providers.CommandSenderProvider;
-import com.starfishst.commands.bungee.providers.ProxiedPlayerProvider;
-import com.starfishst.commands.bungee.providers.ProxiedPlayerSenderProvider;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.messages.MessagesProvider;
+import me.googas.commands.bungee.providers.CommandContextProvider;
+import me.googas.commands.bungee.providers.CommandSenderProvider;
+import me.googas.commands.bungee.providers.ProxiedPlayerProvider;
+import me.googas.commands.bungee.providers.ProxiedPlayerSenderProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import lombok.NonNull;
 

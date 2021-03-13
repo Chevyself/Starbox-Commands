@@ -1,8 +1,8 @@
-package com.starfishst.commands.bungee.providers;
+package me.googas.commands.bungee.providers;
 
-import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.commands.bungee.messages.MessagesProvider;
-import com.starfishst.commands.bungee.providers.type.BungeeArgumentProvider;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.messages.MessagesProvider;
+import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import java.util.ArrayList;
 import java.util.List;

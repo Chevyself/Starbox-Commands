@@ -1,6 +1,6 @@
-package com.starfishst.commands.bungee.messages;
+package me.googas.commands.bungee.messages;
 
-import com.starfishst.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.messages.IMessagesProvider;
 import lombok.NonNull;
 

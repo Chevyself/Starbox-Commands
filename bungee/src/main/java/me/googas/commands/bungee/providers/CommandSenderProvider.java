@@ -1,7 +1,7 @@
-package com.starfishst.commands.bungee.providers;
+package me.googas.commands.bungee.providers;
 
-import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.commands.bungee.providers.type.BungeeExtraArgumentProvider;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.providers.type.BungeeExtraArgumentProvider;
 import lombok.NonNull;
 import net.md_5.bungee.api.CommandSender;
 

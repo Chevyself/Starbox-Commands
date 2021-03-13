@@ -1,4 +1,4 @@
-package com.starfishst.commands.bungee.annotations;
+package me.googas.commands.bungee.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

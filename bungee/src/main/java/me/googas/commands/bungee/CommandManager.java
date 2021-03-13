@@ -1,9 +1,9 @@
-package com.starfishst.commands.bungee;
+package me.googas.commands.bungee;
 
-import com.starfishst.commands.bungee.annotations.Command;
-import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.commands.bungee.messages.MessagesProvider;
-import com.starfishst.commands.bungee.result.Result;
+import me.googas.commands.bungee.annotations.Command;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.messages.MessagesProvider;
+import me.googas.commands.bungee.result.Result;
 import me.googas.commands.ICommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.exceptions.CommandRegistrationException;

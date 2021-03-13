@@ -1,8 +1,8 @@
-package com.starfishst.commands.bungee;
+package me.googas.commands.bungee;
 
-import com.starfishst.commands.bungee.annotations.Command;
-import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.commands.bungee.messages.MessagesProvider;
+import me.googas.commands.bungee.annotations.Command;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.IParentCommand;
 import me.googas.commands.arguments.ISimpleArgument;
 import me.googas.commands.objects.CommandSettings;

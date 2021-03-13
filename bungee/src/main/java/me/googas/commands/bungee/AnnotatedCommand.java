@@ -1,11 +1,11 @@
-package com.starfishst.commands.bungee;
+package me.googas.commands.bungee;
 
-import com.starfishst.commands.bungee.annotations.Command;
-import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.commands.bungee.messages.MessagesProvider;
-import com.starfishst.commands.bungee.providers.type.BungeeArgumentProvider;
-import com.starfishst.commands.bungee.providers.type.BungeeMultiArgumentProvider;
-import com.starfishst.commands.bungee.result.Result;
+import me.googas.commands.bungee.annotations.Command;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.messages.MessagesProvider;
+import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
+import me.googas.commands.bungee.providers.type.BungeeMultiArgumentProvider;
+import me.googas.commands.bungee.result.Result;
 import me.googas.commands.ICommandArray;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.ISimpleArgument;
