@@ -5,14 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.starfishst.commands</groupId>
+        <groupId>me.googas.commands</groupId>
         <artifactId>easy-commands</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.starfishst.commands.core</groupId>
     <artifactId>core</artifactId>
-    <version>1.0.0_1</version>
-    <description>Main utils and command frameworks core</description>
+    <version>1.0.0</version>
+    <description>The main framework structure</description>
 
 </project>

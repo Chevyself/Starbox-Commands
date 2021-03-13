@@ -5,14 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.starfishst.commands</groupId>
+        <groupId>me.googas.commands</groupId>
         <artifactId>easy-commands</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.starfishst.commands.jda</groupId>
     <artifactId>jda</artifactId>
-    <version>1.0.0_1</version>
+    <version>1.0.0</version>
 
     <repositories>
         <repository>
@@ -29,11 +28,10 @@
             <version>4.2.0_211</version>
         </dependency>
         <dependency>
-            <groupId>com.starfishst.commands.core</groupId>
+            <groupId>me.googas.commands</groupId>
             <artifactId>core</artifactId>
-            <version>1.0.0_1</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
 </project>

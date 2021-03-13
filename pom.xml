@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.starfishst.commands</groupId>
+    <groupId>me.googas.commands</groupId>
     <artifactId>easy-commands</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
@@ -21,15 +21,6 @@
         <module>core</module>
         <module>jda</module>
     </modules>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-xchevy-Starfish</id>
-            <name>xchevy-Starfish</name>
-            <url>https://api.bintray.com/maven/xchevy/Starfish/Easy-Commands/;publish=1</url>
-        </repository>
-    </distributionManagement>
-
 
     <build>
         <plugins>
@@ -59,15 +50,6 @@
         </plugins>
     </build>
 
-    <repositories>
-        <!-- Commons repo -->
-        <repository>
-            <id>bintray-xchevy-Starfish</id>
-            <name>xchevy-Starfish</name>
-            <url>https://dl.bintray.com/xchevy/Starfish</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!-- Dependency to the Lombok annotations -->
         <dependency>
@@ -78,9 +60,9 @@
         </dependency>
         <!-- Commons -->
         <dependency>
-            <groupId>me.googas.commons</groupId>
-            <artifactId>commons</artifactId>
-            <version>1.0.0_1</version>
+            <groupId>me.googas.starbox</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
