@@ -1,0 +1,41 @@
+package me.googas.commands.jda.providers;
+
+import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.context.GuildCommandContext;
+import me.googas.commands.jda.messages.MessagesProvider;
+import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
+import me.googas.commands.ICommandManager;
+import me.googas.commands.exceptions.ArgumentProviderException;
+import lombok.NonNull;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+
+/** Provides the {@link ICommandManager} with a {@link User} */
+public class MemberSenderProvider implements JdaExtraArgumentProvider<Member> {
+
+  private final MessagesProvider messagesProvider;
+
+  /**
+   * Create an instance
+   *
+   * @param messagesProvider to send the error message in case that the long could not be parsed
+   */
+  public MemberSenderProvider(MessagesProvider messagesProvider) {
+    this.messagesProvider = messagesProvider;
+  }
+
+  @NonNull
+  @Override
+  public Member getObject(@NonNull CommandContext context) throws ArgumentProviderException {
+    if (!(context instanceof GuildCommandContext)) {
+      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
+    } else {
+      return ((GuildCommandContext) context).getMember();
+    }
+  }
+
+  @Override
+  public @NonNull Class<Member> getClazz() {
+    return Member.class;
+  }
+}
