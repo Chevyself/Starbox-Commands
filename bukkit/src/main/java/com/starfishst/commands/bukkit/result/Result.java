@@ -1,7 +1,7 @@
 package com.starfishst.commands.bukkit.result;
 
 import com.starfishst.commands.bukkit.utils.BukkitUtils;
-import com.starfishst.core.result.IResult;
+import me.googas.commands.result.IResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

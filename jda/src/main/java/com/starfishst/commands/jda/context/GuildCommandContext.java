@@ -1,7 +1,7 @@
 package com.starfishst.commands.jda.context;
 
 import com.starfishst.commands.jda.messages.MessagesProvider;
-import com.starfishst.core.providers.registry.ProvidersRegistry;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;

@@ -3,8 +3,9 @@ package com.starfishst.commands.jda.providers;
 import com.starfishst.commands.jda.context.CommandContext;
 import com.starfishst.commands.jda.providers.type.JdaExtraArgumentProvider;
 import lombok.NonNull;
+import me.googas.commands.ICommandManager;
 
-/** Provides the {@link com.starfishst.core.ICommandManager} with a {@link CommandContext} */
+/** Provides the {@link ICommandManager} with a {@link CommandContext} */
 public class CommandContextProvider implements JdaExtraArgumentProvider<CommandContext> {
 
   @NonNull

@@ -1,8 +1,8 @@
 package com.starfishst.commands.bukkit.context;
 
 import com.starfishst.commands.bukkit.messages.MessagesProvider;
-import com.starfishst.core.context.ICommandContext;
-import com.starfishst.core.providers.registry.ProvidersRegistry;
+import me.googas.commands.context.ICommandContext;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 import me.googas.commons.Lots;

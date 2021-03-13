@@ -3,11 +3,12 @@ package com.starfishst.commands.jda.providers;
 import com.starfishst.commands.jda.context.CommandContext;
 import com.starfishst.commands.jda.messages.MessagesProvider;
 import com.starfishst.commands.jda.providers.type.JdaArgumentProvider;
-import com.starfishst.core.exceptions.ArgumentProviderException;
+import me.googas.commands.ICommandManager;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Role;
 
-/** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Role} */
+/** Provides the {@link ICommandManager} with a {@link Role} */
 public class RoleProvider implements JdaArgumentProvider<Role> {
 
   private final MessagesProvider messagesProvider;

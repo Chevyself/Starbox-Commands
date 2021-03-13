@@ -2,7 +2,7 @@ package com.starfishst.commands.bukkit.providers;
 
 import com.starfishst.commands.bukkit.context.CommandContext;
 import com.starfishst.commands.bukkit.providers.type.BukkitArgumentProvider;
-import com.starfishst.core.exceptions.ArgumentProviderException;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;

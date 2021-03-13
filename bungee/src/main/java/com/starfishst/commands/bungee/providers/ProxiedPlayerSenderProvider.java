@@ -3,7 +3,7 @@ package com.starfishst.commands.bungee.providers;
 import com.starfishst.commands.bungee.context.CommandContext;
 import com.starfishst.commands.bungee.messages.MessagesProvider;
 import com.starfishst.commands.bungee.providers.type.BungeeExtraArgumentProvider;
-import com.starfishst.core.exceptions.ArgumentProviderException;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import lombok.NonNull;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

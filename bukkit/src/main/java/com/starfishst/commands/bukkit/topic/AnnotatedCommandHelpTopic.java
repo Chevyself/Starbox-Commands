@@ -3,7 +3,7 @@ package com.starfishst.commands.bukkit.topic;
 import com.starfishst.commands.bukkit.AnnotatedCommand;
 import com.starfishst.commands.bukkit.ParentCommand;
 import com.starfishst.commands.bukkit.messages.MessagesProvider;
-import com.starfishst.core.arguments.Argument;
+import me.googas.commands.arguments.Argument;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;

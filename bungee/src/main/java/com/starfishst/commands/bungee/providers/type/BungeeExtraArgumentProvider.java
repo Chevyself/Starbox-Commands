@@ -1,7 +1,7 @@
 package com.starfishst.commands.bungee.providers.type;
 
 import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
+import me.googas.commands.providers.type.IExtraArgumentProvider;
 
 /**
  * An implementation for extra argument providers in bungee

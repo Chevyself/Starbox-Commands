@@ -1,7 +1,7 @@
 package com.starfishst.commands.jda.providers.type;
 
 import com.starfishst.commands.jda.context.CommandContext;
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
+import me.googas.commands.providers.type.IExtraArgumentProvider;
 
 /**
  * An extension for an extra argument provider using JDA

@@ -6,7 +6,7 @@ import com.starfishst.commands.bungee.providers.CommandContextProvider;
 import com.starfishst.commands.bungee.providers.CommandSenderProvider;
 import com.starfishst.commands.bungee.providers.ProxiedPlayerProvider;
 import com.starfishst.commands.bungee.providers.ProxiedPlayerSenderProvider;
-import com.starfishst.core.providers.registry.ProvidersRegistry;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 import lombok.NonNull;
 
 /** The implementation of providers registry for bungee */

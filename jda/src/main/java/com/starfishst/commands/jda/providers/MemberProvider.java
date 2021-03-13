@@ -4,11 +4,12 @@ import com.starfishst.commands.jda.context.CommandContext;
 import com.starfishst.commands.jda.context.GuildCommandContext;
 import com.starfishst.commands.jda.messages.MessagesProvider;
 import com.starfishst.commands.jda.providers.type.JdaArgumentProvider;
-import com.starfishst.core.exceptions.ArgumentProviderException;
+import me.googas.commands.ICommandManager;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Member;
 
-/** Provides the {@link com.starfishst.core.ICommandManager} with a {@link Member} */
+/** Provides the {@link ICommandManager} with a {@link Member} */
 public class MemberProvider implements JdaArgumentProvider<Member> {
 
   private final MessagesProvider messagesProvider;

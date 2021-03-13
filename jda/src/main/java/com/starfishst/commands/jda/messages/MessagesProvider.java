@@ -4,7 +4,7 @@ import com.starfishst.commands.jda.CommandManager;
 import com.starfishst.commands.jda.ManagerOptions;
 import com.starfishst.commands.jda.context.CommandContext;
 import com.starfishst.commands.jda.result.ResultType;
-import com.starfishst.core.messages.IMessagesProvider;
+import me.googas.commands.messages.IMessagesProvider;
 import lombok.NonNull;
 import me.googas.commons.time.Time;
 

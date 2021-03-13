@@ -8,7 +8,7 @@ import com.starfishst.commands.bukkit.providers.MaterialProvider;
 import com.starfishst.commands.bukkit.providers.OfflinePlayerProvider;
 import com.starfishst.commands.bukkit.providers.PlayerProvider;
 import com.starfishst.commands.bukkit.providers.PlayerSenderProvider;
-import com.starfishst.core.providers.registry.ProvidersRegistry;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 import lombok.NonNull;
 
 /** The providers registry for bukkit */

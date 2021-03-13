@@ -1,7 +1,7 @@
 package com.starfishst.commands.bungee.providers.type;
 
 import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.core.providers.type.IArgumentProvider;
+import me.googas.commands.providers.type.IArgumentProvider;
 import java.util.List;
 import lombok.NonNull;
 

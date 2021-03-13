@@ -3,8 +3,8 @@ package com.starfishst.commands.bukkit.messages;
 import com.starfishst.commands.bukkit.AnnotatedCommand;
 import com.starfishst.commands.bukkit.ParentCommand;
 import com.starfishst.commands.bukkit.context.CommandContext;
-import com.starfishst.core.arguments.Argument;
-import com.starfishst.core.messages.IMessagesProvider;
+import me.googas.commands.arguments.Argument;
+import me.googas.commands.messages.IMessagesProvider;
 import lombok.NonNull;
 import org.bukkit.plugin.Plugin;
 

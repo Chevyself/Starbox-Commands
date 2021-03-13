@@ -1,7 +1,7 @@
 package com.starfishst.commands.bukkit.providers.type;
 
 import com.starfishst.commands.bukkit.context.CommandContext;
-import com.starfishst.core.providers.type.IExtraArgumentProvider;
+import me.googas.commands.providers.type.IExtraArgumentProvider;
 
 /**
  * An implementation for bukkit extra arguments

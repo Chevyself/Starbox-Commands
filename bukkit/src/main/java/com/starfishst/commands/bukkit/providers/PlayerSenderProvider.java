@@ -4,7 +4,7 @@ import com.starfishst.commands.bukkit.CommandManager;
 import com.starfishst.commands.bukkit.context.CommandContext;
 import com.starfishst.commands.bukkit.messages.MessagesProvider;
 import com.starfishst.commands.bukkit.providers.type.BukkitExtraArgumentProvider;
-import com.starfishst.core.exceptions.ArgumentProviderException;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
 

@@ -4,10 +4,11 @@ import com.starfishst.commands.jda.context.CommandContext;
 import com.starfishst.commands.jda.context.GuildCommandContext;
 import com.starfishst.commands.jda.messages.MessagesProvider;
 import com.starfishst.commands.jda.providers.type.JdaExtraArgumentProvider;
-import com.starfishst.core.exceptions.ArgumentProviderException;
+import me.googas.commands.ICommandManager;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import lombok.NonNull;
 
-/** Provides the {@link com.starfishst.core.ICommandManager} with a {@link GuildCommandContext} */
+/** Provides the {@link ICommandManager} with a {@link GuildCommandContext} */
 public class GuildCommandContextProvider implements JdaExtraArgumentProvider<GuildCommandContext> {
 
   private final MessagesProvider messagesProvider;

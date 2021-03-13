@@ -1,7 +1,7 @@
 package com.starfishst.commands.bungee.messages;
 
 import com.starfishst.commands.bungee.context.CommandContext;
-import com.starfishst.core.messages.IMessagesProvider;
+import me.googas.commands.messages.IMessagesProvider;
 import lombok.NonNull;
 
 /** The messages provider for bungee */

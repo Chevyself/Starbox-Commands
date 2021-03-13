@@ -4,7 +4,7 @@ import com.starfishst.commands.jda.annotations.Command;
 import com.starfishst.commands.jda.result.Result;
 import com.starfishst.commands.jda.result.ResultType;
 import com.starfishst.commands.jda.utils.embeds.EmbedFactory;
-import com.starfishst.core.annotations.Parent;
+import me.googas.commands.annotations.Parent;
 import java.util.LinkedHashMap;
 import java.util.List;
 import lombok.Getter;

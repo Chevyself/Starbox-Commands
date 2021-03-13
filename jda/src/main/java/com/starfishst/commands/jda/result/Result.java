@@ -2,7 +2,7 @@ package com.starfishst.commands.jda.result;
 
 import com.starfishst.commands.jda.utils.embeds.EmbedQuery;
 import com.starfishst.commands.jda.utils.message.MessageQuery;
-import com.starfishst.core.result.IResult;
+import me.googas.commands.result.IResult;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;

@@ -13,8 +13,8 @@ import com.starfishst.commands.jda.providers.TextChannelExtraProvider;
 import com.starfishst.commands.jda.providers.TextChannelProvider;
 import com.starfishst.commands.jda.providers.UserProvider;
 import com.starfishst.commands.jda.providers.UserSenderProvider;
-import com.starfishst.core.providers.registry.ProvidersRegistry;
-import com.starfishst.core.providers.type.IContextualProvider;
+import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.providers.type.IContextualProvider;
 import java.util.List;
 import lombok.NonNull;
 

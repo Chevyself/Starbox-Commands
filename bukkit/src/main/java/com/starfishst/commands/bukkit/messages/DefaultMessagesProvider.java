@@ -4,7 +4,7 @@ import com.starfishst.commands.bukkit.AnnotatedCommand;
 import com.starfishst.commands.bukkit.ParentCommand;
 import com.starfishst.commands.bukkit.context.CommandContext;
 import com.starfishst.commands.bukkit.utils.BukkitUtils;
-import com.starfishst.core.arguments.Argument;
+import me.googas.commands.arguments.Argument;
 import lombok.NonNull;
 import me.googas.commons.maps.Maps;
 import org.bukkit.plugin.Plugin;

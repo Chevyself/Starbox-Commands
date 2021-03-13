@@ -1,6 +1,6 @@
 package com.starfishst.commands.bungee.result;
 
-import com.starfishst.core.result.IResult;
+import me.googas.commands.result.IResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
