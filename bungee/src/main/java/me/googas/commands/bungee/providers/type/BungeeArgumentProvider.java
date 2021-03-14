@@ -1,9 +1,9 @@
 package me.googas.commands.bungee.providers.type;
 
-import me.googas.commands.bungee.context.CommandContext;
-import me.googas.commands.providers.type.IArgumentProvider;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.providers.type.IArgumentProvider;
 
 /**
  * A provider made for bungee commands

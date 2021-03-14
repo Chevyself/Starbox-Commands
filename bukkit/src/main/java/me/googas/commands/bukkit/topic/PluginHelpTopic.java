@@ -1,10 +1,10 @@
 package me.googas.commands.bukkit.topic;
 
-import me.googas.commands.bukkit.CommandManager;
-import me.googas.commands.bukkit.messages.MessagesProvider;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commons.Strings;
+import me.googas.commands.bukkit.CommandManager;
+import me.googas.commands.bukkit.messages.MessagesProvider;
+import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.plugin.Plugin;

@@ -1,8 +1,8 @@
 package me.googas.commands.bukkit.topic;
 
+import lombok.NonNull;
 import me.googas.commands.bukkit.AnnotatedCommand;
 import me.googas.commands.bukkit.messages.MessagesProvider;
-import lombok.NonNull;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.help.HelpTopicFactory;
 

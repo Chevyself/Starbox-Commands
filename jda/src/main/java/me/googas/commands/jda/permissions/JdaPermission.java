@@ -1,7 +1,7 @@
 package me.googas.commands.jda.permissions;
 
-import me.googas.commands.jda.annotations.Command;
 import lombok.NonNull;
+import me.googas.commands.jda.annotations.Command;
 import net.dv8tion.jda.api.Permission;
 
 /** This object represents a permission that a command may have */

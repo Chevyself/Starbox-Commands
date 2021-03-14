@@ -1,8 +1,8 @@
 package me.googas.commands;
 
-import me.googas.commands.context.ICommandContext;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.commands.context.ICommandContext;
 
 /**
  * This object is just a {@link ISimpleCommand} but it contains commands inside of it, so that when

@@ -1,7 +1,7 @@
 package me.googas.commands.arguments;
 
 import lombok.NonNull;
-import me.googas.commons.builder.ToStringBuilder;
+import me.googas.starbox.builder.ToStringBuilder;
 
 /** An extra argument will be in the command method but it is not needed in the command string */
 public class ExtraArgument<O> implements ISimpleArgument<O> {

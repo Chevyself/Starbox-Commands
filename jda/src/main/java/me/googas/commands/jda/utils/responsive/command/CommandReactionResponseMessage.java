@@ -1,5 +1,6 @@
 package me.googas.commands.jda.utils.responsive.command;
 
+import lombok.NonNull;
 import me.googas.commands.jda.AnnotatedCommand;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.context.GuildCommandContext;
@@ -7,8 +8,7 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
 import me.googas.commands.jda.utils.responsive.ReactionResponse;
-import lombok.NonNull;
-import me.googas.commons.Validate;
+import me.googas.starbox.Validate;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 

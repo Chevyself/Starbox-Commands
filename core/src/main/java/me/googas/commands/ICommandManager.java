@@ -1,5 +1,14 @@
 package me.googas.commands;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import lombok.NonNull;
+import me.googas.annotations.Nullable;
 import me.googas.commands.annotations.Multiple;
 import me.googas.commands.annotations.Optional;
 import me.googas.commands.annotations.Parent;
@@ -11,15 +20,6 @@ import me.googas.commands.arguments.ISimpleArgument;
 import me.googas.commands.arguments.MultipleArgument;
 import me.googas.commands.exceptions.CommandRegistrationException;
 import me.googas.commands.objects.CommandSettings;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import lombok.NonNull;
-import me.googas.annotations.Nullable;
 
 /**
  * The core or "heart" interface of the framework. It is used to register the commands using

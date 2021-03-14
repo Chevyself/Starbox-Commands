@@ -4,7 +4,7 @@ import java.lang.ref.SoftReference;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 import me.googas.annotations.Nullable;
-import me.googas.commons.Validate;
+import me.googas.starbox.Validate;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;

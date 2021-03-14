@@ -1,11 +1,11 @@
 package me.googas.commands.jda.providers;
 
+import lombok.NonNull;
+import me.googas.commands.ICommandManager;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.type.JdaArgumentProvider;
-import me.googas.commands.ICommandManager;
-import me.googas.commands.exceptions.ArgumentProviderException;
-import lombok.NonNull;
 import net.dv8tion.jda.api.entities.User;
 
 /** Provides the {@link ICommandManager} with a {@link User} */

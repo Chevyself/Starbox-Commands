@@ -1,12 +1,12 @@
 package me.googas.commands.jda.utils.message;
 
-import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.utils.Chat;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
-import me.googas.commons.builder.Builder;
+import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.utils.Chat;
+import me.googas.starbox.builder.Builder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;

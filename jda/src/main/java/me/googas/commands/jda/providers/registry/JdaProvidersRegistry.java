@@ -1,5 +1,7 @@
 package me.googas.commands.jda.providers.registry;
 
+import java.util.List;
+import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.CommandContextProvider;
@@ -15,8 +17,6 @@ import me.googas.commands.jda.providers.UserProvider;
 import me.googas.commands.jda.providers.UserSenderProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.IContextualProvider;
-import java.util.List;
-import lombok.NonNull;
 
 /** The providers registry for jda */
 public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {

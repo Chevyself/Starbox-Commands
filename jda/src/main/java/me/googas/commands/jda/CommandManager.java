@@ -1,15 +1,5 @@
 package me.googas.commands.jda;
 
-import me.googas.commands.jda.annotations.Command;
-import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.listener.CommandListener;
-import me.googas.commands.jda.messages.MessagesProvider;
-import me.googas.commands.jda.permissions.PermissionChecker;
-import me.googas.commands.jda.result.Result;
-import me.googas.commands.ICommandManager;
-import me.googas.commands.annotations.Parent;
-import me.googas.commands.exceptions.CommandRegistrationException;
-import me.googas.commands.providers.registry.ProvidersRegistry;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -19,7 +9,17 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.annotations.Nullable;
-import me.googas.commons.time.Time;
+import me.googas.commands.ICommandManager;
+import me.googas.commands.annotations.Parent;
+import me.googas.commands.exceptions.CommandRegistrationException;
+import me.googas.commands.jda.annotations.Command;
+import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.listener.CommandListener;
+import me.googas.commands.jda.messages.MessagesProvider;
+import me.googas.commands.jda.permissions.PermissionChecker;
+import me.googas.commands.jda.result.Result;
+import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.JDA;
 
 /** The command manager for discord commands */

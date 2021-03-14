@@ -1,14 +1,14 @@
 package me.googas.commands.bukkit.topic;
 
-import me.googas.commands.bukkit.AnnotatedCommand;
-import me.googas.commands.bukkit.ParentCommand;
-import me.googas.commands.bukkit.messages.MessagesProvider;
-import me.googas.commands.arguments.Argument;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import me.googas.commons.Strings;
+import me.googas.commands.arguments.Argument;
+import me.googas.commands.bukkit.AnnotatedCommand;
+import me.googas.commands.bukkit.ParentCommand;
+import me.googas.commands.bukkit.messages.MessagesProvider;
+import me.googas.starbox.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -34,7 +34,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    * @param provider the messages provider to build messages for the help topic
    */
   AnnotatedCommandHelpTopic(
-          @NonNull AnnotatedCommand command, ParentCommand parent, @NonNull MessagesProvider provider) {
+      @NonNull AnnotatedCommand command, ParentCommand parent, @NonNull MessagesProvider provider) {
     this.provider = provider;
     final String permission = command.getPermission();
     this.amendedPermission = permission == null ? null : permission.isEmpty() ? null : permission;

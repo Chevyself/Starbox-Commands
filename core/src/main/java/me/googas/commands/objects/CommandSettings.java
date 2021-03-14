@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import lombok.NonNull;
-import me.googas.commons.ProgramArguments;
+import me.googas.starbox.ProgramArguments;
 
 public class CommandSettings extends ProgramArguments {
 

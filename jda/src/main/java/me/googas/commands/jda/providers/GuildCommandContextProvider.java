@@ -1,12 +1,12 @@
 package me.googas.commands.jda.providers;
 
+import lombok.NonNull;
+import me.googas.commands.ICommandManager;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
-import me.googas.commands.ICommandManager;
-import me.googas.commands.exceptions.ArgumentProviderException;
-import lombok.NonNull;
 
 /** Provides the {@link ICommandManager} with a {@link GuildCommandContext} */
 public class GuildCommandContextProvider implements JdaExtraArgumentProvider<GuildCommandContext> {

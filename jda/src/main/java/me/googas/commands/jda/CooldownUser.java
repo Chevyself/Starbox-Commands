@@ -2,8 +2,8 @@ package me.googas.commands.jda;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commons.time.Time;
-import me.googas.commons.time.Unit;
+import me.googas.starbox.time.Time;
+import me.googas.starbox.time.Unit;
 
 /** An user that is inside the cooldown of a command */
 public class CooldownUser {

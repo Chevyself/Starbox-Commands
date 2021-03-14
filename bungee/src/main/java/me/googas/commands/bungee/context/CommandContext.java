@@ -1,12 +1,12 @@
 package me.googas.commands.bungee.context;
 
+import lombok.NonNull;
+import lombok.experimental.Delegate;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import lombok.NonNull;
-import lombok.experimental.Delegate;
-import me.googas.commons.Lots;
-import me.googas.commons.Strings;
+import me.googas.starbox.Lots;
+import me.googas.starbox.Strings;
 import net.md_5.bungee.api.CommandSender;
 
 /** The context for bungee commands */

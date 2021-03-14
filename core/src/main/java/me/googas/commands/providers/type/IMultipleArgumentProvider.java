@@ -1,8 +1,8 @@
 package me.googas.commands.providers.type;
 
+import lombok.NonNull;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import lombok.NonNull;
 
 /**
  * Gets the object using multiple strings from the command

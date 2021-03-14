@@ -4,9 +4,9 @@ import java.awt.*;
 import java.util.function.Consumer;
 import lombok.Data;
 import lombok.NonNull;
-import me.googas.commons.time.ClassicTime;
-import me.googas.commons.time.Time;
-import me.googas.commons.time.Unit;
+import me.googas.starbox.time.ClassicTime;
+import me.googas.starbox.time.Time;
+import me.googas.starbox.time.Unit;
 import net.dv8tion.jda.api.entities.Message;
 
 /** The options for different handling in the command manager */

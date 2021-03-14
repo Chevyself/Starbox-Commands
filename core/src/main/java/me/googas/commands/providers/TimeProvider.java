@@ -1,12 +1,12 @@
 package me.googas.commands.providers;
 
+import lombok.NonNull;
 import me.googas.commands.ICommandManager;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.providers.type.IArgumentProvider;
-import lombok.NonNull;
-import me.googas.commons.time.Time;
+import me.googas.starbox.time.Time;
 
 /** Provides the {@link ICommandManager} with a {@link Time} */
 public class TimeProvider<T extends ICommandContext> implements IArgumentProvider<Time, T> {

@@ -1,5 +1,8 @@
 package me.googas.commands.providers.registry;
 
+import java.util.ArrayList;
+import java.util.List;
+import lombok.NonNull;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.IMessagesProvider;
@@ -14,9 +17,6 @@ import me.googas.commands.providers.type.IArgumentProvider;
 import me.googas.commands.providers.type.IContextualProvider;
 import me.googas.commands.providers.type.IExtraArgumentProvider;
 import me.googas.commands.providers.type.IMultipleArgumentProvider;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.NonNull;
 import me.googas.commands.providers.type.ISimpleArgumentProvider;
 
 /**
@@ -75,8 +75,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
   /**
    * Get the object to use as parameter in the invocation of a command.
    *
-   * <p>{@link ISimpleArgumentProvider#provides(Class)} makes it
-   * safe to cast
+   * <p>{@link ISimpleArgumentProvider#provides(Class)} makes it safe to cast
    *
    * @param clazz the clazz to get the provider from
    * @param context the context of the command execution
@@ -100,8 +99,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
   /**
    * Get the object to use as a parameter in the invocation of a command from a string
    *
-   * <p>{@link ISimpleArgumentProvider#provides(Class)} makes it
-   * safe to cast
+   * <p>{@link ISimpleArgumentProvider#provides(Class)} makes it safe to cast
    *
    * @param string the string to get the object from
    * @param clazz the clazz to get the provider from
@@ -125,8 +123,7 @@ public class ProvidersRegistry<T extends ICommandContext> {
   /**
    * Get the object to use as a parameter in the invocation of a command from strings
    *
-   * <p>{@link ISimpleArgumentProvider#provides(Class)} makes it
-   * safe to cast
+   * <p>{@link ISimpleArgumentProvider#provides(Class)} makes it safe to cast
    *
    * @param strings the strings to get the object from
    * @param clazz the clazz to get the provider from

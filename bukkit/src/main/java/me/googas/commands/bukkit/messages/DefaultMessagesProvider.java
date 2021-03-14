@@ -1,12 +1,12 @@
 package me.googas.commands.bukkit.messages;
 
+import lombok.NonNull;
+import me.googas.commands.arguments.Argument;
 import me.googas.commands.bukkit.AnnotatedCommand;
 import me.googas.commands.bukkit.ParentCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
-import me.googas.commands.arguments.Argument;
-import lombok.NonNull;
-import me.googas.commons.maps.Maps;
+import me.googas.starbox.maps.Maps;
 import org.bukkit.plugin.Plugin;
 
 /** The default messages provider for bukkit */

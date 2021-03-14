@@ -1,8 +1,8 @@
 package me.googas.commands.bungee.providers;
 
+import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.providers.type.BungeeExtraArgumentProvider;
-import lombok.NonNull;
 import net.md_5.bungee.api.CommandSender;
 
 /** Provides the command manager the sender of the command */

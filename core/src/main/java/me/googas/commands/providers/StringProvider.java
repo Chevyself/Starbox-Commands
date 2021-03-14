@@ -1,9 +1,9 @@
 package me.googas.commands.providers;
 
+import lombok.NonNull;
 import me.googas.commands.ICommandManager;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.providers.type.IArgumentProvider;
-import lombok.NonNull;
 
 /** Provides the {@link ICommandManager} with a {@link String} */
 public class StringProvider<T extends ICommandContext> implements IArgumentProvider<String, T> {

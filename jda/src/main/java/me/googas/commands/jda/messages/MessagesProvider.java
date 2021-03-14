@@ -1,12 +1,12 @@
 package me.googas.commands.jda.messages;
 
+import lombok.NonNull;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.ManagerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.IMessagesProvider;
-import lombok.NonNull;
-import me.googas.commons.time.Time;
+import me.googas.starbox.time.Time;
 
 /** Provides messages to results */
 public interface MessagesProvider extends IMessagesProvider<CommandContext> {

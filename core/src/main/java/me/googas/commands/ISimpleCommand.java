@@ -1,5 +1,9 @@
 package me.googas.commands;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.ExtraArgument;
 import me.googas.commands.arguments.ISimpleArgument;
@@ -10,12 +14,8 @@ import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.objects.CommandSettings;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.result.IResult;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
-import lombok.NonNull;
 import me.googas.commands.providers.type.IArgumentProvider;
+import me.googas.commands.result.IResult;
 
 /**
  * This object represents a command this is the way to invoke the method.

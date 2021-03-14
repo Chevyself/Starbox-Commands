@@ -1,8 +1,8 @@
 package me.googas.commands.bungee.providers;
 
+import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.providers.type.BungeeExtraArgumentProvider;
-import lombok.NonNull;
 
 /** Provides the command context to commands */
 public class CommandContextProvider implements BungeeExtraArgumentProvider<CommandContext> {

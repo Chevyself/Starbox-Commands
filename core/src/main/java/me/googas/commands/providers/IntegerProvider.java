@@ -1,11 +1,11 @@
 package me.googas.commands.providers;
 
+import lombok.NonNull;
 import me.googas.commands.ICommandManager;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.providers.type.IArgumentProvider;
-import lombok.NonNull;
 
 /** Provides the {@link ICommandManager} with a {@link Integer} */
 public class IntegerProvider<T extends ICommandContext> implements IArgumentProvider<Integer, T> {

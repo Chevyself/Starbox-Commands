@@ -1,8 +1,8 @@
 package me.googas.commands.bungee.messages;
 
+import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.messages.IMessagesProvider;
-import lombok.NonNull;
 
 /** The messages provider for bungee */
 public interface MessagesProvider extends IMessagesProvider<CommandContext> {

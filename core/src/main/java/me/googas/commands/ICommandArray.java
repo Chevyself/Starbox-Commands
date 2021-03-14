@@ -1,7 +1,7 @@
 package me.googas.commands;
 
-import me.googas.commands.context.ICommandContext;
 import lombok.NonNull;
+import me.googas.commands.context.ICommandContext;
 
 /**
  * Represents a command. This one contains the names/aliases in an {@link java.lang.reflect.Array}

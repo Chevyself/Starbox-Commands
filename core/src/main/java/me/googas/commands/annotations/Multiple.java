@@ -1,11 +1,10 @@
 package me.googas.commands.annotations;
 
-import me.googas.commands.objects.JoinedStrings;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import me.googas.commands.objects.JoinedStrings;
 
 /**
  * Used for the representation of parameters that require multiple strings

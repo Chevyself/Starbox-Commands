@@ -1,7 +1,7 @@
 package me.googas.commands.exceptions;
 
-import me.googas.commands.exceptions.type.SimpleException;
 import lombok.NonNull;
+import me.googas.commands.exceptions.type.SimpleException;
 
 /**
  * This exception is thrown when an argument is going to return null (they must return the object)

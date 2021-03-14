@@ -1,7 +1,7 @@
 package me.googas.commands.exceptions;
 
-import me.googas.commands.exceptions.type.SimpleException;
 import lombok.NonNull;
+import me.googas.commands.exceptions.type.SimpleException;
 
 /** An exception that is thrown when the user does not input an argument that is required */
 public class MissingArgumentException extends SimpleException {

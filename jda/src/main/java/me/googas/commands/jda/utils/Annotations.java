@@ -1,8 +1,8 @@
 package me.googas.commands.jda.utils;
 
+import lombok.NonNull;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.permissions.SimplePermission;
-import lombok.NonNull;
 
 /** Static utilities for annotations */
 public class Annotations {

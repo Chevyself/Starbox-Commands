@@ -3,8 +3,8 @@ package me.googas.commands.bungee.utils;
 import java.io.File;
 import java.io.IOException;
 import lombok.NonNull;
-import me.googas.commons.CoreFiles;
-import me.googas.commons.Validate;
+import me.googas.starbox.CoreFiles;
+import me.googas.starbox.Validate;
 import net.md_5.bungee.api.plugin.Plugin;
 
 /**

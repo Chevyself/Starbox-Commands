@@ -1,8 +1,8 @@
 package me.googas.commands.messages;
 
+import lombok.NonNull;
 import me.googas.commands.arguments.MultipleArgument;
 import me.googas.commands.context.ICommandContext;
-import lombok.NonNull;
 
 /**
  * Provides messages for different instances of the manager

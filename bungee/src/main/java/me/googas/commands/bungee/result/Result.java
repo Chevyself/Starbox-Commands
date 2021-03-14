@@ -1,13 +1,13 @@
 package me.googas.commands.bungee.result;
 
-import me.googas.commands.result.IResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commons.Strings;
+import me.googas.commands.result.IResult;
+import me.googas.starbox.Strings;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;

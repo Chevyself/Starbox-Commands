@@ -1,12 +1,12 @@
 package me.googas.commands.bukkit.context;
 
+import lombok.NonNull;
+import lombok.experimental.Delegate;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import lombok.NonNull;
-import lombok.experimental.Delegate;
-import me.googas.commons.Lots;
-import me.googas.commons.Strings;
+import me.googas.starbox.Lots;
+import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 
 /** The context of a bukkit command */

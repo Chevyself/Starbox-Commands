@@ -1,10 +1,10 @@
 package me.googas.commands.jda.messages;
 
+import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
-import lombok.NonNull;
-import me.googas.commons.Strings;
-import me.googas.commons.time.Time;
+import me.googas.starbox.Strings;
+import me.googas.starbox.time.Time;
 
 /** This is a default {@link MessagesProvider} to use if you don't want to create one of your own */
 public class DefaultMessagesProvider implements MessagesProvider {

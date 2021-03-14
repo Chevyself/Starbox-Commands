@@ -1,9 +1,9 @@
 package me.googas.commands.context;
 
+import lombok.NonNull;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import lombok.NonNull;
-import me.googas.commons.Lots;
+import me.googas.starbox.Lots;
 
 /** The context of a command */
 public interface ICommandContext {

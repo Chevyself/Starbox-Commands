@@ -1,8 +1,8 @@
 package me.googas.commands.jda.providers;
 
+import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
-import lombok.NonNull;
 import net.dv8tion.jda.api.entities.User;
 
 /** Return the sender in the command arguments */

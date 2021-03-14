@@ -1,16 +1,16 @@
 package me.googas.commands.jda.commands;
 
-import me.googas.commands.jda.annotations.Command;
-import me.googas.commands.jda.result.Result;
-import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.jda.utils.embeds.EmbedFactory;
-import me.googas.commands.annotations.Parent;
 import java.util.LinkedHashMap;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import me.googas.commons.fallback.Fallback;
+import me.googas.commands.annotations.Parent;
+import me.googas.commands.jda.annotations.Command;
+import me.googas.commands.jda.result.Result;
+import me.googas.commands.jda.result.ResultType;
+import me.googas.commands.jda.utils.embeds.EmbedFactory;
+import me.googas.starbox.fallback.Fallback;
 
 /** The commands related to fallback */
 public class FallbackCommands {

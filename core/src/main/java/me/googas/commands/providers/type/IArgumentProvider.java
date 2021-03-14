@@ -1,9 +1,9 @@
 package me.googas.commands.providers.type;
 
+import lombok.NonNull;
 import me.googas.commands.ICommand;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import lombok.NonNull;
 
 /**
  * A provider gives to the {@link ICommand} the object requested by it

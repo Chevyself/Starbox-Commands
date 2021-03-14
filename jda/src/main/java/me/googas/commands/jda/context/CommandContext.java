@@ -1,14 +1,14 @@
 package me.googas.commands.jda.context;
 
-import me.googas.commands.jda.messages.MessagesProvider;
-import me.googas.commands.context.ICommandContext;
-import me.googas.commands.providers.registry.ProvidersRegistry;
 import java.util.Arrays;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Delegate;
-import me.googas.commons.Strings;
+import me.googas.commands.context.ICommandContext;
+import me.googas.commands.jda.messages.MessagesProvider;
+import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.starbox.Strings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;

@@ -1,10 +1,10 @@
 package me.googas.commands.jda.context;
 
-import me.googas.commands.jda.messages.MessagesProvider;
-import me.googas.commands.providers.registry.ProvidersRegistry;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.jda.messages.MessagesProvider;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

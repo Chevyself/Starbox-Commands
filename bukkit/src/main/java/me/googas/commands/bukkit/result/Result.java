@@ -1,7 +1,5 @@
 package me.googas.commands.bukkit.result;
 
-import me.googas.commands.bukkit.utils.BukkitUtils;
-import me.googas.commands.result.IResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,6 +7,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import me.googas.commands.bukkit.utils.BukkitUtils;
+import me.googas.commands.result.IResult;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;

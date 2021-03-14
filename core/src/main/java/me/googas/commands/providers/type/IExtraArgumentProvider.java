@@ -1,9 +1,9 @@
 package me.googas.commands.providers.type;
 
-import me.googas.commands.context.ICommandContext;
-import me.googas.commands.arguments.ExtraArgument;
-import me.googas.commands.exceptions.ArgumentProviderException;
 import lombok.NonNull;
+import me.googas.commands.arguments.ExtraArgument;
+import me.googas.commands.context.ICommandContext;
+import me.googas.commands.exceptions.ArgumentProviderException;
 
 /** An extra argument will be in the command method but it is not needed in the command string */
 public interface IExtraArgumentProvider<O, T extends ICommandContext>

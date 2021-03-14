@@ -1,5 +1,6 @@
 package me.googas.commands.bukkit.providers.registry;
 
+import lombok.NonNull;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.bukkit.providers.CommandContextProvider;
@@ -9,7 +10,6 @@ import me.googas.commands.bukkit.providers.OfflinePlayerProvider;
 import me.googas.commands.bukkit.providers.PlayerProvider;
 import me.googas.commands.bukkit.providers.PlayerSenderProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import lombok.NonNull;
 
 /** The providers registry for bukkit */
 public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {

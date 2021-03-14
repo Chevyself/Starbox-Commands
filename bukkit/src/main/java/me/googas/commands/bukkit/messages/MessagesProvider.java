@@ -1,11 +1,11 @@
 package me.googas.commands.bukkit.messages;
 
+import lombok.NonNull;
+import me.googas.commands.arguments.Argument;
 import me.googas.commands.bukkit.AnnotatedCommand;
 import me.googas.commands.bukkit.ParentCommand;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.arguments.Argument;
 import me.googas.commands.messages.IMessagesProvider;
-import lombok.NonNull;
 import org.bukkit.plugin.Plugin;
 
 /** Provides the messages for bukkit responses */

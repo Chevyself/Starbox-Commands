@@ -1,10 +1,10 @@
 package me.googas.commands.jda.permissions;
 
+import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import lombok.NonNull;
 import net.dv8tion.jda.api.Permission;
 
 /** Checks for the permissions of an user when executing a command */

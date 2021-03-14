@@ -1,10 +1,10 @@
 package me.googas.commands.bungee.providers;
 
+import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.type.BungeeExtraArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import lombok.NonNull;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /** Provides with the player that executed the command */

@@ -3,8 +3,8 @@ package me.googas.commands.bukkit.utils;
 import java.io.File;
 import java.io.IOException;
 import lombok.NonNull;
-import me.googas.commons.CoreFiles;
-import me.googas.commons.Validate;
+import me.googas.starbox.CoreFiles;
+import me.googas.starbox.Validate;
 import org.bukkit.plugin.Plugin;
 
 /**

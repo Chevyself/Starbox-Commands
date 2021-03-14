@@ -1,9 +1,9 @@
 package me.googas.commands.jda.providers;
 
-import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import lombok.NonNull;
 import me.googas.commands.ICommandManager;
+import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 /** Provides the {@link ICommandManager} with a {@link TextChannel} */

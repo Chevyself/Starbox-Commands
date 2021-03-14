@@ -1,8 +1,8 @@
 package me.googas.commands.bungee.messages;
 
-import me.googas.commands.bungee.context.CommandContext;
 import lombok.NonNull;
-import me.googas.commons.Strings;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.starbox.Strings;
 
 /** The default messages provider for bungee */
 public class DefaultMessagesProvider implements MessagesProvider {

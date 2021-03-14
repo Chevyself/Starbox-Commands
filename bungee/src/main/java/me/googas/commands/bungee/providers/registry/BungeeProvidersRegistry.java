@@ -1,5 +1,6 @@
 package me.googas.commands.bungee.providers.registry;
 
+import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.CommandContextProvider;
@@ -7,7 +8,6 @@ import me.googas.commands.bungee.providers.CommandSenderProvider;
 import me.googas.commands.bungee.providers.ProxiedPlayerProvider;
 import me.googas.commands.bungee.providers.ProxiedPlayerSenderProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import lombok.NonNull;
 
 /** The implementation of providers registry for bungee */
 public class BungeeProvidersRegistry extends ProvidersRegistry<CommandContext> {

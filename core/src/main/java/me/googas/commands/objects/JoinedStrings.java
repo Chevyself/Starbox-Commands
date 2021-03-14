@@ -2,9 +2,9 @@ package me.googas.commands.objects;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commons.Strings;
-import me.googas.commons.builder.Builder;
-import me.googas.commons.builder.ToStringBuilder;
+import me.googas.starbox.Strings;
+import me.googas.starbox.builder.Builder;
+import me.googas.starbox.builder.ToStringBuilder;
 
 /**
  * Its a class that stores the strings joined from a command execution (from it's argument position)

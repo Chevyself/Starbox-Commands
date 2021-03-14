@@ -1,5 +1,10 @@
 package me.googas.commands.jda.listener;
 
+import java.util.function.Consumer;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+import me.googas.annotations.Nullable;
 import me.googas.commands.jda.AnnotatedCommand;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.ManagerOptions;
@@ -11,13 +16,8 @@ import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
 import me.googas.commands.jda.utils.message.MessagesFactory;
-import java.util.function.Consumer;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import me.googas.annotations.Nullable;
-import me.googas.commons.Lots;
-import me.googas.commons.Strings;
+import me.googas.starbox.Lots;
+import me.googas.starbox.Strings;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

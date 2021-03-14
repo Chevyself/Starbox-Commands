@@ -1,7 +1,7 @@
 package me.googas.commands.exceptions;
 
-import me.googas.commands.exceptions.type.SimpleRuntimeException;
 import lombok.NonNull;
+import me.googas.commands.exceptions.type.SimpleRuntimeException;
 
 /** Thrown when there's been an issue trying to register a command */
 public class CommandRegistrationException extends SimpleRuntimeException {

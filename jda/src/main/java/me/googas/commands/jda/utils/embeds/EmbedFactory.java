@@ -1,15 +1,15 @@
 package me.googas.commands.jda.utils.embeds;
 
+import java.awt.*;
+import java.util.LinkedHashMap;
+import lombok.NonNull;
 import me.googas.commands.jda.ManagerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import java.awt.*;
-import java.util.LinkedHashMap;
-import lombok.NonNull;
-import me.googas.commons.Validate;
+import me.googas.starbox.Validate;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -28,7 +28,7 @@ public class EmbedFactory {
    * @return an embed query built from the result
    */
   public static EmbedQuery fromResult(
-          @NonNull Result result, @NonNull CommandListener listener, CommandContext context) {
+      @NonNull Result result, @NonNull CommandListener listener, CommandContext context) {
     MessagesProvider messagesProvider = listener.getMessagesProvider();
     ManagerOptions managerOptions = listener.getManagerOptions();
     ResultType type = result.getType();

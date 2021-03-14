@@ -1,8 +1,8 @@
 package me.googas.commands;
 
-import me.googas.commands.context.ICommandContext;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.commands.context.ICommandContext;
 
 /**
  * Represents a command. This one contains the names/aliases in a {@link List} because there could
