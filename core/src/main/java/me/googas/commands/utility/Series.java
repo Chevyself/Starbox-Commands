@@ -2,11 +2,12 @@ package me.googas.commands.utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import lombok.NonNull;
 
 /**
- * Static utilities for {@link java.util.Collection}. It is called Series as it is a synonym for
- * collection
+ * Static utilities for {@link java.util.Collection} and arrays. It is called Series as it is a
+ * synonym for collection
  */
 public class Series {
 
@@ -64,6 +65,55 @@ public class Series {
         }
       }
       return list;
+    }
+  }
+
+  /**
+   * Copy the elements from a list to another if those match the predicate
+   *
+   * <p>If you have the list [1, 2, 3, 4, 5, 6, 7, 8, 9] and you want to copy if the number is > 5
+   * the elements added to the list are [6, 7, 8, 9]
+   *
+   * @param list the list to paste the values to
+   * @param toAdd the list to copy the values from
+   * @param bol the predicate to check the values to be added
+   * @param <O> the type of elements inside the list
+   * @return the list instance
+   */
+  @NonNull
+  public static <O> List<O> addIf(
+      @NonNull List<O> list, @NonNull List<O> toAdd, @NonNull Predicate<O> bol) {
+    for (O object : toAdd) {
+      if (bol.test(object)) {
+        list.add(object);
+      }
+    }
+    return list;
+  }
+
+  /**
+   * Remove an element from an array.
+   *
+   * <p>If you have the array [1, 2, 3, 4, 5] and you use this method with the position: 3 the
+   * element '4' will be removed resulting in the array being: [1, 2, 3, 5]
+   *
+   * @param array
+   * @param position
+   * @return
+   */
+  public static String[] remove(String[] array, int position) {
+    if (position < 0) {
+      throw new IllegalArgumentException("Position cannot be less than 0");
+    } else {
+      String[] newArr = new String[array.length - 1];
+      for (int i = 0; i < array.length; i++) {
+        if (i < position) {
+          newArr[i] = array[i];
+        } else if (i > position) {
+          newArr[i - 1] = array[i];
+        }
+      }
+      return newArr;
     }
   }
 }

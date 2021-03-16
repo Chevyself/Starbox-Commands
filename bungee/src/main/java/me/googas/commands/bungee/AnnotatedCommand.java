@@ -21,8 +21,8 @@ import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.objects.CommandSettings;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.IContextualProvider;
-import me.googas.starbox.Lots;
-import me.googas.starbox.Strings;
+import me.googas.commands.utility.Series;
+import me.googas.commands.utility.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -66,7 +66,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     super(
         command.aliases()[0],
         command.permission().isEmpty() ? null : command.permission(),
-        Lots.remove(command.aliases(), 0));
+        Series.remove(command.aliases(), 0));
     this.clazz = clazz;
     this.method = method;
     this.arguments = arguments;

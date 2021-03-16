@@ -1,5 +1,7 @@
 package me.googas.commands.utility;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.NonNull;
@@ -106,5 +108,12 @@ public class Strings {
       builder.deleteCharAt(builder.length() - 1);
     }
     return builder.toString();
+  }
+
+  @NonNull
+  public static List<String> copyPartials(@NonNull String toMatch, @NonNull List<String> list) {
+    List<String> matching = new ArrayList<>();
+    return Series.addIf(
+        matching, list, string -> string.toLowerCase().startsWith(toMatch.toLowerCase()));
   }
 }

@@ -2,7 +2,7 @@ package me.googas.commands.bungee.messages;
 
 import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
-import me.googas.starbox.Strings;
+import me.googas.commands.utility.Strings;
 
 /** The default messages provider for bungee */
 public class DefaultMessagesProvider implements MessagesProvider {

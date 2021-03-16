@@ -5,8 +5,8 @@ import lombok.experimental.Delegate;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.Lots;
-import me.googas.starbox.Strings;
+import me.googas.commands.utility.Series;
+import me.googas.commands.utility.Strings;
 import net.md_5.bungee.api.CommandSender;
 
 /** The context for bungee commands */
@@ -81,6 +81,6 @@ public class CommandContext implements ICommandContext {
   @NonNull
   @Override
   public String[] getStringsFrom(int position) {
-    return Lots.arrayFrom(position, this.strings);
+    return Series.arrayFrom(position, this.strings);
   }
 }
