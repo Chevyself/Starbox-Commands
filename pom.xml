@@ -26,17 +26,19 @@
         <plugins>
             <!-- Use Java 8 -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
                 </configuration>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>3.8.1</version>
             </plugin>
             <!-- Format to google -->
             <plugin>
+                <groupId>com.coveo</groupId>
                 <artifactId>fmt-maven-plugin</artifactId>
+                <version>2.9</version>
                 <executions>
                     <execution>
                         <goals>
@@ -44,8 +46,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <groupId>com.coveo</groupId>
-                <version>2.9</version>
             </plugin>
         </plugins>
     </build>
@@ -57,12 +57,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
             <scope>compile</scope>
-        </dependency>
-        <!-- Commons -->
-        <dependency>
-            <groupId>me.googas.starbox</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

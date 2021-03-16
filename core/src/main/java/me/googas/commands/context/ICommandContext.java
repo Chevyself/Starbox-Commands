@@ -3,7 +3,7 @@ package me.googas.commands.context;
 import lombok.NonNull;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.Lots;
+import me.googas.commands.utility.Series;
 
 /** The context of a command */
 public interface ICommandContext {
@@ -24,7 +24,7 @@ public interface ICommandContext {
    */
   @NonNull
   default String[] getStringsFrom(int position) {
-    return Lots.arrayFrom(position, this.getStrings());
+    return Series.arrayFrom(position, this.getStrings());
   }
 
   /**

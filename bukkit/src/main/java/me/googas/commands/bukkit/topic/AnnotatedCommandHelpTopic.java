@@ -8,7 +8,6 @@ import me.googas.commands.arguments.Argument;
 import me.googas.commands.bukkit.AnnotatedCommand;
 import me.googas.commands.bukkit.ParentCommand;
 import me.googas.commands.bukkit.messages.MessagesProvider;
-import me.googas.starbox.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -77,7 +76,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
   @NonNull
   private static String buildArguments(
       @NonNull MessagesProvider provider, @NonNull AnnotatedCommand command) {
-    StringBuilder builder = Strings.getBuilder();
+    StringBuilder builder = new StringBuilder();
     command.getArguments().stream()
         .filter(argument -> argument instanceof Argument)
         .forEach(
@@ -99,7 +98,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    */
   @NonNull
   private String buildChildren(@NonNull ParentCommand command) {
-    StringBuilder builder = Strings.getBuilder();
+    StringBuilder builder = new StringBuilder();
     final List<AnnotatedCommand> commands = command.getCommands();
     commands.forEach(
         annotatedCommand -> builder.append(provider.childCommand(annotatedCommand, command)));

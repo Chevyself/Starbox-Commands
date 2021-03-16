@@ -21,7 +21,7 @@ import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.objects.CommandSettings;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.IContextualProvider;
-import me.googas.starbox.Lots;
+import me.googas.commands.utility.Series;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -65,7 +65,10 @@ public class AnnotatedCommand extends org.bukkit.command.Command
       @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull CommandSettings commandSettings) {
     super(
-        command.aliases()[0], command.description(), "", Lots.removeAndList(command.aliases(), 0));
+        command.aliases()[0],
+        command.description(),
+        "",
+        Series.removeAndList(command.aliases(), 0));
     this.clazz = clazz;
     this.method = method;
     this.arguments = arguments;

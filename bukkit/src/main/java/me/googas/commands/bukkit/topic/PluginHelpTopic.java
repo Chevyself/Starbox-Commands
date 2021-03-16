@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.bukkit.CommandManager;
 import me.googas.commands.bukkit.messages.MessagesProvider;
-import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.plugin.Plugin;
@@ -41,7 +40,7 @@ public class PluginHelpTopic extends HelpTopic {
    */
   @NonNull
   private String getCommands() {
-    StringBuilder builder = Strings.getBuilder();
+    StringBuilder builder = new StringBuilder();
     this.manager
         .getCommands()
         .forEach(command -> builder.append(this.provider.helpTopicCommand(command)));

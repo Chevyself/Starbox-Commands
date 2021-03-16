@@ -1,7 +1,6 @@
 package me.googas.commands.arguments;
 
 import lombok.NonNull;
-import me.googas.starbox.builder.ToStringBuilder;
 
 /** An extra argument will be in the command method but it is not needed in the command string */
 public class ExtraArgument<O> implements ISimpleArgument<O> {
@@ -21,10 +20,5 @@ public class ExtraArgument<O> implements ISimpleArgument<O> {
   @Override
   public Class<O> getClazz() {
     return this.clazz;
-  }
-
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("clazz", clazz).build();
   }
 }

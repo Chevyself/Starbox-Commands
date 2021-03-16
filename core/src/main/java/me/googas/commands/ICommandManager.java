@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import lombok.NonNull;
-import me.googas.annotations.Nullable;
 import me.googas.commands.annotations.Multiple;
 import me.googas.commands.annotations.Optional;
 import me.googas.commands.annotations.Parent;
@@ -90,7 +89,6 @@ public interface ICommandManager<C extends ISimpleCommand<?>> {
    * @param alias the alias of the parent
    * @return the prent command if it is registered else null
    */
-  @Nullable
   IParentCommand<C> getParent(@NonNull String alias);
 
   /** Unregister this command manager and all of its commands */
