@@ -3,7 +3,11 @@ package me.googas.commands.utility;
 import java.util.function.Supplier;
 import lombok.NonNull;
 
-/** Static method to validate certain stuff like booleans, non nulls, etc */
+/**
+ *  Static method to validate certain stuff like booleans, non nulls, etc
+ *
+ * @deprecated Use {@link java.util.Objects}
+ */
 public class Validate {
 
   /**
