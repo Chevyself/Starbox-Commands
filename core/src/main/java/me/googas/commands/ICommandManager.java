@@ -1,5 +1,6 @@
 package me.googas.commands;
 
+import java.lang.reflect.Method;
 import java.util.Collection;
 import lombok.NonNull;
 import me.googas.commands.context.ICommandContext;
@@ -29,6 +30,19 @@ public interface ICommandManager<C extends ICommandContext> {
    */
   @NonNull
   Collection<ReflectCommand<C>> parseCommands(@NonNull Object object);
+
+  /**
+   * Parse a reflective command using the method where it will be executed and the method instance that must be used
+   * to execute the method.
+   *
+   * // TODO add example using a module
+   *
+   * @param object the object instance required for the command execution
+   * @param method the method used to execute the command
+   * @return the parsed command
+   */
+  @NonNull
+  ReflectCommand<C> parseCommand(@NonNull Object object, @NonNull Method method);
 
   /**
    * Get all the {@link ICommand} that are registered in this instance. This will contain all the
