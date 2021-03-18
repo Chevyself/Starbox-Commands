@@ -32,10 +32,10 @@ public interface ICommandManager<C extends ICommandContext> {
   Collection<ReflectCommand<C>> parseCommands(@NonNull Object object);
 
   /**
-   * Parse a reflective command using the method where it will be executed and the method instance that must be used
-   * to execute the method.
+   * Parse a reflective command using the method where it will be executed and the method instance
+   * that must be used to execute the method.
    *
-   * // TODO add example using a module
+   * <p>// TODO add example using a module
    *
    * @param object the object instance required for the command execution
    * @param method the method used to execute the command

@@ -180,7 +180,7 @@ public interface ReflectCommand<C extends ICommandContext> extends ICommand<C> {
    * @return the result of the command execution
    */
   @Override
-  default @NonNull IResult execute(@NonNull C context) {
+  default IResult execute(@NonNull C context) {
     try {
       return (IResult) getMethod().invoke(getObject(), getObjects(context));
     } catch (MissingArgumentException
