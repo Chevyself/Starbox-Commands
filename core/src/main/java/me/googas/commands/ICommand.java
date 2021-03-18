@@ -1,23 +1,25 @@
 package me.googas.commands;
 
-import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.context.ICommandContext;
+import me.googas.commands.result.IResult;
 
 /**
- * Represents a command. This one contains the names/aliases in a {@link List} because there could
- * be some incompatibilities between frameworks
+ * This class represents a Command which may be executed by an user depending on the implementations
+ * it may change.
  *
- * @param <C> the type of command context
+ * <p>// TODO add command types
+ *
+ * @param <C> the context that is required to run the command
  */
-public interface ICommand<C extends ICommandContext> extends ISimpleCommand<C> {
+public interface ICommand<C extends ICommandContext> {
 
   /**
-   * Get the aliases of the command. The main name of the command will be in the index 0 Check the
-   * respective @Command annotation to know more on how the alias will be gotten
+   * Execute the command
    *
-   * @return the {@link List} of aliases
+   * @param context the context that is required to execute the command
+   * @return the result of the command execution
    */
   @NonNull
-  List<String> getAliases();
+  IResult execute(@NonNull C context);
 }

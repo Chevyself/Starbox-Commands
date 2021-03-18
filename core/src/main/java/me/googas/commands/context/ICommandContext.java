@@ -1,7 +1,6 @@
 package me.googas.commands.context;
 
 import lombok.NonNull;
-import me.googas.commands.ICommandManager;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.utility.Series;

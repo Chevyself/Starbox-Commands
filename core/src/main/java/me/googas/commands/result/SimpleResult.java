@@ -1,6 +1,10 @@
 package me.googas.commands.result;
 
-/** A simple result given by a command */
+/**
+ * A simple result given by a command
+ *
+ * @deprecated each module has different implementations which makes this unused
+ */
 public class SimpleResult implements IResult {
 
   /** A message sent by the execution of a command */
