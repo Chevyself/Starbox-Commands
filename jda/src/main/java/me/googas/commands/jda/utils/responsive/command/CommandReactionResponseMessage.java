@@ -8,7 +8,7 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
 import me.googas.commands.jda.utils.responsive.ReactionResponse;
-import me.googas.starbox.Validate;
+import me.googas.commands.utility.Validate;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 

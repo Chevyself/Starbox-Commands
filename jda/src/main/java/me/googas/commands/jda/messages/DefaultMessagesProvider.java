@@ -3,8 +3,7 @@ package me.googas.commands.jda.messages;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.starbox.Strings;
-import me.googas.starbox.time.Time;
+import me.googas.commands.utility.Strings;
 
 /** This is a default {@link MessagesProvider} to use if you don't want to create one of your own */
 public class DefaultMessagesProvider implements MessagesProvider {
@@ -97,8 +96,8 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String cooldown(@NonNull Time timeLeft, CommandContext context) {
-    return "You are on cooldown! please wait " + timeLeft.toEffectiveString();
+  public @NonNull String cooldown(long timeLeft, CommandContext context) {
+    return "You are on cooldown! please wait " + timeLeft + "ms";
   }
 
   @Override

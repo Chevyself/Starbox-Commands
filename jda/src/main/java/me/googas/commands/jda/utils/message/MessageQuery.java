@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.experimental.Delegate;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.utils.Chat;
-import me.googas.starbox.builder.Builder;
+import me.googas.commands.utility.Builder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;

@@ -1,6 +1,7 @@
 package me.googas.commands.jda;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -14,8 +15,7 @@ import me.googas.commands.jda.permissions.PermissionChecker;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.objects.CommandSettings;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.Lots;
-import me.googas.starbox.time.Time;
+import me.googas.commands.utility.Series;
 
 /**
  * Just like {@link AnnotatedCommand} but has children commands that are executed just like any
@@ -46,7 +46,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
       Command cmd,
       @NonNull List<ISimpleArgument<?>> arguments,
       @NonNull MessagesProvider messagesProvider,
-      @NonNull Time cooldown,
+      @NonNull Duration cooldown,
       @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull PermissionChecker permissionChecker,
       @NonNull Set<CooldownUser> cooldownUsers,
@@ -86,7 +86,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
     if (strings.length >= 1) {
       AnnotatedCommand command = this.getCommand(strings[0]);
       if (command != null) {
-        context.setStrings(Lots.arrayFrom(1, strings));
+        context.setStrings(Series.arrayFrom(1, strings));
         return command.execute(context);
       } else {
         return super.execute(context);

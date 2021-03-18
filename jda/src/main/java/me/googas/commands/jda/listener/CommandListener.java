@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import me.googas.annotations.Nullable;
 import me.googas.commands.jda.AnnotatedCommand;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.ManagerOptions;
@@ -16,8 +15,8 @@ import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
 import me.googas.commands.jda.utils.message.MessagesFactory;
-import me.googas.starbox.Lots;
-import me.googas.starbox.Strings;
+import me.googas.commands.utility.Series;
+import me.googas.commands.utility.Strings;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -55,7 +54,7 @@ public class CommandListener implements EventListener {
     this.messagesProvider = messagesProvider;
   }
 
-  public void dispatch(@NonNull User user, @Nullable Member member, Message message) {
+  public void dispatch(@NonNull User user, Member member, Message message) {
     this.onMessageReceivedEvent(
         new MessageReceivedEvent(this.manager.getJda(), 0, new FakeMessage(user, member, message)));
   }
@@ -172,7 +171,7 @@ public class CommandListener implements EventListener {
   @NonNull
   private CommandContext getCommandContext(
       @NonNull MessageReceivedEvent event, @NonNull String[] strings, String commandName) {
-    strings = Lots.arrayFrom(1, strings);
+    strings = Series.arrayFrom(1, strings);
     if (event.getMember() != null) {
       return new GuildCommandContext(
           event.getMessage(),

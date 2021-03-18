@@ -2,8 +2,6 @@ package me.googas.commands.jda;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.starbox.time.Time;
-import me.googas.starbox.time.Unit;
 
 /** An user that is inside the cooldown of a command */
 public class CooldownUser {
@@ -16,11 +14,11 @@ public class CooldownUser {
   /**
    * Create an instance
    *
-   * @param toRemove the time to remove the user from the cooldown
+   * @param toRemove the time to remove the user from the cooldown in millis
    * @param id the id of the user
    */
-  public CooldownUser(@NonNull Time toRemove, long id) {
-    this.expires = System.currentTimeMillis() + toRemove.millis();
+  public CooldownUser(long toRemove, long id) {
+    this.expires = System.currentTimeMillis() + toRemove;
     this.id = id;
   }
 
@@ -39,8 +37,8 @@ public class CooldownUser {
    * @return the time in which the user can execute the command again
    */
   @NonNull
-  public Time getTimeLeft() {
-    if (this.isExpired()) return new Time(0, Unit.SECONDS);
-    return Time.fromMillis(expires - System.currentTimeMillis());
+  public long getTimeLeft() {
+    if (this.isExpired()) return 0;
+    return expires - System.currentTimeMillis();
   }
 }

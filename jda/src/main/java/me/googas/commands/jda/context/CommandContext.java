@@ -8,7 +8,7 @@ import lombok.experimental.Delegate;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.Strings;
+import me.googas.commands.utility.Strings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;

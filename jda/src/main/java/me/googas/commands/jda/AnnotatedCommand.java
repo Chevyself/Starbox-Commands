@@ -2,6 +2,7 @@ package me.googas.commands.jda;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,6 @@ import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.jda.utils.Annotations;
 import me.googas.commands.objects.CommandSettings;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.entities.User;
 
 /** An annotated command for discord */
@@ -43,8 +43,11 @@ public class AnnotatedCommand implements ICommand<CommandContext>, Mappable {
   @NonNull private final ProvidersRegistry<CommandContext> registry;
   /** The users that have executed the command */
   @NonNull @Getter private final Set<CooldownUser> cooldownUsers;
-  /** The time to cooldown the use of the message for the users */
-  @NonNull @Getter @Setter private Time cooldown;
+  /**
+   * The time to cooldown the use of the message for the users in millis // TODO tell everywhere
+   * that it is in millis
+   */
+  @NonNull @Getter @Setter private Duration cooldown;
 
   @NonNull private final CommandSettings settings;
 
@@ -58,7 +61,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, Mappable {
    * @param messagesProvider the provider of messages for the command
    * @param permissionChecker the permissions checker to check the command sender
    * @param registry the registry to get the providers from
-   * @param cooldown the cooldown of the command
+   * @param cooldown the cooldown of the command in millis
    * @param cooldownUsers the list of users that are in cooldown
    * @param settings
    */
@@ -70,7 +73,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, Mappable {
       @NonNull MessagesProvider messagesProvider,
       @NonNull PermissionChecker permissionChecker,
       @NonNull ProvidersRegistry<CommandContext> registry,
-      @NonNull Time cooldown,
+      @NonNull Duration cooldown,
       @NonNull Set<CooldownUser> cooldownUsers,
       @NonNull CommandSettings settings) {
     this.clazz = clazz;
@@ -96,7 +99,7 @@ public class AnnotatedCommand implements ICommand<CommandContext>, Mappable {
    * @return an usage error if the sender is not allowed to use the command yet else null
    */
   public Result checkCooldown(@NonNull User sender, CommandContext context) {
-    if (cooldown.millis() != 0) {
+    if (cooldown.toMillis() > 0) {
       CooldownUser cooldownUser = getCooldownUser(sender);
       // TODO make them ignore if the user has certain permission
       if (cooldownUser != null && !cooldownUser.isExpired()) {
@@ -149,8 +152,9 @@ public class AnnotatedCommand implements ICommand<CommandContext>, Mappable {
       Object object = this.method.invoke(this.clazz, objects);
       if (object instanceof Result) {
         result = (Result) object;
-        if (cooldown.millis() != 0) {
-          this.cooldownUsers.add(new CooldownUser(cooldown, context.getSender().getIdLong()));
+        if (cooldown.toMillis() > 0) {
+          this.cooldownUsers.add(
+              new CooldownUser(cooldown.toMillis(), context.getSender().getIdLong()));
         }
         if (result.getSuccess() == null && this.isExcluded()) {
           result =

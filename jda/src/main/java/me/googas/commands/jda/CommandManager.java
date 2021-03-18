@@ -2,13 +2,13 @@ package me.googas.commands.jda;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.annotations.Nullable;
 import me.googas.commands.ICommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.exceptions.CommandRegistrationException;
@@ -19,7 +19,6 @@ import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.permissions.PermissionChecker;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.JDA;
 
 /** The command manager for discord commands */
@@ -140,7 +139,6 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     return commands;
   }
 
-  @Nullable
   @Override
   public ParentCommand getParent(@NonNull String alias) {
     for (AnnotatedCommand command : this.commands) {
@@ -178,8 +176,8 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
       final Class<?>[] params = method.getParameterTypes();
       final Annotation[][] annotations = method.getParameterAnnotations();
       final Command cmd = method.getAnnotation(Command.class);
-      final Time cooldown =
-          cmd.time().equalsIgnoreCase("none") ? Time.fromMillis(0) : Time.fromString(cmd.time());
+      final Duration cooldown =
+          cmd.time().equalsIgnoreCase("none") ? Duration.ZERO : Duration.parse(cmd.time());
       if (isParent) {
         return new ParentCommand(
             object,

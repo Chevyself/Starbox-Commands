@@ -9,7 +9,7 @@ import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.starbox.Validate;
+import me.googas.commands.utility.Validate;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 

@@ -6,7 +6,6 @@ import lombok.NonNull;
 import me.googas.commands.jda.utils.embeds.EmbedQuery;
 import me.googas.commands.jda.utils.message.MessageQuery;
 import me.googas.commands.result.IResult;
-import me.googas.starbox.builder.ToStringBuilder;
 import net.dv8tion.jda.api.entities.Message;
 
 /** This is your general type of result */
@@ -206,15 +205,5 @@ public class Result implements IResult {
   @Override
   public String getMessage() {
     return message;
-  }
-
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("type", type)
-        .append("discordMessage", discordMessage)
-        .append("message", message)
-        .append("success", success)
-        .build();
   }
 }
