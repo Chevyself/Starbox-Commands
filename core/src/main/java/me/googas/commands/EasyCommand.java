@@ -12,7 +12,7 @@ import me.googas.commands.result.IResult;
  *
  * @param <C> the context that is required to run the command
  */
-public interface ICommand<C extends ICommandContext> {
+public interface EasyCommand<C extends ICommandContext> {
 
   /**
    * Execute the command

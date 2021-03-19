@@ -1,13 +1,13 @@
 package me.googas.commands.providers;
 
 import lombok.NonNull;
-import me.googas.commands.ICommandManager;
+import me.googas.commands.EasyCommandManager;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.providers.type.IArgumentProvider;
 
-/** Provides the {@link ICommandManager} with a {@link Long} */
+/** Provides the {@link EasyCommandManager} with a {@link Long} */
 public class LongProvider<T extends ICommandContext> implements IArgumentProvider<Long, T> {
 
   private final IMessagesProvider<T> messagesProvider;

@@ -6,24 +6,30 @@ import lombok.NonNull;
 import me.googas.commands.context.ICommandContext;
 
 /**
- * This represents the object where {@link ICommand} are registered and queried for execution. The
- * implementation for this variates from module to module. This contains the principal methods which
- * are intended for its use
+ * This represents the object where {@link EasyCommand} are registered and queried for execution.
+ * The implementation for this variates from module to module. This contains the principal methods
+ * which are intended for its use
  *
- * @param <C> the type of command context which is required for the commands to be executed
+ * <p>// TODO example using one of the command managers implementations
+ *
+ * @param <C> the type of command context that is used to run the commands
+ * @param <T> the type of command that this instance manages
  */
-public interface ICommandManager<C extends ICommandContext> {
+public interface EasyCommandManager<C extends ICommandContext, T extends EasyCommand<C>> {
 
   /**
-   * Register a new command into the manager
+   * Register a new command into the manager. Any command that implements the type T can be
+   * registered.
    *
    * @param command the command to be registered
    */
-  void register(@NonNull ICommand<C> command);
+  void register(@NonNull T command);
 
   /**
    * Parse the {@link ReflectCommand} from the provided object. This depends on each implementation
    * of the command manager.
+   *
+   * <p>// TODO example from one of the implementations
    *
    * @param object the object to get the commands from
    * @return the collection of parsed commands.
@@ -45,11 +51,11 @@ public interface ICommandManager<C extends ICommandContext> {
   ReflectCommand<C> parseCommand(@NonNull Object object, @NonNull Method method);
 
   /**
-   * Get all the {@link ICommand} that are registered in this instance. This will contain all the
-   * commands that were registered using {@link #register(ICommand)}
+   * Get all the {@link EasyCommand} that are registered in this instance. This will contain all the
+   * commands that were registered using {@link #register(EasyCommand)}
    *
    * @return the registered commands.
    */
   @NonNull
-  Collection<ICommand<C>> getCommands();
+  Collection<T> getCommands();
 }

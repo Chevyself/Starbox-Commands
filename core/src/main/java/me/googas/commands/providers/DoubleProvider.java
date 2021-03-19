@@ -1,13 +1,13 @@
 package me.googas.commands.providers;
 
 import lombok.NonNull;
-import me.googas.commands.ICommandManager;
+import me.googas.commands.EasyCommandManager;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.IMessagesProvider;
 import me.googas.commands.providers.type.IArgumentProvider;
 
-/** Provides the {@link ICommandManager} with a {@link Double} */
+/** Provides the {@link EasyCommandManager} with a {@link Double} */
 public class DoubleProvider<T extends ICommandContext> implements IArgumentProvider<Double, T> {
 
   private final IMessagesProvider<T> messagesProvider;

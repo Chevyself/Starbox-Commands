@@ -16,7 +16,7 @@ import me.googas.commands.context.ICommandContext;
  * @param <C> the type of context used to run the commands
  * @param <T> the type of commands that can be registered as children in this parent
  */
-public interface ReflectParentCommand<C extends ICommandContext, T extends ICommand<C>>
+public interface ReflectParentCommand<C extends ICommandContext, T extends EasyCommand<C>>
     extends ReflectCommand<C> {
 
   /**
@@ -43,7 +43,7 @@ public interface ReflectParentCommand<C extends ICommandContext, T extends IComm
 
   /**
    * Get the collection of registered children in this parent. All the children added in this
-   * collection add from {@link #addCommand(ICommand)}
+   * collection add from {@link #addCommand(EasyCommand)}
    *
    * @return the collection of children
    */

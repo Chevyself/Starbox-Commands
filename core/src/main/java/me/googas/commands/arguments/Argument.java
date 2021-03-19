@@ -3,12 +3,12 @@ package me.googas.commands.arguments;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.ICommand;
+import me.googas.commands.EasyCommand;
 import me.googas.commands.context.ICommandContext;
 import me.googas.commands.context.Mappable;
 import me.googas.commands.context.Suggestible;
 
-/** An argument is a parameter for the {@link ICommand} different results can be given by them */
+/** An argument is a parameter for the {@link EasyCommand} different results can be given by them */
 public class Argument<O> implements Suggestible, ISimpleArgument<O>, Mappable {
 
   @NonNull private final String name;
