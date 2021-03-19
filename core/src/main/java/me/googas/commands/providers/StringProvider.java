@@ -5,7 +5,11 @@ import me.googas.commands.EasyCommandManager;
 import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.providers.type.EasyArgumentProvider;
 
-/** Provides the {@link EasyCommandManager} with {@link String} */
+/**
+ * Provides the {@link EasyCommandManager} with {@link String}
+ *
+ * @param <T> the type of context that this requires to provide the object
+ */
 public class StringProvider<T extends EasyCommandContext>
     implements EasyArgumentProvider<String, T> {
 

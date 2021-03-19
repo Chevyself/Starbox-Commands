@@ -7,7 +7,11 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.type.EasyArgumentProvider;
 
-/** Provides the {@link EasyCommandManager} with a {@link Double} */
+/**
+ * Provides the {@link EasyCommandManager} with a {@link Double}
+ *
+ * @param <T> the type of context that this requires to provide the object
+ */
 public class DoubleProvider<T extends EasyCommandContext>
     implements EasyArgumentProvider<Double, T> {
 
@@ -16,7 +20,8 @@ public class DoubleProvider<T extends EasyCommandContext>
   /**
    * Create an instance
    *
-   * @param messagesProvider to send the error message in case that the long could not be parsed
+   * @param messagesProvider to send the error message in case that the {@link Double} could not be
+   *     parsed
    */
   public DoubleProvider(EasyMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;

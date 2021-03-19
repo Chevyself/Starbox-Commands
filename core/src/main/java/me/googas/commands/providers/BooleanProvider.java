@@ -7,7 +7,11 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.type.EasyArgumentProvider;
 
-/** Provides the {@link EasyCommandManager} with a {@link Boolean} */
+/**
+ * Provides the {@link EasyCommandManager} with a {@link Boolean}
+ *
+ * @param <T> the type of context that this requires to provide the object
+ */
 public class BooleanProvider<T extends EasyCommandContext>
     implements EasyArgumentProvider<Boolean, T> {
 
@@ -16,7 +20,8 @@ public class BooleanProvider<T extends EasyCommandContext>
   /**
    * Create an instance
    *
-   * @param messagesProvider to send the error message in case that the long could not be parsed
+   * @param messagesProvider to send the error message in case that the {@link Boolean} could not be
+   *     parsed
    */
   public BooleanProvider(EasyMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
@@ -34,11 +39,11 @@ public class BooleanProvider<T extends EasyCommandContext>
     boolean result;
     if (string.equalsIgnoreCase("true")) {
       result = true;
-    } else if (string.equalsIgnoreCase("1")) {
+    } else if (string.equals("1")) {
       result = true;
     } else if (string.equalsIgnoreCase("false")) {
       result = false;
-    } else if (string.equalsIgnoreCase("0")) {
+    } else if (string.equals("0")) {
       result = false;
     } else {
       throw new ArgumentProviderException(messagesProvider.invalidBoolean(string, context));

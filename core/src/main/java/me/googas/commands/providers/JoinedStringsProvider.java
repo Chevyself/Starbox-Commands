@@ -6,7 +6,11 @@ import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.objects.JoinedStrings;
 import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
 
-/** Provides the {@link EasyCommandManager} with a {@link JoinedStrings} */
+/**
+ * Provides the {@link EasyCommandManager} with a {@link JoinedStrings}
+ *
+ * @param <T> the type of context that this requires to provide the object
+ */
 public class JoinedStringsProvider<T extends EasyCommandContext>
     implements EasyMultipleArgumentProvider<JoinedStrings, T> {
 
