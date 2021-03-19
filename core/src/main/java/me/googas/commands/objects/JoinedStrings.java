@@ -5,7 +5,12 @@ import lombok.NonNull;
 import me.googas.commands.utility.Strings;
 
 /**
- * Its a class that stores the strings joined from a command execution (from it's argument position)
+ * This class is a wrapped array of {@link String}. This is used for commands that require many
+ * strings as an argument. You can check this instance being used in the context of a command
+ * execution too in {@link me.googas.commands.context.EasyCommandContext}
+ *
+ * @see me.googas.commands.arguments.MultipleArgument
+ * @see me.googas.commands.context.EasyCommandContext
  */
 public class JoinedStrings {
 

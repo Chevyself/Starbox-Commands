@@ -8,6 +8,8 @@ import lombok.NonNull;
 /**
  * Static utilities for {@link java.util.Collection} and arrays. It is called Series as it is a
  * synonym for collection
+ *
+ * @deprecated use {@link java.util.Arrays}
  */
 public class Series {
 

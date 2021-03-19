@@ -2,12 +2,12 @@ package me.googas.commands.providers.type;
 
 import lombok.NonNull;
 import me.googas.commands.arguments.ExtraArgument;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 
 /** An extra argument will be in the command method but it is not needed in the command string */
-public interface IExtraArgumentProvider<O, T extends ICommandContext>
-    extends IContextualProvider<O, T> {
+public interface EasyExtraArgumentProvider<O, T extends EasyCommandContext>
+    extends EasyContextualProvider<O, T> {
 
   /**
    * Get the object using the command context

@@ -3,7 +3,7 @@ package me.googas.commands.providers.type;
 import lombok.NonNull;
 
 /** A simple provider only requires the class of the object */
-public interface ISimpleArgumentProvider<O> {
+public interface EasySimpleArgumentProvider<O> {
 
   /**
    * Get if the provider provides with the queried class

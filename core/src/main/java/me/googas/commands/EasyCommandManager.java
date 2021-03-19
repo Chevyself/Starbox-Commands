@@ -3,7 +3,7 @@ package me.googas.commands;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import lombok.NonNull;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.context.EasyCommandContext;
 
 /**
  * This represents the object where {@link EasyCommand} are registered and queried for execution.
@@ -15,7 +15,7 @@ import me.googas.commands.context.ICommandContext;
  * @param <C> the type of command context that is used to run the commands
  * @param <T> the type of command that this instance manages
  */
-public interface EasyCommandManager<C extends ICommandContext, T extends EasyCommand<C>> {
+public interface EasyCommandManager<C extends EasyCommandContext, T extends EasyCommand<C>> {
 
   /**
    * Register a new command into the manager. Any command that implements the type T can be

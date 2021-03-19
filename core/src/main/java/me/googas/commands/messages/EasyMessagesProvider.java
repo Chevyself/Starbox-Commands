@@ -2,14 +2,14 @@ package me.googas.commands.messages;
 
 import lombok.NonNull;
 import me.googas.commands.arguments.MultipleArgument;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.context.EasyCommandContext;
 
 /**
  * Provides messages for different instances of the manager
  *
  * @param <T> the command context
  */
-public interface IMessagesProvider<T extends ICommandContext> {
+public interface EasyMessagesProvider<T extends EasyCommandContext> {
 
   /**
    * The message sent when a string is not valid as a long

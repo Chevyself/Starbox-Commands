@@ -2,7 +2,7 @@ package me.googas.commands;
 
 import java.util.Collection;
 import lombok.NonNull;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.context.EasyCommandContext;
 
 /**
  * This represents a parent command. A parent command contains children commands which will be
@@ -15,7 +15,7 @@ import me.googas.commands.context.ICommandContext;
  * @param <C> the type of context used to run the commands
  * @param <T> the type of commands that can be registered as children in this parent
  */
-public interface EasyParentCommand<C extends ICommandContext, T extends EasyCommand<C>>
+public interface EasyParentCommand<C extends EasyCommandContext, T extends EasyCommand<C>>
     extends EasyCommand<C> {
 
   /**

@@ -2,22 +2,23 @@ package me.googas.commands.providers;
 
 import lombok.NonNull;
 import me.googas.commands.EasyCommandManager;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import me.googas.commands.messages.IMessagesProvider;
-import me.googas.commands.providers.type.IArgumentProvider;
+import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.providers.type.EasyArgumentProvider;
 
 /** Provides the {@link EasyCommandManager} with a {@link Double} */
-public class DoubleProvider<T extends ICommandContext> implements IArgumentProvider<Double, T> {
+public class DoubleProvider<T extends EasyCommandContext>
+    implements EasyArgumentProvider<Double, T> {
 
-  private final IMessagesProvider<T> messagesProvider;
+  private final EasyMessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */
-  public DoubleProvider(IMessagesProvider<T> messagesProvider) {
+  public DoubleProvider(EasyMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

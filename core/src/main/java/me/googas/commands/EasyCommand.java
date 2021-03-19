@@ -1,7 +1,7 @@
 package me.googas.commands;
 
 import lombok.NonNull;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.result.IResult;
 
 /**
@@ -12,7 +12,7 @@ import me.googas.commands.result.IResult;
  *
  * @param <C> the context that is required to run the command
  */
-public interface EasyCommand<C extends ICommandContext> {
+public interface EasyCommand<C extends EasyCommandContext> {
 
   /**
    * Execute the command

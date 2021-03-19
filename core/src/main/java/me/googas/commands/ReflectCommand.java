@@ -6,25 +6,25 @@ import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.ExtraArgument;
-import me.googas.commands.arguments.ISimpleArgument;
 import me.googas.commands.arguments.MultipleArgument;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.arguments.SingleArgument;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.messages.IMessagesProvider;
+import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.IArgumentProvider;
+import me.googas.commands.providers.type.EasyArgumentProvider;
 import me.googas.commands.result.IResult;
 
 /**
  * A reflect command is a command that is parsed using Java reflection. That's why this includes
  * methods as {@link #getMethod} or {@link #getObject}
  */
-public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C> {
+public interface ReflectCommand<C extends EasyCommandContext> extends EasyCommand<C> {
 
   /**
    * Get the string that will be used to get the object to pass to the command method as a parameter
-   * (Check {@link IArgumentProvider}).
+   * (Check {@link EasyArgumentProvider}).
    *
    * @param argument the argument requested in the position
    * @param context the context of the command
@@ -33,7 +33,8 @@ public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C
    *     null else it will return the first suggestion. If the string in the context is not null
    *     then it will return that one
    */
-  static String getArgument(@NonNull Argument<?> argument, @NonNull ICommandContext context) {
+  static String getArgument(
+      @NonNull SingleArgument<?> argument, @NonNull EasyCommandContext context) {
     String[] strings = context.getStrings();
     if (strings.length - 1 < argument.getPosition()) {
       if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
@@ -48,9 +49,9 @@ public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C
 
   /**
    * Get the objects that should be used in the parameters to invoke {@link #getMethod()}. For each
-   * {@link ICommandContext#getStrings()} it will try to get one object, unless the argument in the
-   * position of the string is a {@link MultipleArgument}. Check the {@link #getRegistry()} to get
-   * which classes can be provided as an object.
+   * {@link EasyCommandContext#getStrings()} it will try to get one object, unless the argument in
+   * the position of the string is a {@link MultipleArgument}. Check the {@link #getRegistry()} to
+   * get which classes can be provided as an object.
    *
    * @param context the context to get the parameters (strings)
    * @return the objects to use as parameters in the {@link #getMethod()}
@@ -64,7 +65,7 @@ public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C
       throws MissingArgumentException, ArgumentProviderException {
     Object[] objects = new Object[getArguments().size()];
     for (int i = 0; i < getArguments().size(); i++) {
-      ISimpleArgument<?> argument = getArguments().get(i);
+      Argument<?> argument = getArguments().get(i);
       if (argument instanceof ExtraArgument<?>) {
         objects[i] = getRegistry().getObject(argument.getClazz(), context);
       } else if (argument instanceof MultipleArgument<?>) {
@@ -85,17 +86,17 @@ public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C
           i = ((MultipleArgument<?>) argument).getMaxSize();
         }
         objects[i] = getRegistry().fromStrings(strings, argument.getClazz(), context);
-      } else if (argument instanceof Argument<?>) {
-        String string = getArgument((Argument<?>) argument, context);
-        if (string == null && ((Argument<?>) argument).isRequired()) {
+      } else if (argument instanceof SingleArgument<?>) {
+        String string = getArgument((SingleArgument<?>) argument, context);
+        if (string == null && ((SingleArgument<?>) argument).isRequired()) {
           throw new MissingArgumentException(
               getMessagesProvider()
                   .missingArgument(
-                      ((Argument<?>) argument).getName(),
-                      ((Argument<?>) argument).getDescription(),
-                      ((Argument<?>) argument).getPosition(),
+                      ((SingleArgument<?>) argument).getName(),
+                      ((SingleArgument<?>) argument).getDescription(),
+                      ((SingleArgument<?>) argument).getPosition(),
                       context));
-        } else if (string == null && !((Argument<?>) argument).isRequired()) {
+        } else if (string == null && !((SingleArgument<?>) argument).isRequired()) {
           objects[i] = null;
         } else if (string == null) {
           objects[i] = null;
@@ -109,16 +110,17 @@ public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C
 
   /**
    * Get the argument of certain position. A basic loop checking if the {@link
-   * Argument#getPosition()} matches the queried position. Ignore the extra arguments as those don't
-   * have positions
+   * SingleArgument#getPosition()} matches the queried position. Ignore the extra arguments as those
+   * don't have positions
    *
    * @param position the position to get the argument from
    * @return the argument if exists else null
    */
-  default Argument<?> getArgument(int position) {
-    for (ISimpleArgument<?> argument : this.getArguments()) {
-      if (argument instanceof Argument && ((Argument<?>) argument).getPosition() == position) {
-        return (Argument<?>) argument;
+  default SingleArgument<?> getArgument(int position) {
+    for (Argument<?> argument : this.getArguments()) {
+      if (argument instanceof SingleArgument
+          && ((SingleArgument<?>) argument).getPosition() == position) {
+        return (SingleArgument<?>) argument;
       }
     }
     return null;
@@ -149,12 +151,12 @@ public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C
 
   /**
    * Get the {@link List} of the arguments for the command. It is used in {@link #getArgument(int)}
-   * therefore in {@link #getObjects(ICommandContext)}
+   * therefore in {@link #getObjects(EasyCommandContext)}
    *
-   * @return the {@link List} of {@link ISimpleArgument}
+   * @return the {@link List} of {@link Argument}
    */
   @NonNull
-  List<ISimpleArgument<?>> getArguments();
+  List<Argument<?>> getArguments();
 
   /**
    * Get the registry of providers. Needed to get the objects to pass in the method invoke.
@@ -171,7 +173,7 @@ public interface ReflectCommand<C extends ICommandContext> extends EasyCommand<C
    * @return the messages provider
    */
   @NonNull
-  IMessagesProvider<C> getMessagesProvider();
+  EasyMessagesProvider<C> getMessagesProvider();
 
   /**
    * Executes the command and gives a result of its execution

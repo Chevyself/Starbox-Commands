@@ -1,7 +1,7 @@
 package me.googas.commands.providers.type;
 
 import lombok.NonNull;
-import me.googas.commands.context.ICommandContext;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 
 /**
@@ -9,8 +9,8 @@ import me.googas.commands.exceptions.ArgumentProviderException;
  *
  * @param <O> the class to provide as argument
  */
-public interface IMultipleArgumentProvider<O, T extends ICommandContext>
-    extends IContextualProvider<O, T> {
+public interface EasyMultipleArgumentProvider<O, T extends EasyCommandContext>
+    extends EasyContextualProvider<O, T> {
 
   /**
    * Get the object of the provider
