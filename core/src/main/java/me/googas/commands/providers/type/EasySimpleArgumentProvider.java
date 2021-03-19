@@ -2,11 +2,19 @@ package me.googas.commands.providers.type;
 
 import lombok.NonNull;
 
-/** A simple provider only requires the class of the object */
+/**
+ * This is the interface that every provider has to extend or implement
+ *
+ * <p>The first implementation to check is {@link EasyContextualProvider}
+ *
+ * @param <O> the type of object to provide
+ */
 public interface EasySimpleArgumentProvider<O> {
 
   /**
    * Get if the provider provides with the queried class
+   *
+   * <p>By default this will check using {@link #getClazz()} {@link Class#isAssignableFrom(Class)}
    *
    * @param clazz the queried class
    * @return true if it provides it
