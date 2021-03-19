@@ -55,9 +55,11 @@ public interface ReflectCommand<C extends EasyCommandContext> extends EasyComman
    *
    * @param context the context to get the parameters {@link EasyCommandContext#getStrings()}
    * @return the objects to use as parameters in the {@link #getMethod()}
-   * @throws ArgumentProviderException if the argument could not be provided, see {@link ArgumentProviderException}
+   * @throws ArgumentProviderException if the argument could not be provided, see {@link
+   *     ArgumentProviderException}
    * @throws MissingArgumentException if the command is missing an argument. Also it will try to
-   *     return the result as a help message to get a correct input from the user, see {@link MissingArgumentException}
+   *     return the result as a help message to get a correct input from the user, see {@link
+   *     MissingArgumentException}
    */
   @NonNull
   default Object[] getObjects(C context)

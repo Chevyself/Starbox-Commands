@@ -27,7 +27,7 @@ public interface EasyCommand<C extends EasyCommandContext> {
    * commands have names and aliases, instead of asking for the name and aliases of the command just
    * check if the command has the alias
    *
-   * TODO example
+   * <p>TODO example
    *
    * @param alias the alias to check
    * @return true if this command has the given alias

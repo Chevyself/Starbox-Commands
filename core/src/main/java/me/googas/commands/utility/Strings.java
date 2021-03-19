@@ -50,12 +50,13 @@ public class Strings {
 
   /**
    * Build a message using more readable placeholders. Instead of using a method such as {@link
-   * #format(String, Object...)} this uses a map with the placeholder and the given object to replace
-   * it:
+   * #format(String, Object...)} this uses a map with the placeholder and the given object to
+   * replace it:
    *
    * <p>"This message has a %placeholder%"
    *
-   * <p>"%placeholder%" is the placeholder that will be replaced with the object that it was given in the map
+   * <p>"%placeholder%" is the placeholder that will be replaced with the object that it was given
+   * in the map
    *
    * @param message the message to format
    * @param placeholders the placeholders and its values. The placeholders are the key and those do
@@ -78,8 +79,8 @@ public class Strings {
   }
 
   /**
-   * This method is the same as {@link #format(String, Map)} but using the {@link MapBuilder} to give
-   * an option of easier to make map
+   * This method is the same as {@link #format(String, Map)} but using the {@link MapBuilder} to
+   * give an option of easier to make map
    *
    * @param message the message to format
    * @param placeholders the placeholders and its values. The placeholders are the key and those do
@@ -113,13 +114,13 @@ public class Strings {
   /**
    * Copy the matching strings from a list to a new one:
    *
-   * If you have the next string to match: "Hello" and your list contains the elements:
+   * <p>If you have the next string to match: "Hello" and your list contains the elements:
    *
-   * ["Hello world", "Hello everyone", "What's up", "How's it going"]
+   * <p>["Hello world", "Hello everyone", "What's up", "How's it going"]
    *
-   * This will copy the elements:
+   * <p>This will copy the elements:
    *
-   * ["Hello world", "Hello everyone"]
+   * <p>["Hello world", "Hello everyone"]
    *
    * @param toMatch The string to match the elements
    * @param list the list of the elements to match

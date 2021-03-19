@@ -7,3 +7,4 @@
 - [ ] Update "bukkit" to new "core" and improve javadoc
 - [ ] Update "bungee" to new "core" and improve javadoc
 - [ ] Update "jda" to new "core" and improve javadoc
+- [ ] Finish "core" To-Dos. Finishing those will be easier when all the modules are up-to-date as all of them are examples related

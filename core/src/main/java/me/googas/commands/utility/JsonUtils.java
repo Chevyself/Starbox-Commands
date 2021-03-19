@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * Static utilities for JSON
  *
- * Used for Bukkit and Bungee BaseComponents
+ * <p>Used for Bukkit and Bungee BaseComponents
  */
 public class JsonUtils {
 

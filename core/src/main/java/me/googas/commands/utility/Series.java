@@ -48,7 +48,8 @@ public class Series {
    * <p>If you have the array: [1, 2, 3] and you wish to remove the 2 you will use the position 1
    * and you will end up with the list: [1, 3]
    *
-   * @deprecated use {@link java.util.Arrays#copyOfRange(Object[], int, int)} and {@link java.util.Arrays#asList(Object[])}
+   * @deprecated use {@link java.util.Arrays#copyOfRange(Object[], int, int)} and {@link
+   *     java.util.Arrays#asList(Object[])}
    * @param array the array to remove the element and convert into a list
    * @param position the position to remove the element from
    * @param <O> the type of the objects in the array
