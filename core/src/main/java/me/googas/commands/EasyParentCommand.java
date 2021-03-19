@@ -5,9 +5,8 @@ import lombok.NonNull;
 import me.googas.commands.context.ICommandContext;
 
 /**
- * This represents a parent command which can be parsed using reflection, that is why this extends
- * {@link ReflectCommand}. A parent command contains children command which will be recognized using
- * the first parameter of the command as follows:
+ * This represents a parent command. A parent command contains children commands which will be
+ * recognized using the first parameter of the command as follows:
  *
  * <p>[prefix][parent] [children].
  *
@@ -16,8 +15,8 @@ import me.googas.commands.context.ICommandContext;
  * @param <C> the type of context used to run the commands
  * @param <T> the type of commands that can be registered as children in this parent
  */
-public interface ReflectParentCommand<C extends ICommandContext, T extends EasyCommand<C>>
-    extends ReflectCommand<C> {
+public interface EasyParentCommand<C extends ICommandContext, T extends EasyCommand<C>>
+    extends EasyCommand<C> {
 
   /**
    * Add a children that can be used to run in this parent
