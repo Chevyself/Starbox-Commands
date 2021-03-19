@@ -24,7 +24,7 @@ public class Series {
    * @param array the array to get the new array from
    * @return the new array copied from the position of the parameter array
    * @throws IllegalArgumentException if the position is less than 0 or if the position is higher
-   *     than the lenght of the array
+   *     than the length of the array
    */
   @NonNull
   public static String[] arrayFrom(int position, String[] array) {
