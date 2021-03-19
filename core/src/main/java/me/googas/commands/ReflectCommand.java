@@ -27,7 +27,7 @@ public interface ReflectCommand<C extends EasyCommandContext> extends EasyComman
    * (Check {@link EasyArgumentProvider}).
    *
    * @param argument the argument requested in the position
-   * @param context the context of the command
+   * @param context the context of the command execution
    * @return It will try to get the string in the argument position. If the string in the context is
    *     null and the argument is not required and it does not have any suggestions it will return
    *     null else it will return the first suggestion. If the string in the context is not null
@@ -53,12 +53,11 @@ public interface ReflectCommand<C extends EasyCommandContext> extends EasyComman
    * the position of the string is a {@link MultipleArgument}. Check the {@link #getRegistry()} to
    * get which classes can be provided as an object.
    *
-   * @param context the context to get the parameters (strings)
+   * @param context the context to get the parameters {@link EasyCommandContext#getStrings()}
    * @return the objects to use as parameters in the {@link #getMethod()}
-   * @throws ArgumentProviderException if the argument could not be provided more in the exception
-   *     class
+   * @throws ArgumentProviderException if the argument could not be provided, see {@link ArgumentProviderException}
    * @throws MissingArgumentException if the command is missing an argument. Also it will try to
-   *     return the result as a help message to get a correct input from the user
+   *     return the result as a help message to get a correct input from the user, see {@link MissingArgumentException}
    */
   @NonNull
   default Object[] getObjects(C context)
@@ -113,8 +112,8 @@ public interface ReflectCommand<C extends EasyCommandContext> extends EasyComman
    * SingleArgument#getPosition()} matches the queried position. Ignore the extra arguments as those
    * don't have positions
    *
-   * @param position the position to get the argument from
-   * @return the argument if exists else null
+   * @param position the position to get the argument of
+   * @return the argument if exists, null otherwise
    */
   default SingleArgument<?> getArgument(int position) {
     for (Argument<?> argument : this.getArguments()) {
