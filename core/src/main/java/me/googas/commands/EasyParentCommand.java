@@ -22,9 +22,11 @@ public interface EasyParentCommand<C extends EasyCommandContext, T extends EasyC
    * Add a children that can be used to run in this parent
    *
    * @param command the child command to add
+   * @return this same parent command instance to allow chain methods
    */
-  default void addCommand(@NonNull T command) {
+  default EasyParentCommand<C, T> addCommand(@NonNull T command) {
     this.getChildren().add(command);
+    return this;
   }
 
   /**

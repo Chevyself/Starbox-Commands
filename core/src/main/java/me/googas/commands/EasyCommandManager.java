@@ -22,8 +22,10 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * registered.
    *
    * @param command the command to be registered
+   * @return this same command manager instance to allow chain method calls
    */
-  void register(@NonNull T command);
+  @NonNull
+  EasyCommandManager<C, T> register(@NonNull T command);
 
   /**
    * Parse the {@link ReflectCommand} from the provided object. This depends on each implementation
