@@ -2,7 +2,11 @@ package me.googas.commands.utility;
 
 import lombok.NonNull;
 
-/** Static utilities for JSON */
+/**
+ * Static utilities for JSON
+ *
+ * Used for Bukkit and Bungee BaseComponents
+ */
 public class JsonUtils {
 
   /**

@@ -7,8 +7,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.ICommandArray;
+import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.arguments.Argument;
-import me.googas.commands.arguments.ISimpleArgument;
 import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
@@ -17,10 +17,10 @@ import me.googas.commands.bungee.providers.type.BungeeMultiArgumentProvider;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.messages.IMessagesProvider;
+import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.objects.CommandSettings;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.IContextualProvider;
+import me.googas.commands.providers.type.EasyContextualProvider;
 import me.googas.commands.utility.Series;
 import me.googas.commands.utility.Strings;
 import net.md_5.bungee.api.CommandSender;
@@ -38,7 +38,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
 
   @NonNull private final Object clazz;
   @NonNull private final Method method;
-  @NonNull private final List<ISimpleArgument<?>> arguments;
+  @NonNull private final List<Argument<?>> arguments;
   @NonNull private final ProvidersRegistry<CommandContext> registry;
   @NonNull private final CommandSettings settings;
 
@@ -57,7 +57,7 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   public AnnotatedCommand(
       @NonNull Object clazz,
       @NonNull Method method,
-      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull List<Argument<?>> arguments,
       @NonNull Command command,
       @NonNull MessagesProvider messagesProvider,
       @NonNull Plugin plugin,
@@ -122,32 +122,10 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
+  @NonNull
   @Override
-  public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
-    CommandContext context = new CommandContext(commandSender, strings, messagesProvider, registry);
-    Argument<?> argument = getArgument(strings.length - 1);
-    if (argument != null) {
-      if (argument.getSuggestions(context).size() > 0) {
-        return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
-      } else {
-        List<IContextualProvider<?, CommandContext>> providers =
-            getRegistry().getProviders(argument.getClazz());
-        for (IContextualProvider<?, CommandContext> provider : providers) {
-          if (provider instanceof BungeeArgumentProvider) {
-            return Strings.copyPartials(
-                strings[strings.length - 1],
-                ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
-          } else if (provider instanceof BungeeMultiArgumentProvider) {
-            return Strings.copyPartials(
-                strings[strings.length - 1],
-                ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));
-          }
-        }
-        return new ArrayList<>();
-      }
-    } else {
-      return new ArrayList<>();
-    }
+  public List<Argument<?>> getArguments() {
+    return arguments;
   }
 
   @Override
@@ -175,10 +153,9 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     return method;
   }
 
-  @NonNull
   @Override
-  public List<ISimpleArgument<?>> getArguments() {
-    return arguments;
+  public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
+    return messagesProvider;
   }
 
   @Override
@@ -187,8 +164,31 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
   }
 
   @Override
-  public @NonNull IMessagesProvider<CommandContext> getMessagesProvider() {
-    return messagesProvider;
+  public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
+    CommandContext context = new CommandContext(commandSender, strings, messagesProvider, registry);
+    SingleArgument<?> argument = getArgument(strings.length - 1);
+    if (argument != null) {
+      if (argument.getSuggestions(context).size() > 0) {
+        return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
+      } else {
+        List<EasyContextualProvider<?, CommandContext>> providers =
+            getRegistry().getProviders(argument.getClazz());
+        for (EasyContextualProvider<?, CommandContext> provider : providers) {
+          if (provider instanceof BungeeArgumentProvider) {
+            return Strings.copyPartials(
+                strings[strings.length - 1],
+                ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
+          } else if (provider instanceof BungeeMultiArgumentProvider) {
+            return Strings.copyPartials(
+                strings[strings.length - 1],
+                ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));
+          }
+        }
+        return new ArrayList<>();
+      }
+    } else {
+      return new ArrayList<>();
+    }
   }
 
   @Override

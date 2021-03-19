@@ -10,15 +10,15 @@ import lombok.NonNull;
 public class Strings {
 
   /**
-   * This method is made to save resources from {@link #build(String, Map)}, {@link #build(String,
-   * Object...)} and {@link #build(String, MapBuilder)} to not go in a loop. In case that the
+   * This method is made to save resources from {@link #format(String, Map)}, {@link #format(String,
+   * Object...)} and {@link #format(String, MapBuilder)} to not go in a loop. In case that the
    * message is null it will just give an string with the characters "Null"
    *
-   * @param message the message to build
+   * @param message the message to format
    * @return "Null" if the message is null else the message
    */
   @NonNull
-  public static String build(String message) {
+  public static String format(String message) {
     return message == null ? "Null" : message;
   }
 
@@ -31,12 +31,12 @@ public class Strings {
    * index from the objects array. The placeholder will be replaced with the {@link
    * Object#toString()}
    *
-   * @param message the message to build
+   * @param message the message to format
    * @param strings the object that will replace the placeholders
-   * @return the built message
+   * @return the formatted message
    */
   @NonNull
-  public static String build(String message, Object... strings) {
+  public static String format(String message, Object... strings) {
     if (message != null) {
       for (int i = 0; i < strings.length; i++) {
         message =
@@ -50,20 +50,20 @@ public class Strings {
 
   /**
    * Build a message using more readable placeholders. Instead of using a method such as {@link
-   * #build(String, Object...)} this uses a map with the placeholder and the given object to replace
+   * #format(String, Object...)} this uses a map with the placeholder and the given object to replace
    * it:
    *
    * <p>"This message has a %placeholder%"
    *
-   * <p>"%placeholder%" is the placeholder that will be replaced with the object that it was given.
+   * <p>"%placeholder%" is the placeholder that will be replaced with the object that it was given in the map
    *
-   * @param message the message to build
+   * @param message the message to format
    * @param placeholders the placeholders and its values. The placeholders are the key and those do
    *     not require to have the character "%" and the value is another string
-   * @return the built message
+   * @return the formatted message
    */
   @NonNull
-  public static String build(String message, @NonNull Map<String, String> placeholders) {
+  public static String format(String message, @NonNull Map<String, String> placeholders) {
     if (message == null) return "Null";
     AtomicReference<String> atomicMessage = new AtomicReference<>(message);
     for (String placeholder : placeholders.keySet()) {
@@ -78,16 +78,16 @@ public class Strings {
   }
 
   /**
-   * This method is the same as {@link #build(String, Map)} but using the {@link MapBuilder} to give
+   * This method is the same as {@link #format(String, Map)} but using the {@link MapBuilder} to give
    * an option of easier to make map
    *
-   * @param message the message to build
+   * @param message the message to format
    * @param placeholders the placeholders and its values. The placeholders are the key and those do
-   *     not require * to have the character "%" and the value is another string
-   * @return the built message
+   *     not require to have the character "%" and the value is another string
+   * @return the formatted message
    */
-  public static String build(String message, @NonNull MapBuilder<String, String> placeholders) {
-    return Strings.build(message, placeholders.build());
+  public static String format(String message, @NonNull MapBuilder<String, String> placeholders) {
+    return Strings.format(message, placeholders.build());
   }
 
   /**
@@ -110,6 +110,21 @@ public class Strings {
     return builder.toString();
   }
 
+  /**
+   * Copy the matching strings from a list to a new one:
+   *
+   * If you have the next string to match: "Hello" and your list contains the elements:
+   *
+   * ["Hello world", "Hello everyone", "What's up", "How's it going"]
+   *
+   * This will copy the elements:
+   *
+   * ["Hello world", "Hello everyone"]
+   *
+   * @param toMatch The string to match the elements
+   * @param list the list of the elements to match
+   * @return the list with the matching elements
+   */
   @NonNull
   public static List<String> copyPartials(@NonNull String toMatch, @NonNull List<String> list) {
     List<String> matching = new ArrayList<>();

@@ -5,7 +5,7 @@ import lombok.NonNull;
 /**
  * This object represents an object that will provide the given type by building it
  *
- * @param <T> the type of object to build
+ * @param <T> the type of object to format
  */
 public interface Builder<T> {
 

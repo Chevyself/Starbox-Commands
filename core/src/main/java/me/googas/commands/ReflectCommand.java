@@ -14,7 +14,7 @@ import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.EasyArgumentProvider;
-import me.googas.commands.result.IResult;
+import me.googas.commands.result.EasyResult;
 
 /**
  * A reflect command is a command that is parsed using Java reflection. That's why this includes
@@ -182,9 +182,9 @@ public interface ReflectCommand<C extends EasyCommandContext> extends EasyComman
    * @return the result of the command execution
    */
   @Override
-  default IResult execute(@NonNull C context) {
+  default EasyResult execute(@NonNull C context) {
     try {
-      return (IResult) getMethod().invoke(getObject(), getObjects(context));
+      return (EasyResult) getMethod().invoke(getObject(), getObjects(context));
     } catch (MissingArgumentException
         | ArgumentProviderException
         | IllegalAccessException

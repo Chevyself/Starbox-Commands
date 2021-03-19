@@ -3,7 +3,7 @@ package me.googas.commands.bungee.providers.type;
 import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
-import me.googas.commands.providers.type.IMultipleArgumentProvider;
+import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
 
 /**
  * A bungee provider for multiple arguments
@@ -11,7 +11,7 @@ import me.googas.commands.providers.type.IMultipleArgumentProvider;
  * @param <O> the type of the object to provider
  */
 public interface BungeeMultiArgumentProvider<O>
-    extends IMultipleArgumentProvider<O, CommandContext> {
+    extends EasyMultipleArgumentProvider<O, CommandContext> {
 
   /**
    * Get the suggestions for the command

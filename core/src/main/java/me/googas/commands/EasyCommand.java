@@ -2,7 +2,7 @@ package me.googas.commands;
 
 import lombok.NonNull;
 import me.googas.commands.context.EasyCommandContext;
-import me.googas.commands.result.IResult;
+import me.googas.commands.result.EasyResult;
 
 /**
  * This class represents a Command which may be executed by an user depending on the implementations
@@ -20,7 +20,7 @@ public interface EasyCommand<C extends EasyCommandContext> {
    * @param context the context that is required to execute the command
    * @return the result of the command execution
    */
-  IResult execute(@NonNull C context);
+  EasyResult execute(@NonNull C context);
 
   /**
    * Check if the command can the command be recognized by the given alias. This is used because

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.result.IResult;
+import me.googas.commands.result.EasyResult;
 import me.googas.commands.utility.Strings;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -14,7 +14,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /** The result that can be send by the execution of the command */
-public class Result implements IResult {
+public class Result implements EasyResult {
 
   /** The components that will be send after the execution */
   @NonNull @Getter private final List<BaseComponent> components = new ArrayList<>();
@@ -53,7 +53,7 @@ public class Result implements IResult {
    * @param map the map to change the placeholders
    */
   public Result(@NonNull String text, @NonNull HashMap<String, String> map) {
-    this(Strings.build(text, map));
+    this(Strings.format(text, map));
   }
 
   @Override

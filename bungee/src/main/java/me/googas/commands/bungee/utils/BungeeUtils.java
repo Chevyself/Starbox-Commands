@@ -14,25 +14,25 @@ public class BungeeUtils {
   /**
    * Build a message and give it colors
    *
-   * @param string the message to build
-   * @param placeholders the placeholders of the message. See {@link Strings#build(String)} (String,
+   * @param string the message to format
+   * @param placeholders the placeholders of the message. See {@link Strings#format(String)} (String,
    *     HashMap)}
    * @return the built message
    */
   @NonNull
   public static String build(String string, @NonNull HashMap<String, String> placeholders) {
-    return ChatColor.translateAlternateColorCodes('&', Strings.build(string, placeholders));
+    return ChatColor.translateAlternateColorCodes('&', Strings.format(string, placeholders));
   }
 
   /**
    * Build a message and give it colors
    *
-   * @param string the message to build
+   * @param string the message to format
    * @return the built message
    */
   @NonNull
   public static String build(String string) {
-    return ChatColor.translateAlternateColorCodes('&', Strings.build(string));
+    return ChatColor.translateAlternateColorCodes('&', Strings.format(string));
   }
 
   /**

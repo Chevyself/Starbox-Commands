@@ -3,7 +3,11 @@ package me.googas.commands.utility;
 import java.util.Map;
 import lombok.NonNull;
 
-/** Helps with single line {@link Map} building */
+/**
+ * Helps with single line {@link Map} building
+ *
+ * @deprecated Probably removed when Minecraft requires Java 11
+ */
 public class MapBuilder<K, V> implements Builder<Map<K, V>> {
 
   @NonNull private final Map<K, V> map;

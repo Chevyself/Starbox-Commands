@@ -10,7 +10,7 @@ import me.googas.commands.objects.JoinedStrings;
  * Used for the representation of parameters that require multiple strings
  *
  * <p>An object that needs multiple stings can be something like an array. For example: The custom
- * object {@link JoinedStrings} which takes many strings to build a bigger {@link String}.
+ * object {@link JoinedStrings} which takes many strings to format a bigger {@link String}.
  *
  * <pre>
  * public void AMethod(@Multiple @Optional(suggestions = "Hello world") String message) {

@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.ICommandManager;
+import me.googas.commands.EasyCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
@@ -20,7 +20,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
 /** The command manager for bungee commands */
-public class CommandManager implements ICommandManager<AnnotatedCommand> {
+public class CommandManager implements EasyCommandManager<AnnotatedCommand> {
 
   /** The plugin that is running the manager */
   @NonNull @Getter private final Plugin plugin;
@@ -151,7 +151,7 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
       }
     } else {
       throw new CommandRegistrationException(
-          Strings.build("{0} must return {1} or void", method, Result.class));
+          Strings.format("{0} must return {1} or void", method, Result.class));
     }
   }
 }

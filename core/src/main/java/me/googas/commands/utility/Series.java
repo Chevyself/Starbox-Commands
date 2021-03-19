@@ -8,8 +8,6 @@ import lombok.NonNull;
 /**
  * Static utilities for {@link java.util.Collection} and arrays. It is called Series as it is a
  * synonym for collection
- *
- * @deprecated use {@link java.util.Arrays}
  */
 public class Series {
 
@@ -20,6 +18,7 @@ public class Series {
    *
    * <p>And you use this method with the position 1 the array will result in: [2, 3]
    *
+   * @deprecated use {@link java.util.Arrays#copyOfRange(Object[], int, int)}
    * @param position the position to get the array from
    * @param array the array to get the new array from
    * @return the new array copied from the position of the parameter array
@@ -49,6 +48,7 @@ public class Series {
    * <p>If you have the array: [1, 2, 3] and you wish to remove the 2 you will use the position 1
    * and you will end up with the list: [1, 3]
    *
+   * @deprecated use {@link java.util.Arrays#copyOfRange(Object[], int, int)} and {@link java.util.Arrays#asList(Object[])}
    * @param array the array to remove the element and convert into a list
    * @param position the position to remove the element from
    * @param <O> the type of the objects in the array
@@ -99,9 +99,10 @@ public class Series {
    * <p>If you have the array [1, 2, 3, 4, 5] and you use this method with the position: 3 the
    * element '4' will be removed resulting in the array being: [1, 2, 3, 5]
    *
-   * @param array
-   * @param position
-   * @return
+   * @param array the array to remove the element from
+   * @param position the position to remove the element from
+   * @return the new array
+   * @throws IllegalArgumentException if the position is less than 0
    */
   public static String[] remove(String[] array, int position) {
     if (position < 0) {

@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.NonNull;
 
-/** Static utils for maps */
+/**
+ * Static utils for maps
+ *
+ * @deprecated Probably removed when Minecraft requires Java 11
+ */
 public class Maps {
 
   /**

@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.IParentCommand;
-import me.googas.commands.arguments.ISimpleArgument;
+import me.googas.commands.arguments.Argument;
 import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
@@ -40,7 +40,7 @@ public class ParentCommand extends AnnotatedCommand implements IParentCommand<An
   public ParentCommand(
       @NonNull Object object,
       @NonNull Method method,
-      @NonNull List<ISimpleArgument<?>> arguments,
+      @NonNull List<Argument<?>> arguments,
       @NonNull Command command,
       @NonNull MessagesProvider messagesProvider,
       @NonNull Plugin plugin,
