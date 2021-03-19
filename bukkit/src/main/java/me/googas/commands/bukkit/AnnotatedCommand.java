@@ -3,117 +3,90 @@ package me.googas.commands.bukkit;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.ICommand;
+import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
-import me.googas.commands.arguments.ISimpleArgument;
+import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.bukkit.providers.type.BukkitMultiArgumentProvider;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.messages.IMessagesProvider;
-import me.googas.commands.objects.CommandSettings;
+import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.IContextualProvider;
-import me.googas.commands.utility.Series;
+import me.googas.commands.providers.type.EasyContextualProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
-/** The annotated command for bukkit */
-public class AnnotatedCommand extends org.bukkit.command.Command
-    implements ICommand<CommandContext> {
+public class AnnotatedCommand extends BukkitCommand implements ReflectCommand<CommandContext> {
 
-  /** The provider for messages */
-  @NonNull protected final MessagesProvider messagesProvider;
-  /** The plugin where this command was registered */
-  @NonNull @Getter protected final Plugin plugin;
+  @NonNull @Getter private final Method method;
+  @NonNull @Getter private final Object object;
+  @NonNull @Getter private final List<Argument<?>> arguments;
+  @NonNull @Getter private final CommandManager manager;
+  private final boolean async;
 
-  @NonNull private final Object clazz;
-  @NonNull private final Method method;
-  @NonNull private final List<ISimpleArgument<?>> arguments;
-  @NonNull private final ProvidersRegistry<CommandContext> registry;
-  @NonNull private final CommandSettings commandSettings;
-
-  /**
-   * Create an instance
-   *
-   * @param clazz the object that owns the method to invoke
-   * @param method the method to invoke
-   * @param arguments the arguments of the command
-   * @param command the annotation that has all the command information
-   * @param messagesProvider the provider for messages
-   * @param plugin the plugin where this command was registered
-   * @param registry the registry for the command context
-   * @param commandSettings
-   */
-  AnnotatedCommand(
-      @NonNull Object clazz,
-      @NonNull Method method,
-      @NonNull List<ISimpleArgument<?>> arguments,
+  public AnnotatedCommand(
       @NonNull Command command,
-      @NonNull MessagesProvider messagesProvider,
-      @NonNull Plugin plugin,
-      @NonNull ProvidersRegistry<CommandContext> registry,
-      @NonNull CommandSettings commandSettings) {
+      @NonNull Method method,
+      @NonNull Object object,
+      @NonNull List<Argument<?>> arguments,
+      @NonNull CommandManager manager) {
     super(
         command.aliases()[0],
         command.description(),
         "",
-        Series.removeAndList(command.aliases(), 0));
-    this.clazz = clazz;
+        command.aliases().length > 1
+            ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
+            : new ArrayList<>());
     this.method = method;
+    this.object = object;
     this.arguments = arguments;
-    this.messagesProvider = messagesProvider;
-    this.plugin = plugin;
-    this.registry = registry;
-    this.commandSettings = commandSettings;
+    this.manager = manager;
+    this.async = command.async();
     final String permission = command.permission();
     if (!permission.isEmpty()) {
       this.setPermission(permission);
     }
   }
 
-  /**
-   * Run the command
-   *
-   * @param commandSender the sender of the command
-   * @param strings the strings of the command
-   */
-  private void run(@NonNull CommandSender commandSender, @NonNull String[] strings) {
+  public void run(@NonNull CommandSender sender, @NonNull String[] args) {
     Result result =
-        this.execute(new CommandContext(commandSender, strings, messagesProvider, registry));
+        this.execute(
+            new CommandContext(sender, args, manager.getMessagesProvider(), manager.getRegistry()));
     if (result != null) {
       for (BaseComponent component : result.getComponents()) {
-        commandSender.sendMessage(component.toLegacyText());
+        sender.sendMessage(component.toLegacyText());
       }
     }
   }
 
-  @NonNull
   @Override
-  public Object getClazz() {
-    return this.clazz;
+  public boolean execute(
+      @NonNull CommandSender sender, @NonNull String commandLabel, String @NonNull [] args) {
+    if (async) {
+      Bukkit.getScheduler().runTaskAsynchronously(manager.getPlugin(), () -> run(sender, args));
+    } else {
+      run(sender, args);
+    }
+    return true;
   }
 
-  @NonNull
   @Override
-  public Method getMethod() {
-    return this.method;
+  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+    return manager.getRegistry();
   }
 
-  @NonNull
   @Override
-  public List<ISimpleArgument<?>> getArguments() {
-    return this.arguments;
+  public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
+    return manager.getMessagesProvider();
   }
 
   @Override
@@ -122,11 +95,11 @@ public class AnnotatedCommand extends org.bukkit.command.Command
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
       if (!sender.hasPermission(permission)) {
-        return new Result(messagesProvider.notAllowed(context));
+        return new Result(manager.getMessagesProvider().notAllowed(context));
       }
     }
     try {
-      Object object = this.method.invoke(this.clazz, this.getObjects(context));
+      Object object = this.method.invoke(this.getObject(), this.getObjects(context));
       if (object instanceof Result) {
         return (Result) object;
       } else {
@@ -150,50 +123,29 @@ public class AnnotatedCommand extends org.bukkit.command.Command
   }
 
   @Override
-  public @NonNull IMessagesProvider<CommandContext> getMessagesProvider() {
-    return messagesProvider;
-  }
-
-  private boolean isAsynchronous() {
-    return commandSettings.containsFlag("-async", true)
-        || commandSettings.containsFlag("async", true);
-  }
-
-  @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return registry;
-  }
-
-  @Override
-  public @NonNull CommandSettings getCommandArguments() {
-    return this.commandSettings;
-  }
-
-  @Override
-  public boolean execute(
-      @NonNull CommandSender commandSender, @NonNull String s, @NonNull String[] strings) {
-    if (isAsynchronous()) {
-      Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> run(commandSender, strings));
-    } else {
-      run(commandSender, strings);
+  public boolean hasAlias(@NonNull String alias) {
+    if (this.getName().equalsIgnoreCase(alias)) return true;
+    for (String name : this.getAliases()) {
+      if (name.equalsIgnoreCase(alias)) return true;
     }
-    return true;
+    return false;
   }
 
   @Override
   public @NonNull List<String> tabComplete(
-      @NonNull CommandSender sender, @NonNull String alias, @NonNull String[] strings)
+      @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings)
       throws IllegalArgumentException {
-    CommandContext context = new CommandContext(sender, strings, messagesProvider, registry);
-    Argument<?> argument = this.getArgument(strings.length - 1);
+    CommandContext context =
+        new CommandContext(sender, strings, manager.getMessagesProvider(), manager.getRegistry());
+    SingleArgument<?> argument = this.getArgument(strings.length - 1);
     if (argument != null) {
       if (argument.getSuggestions(context).size() > 0) {
         return StringUtil.copyPartialMatches(
             strings[strings.length - 1], argument.getSuggestions(context), new ArrayList<>());
       } else {
-        List<IContextualProvider<?, CommandContext>> providers =
+        List<EasyContextualProvider<?, CommandContext>> providers =
             getRegistry().getProviders(argument.getClazz());
-        for (IContextualProvider<?, CommandContext> provider : providers) {
+        for (EasyContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BukkitArgumentProvider) {
             return StringUtil.copyPartialMatches(
                 strings[strings.length - 1],

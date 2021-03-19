@@ -8,13 +8,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.bukkit.utils.BukkitUtils;
-import me.googas.commands.result.IResult;
+import me.googas.commands.result.EasyResult;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /** The result that can be send by the execution of the command */
-public class Result implements IResult {
+public class Result implements EasyResult {
 
   @Getter @Setter @NonNull private List<BaseComponent> components = new ArrayList<>();
 

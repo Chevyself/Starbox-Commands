@@ -3,10 +3,10 @@ package me.googas.commands.bukkit.providers.type;
 import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.providers.type.IArgumentProvider;
+import me.googas.commands.providers.type.EasyArgumentProvider;
 
 /** It's a provider made for bukkit commands */
-public interface BukkitArgumentProvider<O> extends IArgumentProvider<O, CommandContext> {
+public interface BukkitArgumentProvider<O> extends EasyArgumentProvider<O, CommandContext> {
 
   /**
    * Get the suggestions for the command

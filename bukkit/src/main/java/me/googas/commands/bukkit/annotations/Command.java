@@ -30,4 +30,12 @@ public @interface Command {
    * @return the permission node of the command
    */
   String permission() default "";
+
+  /**
+   * Whether the command should be executed async. To know more about Asynchronization check <a
+   * href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   *
+   * @return whether to run the command asynchronously
+   */
+  boolean async() default false;
 }

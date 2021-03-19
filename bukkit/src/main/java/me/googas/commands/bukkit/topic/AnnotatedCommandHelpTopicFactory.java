@@ -15,7 +15,7 @@ public class AnnotatedCommandHelpTopicFactory implements HelpTopicFactory<Annota
   /**
    * Create the help topic factory
    *
-   * @param provider the messages provider to build the help topics
+   * @param provider the messages provider to format the help topics
    */
   public AnnotatedCommandHelpTopicFactory(@NonNull MessagesProvider provider) {
     this.provider = provider;

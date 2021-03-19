@@ -1,12 +1,13 @@
 package me.googas.commands.bukkit.messages;
 
 import lombok.NonNull;
-import me.googas.commands.arguments.Argument;
-import me.googas.commands.bukkit.AnnotatedCommand;
-import me.googas.commands.bukkit.ParentCommand;
+import me.googas.commands.arguments.SingleArgument;
+import me.googas.commands.bukkit.AnnotatedParentCommand;
+import me.googas.commands.bukkit.BukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.utility.Maps;
+import org.bukkit.command.Command;
 import org.bukkit.plugin.Plugin;
 
 /** The default messages provider for bukkit */
@@ -103,23 +104,23 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String helpTopicCommand(@NonNull AnnotatedCommand command) {
+  public @NonNull String helpTopicCommand(@NonNull BukkitCommand command) {
     return BukkitUtils.build("&7- &e" + command.getName());
   }
 
   @Override
-  public @NonNull String commandShortText(@NonNull AnnotatedCommand command) {
+  public @NonNull String commandShortText(@NonNull BukkitCommand command) {
     return command.getDescription();
   }
 
   @Override
-  public @NonNull String commandName(AnnotatedCommand command) {
+  public @NonNull String commandName(BukkitCommand command) {
     return "/" + command.getName();
   }
 
   @Override
   public @NonNull String parentCommandFull(
-      @NonNull ParentCommand command,
+      @NonNull AnnotatedParentCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
       @NonNull String buildArguments) {
@@ -134,34 +135,32 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String parentCommandShort(
-      @NonNull ParentCommand command, @NonNull String shortText) {
+      @NonNull AnnotatedParentCommand command, @NonNull String shortText) {
     return "(Parent) " + shortText;
   }
 
   @Override
   public @NonNull String commandFull(
-      @NonNull AnnotatedCommand command,
-      @NonNull String shortText,
-      @NonNull String buildArguments) {
+      @NonNull BukkitCommand command, @NonNull String shortText, @NonNull String buildArguments) {
     return shortText + "\n Permission: " + command.getPermission() + "\n Usage: " + buildArguments;
   }
 
   @Override
   public @NonNull String childCommandName(
-      @NonNull AnnotatedCommand command, @NonNull ParentCommand parent) {
+      @NonNull BukkitCommand command, @NonNull AnnotatedParentCommand parent) {
     return "/" + parent.getName() + "." + command.getName();
   }
 
   @Override
   public @NonNull String childCommandShort(
-      @NonNull AnnotatedCommand command, @NonNull ParentCommand parent) {
+      @NonNull BukkitCommand command, @NonNull AnnotatedParentCommand parent) {
     return command.getDescription();
   }
 
   @Override
   public @NonNull String childCommandFull(
-      @NonNull AnnotatedCommand command,
-      @NonNull ParentCommand parent,
+      @NonNull BukkitCommand command,
+      @NonNull AnnotatedParentCommand parent,
       @NonNull String shortText,
       @NonNull String buildArguments) {
     return shortText
@@ -174,18 +173,18 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String requiredArgumentHelp(@NonNull Argument<?> argument) {
+  public @NonNull String requiredArgumentHelp(@NonNull SingleArgument<?> argument) {
     return "- <" + argument.getName() + "> " + argument.getDescription() + "\n";
   }
 
   @Override
-  public @NonNull String optionalArgumentHelp(@NonNull Argument<?> argument) {
+  public @NonNull String optionalArgumentHelp(@NonNull SingleArgument<?> argument) {
     return "- (" + argument.getName() + ") " + argument.getDescription() + "\n";
   }
 
   @Override
   public @NonNull String childCommand(
-      @NonNull AnnotatedCommand command, @NonNull ParentCommand parent) {
+      @NonNull BukkitCommand command, @NonNull AnnotatedParentCommand parent) {
     return "- " + command.getName();
   }
 
