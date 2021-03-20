@@ -20,7 +20,8 @@ import me.googas.commands.result.EasyResult;
  * A reflect command is a command that is parsed using Java reflection. That's why this includes
  * methods as {@link #getMethod} or {@link #getObject}
  */
-public interface ReflectCommand<C extends EasyCommandContext> extends EasyCommand<C> {
+public interface ReflectCommand<C extends EasyCommandContext, T extends EasyCommand<C, T>>
+    extends EasyCommand<C, T> {
 
   /**
    * Get the string that will be used to get the object to pass to the command method as a parameter

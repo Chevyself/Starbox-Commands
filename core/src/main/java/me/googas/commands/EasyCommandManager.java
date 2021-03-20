@@ -15,7 +15,7 @@ import me.googas.commands.context.EasyCommandContext;
  * @param <C> the type of command context that is used to run the commands
  * @param <T> the type of command that this instance manages
  */
-public interface EasyCommandManager<C extends EasyCommandContext, T extends EasyCommand<C>> {
+public interface EasyCommandManager<C extends EasyCommandContext, T extends EasyCommand<C, T>> {
 
   /**
    * Register a new command into the manager. Any command that implements the type T can be
@@ -37,7 +37,7 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * @return the collection of parsed commands.
    */
   @NonNull
-  Collection<ReflectCommand<C>> parseCommands(@NonNull Object object);
+  Collection<ReflectCommand<C, T>> parseCommands(@NonNull Object object);
 
   /**
    * Parse a reflective command using the method where it will be executed and the method instance
@@ -50,7 +50,7 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * @return the parsed command
    */
   @NonNull
-  ReflectCommand<C> parseCommand(@NonNull Object object, @NonNull Method method);
+  ReflectCommand<C, T> parseCommand(@NonNull Object object, @NonNull Method method);
 
   /**
    * Get all the {@link EasyCommand} that are registered in this instance. This will contain all the
