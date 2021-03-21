@@ -1,6 +1,7 @@
 package me.googas.commands;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import lombok.NonNull;
 import me.googas.commands.context.EasyCommandContext;
@@ -37,7 +38,7 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * @return the collection of parsed commands.
    */
   @NonNull
-  Collection<ReflectCommand<C, T>> parseCommands(@NonNull Object object);
+  Collection<? extends ReflectCommand<C, T>> parseCommands(@NonNull Object object);
 
   /**
    * Parse a reflective command using the method where it will be executed and the method instance
@@ -51,6 +52,32 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    */
   @NonNull
   ReflectCommand<C, T> parseCommand(@NonNull Object object, @NonNull Method method);
+
+  /**
+   * Registers the collection of commands. This will call {@link #register(EasyCommand)} on loop
+   *
+   * @param commands the commands to be registered
+   * @return this same command manager instance to allow chain method calls
+   */
+  @NonNull
+  default EasyCommandManager<C, T> registerAll(@NonNull Collection<? extends T> commands) {
+    for (T command : commands) {
+      this.register(command);
+    }
+    return this;
+  }
+
+  /**
+   * Registers the collection of commands. This will call {@link #registerAll(Collection)}
+   *
+   * @see #register(EasyCommand)
+   * @param commands the commands to be registered
+   * @return this same command manager instance to allow chain method calls
+   */
+  @NonNull
+  default EasyCommandManager<C, T> registerAll(@NonNull T... commands) {
+    return this.registerAll(Arrays.asList(commands));
+  }
 
   /**
    * Get all the {@link EasyCommand} that are registered in this instance. This will contain all the
