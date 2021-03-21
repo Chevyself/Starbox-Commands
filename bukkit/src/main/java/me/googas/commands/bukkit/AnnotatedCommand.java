@@ -57,62 +57,11 @@ public class AnnotatedCommand extends BukkitCommand
     }
   }
 
-  @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return manager.getRegistry();
-  }
-
-  @Override
-  public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
-    return manager.getMessagesProvider();
-  }
-
-  @Override
-  public Result execute(@NonNull CommandContext context) {
-    CommandSender sender = context.getSender();
-    final String permission = this.getPermission();
-    if (permission != null && !permission.isEmpty()) {
-      if (!sender.hasPermission(permission)) {
-        return new Result(manager.getMessagesProvider().notAllowed(context));
-      }
-    }
-    try {
-      Object object = this.method.invoke(this.getObject(), this.getObjects(context));
-      if (object instanceof Result) {
-        return (Result) object;
-      } else {
-        return null;
-      }
-    } catch (final IllegalAccessException e) {
-      e.printStackTrace();
-      return new Result("&cIllegalAccessException, e");
-    } catch (final InvocationTargetException e) {
-      e.printStackTrace();
-
-      final String message = e.getMessage();
-      if (message != null && !message.isEmpty()) {
-        return new Result("&c{0}");
-      } else {
-        return new Result("&cInvocationTargetException, e");
-      }
-    } catch (MissingArgumentException | ArgumentProviderException e) {
-      return new Result(e.getMessage());
-    }
-  }
-
-  @Override
-  public boolean hasAlias(@NonNull String alias) {
-    if (this.getName().equalsIgnoreCase(alias)) return true;
-    for (String name : this.getAliases()) {
-      if (name.equalsIgnoreCase(alias)) return true;
-    }
-    return false;
-  }
-
   public @NonNull List<String> reflectTabComplete(
       @NonNull CommandSender sender, @NonNull String[] strings) {
     CommandContext context =
-        new CommandContext(sender, strings, manager.getMessagesProvider(), manager.getRegistry());
+        new CommandContext(
+            sender, strings, manager.getMessagesProvider(), manager.getProvidersRegistry());
     SingleArgument<?> argument = this.getArgument(strings.length - 1);
     if (argument != null) {
       if (argument.getSuggestions(context).size() > 0) {
@@ -139,6 +88,57 @@ public class AnnotatedCommand extends BukkitCommand
       }
     } else {
       return new ArrayList<>();
+    }
+  }
+
+  @Override
+  public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
+    return manager.getMessagesProvider();
+  }
+
+  @Override
+  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+    return manager.getProvidersRegistry();
+  }
+
+  @Override
+  public boolean hasAlias(@NonNull String alias) {
+    if (this.getName().equalsIgnoreCase(alias)) return true;
+    for (String name : this.getAliases()) {
+      if (name.equalsIgnoreCase(alias)) return true;
+    }
+    return false;
+  }
+
+  @Override
+  public Result execute(@NonNull CommandContext context) {
+    CommandSender sender = context.getSender();
+    final String permission = this.getPermission();
+    if (permission != null && !permission.isEmpty()) {
+      if (!sender.hasPermission(permission)) {
+        return new Result(manager.getMessagesProvider().notAllowed(context));
+      }
+    }
+    try {
+      Object object = this.method.invoke(this.getObject(), this.getObjects(context));
+      if (object instanceof Result) {
+        return (Result) object;
+      } else {
+        return null;
+      }
+    } catch (final IllegalAccessException e) {
+      e.printStackTrace();
+      return new Result("&cIllegalAccessException, e");
+    } catch (final InvocationTargetException e) {
+      final String message = e.getMessage();
+      if (message != null && !message.isEmpty()) {
+        return new Result("&c{0}");
+      } else {
+        e.printStackTrace();
+        return new Result("&cInvocationTargetException, e");
+      }
+    } catch (MissingArgumentException | ArgumentProviderException e) {
+      return new Result(e.getMessage());
     }
   }
 

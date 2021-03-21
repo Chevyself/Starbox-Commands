@@ -15,8 +15,8 @@ public class BungeeUtils {
    * Build a message and give it colors
    *
    * @param string the message to format
-   * @param placeholders the placeholders of the message. See {@link Strings#format(String)} (String,
-   *     HashMap)}
+   * @param placeholders the placeholders of the message. See {@link Strings#format(String)}
+   *     (String, HashMap)}
    * @return the built message
    */
   @NonNull

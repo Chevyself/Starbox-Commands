@@ -8,4 +8,5 @@ import me.googas.commands.providers.type.EasyExtraArgumentProvider;
  *
  * @param <T> the type of object to provide
  */
-public interface BungeeExtraArgumentProvider<T> extends EasyExtraArgumentProvider<T, CommandContext> {}
+public interface BungeeExtraArgumentProvider<T>
+    extends EasyExtraArgumentProvider<T, CommandContext> {}

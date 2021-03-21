@@ -42,7 +42,8 @@ public abstract class BukkitCommand extends Command
   public void run(@NonNull CommandSender sender, @NonNull String[] args) {
     Result result =
         this.execute(
-            new CommandContext(sender, args, manager.getMessagesProvider(), manager.getRegistry()));
+            new CommandContext(
+                sender, args, manager.getMessagesProvider(), manager.getProvidersRegistry()));
     if (result != null) {
       for (BaseComponent component : result.getComponents()) {
         sender.sendMessage(component.toLegacyText());

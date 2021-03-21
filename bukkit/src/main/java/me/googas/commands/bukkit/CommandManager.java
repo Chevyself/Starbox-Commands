@@ -73,7 +73,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
   }
 
   @NonNull @Getter private final Plugin plugin;
-  @NonNull @Getter private final ProvidersRegistry<CommandContext> registry;
+  @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final List<BukkitCommand> commands;
 
@@ -82,19 +82,19 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
    *
    * @param plugin the plugin that is related to the commands and other Bukkit actions such as
    *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
-   * @param registry the providers registry to provide the array of {@link Object} to invoke {@link
-   *     AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
    * @param messagesProvider the messages provider for important messages and {@link
    *     org.bukkit.help.HelpTopic} of commands and the "plugin"
    * @param commands the list that will keep track of all the registered commands
    */
   public CommandManager(
       @NonNull Plugin plugin,
-      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull ProvidersRegistry<CommandContext> providersRegistry,
       @NonNull MessagesProvider messagesProvider,
       @NonNull List<BukkitCommand> commands) {
     this.plugin = plugin;
-    this.registry = registry;
+    this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
     this.commands = commands;
   }
@@ -104,16 +104,16 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
    *
    * @param plugin the plugin that is related to the commands and other Bukkit actions such as
    *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
-   * @param registry the providers registry to provide the array of {@link Object} to invoke {@link
-   *     AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
    * @param messagesProvider the messages provider for important messages and {@link
    *     org.bukkit.help.HelpTopic} of commands and the "plugin"
    */
   public CommandManager(
       @NonNull Plugin plugin,
-      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull ProvidersRegistry<CommandContext> providersRegistry,
       @NonNull MessagesProvider messagesProvider) {
-    this(plugin, registry, messagesProvider, new ArrayList<>());
+    this(plugin, providersRegistry, messagesProvider, new ArrayList<>());
   }
 
   /**
