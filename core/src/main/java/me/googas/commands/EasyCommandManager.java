@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import lombok.NonNull;
 import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /**
  * This represents the object where {@link EasyCommand} are registered and queried for execution.
@@ -87,4 +89,20 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    */
   @NonNull
   Collection<T> getCommands();
+
+  /**
+   * Get the providers registry that this manager may use for {@link EasyCommandContext}
+   *
+   * @return the providers registry
+   */
+  @NonNull
+  ProvidersRegistry<C> getProvidersRegistry();
+
+  /**
+   * Get the messages provider that this manager may use for {@link EasyCommand} messages
+   *
+   * @return the messages provider
+   */
+  @NonNull
+  EasyMessagesProvider<C> getMessagesProvider();
 }
