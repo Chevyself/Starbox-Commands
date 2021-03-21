@@ -20,63 +20,41 @@ import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.EasyContextualProvider;
-import net.md_5.bungee.api.chat.BaseComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
-public class AnnotatedCommand extends BukkitCommand implements ReflectCommand<CommandContext> {
+public class AnnotatedCommand extends BukkitCommand
+    implements ReflectCommand<CommandContext, BukkitCommand> {
 
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
-  @NonNull @Getter private final CommandManager manager;
-  private final boolean async;
+  @NonNull @Getter private final List<BukkitCommand> children;
 
   public AnnotatedCommand(
       @NonNull Command command,
       @NonNull Method method,
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments,
-      @NonNull CommandManager manager) {
+      @NonNull CommandManager manager,
+      @NonNull List<BukkitCommand> children) {
     super(
         command.aliases()[0],
         command.description(),
         "",
         command.aliases().length > 1
             ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
-            : new ArrayList<>());
+            : new ArrayList<>(),
+        command.async(),
+        manager);
     this.method = method;
     this.object = object;
     this.arguments = arguments;
-    this.manager = manager;
-    this.async = command.async();
+    this.children = children;
     final String permission = command.permission();
     if (!permission.isEmpty()) {
       this.setPermission(permission);
     }
-  }
-
-  public void run(@NonNull CommandSender sender, @NonNull String[] args) {
-    Result result =
-        this.execute(
-            new CommandContext(sender, args, manager.getMessagesProvider(), manager.getRegistry()));
-    if (result != null) {
-      for (BaseComponent component : result.getComponents()) {
-        sender.sendMessage(component.toLegacyText());
-      }
-    }
-  }
-
-  @Override
-  public boolean execute(
-      @NonNull CommandSender sender, @NonNull String commandLabel, String @NonNull [] args) {
-    if (async) {
-      Bukkit.getScheduler().runTaskAsynchronously(manager.getPlugin(), () -> run(sender, args));
-    } else {
-      run(sender, args);
-    }
-    return true;
   }
 
   @Override
@@ -131,10 +109,8 @@ public class AnnotatedCommand extends BukkitCommand implements ReflectCommand<Co
     return false;
   }
 
-  @Override
-  public @NonNull List<String> tabComplete(
-      @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings)
-      throws IllegalArgumentException {
+  public @NonNull List<String> reflectTabComplete(
+      @NonNull CommandSender sender, @NonNull String[] strings) {
     CommandContext context =
         new CommandContext(sender, strings, manager.getMessagesProvider(), manager.getRegistry());
     SingleArgument<?> argument = this.getArgument(strings.length - 1);
@@ -163,6 +139,25 @@ public class AnnotatedCommand extends BukkitCommand implements ReflectCommand<Co
       }
     } else {
       return new ArrayList<>();
+    }
+  }
+
+  @Override
+  public @NonNull List<String> tabComplete(
+      @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings)
+      throws IllegalArgumentException {
+    if (strings.length == 1) {
+      return StringUtil.copyPartialMatches(
+          strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
+    } else if (strings.length >= 2) {
+      final BukkitCommand command = this.getChildren(strings[0]);
+      if (command != null) {
+        return command.tabComplete(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
+      } else {
+        return reflectTabComplete(sender, strings);
+      }
+    } else {
+      return reflectTabComplete(sender, strings);
     }
   }
 }

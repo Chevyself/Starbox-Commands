@@ -35,7 +35,7 @@ public @interface Command {
    * Whether the command should be executed async. To know more about Asynchronization check <a
    * href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
    *
-   * @return whether to run the command asynchronously
+   * @return true if the command has to run the command asynchronously
    */
   boolean async() default false;
 }

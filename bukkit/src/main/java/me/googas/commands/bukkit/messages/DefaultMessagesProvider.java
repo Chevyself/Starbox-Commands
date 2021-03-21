@@ -1,13 +1,10 @@
 package me.googas.commands.bukkit.messages;
 
 import lombok.NonNull;
-import me.googas.commands.arguments.SingleArgument;
-import me.googas.commands.bukkit.AnnotatedParentCommand;
 import me.googas.commands.bukkit.BukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.utility.Maps;
-import org.bukkit.command.Command;
 import org.bukkit.plugin.Plugin;
 
 /** The default messages provider for bukkit */
@@ -120,7 +117,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String parentCommandFull(
-      @NonNull AnnotatedParentCommand command,
+      @NonNull BukkitCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
       @NonNull String buildArguments) {
@@ -135,32 +132,26 @@ public class DefaultMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String parentCommandShort(
-      @NonNull AnnotatedParentCommand command, @NonNull String shortText) {
+      @NonNull BukkitCommand command, @NonNull String shortText) {
     return "(Parent) " + shortText;
   }
 
   @Override
-  public @NonNull String commandFull(
-      @NonNull BukkitCommand command, @NonNull String shortText, @NonNull String buildArguments) {
-    return shortText + "\n Permission: " + command.getPermission() + "\n Usage: " + buildArguments;
-  }
-
-  @Override
   public @NonNull String childCommandName(
-      @NonNull BukkitCommand command, @NonNull AnnotatedParentCommand parent) {
+      @NonNull BukkitCommand command, @NonNull BukkitCommand parent) {
     return "/" + parent.getName() + "." + command.getName();
   }
 
   @Override
   public @NonNull String childCommandShort(
-      @NonNull BukkitCommand command, @NonNull AnnotatedParentCommand parent) {
+      @NonNull BukkitCommand command, @NonNull BukkitCommand parent) {
     return command.getDescription();
   }
 
   @Override
   public @NonNull String childCommandFull(
       @NonNull BukkitCommand command,
-      @NonNull AnnotatedParentCommand parent,
+      @NonNull BukkitCommand parent,
       @NonNull String shortText,
       @NonNull String buildArguments) {
     return shortText
@@ -173,18 +164,8 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String requiredArgumentHelp(@NonNull SingleArgument<?> argument) {
-    return "- <" + argument.getName() + "> " + argument.getDescription() + "\n";
-  }
-
-  @Override
-  public @NonNull String optionalArgumentHelp(@NonNull SingleArgument<?> argument) {
-    return "- (" + argument.getName() + ") " + argument.getDescription() + "\n";
-  }
-
-  @Override
   public @NonNull String childCommand(
-      @NonNull BukkitCommand command, @NonNull AnnotatedParentCommand parent) {
+      @NonNull BukkitCommand command, @NonNull BukkitCommand parent) {
     return "- " + command.getName();
   }
 

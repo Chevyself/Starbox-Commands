@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.EasyCommandManager;
-import me.googas.commands.ReflectCommand;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.bukkit.annotations.Command;
@@ -63,29 +62,31 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
     CommandManager.helpMap.addTopic(new PluginHelpTopic(this.plugin, this, this.messagesProvider));
   }
 
+  @NonNull
   @Override
-  public void register(@NonNull BukkitCommand command) {
+  public CommandManager register(@NonNull BukkitCommand command) {
     commandMap.register(this.plugin.getName(), command);
     this.commands.add(command);
+    return this;
   }
 
   @Override
-  public @NonNull Collection<ReflectCommand<CommandContext>> parseCommands(@NonNull Object object) {
-    List<ReflectCommand<CommandContext>> commands = new ArrayList<>();
-    AnnotatedParentCommand parent = null;
+  public @NonNull Collection<AnnotatedCommand> parseCommands(@NonNull Object object) {
+    List<AnnotatedCommand> commands = new ArrayList<>();
+    AnnotatedCommand parent = null;
     final Class<?> clazz = object.getClass();
     for (final Method method : clazz.getDeclaredMethods()) {
       if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        parent = (AnnotatedParentCommand) this.parseCommand(object, method);
+        parent = this.parseCommand(object, method);
         commands.add(parent);
         break;
       }
     }
     for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Command.class)) {
+      if (method.isAnnotationPresent(Command.class) && !method.isAnnotationPresent(Parent.class)) {
         final AnnotatedCommand cmd = this.parseCommand(object, method);
         if (parent != null) {
-          parent.addCommand(cmd);
+          parent.addChildren(cmd);
         } else {
           commands.add(cmd);
         }
@@ -96,26 +97,20 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
 
   @Override
   public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
-    if (method.getReturnType() != Result.class || !method.getReturnType().equals(Void.TYPE))
+    if (!Result.class.isAssignableFrom(method.getReturnType())
+        || !Result.class.isAssignableFrom(method.getReturnType())
+            && !method.getReturnType().equals(Void.TYPE)) {
       throw new IllegalArgumentException(method + " must return void or " + Result.class);
+    }
     if (!method.isAnnotationPresent(Command.class))
       throw new IllegalArgumentException(method + " is not annotated with " + Command.class);
     Command command = method.getAnnotation(Command.class);
-    if (method.isAnnotationPresent(Parent.class)) {
-      return new AnnotatedParentCommand(
-          command,
-          method,
-          object,
-          Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations()),
-          this,
-          new ArrayList<>());
-    } else {
-      return new AnnotatedCommand(
-          command,
-          method,
-          object,
-          Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations()),
-          this);
-    }
+    return new AnnotatedCommand(
+        command,
+        method,
+        object,
+        Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations()),
+        this,
+        new ArrayList<>());
   }
 }
