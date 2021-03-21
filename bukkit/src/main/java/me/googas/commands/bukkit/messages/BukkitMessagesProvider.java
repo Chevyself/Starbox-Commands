@@ -8,7 +8,7 @@ import me.googas.commands.utility.Maps;
 import org.bukkit.plugin.Plugin;
 
 /** The default messages provider for bukkit */
-public class DefaultMessagesProvider implements MessagesProvider {
+public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {

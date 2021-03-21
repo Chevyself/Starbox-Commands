@@ -11,30 +11,64 @@ import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
+import me.googas.commands.bukkit.messages.BukkitMessagesProvider;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.bukkit.topic.PluginHelpTopic;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.exceptions.CommandRegistrationException;
 import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.providers.type.EasyContextualProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.help.HelpMap;
 import org.bukkit.plugin.Plugin;
 
-/** TODO documentation */
+/**
+ * This manager is used for registering commands inside the {@link CommandMap} which makes them work
+ * in any Bukkit server.
+ *
+ * <p>The easiest way to create commands is using reflection with the method {@link
+ * #parseCommands(Object)} those parsed commands can be later registered in the {@link CommandMap}
+ * using {@link #registerAll(Collection)}.
+ *
+ * <p>To create a {@link CommandManager} instance you simply need the {@link Plugin} which will be
+ * related to the commands, a {@link ProvidersRegistry} you can use {@link
+ * me.googas.commands.bukkit.providers.registry.BukkitProvidersRegistry} which includes some
+ * providers that are intended for Bukkit use you can even extend it to add more in the constructor
+ * or use {@link ProvidersRegistry#addProvider(EasyContextualProvider)}, you also ned a {@link
+ * MessagesProvider} which is mostly used to display error commands or create the {@link
+ * org.bukkit.help.HelpTopic} for the commands registered in this manager to be added inside the
+ * built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}.
+ * Finally, you need a list which will keep track of all the registered commands:
+ *
+ * <pre>
+ * CommandManager manager =
+ *         new CommandManager(
+ *             this, new BukkitProvidersRegistry(), new BukkitMessagesProvider(), new ArrayList<>());
+ * </pre>
+ *
+ * You can learn more about it in {@link me.googas.commands.bukkit.plugin.EasyCommandsBukkit} which
+ * is the main class for the easy-commands Bukkit plugin.
+ */
 public class CommandManager implements EasyCommandManager<CommandContext, BukkitCommand> {
 
-  /** The bukkit help map */
+  /**
+   * The Bukkit HelpMap which is used to register the {@link org.bukkit.help.HelpTopic} for the
+   * {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link BukkitCommand}
+   */
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
-  /** The bukkit command map */
+  /**
+   * This is the {@link CommandMap} which contains all the registered commands and it is obtained
+   * using reflection thru the method {@link BukkitUtils#getCommandMap()}
+   */
   @NonNull private static final CommandMap commandMap;
 
   static {
     try {
       commandMap = BukkitUtils.getCommandMap();
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      throw new CommandRegistrationException("Command Map could not be accessed");
+      throw new CommandRegistrationException("CommandMap could not be accessed");
     }
   }
 
@@ -43,6 +77,17 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final List<BukkitCommand> commands;
 
+  /**
+   * Create an instance
+   *
+   * @param plugin the plugin that is related to the commands and other Bukkit actions such as
+   *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
+   * @param registry the providers registry to provide the array of {@link Object} to invoke {@link
+   *     AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   * @param messagesProvider the messages provider for important messages and {@link
+   *     org.bukkit.help.HelpTopic} of commands and the "plugin"
+   * @param commands the list that will keep track of all the registered commands
+   */
   public CommandManager(
       @NonNull Plugin plugin,
       @NonNull ProvidersRegistry<CommandContext> registry,
@@ -55,8 +100,25 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
   }
 
   /**
-   * Registers the plugin used for the {@link CommandManager} into the {@link HelpMap} (/help) do
-   * this after you've registered all your commands so they can be shown
+   * Create an instance with an empty {@link ArrayList}
+   *
+   * @param plugin the plugin that is related to the commands and other Bukkit actions such as
+   *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
+   * @param registry the providers registry to provide the array of {@link Object} to invoke {@link
+   *     AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   * @param messagesProvider the messages provider for important messages and {@link
+   *     org.bukkit.help.HelpTopic} of commands and the "plugin"
+   */
+  public CommandManager(
+      @NonNull Plugin plugin,
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull MessagesProvider messagesProvider) {
+    this(plugin, registry, messagesProvider, new ArrayList<>());
+  }
+
+  /**
+   * Registers {@link #plugin} inside the {@link HelpMap} you can learn more about this in {@link
+   * PluginHelpTopic} but basically this will make possible to do: "/help [plugin-name]"
    */
   public void registerPlugin() {
     CommandManager.helpMap.addTopic(new PluginHelpTopic(this.plugin, this, this.messagesProvider));
