@@ -14,6 +14,26 @@ import me.googas.commands.time.Time;
 public interface EasyUnit extends TemporalUnit {
 
   /**
+   * Get the duration of this unit in the given millis.
+   *
+   * This means that if the millis is 1000 and the unit is seconds the duration will be 1
+   *
+   * More examples:
+   *
+   * <ul>
+   *     <li>172,800,000 + DAYS = 2 Days</li>
+   *     <li>1,814,400,000 + WEEKS = 3 Weeks</li>
+   *     <li>1,800,000 + HOUR = 0.5 hours</li>
+   * </ul>
+   *
+   * @param millis the millis to get the duration of the unit
+   * @return the duration of the unit given the millis
+   */
+  default double getDuration(double millis){
+    return millis / this.getMillis();
+  }
+
+  /**
    * Get a single character which may be used to represent the unit such as:
    *
    * <ul>
@@ -56,7 +76,7 @@ public interface EasyUnit extends TemporalUnit {
    * @return the duration in millis
    */
   default double getMillis(double value) {
-    return value / this.getMillis();
+    return value * this.getMillis();
   }
 
   /**

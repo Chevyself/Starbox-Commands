@@ -20,6 +20,7 @@ public class HhMmSsFormatter implements TimeFormatter {
   @Override
   public @NonNull String format(@NonNull Time time) {
     long millis = Math.round(time.toMillis());
+    System.out.println("millis = " + millis);
     long secs = (millis / 1000) % 60;
     long minutes = (millis / (1000 * 60)) % 60;
     long hours = millis / (1000 * 60 * 60);

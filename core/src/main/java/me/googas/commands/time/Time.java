@@ -71,7 +71,7 @@ public class Time implements TemporalAmount {
     if (millis < 0) throw new IllegalArgumentException("millis must be higher than 0");
     if (effective) {
       Unit unit = Unit.fromMillis(millis);
-      return new Time(unit.getMillis(millis), unit);
+      return new Time(unit.getDuration(millis), unit);
     }
     return new Time(millis, Unit.MILLIS);
   }

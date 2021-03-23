@@ -1,6 +1,7 @@
 package me.googas.samples;
 
 import me.googas.commands.time.Time;
+import me.googas.commands.time.formatter.HhMmSsFormatter;
 import me.googas.commands.time.unit.Unit;
 
 public class TimeSamples {
