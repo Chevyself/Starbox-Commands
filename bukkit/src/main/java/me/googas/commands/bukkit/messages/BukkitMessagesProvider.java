@@ -12,27 +12,27 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + " &cis not a valid long");
+    return BukkitUtils.format("&e" + string + " &cis not a valid long");
   }
 
   @Override
   public @NonNull String invalidInteger(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + " &cis not a valid integer");
+    return BukkitUtils.format("&e" + string + " &cis not a valid integer");
   }
 
   @Override
   public @NonNull String invalidDouble(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + " &cis not a valid double");
+    return BukkitUtils.format("&e" + string + " &cis not a valid double");
   }
 
   @Override
   public @NonNull String invalidBoolean(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + " &cis not a valid boolean");
+    return BukkitUtils.format("&e" + string + " &cis not a valid boolean");
   }
 
   @Override
   public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + " &cis not valid time");
+    return BukkitUtils.format("&e" + string + " &cis not valid time");
   }
 
   @Override
@@ -41,7 +41,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext context) {
-    return BukkitUtils.build(
+    return BukkitUtils.format(
         "&cMissing argument: &e%name% &c-> &e%description%&c, position: &e%position%",
         Maps.builder("name", name)
             .append("description", description)
@@ -57,25 +57,25 @@ public class BukkitMessagesProvider implements MessagesProvider {
       int minSize,
       int missing,
       @NonNull CommandContext context) {
-    return BukkitUtils.build("&cYou are missing &e" + missing + " &cstrings in &e" + name);
+    return BukkitUtils.format("&cYou are missing &e" + missing + " &cstrings in &e" + name);
   }
 
   @NonNull
   @Override
   public String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + "  &cisn't online");
+    return BukkitUtils.format("&e" + string + "  &cisn't online");
   }
 
   @NonNull
   @Override
   public String playersOnly(@NonNull CommandContext context) {
-    return BukkitUtils.build("&cConsole cannot use this command");
+    return BukkitUtils.format("&cConsole cannot use this command");
   }
 
   @NonNull
   @Override
   public String notAllowed(@NonNull CommandContext context) {
-    return BukkitUtils.build("&cYou are not allowed to use this command");
+    return BukkitUtils.format("&cYou are not allowed to use this command");
   }
 
   @Override
@@ -86,7 +86,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String helpTopicFull(
       @NonNull String shortText, @NonNull String commands, @NonNull Plugin plugin) {
-    return BukkitUtils.build(
+    return BukkitUtils.format(
         "&7%short% \n &7Title: &e%name% \n &7Version: &e%version% \n &7Description: &e%description% \n &7Commands (use /help <command>): &e%commands%",
         Maps.builder("short", shortText)
             .append("name", plugin.getName())
@@ -102,7 +102,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String helpTopicCommand(@NonNull BukkitCommand command) {
-    return BukkitUtils.build("&7- &e" + command.getName());
+    return BukkitUtils.format("&7- &e" + command.getName());
   }
 
   @Override
@@ -171,11 +171,11 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String invalidMaterialEmpty(@NonNull CommandContext context) {
-    return BukkitUtils.build("&cThe name of materials cannot be empty!");
+    return BukkitUtils.format("&cThe name of materials cannot be empty!");
   }
 
   @Override
   public @NonNull String invalidMaterial(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.build("&e" + string + " &cis not a valid material!");
+    return BukkitUtils.format("&e" + string + " &cis not a valid material!");
   }
 }

@@ -2,8 +2,8 @@ package me.googas.commands.bukkit.result;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -42,7 +42,7 @@ public class Result implements EasyResult {
    * @param text the text to send
    */
   public Result(@NonNull String text) {
-    this(new TextComponent(BukkitUtils.build(text)));
+    this(new TextComponent(BukkitUtils.format(text)));
   }
 
   /**
@@ -51,8 +51,8 @@ public class Result implements EasyResult {
    * @param text the text to send but has placeholders that will be changed using the map
    * @param map the map to change the placeholders
    */
-  public Result(@NonNull String text, @NonNull HashMap<String, String> map) {
-    this(BukkitUtils.build(text, map));
+  public Result(@NonNull String text, @NonNull Map<String, String> map) {
+    this(BukkitUtils.format(text, map));
   }
 
   @Override

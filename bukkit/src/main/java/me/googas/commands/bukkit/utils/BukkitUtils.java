@@ -1,7 +1,6 @@
 package me.googas.commands.bukkit.utils;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.NonNull;
 import me.googas.commands.utility.JsonUtils;
@@ -26,7 +25,7 @@ public class BukkitUtils {
    * @return the built message
    */
   @NonNull
-  public static String build(String string, @NonNull Map<String, String> placeholders) {
+  public static String format(String string, @NonNull Map<String, String> placeholders) {
     return ChatColor.translateAlternateColorCodes('&', Strings.format(string, placeholders));
   }
 
@@ -37,7 +36,7 @@ public class BukkitUtils {
    * @return the built message
    */
   @NonNull
-  public static String build(String string) {
+  public static String format(String string) {
     return ChatColor.translateAlternateColorCodes('&', Strings.format(string));
   }
 
@@ -49,8 +48,8 @@ public class BukkitUtils {
    * @return the built colored message
    */
   @NonNull
-  public static String getMessage(String message, Object... strings) {
-    return BukkitUtils.build(Strings.format(message, strings));
+  public static String format(String message, Object... strings) {
+    return BukkitUtils.format(Strings.format(message, strings));
   }
 
   /**
@@ -75,7 +74,7 @@ public class BukkitUtils {
   public static void dispatch(
       @NonNull CommandSender sender,
       @NonNull String command,
-      @NonNull HashMap<String, String> placeholders) {
+      @NonNull Map<String, String> placeholders) {
     dispatch(sender, Strings.format(command, placeholders));
   }
 
@@ -105,7 +104,7 @@ public class BukkitUtils {
    * @param command the command to send
    * @param placeholders the placeholders to change in the command line
    */
-  public static void dispatch(@NonNull String command, HashMap<String, String> placeholders) {
+  public static void dispatch(@NonNull String command, Map<String, String> placeholders) {
     dispatch(Strings.format(command, placeholders));
   }
 
