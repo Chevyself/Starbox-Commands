@@ -5,11 +5,11 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.jda.utils.embeds.EmbedQuery;
 import me.googas.commands.jda.utils.message.MessageQuery;
-import me.googas.commands.result.IResult;
+import me.googas.commands.result.EasyResult;
 import net.dv8tion.jda.api.entities.Message;
 
 /** This is your general type of result */
-public class Result implements IResult {
+public class Result implements EasyResult {
 
   /** The type of the result */
   @NonNull @Getter private final ResultType type;

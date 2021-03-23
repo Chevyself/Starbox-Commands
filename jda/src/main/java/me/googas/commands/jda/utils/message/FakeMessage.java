@@ -1,9 +1,9 @@
 package me.googas.commands.jda.utils.message;
 
 import java.lang.ref.SoftReference;
+import java.util.Objects;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
-import me.googas.commands.utility.Validate;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -25,7 +25,7 @@ public class FakeMessage implements Message {
   @NonNull
   @Delegate(excludes = Author.class)
   public Message validated() {
-    return Validate.notNull(message.get(), "Message reference has expired");
+    return Objects.requireNonNull(message.get(), "Message reference has expired");
   }
 
   @Override

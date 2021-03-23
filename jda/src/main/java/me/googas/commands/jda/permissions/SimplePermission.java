@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.Permission;
  * This object represents a permission which is created with {@link Command#node()} and {@link
  * Command#permission()}
  */
-public class SimplePermission implements JdaPermission {
+public class SimplePermission implements EasyPermission {
 
   /** @see Command#node() */
   @NonNull private final String node;

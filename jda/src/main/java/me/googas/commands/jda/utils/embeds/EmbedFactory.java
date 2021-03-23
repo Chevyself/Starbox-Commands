@@ -9,7 +9,6 @@ import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.utility.Validate;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -68,31 +67,31 @@ public class EmbedFactory {
       boolean inline) {
     EmbedBuilder builder = getEmbedBuilder();
     if (title != null) {
-      Validate.assertFalse(
+      assertFalse(
           title.length() >= MessageEmbed.TITLE_MAX_LENGTH,
           "Title cannot be longer than " + MessageEmbed.TITLE_MAX_LENGTH);
       builder.setTitle(title);
     }
     if (description != null) {
-      Validate.assertFalse(
+      assertFalse(
           description.length() >= MessageEmbed.TEXT_MAX_LENGTH,
           "Description cannot be longer than " + MessageEmbed.TEXT_MAX_LENGTH);
       builder.setDescription(description);
     }
     if (thumbnail != null && !thumbnail.isEmpty()) {
-      Validate.assertFalse(
+      assertFalse(
           thumbnail.length() >= MessageEmbed.URL_MAX_LENGTH,
           "URL cannot be longer than " + MessageEmbed.URL_MAX_LENGTH);
       builder.setThumbnail(thumbnail);
     }
     if (image != null) {
       builder.setImage(image);
-      Validate.assertFalse(
+      assertFalse(
           image.length() >= MessageEmbed.URL_MAX_LENGTH,
           "URL cannot be longer than " + MessageEmbed.URL_MAX_LENGTH);
     }
     if (footer != null) {
-      Validate.assertFalse(
+      assertFalse(
           footer.length() >= MessageEmbed.TEXT_MAX_LENGTH,
           "Footer cannot be longer than " + MessageEmbed.TEXT_MAX_LENGTH);
       builder.setFooter(footer);
@@ -101,26 +100,26 @@ public class EmbedFactory {
     if (fields != null) {
       fields.forEach(
           (key, value) -> {
-            Validate.assertFalse(
+            assertFalse(
                 key.length() >= MessageEmbed.TITLE_MAX_LENGTH,
                 key + " cannot be longer than " + MessageEmbed.TITLE_MAX_LENGTH);
-            Validate.assertFalse(
+            assertFalse(
                 value.length() >= MessageEmbed.VALUE_MAX_LENGTH,
                 value + " cannot be longer than " + MessageEmbed.VALUE_MAX_LENGTH);
-            if (value.isEmpty()) {
-              builder.addBlankField(inline);
-            } else {
-              builder.addField(key, value, inline);
-            }
+            builder.addField(key, value, inline);
           });
     }
-    Validate.assertFalse(
+    assertFalse(
         builder.length() >= MessageEmbed.EMBED_MAX_LENGTH_BOT,
         "This embed is too big! Max: "
             + MessageEmbed.EMBED_MAX_LENGTH_BOT
             + " characters and it has "
             + embedBuilder.length());
     return new EmbedQuery(embedBuilder);
+  }
+
+  private static void assertFalse(boolean toAssert, @NonNull String message) {
+    if (!toAssert) throw new IllegalArgumentException(message);
   }
 
   /**

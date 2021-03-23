@@ -56,7 +56,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String response(
       @NonNull String title, @NonNull String message, CommandContext context) {
-    return Strings.build("{0} -> {1}", title, message);
+    return Strings.format("{0} -> {1}", title, message);
   }
 
   @Override
@@ -75,7 +75,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext commandContext) {
-    return Strings.build(
+    return Strings.format(
         "Missing argument: {0} -> {1}, position: {2}", name, description, position);
   }
 

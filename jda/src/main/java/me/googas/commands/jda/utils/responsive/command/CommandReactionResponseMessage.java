@@ -1,14 +1,14 @@
 package me.googas.commands.jda.utils.responsive.command;
 
+import java.util.Objects;
 import lombok.NonNull;
-import me.googas.commands.jda.AnnotatedCommand;
 import me.googas.commands.jda.CommandManager;
+import me.googas.commands.jda.EasyJdaCommand;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
 import me.googas.commands.jda.utils.responsive.ReactionResponse;
-import me.googas.commands.utility.Validate;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
@@ -34,8 +34,8 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
   CommandManager getCommandManager();
 
   @NonNull
-  default AnnotatedCommand getCommand() {
-    return Validate.notNull(
+  default EasyJdaCommand getCommand() {
+    return Objects.requireNonNull(
         getCommandManager().getCommand(this.getCommandName()),
         "The command " + this.getCommandName() + " seems to not be registered");
   }
@@ -54,7 +54,7 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
             event.getChannel(),
             null,
             manager.getMessagesProvider(),
-            manager.getRegistry(),
+            manager.getProvidersRegistry(),
             name);
     Result result = this.getCommand().execute(context);
     if (result != null) {

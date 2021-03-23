@@ -14,7 +14,7 @@ public class CooldownUser {
   /**
    * Create an instance
    *
-   * @param toRemove the time to remove the user from the cooldown in millis
+   * @param toRemove the time to remove the user from the cooldown in getMillis
    * @param id the id of the user
    */
   public CooldownUser(long toRemove, long id) {

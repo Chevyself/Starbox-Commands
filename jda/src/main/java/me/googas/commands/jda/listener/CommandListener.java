@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import me.googas.commands.jda.AnnotatedCommand;
 import me.googas.commands.jda.CommandManager;
+import me.googas.commands.jda.EasyJdaCommand;
 import me.googas.commands.jda.ManagerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
@@ -75,7 +75,7 @@ public class CommandListener implements EventListener {
       event.getMessage().delete().queue();
     }
     commandName = commandName.substring(prefix.length());
-    AnnotatedCommand command = manager.getCommand(commandName);
+    EasyJdaCommand command = manager.getCommand(commandName);
     CommandContext context =
         getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = getResult(command, commandName, context);
@@ -127,7 +127,7 @@ public class CommandListener implements EventListener {
       } else {
         if (result.getMessage() != null) {
           return MessagesFactory.fromString(
-                  Strings.build(
+                  Strings.format(
                       messagesProvider.response(
                           result.getType().getTitle(messagesProvider, context),
                           result.getMessage(),
@@ -152,7 +152,7 @@ public class CommandListener implements EventListener {
    * @return the result of the command execution
    */
   private Result getResult(
-      AnnotatedCommand command, @NonNull String commandName, CommandContext context) {
+      EasyJdaCommand command, @NonNull String commandName, CommandContext context) {
     if (command != null) {
       return command.execute(context);
     } else {
@@ -180,7 +180,7 @@ public class CommandListener implements EventListener {
           event.getChannel(),
           event,
           messagesProvider,
-          manager.getRegistry(),
+          manager.getProvidersRegistry(),
           commandName);
     } else {
       return new CommandContext(
@@ -189,7 +189,7 @@ public class CommandListener implements EventListener {
           strings,
           event.getChannel(),
           messagesProvider,
-          manager.getRegistry(),
+          manager.getProvidersRegistry(),
           commandName);
     }
   }

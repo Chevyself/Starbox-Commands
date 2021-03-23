@@ -1,11 +1,11 @@
 package me.googas.commands.jda.providers;
 
 import lombok.NonNull;
-import me.googas.commands.ICommandManager;
+import me.googas.commands.EasyCommandManager;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 
-/** Provides the {@link ICommandManager} with a {@link CommandContext} */
+/** Provides the {@link EasyCommandManager} with a {@link CommandContext} */
 public class CommandContextProvider implements JdaExtraArgumentProvider<CommandContext> {
 
   @NonNull
