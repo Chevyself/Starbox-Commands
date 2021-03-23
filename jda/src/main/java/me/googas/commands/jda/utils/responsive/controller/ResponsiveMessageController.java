@@ -1,10 +1,10 @@
 package me.googas.commands.jda.utils.responsive.controller;
 
-import me.googas.commands.jda.utils.responsive.ReactionResponse;
-import me.googas.commands.jda.utils.responsive.ResponsiveMessage;
 import java.util.Collection;
 import java.util.Set;
 import lombok.NonNull;
+import me.googas.commands.jda.utils.responsive.ReactionResponse;
+import me.googas.commands.jda.utils.responsive.ResponsiveMessage;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;

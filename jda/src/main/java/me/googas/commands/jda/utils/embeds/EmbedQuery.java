@@ -1,14 +1,14 @@
 package me.googas.commands.jda.utils.embeds;
 
-import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.utils.Chat;
-import me.googas.commands.jda.utils.message.MessageQuery;
-import me.googas.commands.jda.utils.message.MessagesFactory;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
-import me.googas.commons.builder.Builder;
+import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.utils.Chat;
+import me.googas.commands.jda.utils.message.MessageQuery;
+import me.googas.commands.jda.utils.message.MessagesFactory;
+import me.googas.commands.utility.Builder;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;

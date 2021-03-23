@@ -1,138 +1,74 @@
 package me.googas.commands.bungee;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import lombok.Getter;
+import lombok.NonNull;
+import me.googas.commands.ReflectCommand;
+import me.googas.commands.arguments.Argument;
+import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
 import me.googas.commands.bungee.providers.type.BungeeMultiArgumentProvider;
 import me.googas.commands.bungee.result.Result;
-import me.googas.commands.ICommandArray;
-import me.googas.commands.arguments.Argument;
-import me.googas.commands.arguments.ISimpleArgument;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.messages.IMessagesProvider;
-import me.googas.commands.objects.CommandSettings;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.IContextualProvider;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Getter;
-import lombok.NonNull;
-import me.googas.commons.Lots;
-import me.googas.commons.Strings;
+import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.commands.utility.Strings;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.plugin.TabExecutor;
 
 /** The annotated command for bungee */
-public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
-    implements ICommandArray<CommandContext>, TabExecutor {
+public class AnnotatedCommand extends BungeeCommand
+    implements ReflectCommand<CommandContext, BungeeCommand> {
 
-  @NonNull protected final MessagesProvider messagesProvider;
   /** The plugin where this command was registered */
   @NonNull @Getter protected final Plugin plugin;
 
-  @NonNull private final Object clazz;
+  @NonNull private final Object object;
   @NonNull private final Method method;
-  @NonNull private final List<ISimpleArgument<?>> arguments;
-  @NonNull private final ProvidersRegistry<CommandContext> registry;
-  @NonNull private final CommandSettings settings;
+  @NonNull private final List<Argument<?>> arguments;
 
-  /**
-   * Create an instance
-   *
-   * @param clazz the object to invoke the command
-   * @param method the method that needs to be invoked for the command
-   * @param arguments the arguments to get the parameters for the command
-   * @param command the annotation of the command to get the parameters
-   * @param messagesProvider the messages provider
-   * @param plugin the plugin where this command was registered
-   * @param registry the registry for commands
-   * @param settings the settings of the command
-   */
   public AnnotatedCommand(
-      @NonNull Object clazz,
-      @NonNull Method method,
-      @NonNull List<ISimpleArgument<?>> arguments,
-      @NonNull Command command,
-      @NonNull MessagesProvider messagesProvider,
+      Command command,
+      @NonNull List<BungeeCommand> children,
+      @NonNull CommandManager manager,
       @NonNull Plugin plugin,
-      @NonNull ProvidersRegistry<CommandContext> registry,
-      @NonNull CommandSettings settings) {
+      @NonNull Object object,
+      @NonNull Method method,
+      @NonNull List<Argument<?>> arguments) {
     super(
         command.aliases()[0],
         command.permission().isEmpty() ? null : command.permission(),
-        Lots.remove(command.aliases(), 0));
-    this.clazz = clazz;
+        children,
+        manager,
+        command.async(),
+        Arrays.copyOfRange(command.aliases(), 1, command.aliases().length));
+    this.plugin = plugin;
+    this.object = object;
     this.method = method;
     this.arguments = arguments;
-    this.messagesProvider = messagesProvider;
-    this.plugin = plugin;
-    this.registry = registry;
-    this.settings = settings;
   }
 
-  /**
-   * Run the command
-   *
-   * @param sender the sender of the command
-   * @param strings the arguments of the command
-   */
-  private void run(CommandSender sender, String[] strings) {
-    Result result = this.execute(new CommandContext(sender, strings, messagesProvider, registry));
-    if (result != null) {
-      for (BaseComponent component : result.getComponents()) {
-        sender.sendMessage(component);
-      }
-    }
-  }
-
-  @Override
-  public Result execute(@NonNull CommandContext context) {
-    CommandSender sender = context.getSender();
-    final String permission = this.getPermission();
-    if (permission != null && !permission.isEmpty()) {
-      if (!sender.hasPermission(permission)) {
-        return new Result(messagesProvider.notAllowed(context));
-      }
-    }
-    try {
-      Object invoke = this.method.invoke(this.clazz, getObjects(context));
-      if (invoke instanceof Result) {
-        return (Result) invoke;
-      }
-      return null;
-    } catch (final IllegalAccessException e) {
-      e.printStackTrace();
-      return new Result("&cIllegalAccessException, e");
-    } catch (final InvocationTargetException e) {
-      e.printStackTrace();
-      final String message = e.getMessage();
-      if (message != null && !message.isEmpty()) {
-        return new Result(e.getMessage());
-      } else {
-        return new Result("&cInvocationTargetException, e");
-      }
-    } catch (MissingArgumentException | ArgumentProviderException e) {
-      return new Result(e.getMessage());
-    }
-  }
-
-  @Override
-  public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
-    CommandContext context = new CommandContext(commandSender, strings, messagesProvider, registry);
-    Argument<?> argument = getArgument(strings.length - 1);
+  @NonNull
+  public Iterable<String> onReflectTabComplete(CommandSender sender, String[] strings) {
+    CommandContext context =
+        new CommandContext(
+            sender, strings, manager.getMessagesProvider(), manager.getProvidersRegistry());
+    SingleArgument<?> argument = getArgument(strings.length - 1);
     if (argument != null) {
       if (argument.getSuggestions(context).size() > 0) {
         return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
       } else {
-        List<IContextualProvider<?, CommandContext>> providers =
+        List<EasyContextualProvider<?, CommandContext>> providers =
             getRegistry().getProviders(argument.getClazz());
-        for (IContextualProvider<?, CommandContext> provider : providers) {
+        for (EasyContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BungeeArgumentProvider) {
             return Strings.copyPartials(
                 strings[strings.length - 1],
@@ -150,23 +86,41 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
     }
   }
 
-  @Override
-  public void execute(CommandSender sender, String[] strings) {
-    if (this.isAsynchronous()) {
-      plugin.getProxy().getScheduler().runAsync(plugin, () -> run(sender, strings));
-    } else {
-      run(sender, strings);
-    }
-  }
-
-  private boolean isAsynchronous() {
-    return settings.containsFlag("-async", true) || settings.containsFlag("async", true);
-  }
-
   @NonNull
   @Override
-  public Object getClazz() {
-    return clazz;
+  public List<Argument<?>> getArguments() {
+    return arguments;
+  }
+
+  @Override
+  public Result execute(@NonNull CommandContext context) {
+    CommandSender sender = context.getSender();
+    final String permission = this.getPermission();
+    if (permission != null && !permission.isEmpty()) {
+      if (!sender.hasPermission(permission)) {
+        return new Result(manager.getMessagesProvider().notAllowed(context));
+      }
+    }
+    try {
+      Object invoke = this.method.invoke(this.object, getObjects(context));
+      if (invoke instanceof Result) {
+        return (Result) invoke;
+      }
+      return null;
+    } catch (final IllegalAccessException e) {
+      e.printStackTrace();
+      return new Result("&cIllegalAccessException, e");
+    } catch (final InvocationTargetException e) {
+      final String message = e.getMessage();
+      if (message != null && !message.isEmpty()) {
+        return new Result(e.getMessage());
+      } else {
+        e.printStackTrace();
+        return new Result("&cInvocationTargetException, e");
+      }
+    } catch (MissingArgumentException | ArgumentProviderException e) {
+      return new Result(e.getMessage());
+    }
   }
 
   @NonNull
@@ -177,22 +131,33 @@ public class AnnotatedCommand extends net.md_5.bungee.api.plugin.Command
 
   @NonNull
   @Override
-  public List<ISimpleArgument<?>> getArguments() {
-    return arguments;
+  public Object getObject() {
+    return object;
+  }
+
+  @Override
+  public @NonNull MessagesProvider getMessagesProvider() {
+    return manager.getMessagesProvider();
   }
 
   @Override
   public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return this.registry;
+    return manager.getProvidersRegistry();
   }
 
   @Override
-  public @NonNull IMessagesProvider<CommandContext> getMessagesProvider() {
-    return messagesProvider;
-  }
-
-  @Override
-  public @NonNull CommandSettings getCommandArguments() {
-    return this.settings;
+  public Iterable<String> onTabComplete(CommandSender sender, String[] strings) {
+    if (strings.length == 1) {
+      return Strings.copyPartials(strings[strings.length - 1], this.getChildrenNames());
+    } else if (strings.length >= 2) {
+      final BungeeCommand command = this.getChildren(strings[0]);
+      if (command != null) {
+        return command.onTabComplete(sender, Arrays.copyOfRange(strings, 1, strings.length));
+      } else {
+        return onReflectTabComplete(sender, strings);
+      }
+    } else {
+      return onReflectTabComplete(sender, strings);
+    }
   }
 }

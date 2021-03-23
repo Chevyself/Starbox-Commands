@@ -1,10 +1,10 @@
 package me.googas.commands.jda.result;
 
+import java.awt.*;
+import lombok.NonNull;
 import me.googas.commands.jda.ManagerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
-import java.awt.*;
-import lombok.NonNull;
 
 /** The different types of results */
 public enum ResultType {

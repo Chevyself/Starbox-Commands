@@ -1,10 +1,9 @@
 package me.googas.commands.bukkit.topic;
 
-import me.googas.commands.bukkit.CommandManager;
-import me.googas.commands.bukkit.messages.MessagesProvider;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commons.Strings;
+import me.googas.commands.bukkit.CommandManager;
+import me.googas.commands.bukkit.messages.MessagesProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.plugin.Plugin;
@@ -14,7 +13,7 @@ public class PluginHelpTopic extends HelpTopic {
 
   /** The command manager that has the plugin that its help topic is being created */
   @NonNull @Getter private final CommandManager manager;
-  /** The messages provider to build messages for the help topic */
+  /** The messages provider to format messages for the help topic */
   @NonNull @Getter private final MessagesProvider provider;
 
   /**
@@ -22,7 +21,7 @@ public class PluginHelpTopic extends HelpTopic {
    *
    * @param plugin the plugin that is using the framework
    * @param manager the plugin manager that has the plugin
-   * @param provider the messages provider to build the messages
+   * @param provider the messages provider to format the messages
    */
   public PluginHelpTopic(
       @NonNull Plugin plugin, @NonNull CommandManager manager, @NonNull MessagesProvider provider) {
@@ -41,7 +40,7 @@ public class PluginHelpTopic extends HelpTopic {
    */
   @NonNull
   private String getCommands() {
-    StringBuilder builder = Strings.getBuilder();
+    StringBuilder builder = new StringBuilder();
     this.manager
         .getCommands()
         .forEach(command -> builder.append(this.provider.helpTopicCommand(command)));

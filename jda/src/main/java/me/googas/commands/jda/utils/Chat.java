@@ -1,8 +1,8 @@
 package me.googas.commands.jda.utils;
 
-import me.googas.commands.jda.context.CommandContext;
 import java.util.function.Consumer;
 import lombok.NonNull;
+import me.googas.commands.jda.context.CommandContext;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 

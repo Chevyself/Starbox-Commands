@@ -1,11 +1,11 @@
 package me.googas.commands.bungee.messages;
 
-import me.googas.commands.bungee.context.CommandContext;
-import me.googas.commands.messages.IMessagesProvider;
 import lombok.NonNull;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.messages.EasyMessagesProvider;
 
 /** The messages provider for bungee */
-public interface MessagesProvider extends IMessagesProvider<CommandContext> {
+public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
 
   /**
    * The message sent when the user that executed the command is not allowed to use it

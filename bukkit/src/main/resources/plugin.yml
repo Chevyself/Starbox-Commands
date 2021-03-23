@@ -1,0 +1,5 @@
+name: easy-commands
+main: me.googas.commands.bukkit.plugin.EasyCommandsBukkit
+version: 1.0.0
+api-version: 1.16
+description: Framework to easily create commands

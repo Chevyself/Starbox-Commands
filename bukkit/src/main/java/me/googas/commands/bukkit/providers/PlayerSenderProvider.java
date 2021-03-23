@@ -1,11 +1,11 @@
 package me.googas.commands.bukkit.providers;
 
+import lombok.NonNull;
 import me.googas.commands.bukkit.CommandManager;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.bukkit.providers.type.BukkitExtraArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import lombok.NonNull;
 import org.bukkit.entity.Player;
 
 /** Provides the {@link CommandManager} with the object of {@link Player} when is a sender */

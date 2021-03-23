@@ -1,12 +1,12 @@
 package me.googas.commands.jda.providers;
 
+import lombok.NonNull;
+import me.googas.commands.EasyCommandManager;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
-import lombok.NonNull;
-import me.googas.commands.ICommandManager;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-/** Provides the {@link ICommandManager} with a {@link TextChannel} */
+/** Provides the {@link EasyCommandManager} with a {@link TextChannel} */
 public class TextChannelExtraProvider implements JdaExtraArgumentProvider<TextChannel> {
 
   @Override

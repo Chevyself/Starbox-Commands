@@ -1,20 +1,19 @@
 package me.googas.commands.jda.messages;
 
-import me.googas.commands.jda.CommandManager;
+import lombok.NonNull;
 import me.googas.commands.jda.ManagerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.messages.IMessagesProvider;
-import lombok.NonNull;
-import me.googas.commons.time.Time;
+import me.googas.commands.messages.EasyMessagesProvider;
 
 /** Provides messages to results */
-public interface MessagesProvider extends IMessagesProvider<CommandContext> {
+public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
 
   /**
    * @param command is the input string that's not found as a command
    * @param context the context of the command
-   * @return The message when a command is not found in {@link CommandManager}
+   * @return The message when a command is not found in {@link
+   *     me.googas.commands.jda.CommandManager}
    */
   @NonNull
   String commandNotFound(@NonNull String command, @NonNull CommandContext context);
@@ -70,12 +69,12 @@ public interface MessagesProvider extends IMessagesProvider<CommandContext> {
   /**
    * Get the message sent when the user is still on cooldown
    *
-   * @param timeLeft the time left for the user
+   * @param timeLeft the time left for the user in the getMillis
    * @param context the context of the command
    * @return the built string
    */
   @NonNull
-  String cooldown(@NonNull Time timeLeft, CommandContext context);
+  String cooldown(long timeLeft, CommandContext context);
 
   /**
    * The message sent when a string is not a valid user

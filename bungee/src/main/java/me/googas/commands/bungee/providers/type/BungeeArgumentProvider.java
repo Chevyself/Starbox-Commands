@@ -1,16 +1,16 @@
 package me.googas.commands.bungee.providers.type;
 
-import me.googas.commands.bungee.context.CommandContext;
-import me.googas.commands.providers.type.IArgumentProvider;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.providers.type.EasyArgumentProvider;
 
 /**
  * A provider made for bungee commands
  *
  * @param <O> the type of the object to provider
  */
-public interface BungeeArgumentProvider<O> extends IArgumentProvider<O, CommandContext> {
+public interface BungeeArgumentProvider<O> extends EasyArgumentProvider<O, CommandContext> {
 
   /**
    * Get the suggestions for a command

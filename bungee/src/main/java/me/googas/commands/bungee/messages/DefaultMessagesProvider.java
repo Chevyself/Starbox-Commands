@@ -1,8 +1,8 @@
 package me.googas.commands.bungee.messages;
 
-import me.googas.commands.bungee.context.CommandContext;
 import lombok.NonNull;
-import me.googas.commons.Strings;
+import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.utility.Strings;
 
 /** The default messages provider for bungee */
 public class DefaultMessagesProvider implements MessagesProvider {
@@ -38,7 +38,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext commandContext) {
-    return Strings.build(
+    return Strings.format(
         "Missing argument: {0} -> {1}, position: {2}", name, description, position);
   }
 

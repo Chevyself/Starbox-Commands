@@ -1,10 +1,10 @@
 package me.googas.commands.jda.permissions;
 
+import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import lombok.NonNull;
 import net.dv8tion.jda.api.Permission;
 
 /** Checks for the permissions of an user when executing a command */
@@ -23,7 +23,7 @@ public interface PermissionChecker {
    *     {@link net.dv8tion.jda.api.entities.Member#hasPermission(Permission...)} a result will be
    *     given
    */
-  default Result checkPermission(@NonNull CommandContext context, @NonNull JdaPermission perm) {
+  default Result checkPermission(@NonNull CommandContext context, @NonNull EasyPermission perm) {
     Permission permission = perm.getPermission();
     if (permission != Permission.UNKNOWN && context.getMessage().getMember() != null) {
       if (!context.getMessage().getMember().hasPermission(permission)) {
@@ -37,7 +37,7 @@ public interface PermissionChecker {
 
   /**
    * Get the messages provider in case that the {@link #checkPermission(CommandContext,
-   * JdaPermission)} has to return a result with a message.
+   * EasyPermission)} has to return a result with a message.
    *
    * @return the messages provider
    */

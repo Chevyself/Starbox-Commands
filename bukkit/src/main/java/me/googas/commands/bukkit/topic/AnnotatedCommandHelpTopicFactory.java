@@ -1,8 +1,8 @@
 package me.googas.commands.bukkit.topic;
 
+import lombok.NonNull;
 import me.googas.commands.bukkit.AnnotatedCommand;
 import me.googas.commands.bukkit.messages.MessagesProvider;
-import lombok.NonNull;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.help.HelpTopicFactory;
 
@@ -15,7 +15,7 @@ public class AnnotatedCommandHelpTopicFactory implements HelpTopicFactory<Annota
   /**
    * Create the help topic factory
    *
-   * @param provider the messages provider to build the help topics
+   * @param provider the messages provider to format the help topics
    */
   public AnnotatedCommandHelpTopicFactory(@NonNull MessagesProvider provider) {
     this.provider = provider;

@@ -22,4 +22,11 @@ public @interface Command {
    * @return the permission node
    */
   String permission() default "";
+
+  /**
+   * TODO documentation
+   *
+   * @return
+   */
+  boolean async() default false;
 }

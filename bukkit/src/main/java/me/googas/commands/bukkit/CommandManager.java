@@ -1,124 +1,154 @@
 package me.googas.commands.bukkit;
 
-import me.googas.commands.bukkit.annotations.Command;
-import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.bukkit.messages.MessagesProvider;
-import me.googas.commands.bukkit.result.Result;
-import me.googas.commands.bukkit.topic.AnnotatedCommandHelpTopicFactory;
-import me.googas.commands.bukkit.topic.PluginHelpTopic;
-import me.googas.commands.bukkit.utils.BukkitUtils;
-import me.googas.commands.ICommandManager;
-import me.googas.commands.annotations.Parent;
-import me.googas.commands.exceptions.CommandRegistrationException;
-import me.googas.commands.providers.registry.ProvidersRegistry;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
-import me.googas.annotations.Nullable;
-import me.googas.commons.Strings;
+import me.googas.commands.EasyCommandManager;
+import me.googas.commands.annotations.Parent;
+import me.googas.commands.arguments.Argument;
+import me.googas.commands.bukkit.annotations.Command;
+import me.googas.commands.bukkit.context.CommandContext;
+import me.googas.commands.bukkit.messages.BukkitMessagesProvider;
+import me.googas.commands.bukkit.messages.MessagesProvider;
+import me.googas.commands.bukkit.result.Result;
+import me.googas.commands.bukkit.topic.PluginHelpTopic;
+import me.googas.commands.bukkit.utils.BukkitUtils;
+import me.googas.commands.exceptions.CommandRegistrationException;
+import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.providers.type.EasyContextualProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.help.HelpMap;
 import org.bukkit.plugin.Plugin;
 
-/** The command manager for bukkit commands */
-public class CommandManager implements ICommandManager<AnnotatedCommand> {
+/**
+ * This manager is used for registering commands inside the {@link CommandMap} which makes them work
+ * in any Bukkit server.
+ *
+ * <p>The easiest way to create commands is using reflection with the method {@link
+ * #parseCommands(Object)} those parsed commands can be later registered in the {@link CommandMap}
+ * using {@link #registerAll(Collection)}.
+ *
+ * <p>To create a {@link CommandManager} instance you simply need the {@link Plugin} which will be
+ * related to the commands, a {@link ProvidersRegistry} you can use {@link
+ * me.googas.commands.bukkit.providers.registry.BukkitProvidersRegistry} which includes some
+ * providers that are intended for Bukkit use you can even extend it to add more in the constructor
+ * or use {@link ProvidersRegistry#addProvider(EasyContextualProvider)}, you also ned a {@link
+ * MessagesProvider} which is mostly used to display error commands or create the {@link
+ * org.bukkit.help.HelpTopic} for the commands registered in this manager to be added inside the
+ * built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}.
+ * Finally, you need a list which will keep track of all the registered commands:
+ *
+ * <pre>
+ * CommandManager manager =
+ *         new CommandManager(
+ *             this, new BukkitProvidersRegistry(), new BukkitMessagesProvider(), new ArrayList<>());
+ * </pre>
+ *
+ * You can learn more about it in {@link me.googas.commands.bukkit.plugin.EasyCommandsBukkit} which
+ * is the main class for the easy-commands Bukkit plugin.
+ */
+public class CommandManager implements EasyCommandManager<CommandContext, BukkitCommand> {
 
-  /** The bukkit help map */
+  /**
+   * The Bukkit HelpMap which is used to register the {@link org.bukkit.help.HelpTopic} for the
+   * {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link BukkitCommand}
+   */
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
-  /** The bukkit command map */
+  /**
+   * This is the {@link CommandMap} which contains all the registered commands and it is obtained
+   * using reflection thru the method {@link BukkitUtils#getCommandMap()}
+   */
   @NonNull private static final CommandMap commandMap;
 
   static {
     try {
       commandMap = BukkitUtils.getCommandMap();
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      throw new CommandRegistrationException("Command Map could not be accessed");
+      throw new CommandRegistrationException("CommandMap could not be accessed");
     }
   }
 
-  /** The plugin that is using the command manager */
   @NonNull @Getter private final Plugin plugin;
-  /** The provider for messages */
+  @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  /** The list of commands that this manager handles */
-  @NonNull @Getter private final List<AnnotatedCommand> commands = new ArrayList<>();
-  /** The registry for commands */
-  @NonNull @Getter private final ProvidersRegistry<CommandContext> registry;
-  /** The options to use in the command manager */
-  @NonNull @Getter @Setter private CommandManagerOptions options;
+  @NonNull @Getter private final List<BukkitCommand> commands;
 
   /**
    * Create an instance
    *
-   * @param plugin the plugin that will use the command manager
-   * @param options the options for the command manager
-   * @param messagesProvider the provider for messages
-   * @param registry the registry for the command context
+   * @param plugin the plugin that is related to the commands and other Bukkit actions such as
+   *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
+   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   * @param messagesProvider the messages provider for important messages and {@link
+   *     org.bukkit.help.HelpTopic} of commands and the "plugin"
+   * @param commands the list that will keep track of all the registered commands
    */
   public CommandManager(
       @NonNull Plugin plugin,
-      @NonNull CommandManagerOptions options,
+      @NonNull ProvidersRegistry<CommandContext> providersRegistry,
       @NonNull MessagesProvider messagesProvider,
-      @NonNull ProvidersRegistry<CommandContext> registry) {
+      @NonNull List<BukkitCommand> commands) {
     this.plugin = plugin;
-    this.options = options;
+    this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
-    this.registry = registry;
-    CommandManager.helpMap.registerHelpTopicFactory(
-        AnnotatedCommand.class, new AnnotatedCommandHelpTopicFactory(messagesProvider));
+    this.commands = commands;
   }
 
   /**
-   * Registers the plugin used for the {@link CommandManager} into the {@link HelpMap} (/help) do
-   * this after you've registered all your commands so they can be shown
+   * Create an instance with an empty {@link ArrayList}
+   *
+   * @param plugin the plugin that is related to the commands and other Bukkit actions such as
+   *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
+   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   * @param messagesProvider the messages provider for important messages and {@link
+   *     org.bukkit.help.HelpTopic} of commands and the "plugin"
+   */
+  public CommandManager(
+      @NonNull Plugin plugin,
+      @NonNull ProvidersRegistry<CommandContext> providersRegistry,
+      @NonNull MessagesProvider messagesProvider) {
+    this(plugin, providersRegistry, messagesProvider, new ArrayList<>());
+  }
+
+  /**
+   * Registers {@link #plugin} inside the {@link HelpMap} you can learn more about this in {@link
+   * PluginHelpTopic} but basically this will make possible to do: "/help [plugin-name]"
    */
   public void registerPlugin() {
     CommandManager.helpMap.addTopic(new PluginHelpTopic(this.plugin, this, this.messagesProvider));
   }
 
+  @NonNull
   @Override
-  public void registerCommand(@NonNull Object object) {
-    Collection<AnnotatedCommand> commands = parseCommands(object);
-    ParentCommand command = null;
-    for (AnnotatedCommand annotatedCommand : commands) {
-      if (annotatedCommand instanceof ParentCommand) {
-        command = (ParentCommand) annotatedCommand;
-        commandMap.register(this.plugin.getName(), annotatedCommand);
-        this.commands.add(annotatedCommand);
-      } else {
-        if (command != null) {
-          command.addCommand(annotatedCommand);
-        } else {
-          commandMap.register(plugin.getName(), annotatedCommand);
-          this.commands.add(annotatedCommand);
-        }
-      }
-    }
+  public CommandManager register(@NonNull BukkitCommand command) {
+    commandMap.register(this.plugin.getName(), command);
+    this.commands.add(command);
+    return this;
   }
 
   @Override
   public @NonNull Collection<AnnotatedCommand> parseCommands(@NonNull Object object) {
     List<AnnotatedCommand> commands = new ArrayList<>();
-    ParentCommand parent = null;
+    AnnotatedCommand parent = null;
     final Class<?> clazz = object.getClass();
     for (final Method method : clazz.getDeclaredMethods()) {
       if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        parent = (ParentCommand) this.parseCommand(object, method, true);
+        parent = this.parseCommand(object, method);
         commands.add(parent);
         break;
       }
     }
     for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Command.class)) {
-        final AnnotatedCommand cmd = this.parseCommand(object, method, false);
+      if (method.isAnnotationPresent(Command.class) && !method.isAnnotationPresent(Parent.class)) {
+        final AnnotatedCommand cmd = this.parseCommand(object, method);
         if (parent != null) {
-          parent.addCommand(cmd);
+          parent.addChildren(cmd);
         } else {
           commands.add(cmd);
         }
@@ -127,64 +157,22 @@ public class CommandManager implements ICommandManager<AnnotatedCommand> {
     return commands;
   }
 
-  @Nullable
   @Override
-  public ParentCommand getParent(@NonNull String alias) {
-    for (AnnotatedCommand command : this.commands) {
-      if (command instanceof ParentCommand) {
-        if (command.getName().equalsIgnoreCase(alias)) {
-          return (ParentCommand) command;
-        }
-        for (String commandAlias : command.getAliases()) {
-          if (commandAlias.equalsIgnoreCase(alias)) {
-            return (ParentCommand) command;
-          }
-        }
-      }
+  public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
+    if (!Result.class.isAssignableFrom(method.getReturnType())
+        || !Result.class.isAssignableFrom(method.getReturnType())
+            && !method.getReturnType().equals(Void.TYPE)) {
+      throw new IllegalArgumentException(method + " must return void or " + Result.class);
     }
-    return null;
-  }
-
-  @Override
-  public void unregister() {
-    for (AnnotatedCommand command : this.commands) {
-      command.unregister(commandMap);
-    }
-    this.commands.clear();
-  }
-
-  @Override
-  public @NonNull AnnotatedCommand parseCommand(
-      @NonNull Object object, @NonNull Method method, boolean isParent) {
-    if (method.getReturnType() == Result.class || method.getReturnType().equals(Void.TYPE)) {
-      Annotation[][] annotations = method.getParameterAnnotations();
-      Class<?>[] parameters = method.getParameterTypes();
-      Command command = method.getAnnotation(Command.class);
-      if (isParent) {
-        return new ParentCommand(
-            object,
-            method,
-            this.parseArguments(parameters, annotations),
-            command,
-            options,
-            messagesProvider,
-            plugin,
-            registry,
-            this.parseSettings(method));
-      } else {
-        return new AnnotatedCommand(
-            object,
-            method,
-            this.parseArguments(parameters, annotations),
-            command,
-            messagesProvider,
-            plugin,
-            registry,
-            this.parseSettings(method));
-      }
-    } else {
-      throw new CommandRegistrationException(
-          Strings.build("{0} must return {1} or void", method, Result.class));
-    }
+    if (!method.isAnnotationPresent(Command.class))
+      throw new IllegalArgumentException(method + " is not annotated with " + Command.class);
+    Command command = method.getAnnotation(Command.class);
+    return new AnnotatedCommand(
+        command,
+        method,
+        object,
+        Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations()),
+        this,
+        new ArrayList<>());
   }
 }

@@ -2,14 +2,17 @@ package me.googas.commands.objects;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commons.Strings;
-import me.googas.commons.builder.Builder;
-import me.googas.commons.builder.ToStringBuilder;
+import me.googas.commands.utility.Strings;
 
 /**
- * Its a class that stores the strings joined from a command execution (from it's argument position)
+ * This class is a wrapped array of {@link String}. This is used for commands that require many
+ * strings as an argument. You can check this instance being used in the context of a command
+ * execution too in {@link me.googas.commands.context.EasyCommandContext}
+ *
+ * @see me.googas.commands.arguments.MultipleArgument
+ * @see me.googas.commands.context.EasyCommandContext
  */
-public class JoinedStrings implements Builder<String> {
+public class JoinedStrings {
 
   @NonNull @Getter private final String[] strings;
   @NonNull @Getter private final String string;
@@ -22,18 +25,5 @@ public class JoinedStrings implements Builder<String> {
   public JoinedStrings(@NonNull String[] strings) {
     this.strings = strings;
     this.string = Strings.fromArray(strings);
-  }
-
-  @Override
-  public @NonNull String build() {
-    return this.string;
-  }
-
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this)
-        .append("strings", (Object[]) strings)
-        .append("string", string)
-        .build();
   }
 }

@@ -1,10 +1,9 @@
 package me.googas.commands.jda.messages;
 
+import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
-import lombok.NonNull;
-import me.googas.commons.Strings;
-import me.googas.commons.time.Time;
+import me.googas.commands.utility.Strings;
 
 /** This is a default {@link MessagesProvider} to use if you don't want to create one of your own */
 public class DefaultMessagesProvider implements MessagesProvider {
@@ -57,7 +56,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String response(
       @NonNull String title, @NonNull String message, CommandContext context) {
-    return Strings.build("{0} -> {1}", title, message);
+    return Strings.format("{0} -> {1}", title, message);
   }
 
   @Override
@@ -76,7 +75,7 @@ public class DefaultMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext commandContext) {
-    return Strings.build(
+    return Strings.format(
         "Missing argument: {0} -> {1}, position: {2}", name, description, position);
   }
 
@@ -97,8 +96,8 @@ public class DefaultMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String cooldown(@NonNull Time timeLeft, CommandContext context) {
-    return "You are on cooldown! please wait " + timeLeft.toEffectiveString();
+  public @NonNull String cooldown(long timeLeft, CommandContext context) {
+    return "You are on cooldown! please wait " + timeLeft + "ms";
   }
 
   @Override

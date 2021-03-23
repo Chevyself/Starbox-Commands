@@ -1,7 +1,11 @@
 package me.googas.commands.jda.listener;
 
-import me.googas.commands.jda.AnnotatedCommand;
+import java.util.function.Consumer;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import me.googas.commands.jda.CommandManager;
+import me.googas.commands.jda.EasyJdaCommand;
 import me.googas.commands.jda.ManagerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
@@ -11,13 +15,8 @@ import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
 import me.googas.commands.jda.utils.message.MessagesFactory;
-import java.util.function.Consumer;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import me.googas.annotations.Nullable;
-import me.googas.commons.Lots;
-import me.googas.commons.Strings;
+import me.googas.commands.utility.Series;
+import me.googas.commands.utility.Strings;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -55,7 +54,7 @@ public class CommandListener implements EventListener {
     this.messagesProvider = messagesProvider;
   }
 
-  public void dispatch(@NonNull User user, @Nullable Member member, Message message) {
+  public void dispatch(@NonNull User user, Member member, Message message) {
     this.onMessageReceivedEvent(
         new MessageReceivedEvent(this.manager.getJda(), 0, new FakeMessage(user, member, message)));
   }
@@ -76,7 +75,7 @@ public class CommandListener implements EventListener {
       event.getMessage().delete().queue();
     }
     commandName = commandName.substring(prefix.length());
-    AnnotatedCommand command = manager.getCommand(commandName);
+    EasyJdaCommand command = manager.getCommand(commandName);
     CommandContext context =
         getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = getResult(command, commandName, context);
@@ -128,7 +127,7 @@ public class CommandListener implements EventListener {
       } else {
         if (result.getMessage() != null) {
           return MessagesFactory.fromString(
-                  Strings.build(
+                  Strings.format(
                       messagesProvider.response(
                           result.getType().getTitle(messagesProvider, context),
                           result.getMessage(),
@@ -153,7 +152,7 @@ public class CommandListener implements EventListener {
    * @return the result of the command execution
    */
   private Result getResult(
-      AnnotatedCommand command, @NonNull String commandName, CommandContext context) {
+      EasyJdaCommand command, @NonNull String commandName, CommandContext context) {
     if (command != null) {
       return command.execute(context);
     } else {
@@ -172,7 +171,7 @@ public class CommandListener implements EventListener {
   @NonNull
   private CommandContext getCommandContext(
       @NonNull MessageReceivedEvent event, @NonNull String[] strings, String commandName) {
-    strings = Lots.arrayFrom(1, strings);
+    strings = Series.arrayFrom(1, strings);
     if (event.getMember() != null) {
       return new GuildCommandContext(
           event.getMessage(),
@@ -181,7 +180,7 @@ public class CommandListener implements EventListener {
           event.getChannel(),
           event,
           messagesProvider,
-          manager.getRegistry(),
+          manager.getProvidersRegistry(),
           commandName);
     } else {
       return new CommandContext(
@@ -190,7 +189,7 @@ public class CommandListener implements EventListener {
           strings,
           event.getChannel(),
           messagesProvider,
-          manager.getRegistry(),
+          manager.getProvidersRegistry(),
           commandName);
     }
   }

@@ -1,15 +1,15 @@
 package me.googas.commands.jda.providers;
 
+import lombok.NonNull;
+import me.googas.commands.EasyCommandManager;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.type.JdaArgumentProvider;
-import me.googas.commands.ICommandManager;
-import me.googas.commands.exceptions.ArgumentProviderException;
-import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Member;
 
-/** Provides the {@link ICommandManager} with a {@link Member} */
+/** Provides the {@link EasyCommandManager} with a {@link Member} */
 public class MemberProvider implements JdaArgumentProvider<Member> {
 
   private final MessagesProvider messagesProvider;

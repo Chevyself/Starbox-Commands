@@ -1,13 +1,13 @@
 package me.googas.commands.bukkit.providers.type;
 
-import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.providers.type.IMultipleArgumentProvider;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.commands.bukkit.context.CommandContext;
+import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
 
 /** It's a provider made for bukkit commands */
 public interface BukkitMultiArgumentProvider<O>
-    extends IMultipleArgumentProvider<O, CommandContext> {
+    extends EasyMultipleArgumentProvider<O, CommandContext> {
 
   /**
    * Get the suggestions for the command

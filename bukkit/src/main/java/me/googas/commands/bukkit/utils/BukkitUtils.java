@@ -1,11 +1,10 @@
 package me.googas.commands.bukkit.utils;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.commons.JsonUtils;
-import me.googas.commons.Strings;
+import me.googas.commands.utility.JsonUtils;
+import me.googas.commands.utility.Strings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -20,25 +19,25 @@ public class BukkitUtils {
   /**
    * Build a message and give it colors
    *
-   * @param string the message to build
-   * @param placeholders the placeholders of the message. See {@link Strings#build(String)} (String,
-   *     Map)}
+   * @param string the message to format
+   * @param placeholders the placeholders of the message. See {@link Strings#format(String)}
+   *     (String, Map)}
    * @return the built message
    */
   @NonNull
-  public static String build(String string, @NonNull Map<String, String> placeholders) {
-    return ChatColor.translateAlternateColorCodes('&', Strings.build(string, placeholders));
+  public static String format(String string, @NonNull Map<String, String> placeholders) {
+    return ChatColor.translateAlternateColorCodes('&', Strings.format(string, placeholders));
   }
 
   /**
    * Build a message and give it colors
    *
-   * @param string the message to build
+   * @param string the message to format
    * @return the built message
    */
   @NonNull
-  public static String build(String string) {
-    return ChatColor.translateAlternateColorCodes('&', Strings.build(string));
+  public static String format(String string) {
+    return ChatColor.translateAlternateColorCodes('&', Strings.format(string));
   }
 
   /**
@@ -49,8 +48,8 @@ public class BukkitUtils {
    * @return the built colored message
    */
   @NonNull
-  public static String getMessage(String message, Object... strings) {
-    return BukkitUtils.build(Strings.build(message, strings));
+  public static String format(String message, Object... strings) {
+    return BukkitUtils.format(Strings.format(message, strings));
   }
 
   /**
@@ -62,7 +61,7 @@ public class BukkitUtils {
    */
   public static void dispatch(
       @NonNull CommandSender sender, @NonNull String command, Object... objects) {
-    dispatch(sender, Strings.build(command, objects));
+    dispatch(sender, Strings.format(command, objects));
   }
 
   /**
@@ -75,8 +74,8 @@ public class BukkitUtils {
   public static void dispatch(
       @NonNull CommandSender sender,
       @NonNull String command,
-      @NonNull HashMap<String, String> placeholders) {
-    dispatch(sender, Strings.build(command, placeholders));
+      @NonNull Map<String, String> placeholders) {
+    dispatch(sender, Strings.format(command, placeholders));
   }
 
   /**
@@ -96,7 +95,7 @@ public class BukkitUtils {
    * @param objects to change the placeholders in the command
    */
   public static void dispatch(@NonNull String command, Object... objects) {
-    dispatch(Strings.build(command, objects));
+    dispatch(Strings.format(command, objects));
   }
 
   /**
@@ -105,8 +104,8 @@ public class BukkitUtils {
    * @param command the command to send
    * @param placeholders the placeholders to change in the command line
    */
-  public static void dispatch(@NonNull String command, HashMap<String, String> placeholders) {
-    dispatch(Strings.build(command, placeholders));
+  public static void dispatch(@NonNull String command, Map<String, String> placeholders) {
+    dispatch(Strings.format(command, placeholders));
   }
 
   /**

@@ -1,14 +1,14 @@
 package me.googas.commands.jda.permissions;
 
-import me.googas.commands.jda.annotations.Command;
 import lombok.NonNull;
+import me.googas.commands.jda.annotations.Command;
 import net.dv8tion.jda.api.Permission;
 
 /**
  * This object represents a permission which is created with {@link Command#node()} and {@link
  * Command#permission()}
  */
-public class SimplePermission implements JdaPermission {
+public class SimplePermission implements EasyPermission {
 
   /** @see Command#node() */
   @NonNull private final String node;

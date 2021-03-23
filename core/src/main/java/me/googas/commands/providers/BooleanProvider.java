@@ -1,23 +1,29 @@
 package me.googas.commands.providers;
 
-import me.googas.commands.ICommandManager;
-import me.googas.commands.context.ICommandContext;
-import me.googas.commands.exceptions.ArgumentProviderException;
-import me.googas.commands.messages.IMessagesProvider;
-import me.googas.commands.providers.type.IArgumentProvider;
 import lombok.NonNull;
+import me.googas.commands.EasyCommandManager;
+import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.exceptions.ArgumentProviderException;
+import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.providers.type.EasyArgumentProvider;
 
-/** Provides the {@link ICommandManager} with a {@link Boolean} */
-public class BooleanProvider<T extends ICommandContext> implements IArgumentProvider<Boolean, T> {
+/**
+ * Provides the {@link EasyCommandManager} with a {@link Boolean}
+ *
+ * @param <T> the type of context that this requires to provide the object
+ */
+public class BooleanProvider<T extends EasyCommandContext>
+    implements EasyArgumentProvider<Boolean, T> {
 
-  private final IMessagesProvider<T> messagesProvider;
+  private final EasyMessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance
    *
-   * @param messagesProvider to send the error message in case that the long could not be parsed
+   * @param messagesProvider to send the error message in case that the {@link Boolean} could not be
+   *     parsed
    */
-  public BooleanProvider(IMessagesProvider<T> messagesProvider) {
+  public BooleanProvider(EasyMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 
@@ -33,11 +39,11 @@ public class BooleanProvider<T extends ICommandContext> implements IArgumentProv
     boolean result;
     if (string.equalsIgnoreCase("true")) {
       result = true;
-    } else if (string.equalsIgnoreCase("1")) {
+    } else if (string.equals("1")) {
       result = true;
     } else if (string.equalsIgnoreCase("false")) {
       result = false;
-    } else if (string.equalsIgnoreCase("0")) {
+    } else if (string.equals("0")) {
       result = false;
     } else {
       throw new ArgumentProviderException(messagesProvider.invalidBoolean(string, context));

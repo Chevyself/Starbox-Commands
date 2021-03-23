@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
+import me.googas.commands.annotations.TimeAmount;
 import net.dv8tion.jda.api.Permission;
 
 /** This annotation is used to tell what method is a command inside a class */
@@ -33,6 +34,7 @@ public @interface Command {
    *
    * @return the string permission
    */
+  @NonNull
   String node() default "";
 
   /**
@@ -41,13 +43,11 @@ public @interface Command {
    *
    * @return the discord permission
    */
+  @NonNull
   Permission permission() default Permission.UNKNOWN;
 
-  /**
-   * The time for a user to use the command again
-   *
-   * @return the time for the user to use the command again as string
-   */
   @NonNull
-  String time() default "none";
+  TimeAmount cooldown() default @TimeAmount();
+
+  boolean excluded() default false;
 }
