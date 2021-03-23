@@ -41,6 +41,21 @@ public enum Unit implements EasyUnit {
     this.duration = duration;
   }
 
+  @Override
+  public boolean isDurationEstimated() {
+    return this.compareTo(DAYS) >= 0;
+  }
+
+  @Override
+  public boolean isDateBased() {
+    return this.compareTo(DAYS) >= 0;
+  }
+
+  @Override
+  public boolean isTimeBased() {
+    return this.compareTo(DAYS) < 0;
+  }
+
   /**
    * Get the unit that matches the character. This means that:
    *
@@ -116,20 +131,5 @@ public enum Unit implements EasyUnit {
       }
     }
     return unit;
-  }
-
-  @Override
-  public boolean isDurationEstimated() {
-    return this.compareTo(DAYS) >= 0;
-  }
-
-  @Override
-  public boolean isDateBased() {
-    return this.compareTo(DAYS) >= 0;
-  }
-
-  @Override
-  public boolean isTimeBased() {
-    return this.compareTo(DAYS) < 0;
   }
 }

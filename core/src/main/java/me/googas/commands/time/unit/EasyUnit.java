@@ -14,25 +14,6 @@ import me.googas.commands.time.Time;
 public interface EasyUnit extends TemporalUnit {
 
   /**
-   * Get the duration in millis of the given value
-   *
-   * <p>For example:
-   *
-   * <pre>
-   * double value = Unit.SECONDS.getMillis(2);
-   * System.out.println("Output 2000: " + value);
-   * </pre>
-   *
-   * This divides the parameter value with {@link #getMillis()}
-   *
-   * @param value the value to get the duration in millis from
-   * @return the duration in millis
-   */
-  default double getMillis(double value) {
-    return value / this.getMillis();
-  }
-
-  /**
    * Get a single character which may be used to represent the unit such as:
    *
    * <ul>
@@ -58,6 +39,25 @@ public interface EasyUnit extends TemporalUnit {
    * @return the millis that represent the unit
    */
   long getMillis();
+
+  /**
+   * Get the duration in millis of the given value
+   *
+   * <p>For example:
+   *
+   * <pre>
+   * double value = Unit.SECONDS.getMillis(2);
+   * System.out.println("Output 2000: " + value);
+   * </pre>
+   *
+   * This divides the parameter value with {@link #getMillis()}
+   *
+   * @param value the value to get the duration in millis from
+   * @return the duration in millis
+   */
+  default double getMillis(double value) {
+    return value / this.getMillis();
+  }
 
   /**
    * Get an instance of time based on this unit

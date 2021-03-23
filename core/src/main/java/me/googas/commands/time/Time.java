@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.annotations.TimeAmount;
 import me.googas.commands.time.formatter.TimeFormatter;
 import me.googas.commands.time.unit.EasyUnit;
 import me.googas.commands.time.unit.Unit;
@@ -94,6 +95,24 @@ public class Time implements TemporalAmount {
   }
 
   /**
+   * Parse an instance using the annotation {@link TimeAmount}. If the annotation {@link
+   * TimeAmount#string()} is not empty it will be parsed using {@link #parse(String, boolean)} using
+   * effective as true, if it is not empty then it will be parsed using {@link #of(double,
+   * EasyUnit)}
+   *
+   * @param timeAmount the annotation to get the instance of time of
+   * @return a new time instance
+   */
+  @NonNull
+  public static Time of(@NonNull TimeAmount timeAmount) {
+    if (timeAmount.string().isEmpty()) {
+      return Time.of(timeAmount.value(), timeAmount.unit());
+    } else {
+      return Time.parse(timeAmount.string(), true);
+    }
+  }
+
+  /**
    * Parses an amount of time from the string. The string from {@link Time#toString()} can be used
    * in this method. The effective boolean acts the same as {@link #ofMillis(long, boolean)}.
    *
@@ -177,6 +196,16 @@ public class Time implements TemporalAmount {
    */
   public double toMillis() {
     return this.value * unit.getMillis();
+  }
+
+  /**
+   * Same as {@link #toMillis()} but the result will be rounded using {@link Math#round(double)}
+   *
+   * @see Math#round(double)
+   * @return the result from {@link #toMillis()} rounded
+   */
+  public long toMillisRound() {
+    return Math.round(this.toMillis());
   }
 
   /**
