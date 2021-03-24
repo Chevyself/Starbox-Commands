@@ -9,22 +9,60 @@ This project aims to provide an easy creation of commands for Bukkit, Bungee, JD
 ```xml
 <repositories>
     <repository>
-        <id>bintray-xchevy-Starfish</id>
-        <name>xchevy-Starfish</name>
-        <url>https://dl.bintray.com/xchevy/Starfish</url>
+        <id>repsy</id>
+        <url>https://repo.repsy.io/mvn/chevy/starfish</url>
     </repository>
 </repositories>
 ```
 
-2. Add the dependency. Replace `x` to the module of the plugin that you need and `version` to the latest version of the module. The name is self-explanatory.
-Use `bukkit`, `bungee` or `jda`.
+2. Add the dependency
    
+### Bukkit
+
 ```xml
 <dependencies>
     <dependency>
-        <groupId>com.starfishst.commands.x</groupId>
-        <artifactId>x</artifactId>
-        <version>version</version>
+        <groupId>com.starfishst.commands</groupId>
+        <artifactId>bukkit</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
+```
+
+### Bungee
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.starfishst.commands</groupId>
+        <artifactId>bungee</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
+```
+
+### JDA
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.starfishst.commands</groupId>
+        <artifactId>jda</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
+```
+
+### Core
+
+This is used to create implementations of the `core` framework
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.starfishst.commands</groupId>
+        <artifactId>core</artifactId>
+        <version>1.0.0</version>
     </dependency>
 </dependencies>
 ```
@@ -33,24 +71,23 @@ Use `bukkit`, `bungee` or `jda`.
 
 ### Creating a command
 
-1. Every single commands requires the `@Command` annotation and in each project it has different properties. To see more about
-the properties of the annotation in each module go to the wiki.
+1. Every single commands requires the `@Command` annotation and in each project it has different properties.
    
 2. The annotation must be in the method that you want to use as a command. The method must return `Void` or `Result` else
-when the command is being parsed the `CommandManager` will thrown an error. `Result` is also different in each module. You can see more about this object in the wiki.
+when the command is being parsed the `CommandManager` will thrown an error. `Result` is also different in each module.
    
 At the moment your method should look like this:
 
 ```java
 public class Test {
-    @Command(name = "command")
+    @Command(aliases = "command")
     public Result command() {
         return new Result();
     }
 }
 ```
 
-4. Simple as that! Now you can add all the logic you want to the command and register it in the `CommandManager`
+4. Simple as that! Now you can add all the logic you want to the command, parse and register it  in the `CommandManager`
 
 5. You can also create parent commands which will make the execution as follows:
 
@@ -64,10 +101,10 @@ There is three types of arguments:
 
 #### Extra
 
-Extra arguments do not require any type of annotation and to register the provider it must extend `IExtraArgumentProvider`
-or just implement the interface given by the module. See more in the wiki.
+Extra arguments do not require any type of annotation and to register the provider it must extend `EasyExtraArgumentProvider`
+or just implement the interface given by the module
 
-In general extra arguments is the context of the command, the sender, and such.
+In general extra arguments is the context of the command, the input, the sender, and such.
 
 ```java
 public class Test {
@@ -80,8 +117,8 @@ public class Test {
 
 #### Required and Optional
 
-Both arguments require an input from the user, and the provider must extend `IArgumentProvider` or just implement the interface given by the module. See more in the wiki. The provider will never
-return `null` as it may be needed as a required argument, and the string parameter is never null too.
+Both arguments require an input from the user, and the provider must extend `EasuArgumentProvider` or just implement the interface given by the module. The provider will never
+return `null` as it may be needed as a required argument, and the `String` parameter is never null too.
 
 It is easy to understand each annotation as a `NonNull` and `Nullable`. This may be used as arguments for a different
 output in the logic.
@@ -97,8 +134,8 @@ public class Test {
 
 #### Multiple
 
-It is just as required or optional but requires multiple strings, it requires any of the above annotation plus
-`@Multiple` and the provider must extend `IMultipleArgumentProvider` or just implement the interface given by the module. See more in the wiki.
+It is just as `@Required` or `@Optional` but requires multiple strings, it requires any of the above annotation plus
+`@Multiple` and the provider must extend `EasyMultipleArgumentProvider` or just implement the interface given by the module.
 
 ```java
 public class Test {
@@ -111,7 +148,7 @@ public class Test {
 
 ### Registering commands
 
-1. Creating the Command Manager. Each `CommandManager` has its own options. That's why you should check the wiki.
+1. Creating the Command Manager. Each `CommandManager` has its own options.
 
 ```java
 CommandManager manager = new CommandManager(
@@ -119,10 +156,17 @@ CommandManager manager = new CommandManager(
         );
 ```
 
-2. Registering each command using the method `ICommandManager#registerCommand(Object` the manager will parse the command and register in the respective command map.
+2. You can either create a command extending the class in the module that implements `EasyCommand` or using `CommandManager#parseCommand(Object)` which will get the commands using 
+reflection as shown in [creating a command](#creating-a-command)
+
+```java
+manager.register(manager.parseCommand(cmd));
+```
+
+3. Registering each command using the method `EasyCommandManager#register(EasyCommand)` the manager will register the command.
 
 ```java
 manager.registerCommand(new Test());
 ```
 
-3. You are done! You've registered your commands.
+4. You are done! You've registered your commands.

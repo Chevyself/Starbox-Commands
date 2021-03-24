@@ -60,4 +60,11 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>repsy</id>
+            <url>https://repo.repsy.io/mvn/chevy/starfish</url>
+        </repository>
+    </distributionManagement>
+
 </project>

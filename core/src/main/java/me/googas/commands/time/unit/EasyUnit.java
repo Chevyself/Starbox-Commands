@@ -16,20 +16,20 @@ public interface EasyUnit extends TemporalUnit {
   /**
    * Get the duration of this unit in the given millis.
    *
-   * This means that if the millis is 1000 and the unit is seconds the duration will be 1
+   * <p>This means that if the millis is 1000 and the unit is seconds the duration will be 1
    *
-   * More examples:
+   * <p>More examples:
    *
    * <ul>
-   *     <li>172,800,000 + DAYS = 2 Days</li>
-   *     <li>1,814,400,000 + WEEKS = 3 Weeks</li>
-   *     <li>1,800,000 + HOUR = 0.5 hours</li>
+   *   <li>172,800,000 + DAYS = 2 Days
+   *   <li>1,814,400,000 + WEEKS = 3 Weeks
+   *   <li>1,800,000 + HOUR = 0.5 hours
    * </ul>
    *
    * @param millis the millis to get the duration of the unit
    * @return the duration of the unit given the millis
    */
-  default double getDuration(double millis){
+  default double getDuration(double millis) {
     return millis / this.getMillis();
   }
 
