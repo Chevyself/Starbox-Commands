@@ -163,10 +163,4 @@ reflection as shown in [creating a command](#creating-a-command)
 manager.register(manager.parseCommand(cmd));
 ```
 
-3. Registering each command using the method `EasyCommandManager#register(EasyCommand)` the manager will register the command.
-
-```java
-manager.registerCommand(new Test());
-```
-
 4. You are done! You've registered your commands.
