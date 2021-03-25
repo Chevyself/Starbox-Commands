@@ -14,11 +14,13 @@ import me.googas.commands.exceptions.type.SimpleException;
 import me.googas.commands.exceptions.type.SimpleRuntimeException;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.permissions.SimplePermission;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.time.Time;
+import net.dv8tion.jda.api.Permission;
 
 public class AnnotatedCommand extends EasyJdaCommand
     implements ReflectCommand<CommandContext, EasyJdaCommand> {
@@ -42,6 +44,9 @@ public class AnnotatedCommand extends EasyJdaCommand
     this.arguments = arguments;
     this.aliases = Arrays.asList(command.aliases());
     this.children = children;
+    if (command.permission() != Permission.UNKNOWN || !command.node().isEmpty()) {
+      this.setPermission(new SimplePermission(command.node(), command.permission()));
+    }
   }
 
   @Override

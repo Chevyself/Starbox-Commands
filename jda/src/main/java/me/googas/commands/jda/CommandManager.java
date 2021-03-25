@@ -86,8 +86,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
   @Override
   public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
     if (!Result.class.isAssignableFrom(method.getReturnType())
-        || !Result.class.isAssignableFrom(method.getReturnType())
-            && method.getReturnType().equals(Void.TYPE)) {
+        && !method.getReturnType().equals(Void.TYPE)) {
       throw new IllegalArgumentException(method + " must return void or " + Result.class);
     }
     return new AnnotatedCommand(

@@ -23,7 +23,8 @@ public interface PermissionChecker {
    *     {@link net.dv8tion.jda.api.entities.Member#hasPermission(Permission...)} a result will be
    *     given
    */
-  default Result checkPermission(@NonNull CommandContext context, @NonNull EasyPermission perm) {
+  default Result checkPermission(@NonNull CommandContext context, EasyPermission perm) {
+    if (perm == null) return null;
     Permission permission = perm.getPermission();
     if (permission != Permission.UNKNOWN && context.getMessage().getMember() != null) {
       if (!context.getMessage().getMember().hasPermission(permission)) {
