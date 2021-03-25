@@ -24,8 +24,8 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final PermissionChecker permissionChecker;
   @NonNull @Getter private final JDA jda;
-  @NonNull @Getter private final CommandListener listener;
   @NonNull @Getter private final ManagerOptions managerOptions;
+  @NonNull @Getter private final CommandListener listener;
 
   public CommandManager(
       @NonNull List<EasyJdaCommand> commands,
@@ -33,15 +33,16 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
       @NonNull MessagesProvider messagesProvider,
       @NonNull PermissionChecker permissionChecker,
       @NonNull JDA jda,
-      @NonNull CommandListener listener,
-      @NonNull ManagerOptions managerOptions) {
+      @NonNull ManagerOptions managerOptions,
+      @NonNull String prefix) {
     this.commands = commands;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
     this.permissionChecker = permissionChecker;
     this.jda = jda;
-    this.listener = listener;
     this.managerOptions = managerOptions;
+    this.listener = new CommandListener(prefix, this, managerOptions, messagesProvider);
+    jda.addEventListener(listener);
   }
 
   public EasyJdaCommand getCommand(@NonNull String name) {
@@ -86,7 +87,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
   public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
     if (!Result.class.isAssignableFrom(method.getReturnType())
         || !Result.class.isAssignableFrom(method.getReturnType())
-            && !method.getReturnType().equals(Void.TYPE)) {
+            && method.getReturnType().equals(Void.TYPE)) {
       throw new IllegalArgumentException(method + " must return void or " + Result.class);
     }
     return new AnnotatedCommand(
