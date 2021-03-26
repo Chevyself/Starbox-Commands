@@ -3,6 +3,7 @@ package me.googas.commands.time;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAmount;
 import java.time.temporal.TemporalUnit;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import lombok.Getter;
@@ -271,6 +272,19 @@ public class Time implements TemporalAmount {
 
   @Override
   public String toString() {
-    return value + String.valueOf(this.unit.getSingle());
+    EasyUnit current = this.unit;
+    long millis = this.toMillisRound();
+    StringBuilder builder = new StringBuilder();
+    List<Unit> list = Arrays.asList(Unit.values());
+    Collections.reverse(list);
+    for (Unit unit : list) {
+      if (unit.getMillis() <= current.getMillis()) {
+        long value = (long) unit.getDuration(millis);
+        if (value <= 0) continue;
+        millis -= unit.getMillis(value);
+        builder.append(value).append(Character.toLowerCase(unit.getSingle()));
+      }
+    }
+    return builder.toString();
   }
 }
