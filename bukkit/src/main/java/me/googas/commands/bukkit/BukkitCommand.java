@@ -12,26 +12,66 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
-/** TODO documentation */
+/**
+ * This is the direct implementation of {@link EasyCommand} for the "Bukkit" module extending this
+ * class allows to register commands in the {@link CommandManager} using {@link
+ * CommandManager#register(BukkitCommand)} the creation of a reflection command using {@link
+ * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
+ *
+ * <p>To parse {@link AnnotatedCommand} is required to use the annotation {@link
+ * me.googas.commands.bukkit.annotations.Command} if you would like to create an extension the
+ * method to override is {@link #execute(CommandContext)} but also you can override {@link
+ * #tabComplete(CommandSender, String, String[])} at the moment the only tab complete will only
+ * return the names of the children commands {@link #getChildren()}
+ *
+ * <p>This also allows to use the command asynchronously check {@link #BukkitCommand(String, String,
+ * String, List, boolean, CommandManager)} or {@link #BukkitCommand(String, boolean,
+ * CommandManager)}
+ */
 public abstract class BukkitCommand extends Command
     implements EasyCommand<CommandContext, BukkitCommand> {
 
   @NonNull @Getter protected final CommandManager manager;
   protected boolean async;
 
-  public BukkitCommand(String name, boolean async, @NonNull CommandManager manager) {
+  /**
+   * Create the command
+   *
+   * @param name the name of the command
+   * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
+   *     about asynchronization check <a
+   *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   */
+  public BukkitCommand(@NonNull String name, boolean async, @NonNull CommandManager manager) {
     super(name);
     this.async = async;
     this.manager = manager;
   }
 
+  /**
+   * Create the command
+   *
+   * @param name the name of the command
+   * @param description a simple description of the command
+   * @param usageMessage a message describing how the message should executed. You can learn more
+   *     about usage messages in {@link me.googas.commands.arguments.Argument}
+   * @param aliases the aliases which also allow to execute the command
+   * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
+   *     about asynchronization check
+   *     <ahref="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   */
   public BukkitCommand(
-      String name,
-      String description,
-      String usageMessage,
-      List<String> aliases,
+      @NonNull String name,
+      @NonNull String description,
+      @NonNull String usageMessage,
+      @NonNull List<String> aliases,
       boolean async,
       @NonNull CommandManager manager) {
     super(name, description, usageMessage, aliases);
@@ -39,6 +79,17 @@ public abstract class BukkitCommand extends Command
     this.manager = manager;
   }
 
+  /**
+   * This method does the command execution after {@link #runCheckSync(CommandSender, String[])}
+   * finishes checking whether to run async or not.
+   *
+   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be send to the
+   * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(String)} and
+   * {@link Result#getComponents()}
+   *
+   * @param sender the executor of the command
+   * @param args the arguments used in the command execution
+   */
   public void run(@NonNull CommandSender sender, @NonNull String[] args) {
     Result result =
         this.execute(
@@ -52,9 +103,12 @@ public abstract class BukkitCommand extends Command
   }
 
   /**
-   * // TODO documentation this checks if it should run sync
+   * Checks if the command should be running async if so it will create the task with {@link
+   * org.bukkit.scheduler.BukkitScheduler#runTaskAsynchronously(Plugin, Runnable)} this uses the
+   * {@link CommandManager#getPlugin()}
    *
-   * @param args
+   * @param sender the executor of the command
+   * @param args the arguments used in the command execution
    */
   public void runCheckSync(@NonNull CommandSender sender, @NonNull String[] args) {
     if (this.async) {
@@ -64,6 +118,11 @@ public abstract class BukkitCommand extends Command
     }
   }
 
+  /**
+   * Get the name of the children that have been added inside the command {@link #getChildren()}
+   *
+   * @return the list with the names of the children commands
+   */
   @NonNull
   public List<String> getChildrenNames() {
     List<String> names = new ArrayList<>();

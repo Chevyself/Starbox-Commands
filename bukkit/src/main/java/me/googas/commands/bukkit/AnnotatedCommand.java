@@ -15,6 +15,7 @@ import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.bukkit.providers.type.BukkitMultiArgumentProvider;
 import me.googas.commands.bukkit.result.Result;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.EasyMessagesProvider;
@@ -23,6 +24,12 @@ import me.googas.commands.providers.type.EasyContextualProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
+/**
+ * This is the direct extension of {@link BukkitCommand} for reflection commands this is returned
+ * from {@link CommandManager#getCommands()}
+ *
+ * <p>The methods that are annotated with {@link Command} represent of this commands
+ */
 public class AnnotatedCommand extends BukkitCommand
     implements ReflectCommand<CommandContext, BukkitCommand> {
 
@@ -31,6 +38,21 @@ public class AnnotatedCommand extends BukkitCommand
   @NonNull @Getter private final List<Argument<?>> arguments;
   @NonNull @Getter private final List<BukkitCommand> children;
 
+  /**
+   * Create the command
+   *
+   * @param command the annotation that will be used to get the name and aliases of the command
+   *     {@link Command#aliases()} the description {@link Command#description()} whether to execute
+   *     the command async {@link Command#async()} and the permission {@link Command#permission()}
+   * @param method the method to execute as the command see more in {@link #getMethod()}
+   * @param object the instance of the object used to invoke the method see more in {@link
+   *     #getObject()}
+   * @param arguments the list of arguments that are used to {@link #getObjects(EasyCommandContext)}
+   *     and invoke the {@link #getMethod()}
+   * @param manager the manager that parsed the command
+   * @param children the list of children commands which can be used with this parent prefix. Learn
+   *     more in {@link me.googas.commands.annotations.Parent}
+   */
   public AnnotatedCommand(
       @NonNull Command command,
       @NonNull Method method,
