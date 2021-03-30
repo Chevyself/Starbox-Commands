@@ -51,11 +51,11 @@ import org.bukkit.plugin.Plugin;
  * You can learn more about it in {@link me.googas.commands.bukkit.plugin.EasyCommandsBukkit} which
  * is the main class for the easy-commands Bukkit plugin.
  */
-public class CommandManager implements EasyCommandManager<CommandContext, BukkitCommand> {
+public class CommandManager implements EasyCommandManager<CommandContext, EasyBukkitCommand> {
 
   /**
    * The Bukkit HelpMap which is used to register the {@link org.bukkit.help.HelpTopic} for the
-   * {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link BukkitCommand}
+   * {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link EasyBukkitCommand}
    */
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
   /**
@@ -75,7 +75,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final List<BukkitCommand> commands;
+  @NonNull @Getter private final List<EasyBukkitCommand> commands;
 
   /**
    * Create an instance
@@ -92,7 +92,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
       @NonNull Plugin plugin,
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
       @NonNull MessagesProvider messagesProvider,
-      @NonNull List<BukkitCommand> commands) {
+      @NonNull List<EasyBukkitCommand> commands) {
     this.plugin = plugin;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
@@ -126,7 +126,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bukkit
 
   @NonNull
   @Override
-  public CommandManager register(@NonNull BukkitCommand command) {
+  public CommandManager register(@NonNull EasyBukkitCommand command) {
     commandMap.register(this.plugin.getName(), command);
     this.commands.add(command);
     return this;

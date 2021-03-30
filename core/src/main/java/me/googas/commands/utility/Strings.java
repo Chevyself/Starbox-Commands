@@ -32,7 +32,7 @@ public class Strings {
    * Object#toString()}
    *
    * @param message the message to format
-   * @param strings the object that will replace the placeholders
+   * @param strings the objects that will replace the placeholders
    * @return the formatted message
    */
   @NonNull

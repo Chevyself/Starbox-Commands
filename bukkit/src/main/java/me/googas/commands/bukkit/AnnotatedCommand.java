@@ -25,18 +25,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 /**
- * This is the direct extension of {@link BukkitCommand} for reflection commands this is returned
+ * This is the direct extension of {@link EasyBukkitCommand} for reflection commands this is returned
  * from {@link CommandManager#getCommands()}
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
  */
-public class AnnotatedCommand extends BukkitCommand
-    implements ReflectCommand<CommandContext, BukkitCommand> {
+public class AnnotatedCommand extends EasyBukkitCommand
+    implements ReflectCommand<CommandContext, EasyBukkitCommand> {
 
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
-  @NonNull @Getter private final List<BukkitCommand> children;
+  @NonNull @Getter private final List<EasyBukkitCommand> children;
 
   /**
    * Create the command
@@ -59,7 +59,7 @@ public class AnnotatedCommand extends BukkitCommand
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments,
       @NonNull CommandManager manager,
-      @NonNull List<BukkitCommand> children) {
+      @NonNull List<EasyBukkitCommand> children) {
     super(
         command.aliases()[0],
         command.description(),
@@ -172,7 +172,7 @@ public class AnnotatedCommand extends BukkitCommand
       return StringUtil.copyPartialMatches(
           strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
     } else if (strings.length >= 2) {
-      final BukkitCommand command = this.getChildren(strings[0]);
+      final EasyBukkitCommand command = this.getChildren(strings[0]);
       if (command != null) {
         return command.tabComplete(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
       } else {

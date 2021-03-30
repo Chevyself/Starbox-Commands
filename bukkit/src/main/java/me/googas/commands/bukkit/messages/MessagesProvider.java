@@ -1,7 +1,7 @@
 package me.googas.commands.bukkit.messages;
 
 import lombok.NonNull;
-import me.googas.commands.bukkit.BukkitCommand;
+import me.googas.commands.bukkit.EasyBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.messages.EasyMessagesProvider;
 import org.bukkit.plugin.Plugin;
@@ -65,7 +65,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    *     topic
    */
   @NonNull
-  String helpTopicCommand(@NonNull BukkitCommand command);
+  String helpTopicCommand(@NonNull EasyBukkitCommand command);
 
   /**
    * The short text for a command help topic
@@ -74,7 +74,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the short text
    */
   @NonNull
-  String commandShortText(@NonNull BukkitCommand command);
+  String commandShortText(@NonNull EasyBukkitCommand command);
 
   /**
    * The name of the command in the help topic
@@ -83,7 +83,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the command
    */
   @NonNull
-  String commandName(BukkitCommand command);
+  String commandName(EasyBukkitCommand command);
 
   /**
    * Get the full text of a help topic for a parent command
@@ -96,7 +96,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    */
   @NonNull
   String parentCommandFull(
-      @NonNull BukkitCommand command,
+      @NonNull EasyBukkitCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
       @NonNull String buildArguments);
@@ -109,7 +109,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the short text for the parent command
    */
   @NonNull
-  String parentCommandShort(@NonNull BukkitCommand command, @NonNull String shortText);
+  String parentCommandShort(@NonNull EasyBukkitCommand command, @NonNull String shortText);
 
   /**
    * Get the name of a child command help topic
@@ -119,7 +119,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the name for the command help topic
    */
   @NonNull
-  String childCommandName(@NonNull BukkitCommand command, @NonNull BukkitCommand parent);
+  String childCommandName(@NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent);
 
   /**
    * Get the short text for a child command help topic
@@ -129,7 +129,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the short text of the child command help topic
    */
   @NonNull
-  String childCommandShort(@NonNull BukkitCommand command, @NonNull BukkitCommand parent);
+  String childCommandShort(@NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent);
 
   /**
    * Get the full text for a child command help topic
@@ -142,8 +142,8 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    */
   @NonNull
   String childCommandFull(
-      @NonNull BukkitCommand command,
-      @NonNull BukkitCommand parent,
+      @NonNull EasyBukkitCommand command,
+      @NonNull EasyBukkitCommand parent,
       @NonNull String shortText,
       @NonNull String buildArguments);
 
@@ -155,7 +155,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the child command description
    */
   @NonNull
-  String childCommand(@NonNull BukkitCommand command, @NonNull BukkitCommand parent);
+  String childCommand(@NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent);
 
   /**
    * The message to tell the users that materials have a name and it cannot be empty

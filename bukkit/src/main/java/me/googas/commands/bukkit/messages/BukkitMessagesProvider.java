@@ -1,7 +1,7 @@
 package me.googas.commands.bukkit.messages;
 
 import lombok.NonNull;
-import me.googas.commands.bukkit.BukkitCommand;
+import me.googas.commands.bukkit.EasyBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.utility.Maps;
@@ -101,23 +101,23 @@ public class BukkitMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String helpTopicCommand(@NonNull BukkitCommand command) {
+  public @NonNull String helpTopicCommand(@NonNull EasyBukkitCommand command) {
     return BukkitUtils.format("&7- &e" + command.getName());
   }
 
   @Override
-  public @NonNull String commandShortText(@NonNull BukkitCommand command) {
+  public @NonNull String commandShortText(@NonNull EasyBukkitCommand command) {
     return command.getDescription();
   }
 
   @Override
-  public @NonNull String commandName(BukkitCommand command) {
+  public @NonNull String commandName(EasyBukkitCommand command) {
     return "/" + command.getName();
   }
 
   @Override
   public @NonNull String parentCommandFull(
-      @NonNull BukkitCommand command,
+      @NonNull EasyBukkitCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
       @NonNull String buildArguments) {
@@ -132,26 +132,26 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String parentCommandShort(
-      @NonNull BukkitCommand command, @NonNull String shortText) {
+          @NonNull EasyBukkitCommand command, @NonNull String shortText) {
     return "(Parent) " + shortText;
   }
 
   @Override
   public @NonNull String childCommandName(
-      @NonNull BukkitCommand command, @NonNull BukkitCommand parent) {
+          @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
     return "/" + parent.getName() + "." + command.getName();
   }
 
   @Override
   public @NonNull String childCommandShort(
-      @NonNull BukkitCommand command, @NonNull BukkitCommand parent) {
+          @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
     return command.getDescription();
   }
 
   @Override
   public @NonNull String childCommandFull(
-      @NonNull BukkitCommand command,
-      @NonNull BukkitCommand parent,
+      @NonNull EasyBukkitCommand command,
+      @NonNull EasyBukkitCommand parent,
       @NonNull String shortText,
       @NonNull String buildArguments) {
     return shortText
@@ -165,7 +165,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String childCommand(
-      @NonNull BukkitCommand command, @NonNull BukkitCommand parent) {
+          @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
     return "- " + command.getName();
   }
 

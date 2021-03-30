@@ -4,7 +4,7 @@ import java.util.Collection;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import me.googas.commands.bukkit.BukkitCommand;
+import me.googas.commands.bukkit.EasyBukkitCommand;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -31,7 +31,7 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    * @param provider the messages provider to format messages for the help topic
    */
   AnnotatedCommandHelpTopic(
-      @NonNull BukkitCommand command, BukkitCommand parent, @NonNull MessagesProvider provider) {
+          @NonNull EasyBukkitCommand command, EasyBukkitCommand parent, @NonNull MessagesProvider provider) {
     this.provider = provider;
     final String permission = command.getPermission();
     this.amendedPermission = permission == null ? null : permission.isEmpty() ? null : permission;
@@ -44,8 +44,8 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
               provider.parentCommandShort(command, this.shortText),
               this.buildChildren(command),
               command.getUsage());
-      final Collection<BukkitCommand> commands = (command).getChildren();
-      for (BukkitCommand child : commands) {
+      final Collection<EasyBukkitCommand> commands = (command).getChildren();
+      for (EasyBukkitCommand child : commands) {
         helpMap.addTopic(new AnnotatedCommandHelpTopic(child, command, provider));
       }
     } else {
@@ -63,9 +63,9 @@ class AnnotatedCommandHelpTopic extends HelpTopic {
    * @return the help as string
    */
   @NonNull
-  private String buildChildren(@NonNull BukkitCommand command) {
+  private String buildChildren(@NonNull EasyBukkitCommand command) {
     StringBuilder builder = new StringBuilder();
-    final Collection<BukkitCommand> commands = command.getChildren();
+    final Collection<EasyBukkitCommand> commands = command.getChildren();
     commands.forEach(
         annotatedCommand -> builder.append(provider.childCommand(annotatedCommand, command)));
     return builder.toString();

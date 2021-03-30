@@ -27,7 +27,7 @@ public class PluginHelpTopic extends HelpTopic {
       @NonNull Plugin plugin, @NonNull CommandManager manager, @NonNull MessagesProvider provider) {
     this.manager = manager;
     this.provider = provider;
-    this.amendedPermission = plugin.getName() + ".help";
+    this.amendedPermission = plugin.getName().replace(" ", "_") + ".help";
     this.name = plugin.getName();
     this.shortText = this.provider.helpTopicShort(plugin);
     this.fullText = this.provider.helpTopicFull(this.shortText, this.getCommands(), plugin);

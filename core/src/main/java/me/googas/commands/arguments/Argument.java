@@ -62,19 +62,21 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  * }
  *  </pre>
  *
- *  A list of arguments may also be used to get the usage of a command. From <a href="https://en.wikipedia.org/wiki/Usage_message">Wikipedia</a>
+ * A list of arguments may also be used to get the usage of a command. From <a
+ * href="https://en.wikipedia.org/wiki/Usage_message">Wikipedia</a>
  *
- *  <ul>
- *      <li>Required arguments are indicated with angles brackets: '<>' ex: '<name>'</li>
- *      <li>Optional arguments are indicated with square brackets: '[]' ex: '[name]'</li>
- *      <li>Flags start with the vertical bar and are indicated using square brackets: ex: [-f]</li>
- *      <li>Flags with a value are just like normal flags but the value is separated with a single space ' ' ex: [-f <value>] They can also contain a
- *      key and a value as such: [-f <key>=<value>]</li> with the equals sign '=' separating the key and value
- *  </ul>
+ * <ul>
+ *   <li>Required arguments are indicated with angles brackets: '<>' ex: '<name>'
+ *   <li>Optional arguments are indicated with square brackets: '[]' ex: '[name]'
+ *   <li>Flags start with the vertical bar and are indicated using square brackets: ex: [-f]
+ *   <li>Flags with a value are just like normal flags but the value is separated with a single
+ *       space ' ' ex: [-f <value>] They can also contain a key and a value as such: [-f
+ *       <key>=<value>] with the equals sign '=' separating the key and value
+ * </ul>
  *
  * Here's an example:
  *
- * Usage: command [-f] [--help | -H] [-c <child_name>] [-p <number>] <arg1> <arg2> [arg3]
+ * <p>Usage: command [-f] [--help | -H] [-c <child_name>] [-p <number>] <arg1> <arg2> [arg3]
  *
  * @param <O> the type of the class that the argument has to supply
  */

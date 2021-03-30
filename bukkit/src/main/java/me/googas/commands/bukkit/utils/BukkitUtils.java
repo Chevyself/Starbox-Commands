@@ -14,26 +14,65 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 
-/** Utils for bukkit */
+/**
+ * Static utilities for bukkit:
+ *
+ * <p>Here you will find
+ *
+ * <ul>
+ *   <li>String formatting
+ *   <li>Command dispatcher
+ * </ul>
+ */
 public class BukkitUtils {
-  /**
-   * Build a message and give it colors
-   *
-   * @param string the message to format
-   * @param placeholders the placeholders of the message. See {@link Strings#format(String)}
-   *     (String, Map)}
-   * @return the built message
-   */
-  @NonNull
-  public static String format(String string, @NonNull Map<String, String> placeholders) {
-    return ChatColor.translateAlternateColorCodes('&', Strings.format(string, placeholders));
-  }
 
   /**
-   * Build a message and give it colors
+   * Give colors to a message and format using {@link Strings#format(String)}.
+   *
+   * <p>Colors must be given with the color code char: '&'
+   *
+   * <p>To know how to give colors to a message checkout <a
+   * href="https://codepen.io/0biwan/full/ggVemP">this snippet</a>
+   *
+   * <p>A simple line to give colors should look like this:
+   *
+   * <ul>
+   *   <li>'&lHere's bold text'
+   *   <li>'&cThis is red text'
+   *   <li>'&5This is purple text'
+   *   <li>'&l&6This is bold and gold text'
+   *   <li/>
+   * </ul>
+   *
+   * Here's each code of color:
+   *
+   * <ul>
+   *   <li>'&0' = Black
+   *   <li>'&1' = Dark blue
+   *   <li>'&2' = Dark green
+   *   <li>'&3' = Cyan
+   *   <li>'&4' = Dark red
+   *   <li>'&5' = Purple
+   *   <li>'&6' = Gold
+   *   <li>'&7' = Gray
+   *   <li>'&8' = Dark gray
+   *   <li>'&9' = Blue
+   *   <li>'&a' = Green
+   *   <li>'&b' = Aqua
+   *   <li>'&c' = Red
+   *   <li>'&d' = Magenta
+   *   <li>'&e' = Yellow
+   *   <li>'&f' = White
+   *   <li>'&l' = Bold
+   *   <li>'&n' = Underline
+   *   <li>'&o' = Italic
+   *   <li>'&m' = Strikethrough
+   *   <li>'&k' = Obfuscated
+   *   <li>'&r' = Resets the color
+   * </ul>
    *
    * @param string the message to format
-   * @return the built message
+   * @return the formatted message
    */
   @NonNull
   public static String format(String string) {
@@ -41,11 +80,28 @@ public class BukkitUtils {
   }
 
   /**
-   * Creates a message with colors and place holders
+   * Give colors to a message and format using {@link Strings#format(String, Map)}
    *
-   * @param message the message
-   * @param strings the place holders
-   * @return the built colored message
+   * <p>To know how to use colors check {@link BukkitUtils#format(String)}
+   *
+   * @param string the message to format
+   * @param placeholders the placeholders and its values. The placeholders are the key and those do
+   *     not require to have the character "%" and the value is another string
+   * @return the formatted message
+   */
+  @NonNull
+  public static String format(String string, @NonNull Map<String, String> placeholders) {
+    return ChatColor.translateAlternateColorCodes('&', Strings.format(string, placeholders));
+  }
+
+  /**
+   * Gives colors to a message and format using {@link Strings#format(String, Object...)}
+   *
+   * <p>To know how to use colors check {@link BukkitUtils#format(String)}
+   *
+   * @param message the message to format
+   * @param strings the objects that will replace the placeholders
+   * @return the formatted message
    */
   @NonNull
   public static String format(String message, Object... strings) {
@@ -79,49 +135,13 @@ public class BukkitUtils {
   }
 
   /**
-   * Dispatch a command
+   * Parse the JSON string into an array of {@link BaseComponent}. This will check that the String
+   * is JSON with {@link JsonUtils#isJson(String)} if it is then it will use {@link
+   * ComponentSerializer#parse(String)} to get the array else it will return an array of {@link
+   * BaseComponent} with a single entry of {@link TextComponent}
    *
-   * @param sender the sender of the command
-   * @param command the command to send
-   */
-  public static void dispatch(@NonNull CommandSender sender, @NonNull String command) {
-    Bukkit.dispatchCommand(sender, command);
-  }
-
-  /**
-   * Dispatch a command as console
-   *
-   * @param command the command to send
-   * @param objects to change the placeholders in the command
-   */
-  public static void dispatch(@NonNull String command, Object... objects) {
-    dispatch(Strings.format(command, objects));
-  }
-
-  /**
-   * Dispatch a command as console
-   *
-   * @param command the command to send
-   * @param placeholders the placeholders to change in the command line
-   */
-  public static void dispatch(@NonNull String command, Map<String, String> placeholders) {
-    dispatch(Strings.format(command, placeholders));
-  }
-
-  /**
-   * Dispatch a command as console
-   *
-   * @param command the command to dispatch
-   */
-  public static void dispatch(@NonNull String command) {
-    dispatch(Bukkit.getConsoleSender(), command);
-  }
-
-  /**
-   * Parse the json into a component
-   *
-   * @param string the string to get the component from
-   * @return the component
+   * @param string the string to get the array from
+   * @return the parsed component
    */
   @NonNull
   public static BaseComponent[] getComponent(@NonNull String string) {
@@ -132,12 +152,17 @@ public class BukkitUtils {
   }
 
   /**
-   * Get bukkit command map
+   * Get Bukkit {@link CommandMap} it is used to register commands and to get it reflection need to
+   * be used:
    *
-   * @return bukkit command map
-   * @throws IllegalAccessException in case that the field commandMap in {@link Server} cannot be
+   * <p>Getting the {@link Server} class this will get the declared field 'commandMap' which
+   * contains the {@link CommandMap}
+   *
+   * @return the command map
+   * @throws IllegalAccessException in case that the field 'commandMap' in {@link Server} cannot be
    *     accessed
-   * @throws NoSuchFieldException in case the field commandMap in {@link Server} cannot be accessed
+   * @throws NoSuchFieldException in case the field 'commandMap' in {@link Server} does not exist
+   *     for some reason
    */
   @NonNull
   public static CommandMap getCommandMap() throws NoSuchFieldException, IllegalAccessException {

@@ -18,7 +18,7 @@ import org.bukkit.util.StringUtil;
 /**
  * This is the direct implementation of {@link EasyCommand} for the "Bukkit" module extending this
  * class allows to register commands in the {@link CommandManager} using {@link
- * CommandManager#register(BukkitCommand)} the creation of a reflection command using {@link
+ * CommandManager#register(EasyBukkitCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
  *
  * <p>To parse {@link AnnotatedCommand} is required to use the annotation {@link
@@ -27,12 +27,12 @@ import org.bukkit.util.StringUtil;
  * #tabComplete(CommandSender, String, String[])} at the moment the only tab complete will only
  * return the names of the children commands {@link #getChildren()}
  *
- * <p>This also allows to use the command asynchronously check {@link #BukkitCommand(String, String,
- * String, List, boolean, CommandManager)} or {@link #BukkitCommand(String, boolean,
+ * <p>This also allows to use the command asynchronously check {@link #EasyBukkitCommand(String, String,
+ * String, List, boolean, CommandManager)} or {@link #EasyBukkitCommand(String, boolean,
  * CommandManager)}
  */
-public abstract class BukkitCommand extends Command
-    implements EasyCommand<CommandContext, BukkitCommand> {
+public abstract class EasyBukkitCommand extends Command
+    implements EasyCommand<CommandContext, EasyBukkitCommand> {
 
   @NonNull @Getter protected final CommandManager manager;
   protected boolean async;
@@ -47,7 +47,7 @@ public abstract class BukkitCommand extends Command
    * @param manager where the command will be registered used to get the {@link
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    */
-  public BukkitCommand(@NonNull String name, boolean async, @NonNull CommandManager manager) {
+  public EasyBukkitCommand(@NonNull String name, boolean async, @NonNull CommandManager manager) {
     super(name);
     this.async = async;
     this.manager = manager;
@@ -67,7 +67,7 @@ public abstract class BukkitCommand extends Command
    * @param manager where the command will be registered used to get the {@link
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    */
-  public BukkitCommand(
+  public EasyBukkitCommand(
       @NonNull String name,
       @NonNull String description,
       @NonNull String usageMessage,
@@ -126,7 +126,7 @@ public abstract class BukkitCommand extends Command
   @NonNull
   public List<String> getChildrenNames() {
     List<String> names = new ArrayList<>();
-    for (BukkitCommand child : this.getChildren()) {
+    for (EasyBukkitCommand child : this.getChildren()) {
       names.add(child.getName());
     }
     return names;
@@ -136,7 +136,7 @@ public abstract class BukkitCommand extends Command
   public boolean execute(
       @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings) {
     if (strings.length >= 1) {
-      BukkitCommand command = this.getChildren(strings[0]);
+      EasyBukkitCommand command = this.getChildren(strings[0]);
       if (command != null) {
         return command.execute(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
       } else {
@@ -156,7 +156,7 @@ public abstract class BukkitCommand extends Command
       return StringUtil.copyPartialMatches(
           strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
     } else if (strings.length >= 2) {
-      final BukkitCommand command = this.getChildren(strings[0]);
+      final EasyBukkitCommand command = this.getChildren(strings[0]);
       if (command != null) {
         return command.tabComplete(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
       } else {
