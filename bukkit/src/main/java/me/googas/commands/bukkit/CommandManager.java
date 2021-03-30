@@ -55,7 +55,8 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
 
   /**
    * The Bukkit HelpMap which is used to register the {@link org.bukkit.help.HelpTopic} for the
-   * {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link EasyBukkitCommand}
+   * {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link
+   * EasyBukkitCommand}
    */
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
   /**

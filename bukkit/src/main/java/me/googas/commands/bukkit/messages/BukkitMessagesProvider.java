@@ -111,62 +111,25 @@ public class BukkitMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String commandName(EasyBukkitCommand command) {
-    return "/" + command.getName();
+  public @NonNull String commandName(@NonNull EasyBukkitCommand command, String parentName) {
+    return "/" + (parentName == null ? command.getName() : parentName + "." + command.getName());
   }
 
   @Override
-  public @NonNull String parentCommandFull(
+  public @NonNull String commandFullText(
       @NonNull EasyBukkitCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
       @NonNull String buildArguments) {
-    return shortText
-        + "\n Permission: "
-        + command.getPermission()
-        + "\n Usage: "
-        + buildArguments
-        + "\n Children: "
-        + buildChildren;
-  }
-
-  @Override
-  public @NonNull String parentCommandShort(
-          @NonNull EasyBukkitCommand command, @NonNull String shortText) {
-    return "(Parent) " + shortText;
-  }
-
-  @Override
-  public @NonNull String childCommandName(
-          @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
-    return "/" + parent.getName() + "." + command.getName();
-  }
-
-  @Override
-  public @NonNull String childCommandShort(
-          @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
-    return command.getDescription();
-  }
-
-  @Override
-  public @NonNull String childCommandFull(
-      @NonNull EasyBukkitCommand command,
-      @NonNull EasyBukkitCommand parent,
-      @NonNull String shortText,
-      @NonNull String buildArguments) {
-    return shortText
-        + "\n Permission: "
-        + command.getPermission()
-        + "\n Usage: "
-        + buildArguments
-        + "\n Parent: "
-        + commandName(command);
+    String full =
+        shortText + "\n Permission: " + command.getPermission() + "\n Usage: " + buildArguments;
+    return buildChildren.isEmpty() ? full : full + "\n Children: " + buildChildren;
   }
 
   @Override
   public @NonNull String childCommand(
-          @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
-    return "- " + command.getName();
+      @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
+    return "\n - " + command.getName();
   }
 
   @Override

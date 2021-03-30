@@ -27,8 +27,8 @@ import org.bukkit.util.StringUtil;
  * #tabComplete(CommandSender, String, String[])} at the moment the only tab complete will only
  * return the names of the children commands {@link #getChildren()}
  *
- * <p>This also allows to use the command asynchronously check {@link #EasyBukkitCommand(String, String,
- * String, List, boolean, CommandManager)} or {@link #EasyBukkitCommand(String, boolean,
+ * <p>This also allows to use the command asynchronously check {@link #EasyBukkitCommand(String,
+ * String, String, List, boolean, CommandManager)} or {@link #EasyBukkitCommand(String, boolean,
  * CommandManager)}
  */
 public abstract class EasyBukkitCommand extends Command

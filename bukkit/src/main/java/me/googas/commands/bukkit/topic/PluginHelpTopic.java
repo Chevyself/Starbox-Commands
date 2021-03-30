@@ -3,25 +3,30 @@ package me.googas.commands.bukkit.topic;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.bukkit.CommandManager;
+import me.googas.commands.bukkit.EasyBukkitCommand;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.plugin.Plugin;
 
-/** The help topic for the plugin that is using the framework */
+/**
+ * Plugin {@link HelpTopic} is basically the messages that appear in the command '/help
+ * <plugin_name>'. This helps creating a {@link HelpTopic} for {@link
+ * org.bukkit.plugin.java.JavaPlugin} that uses {@link CommandManager} to register commands
+ */
 public class PluginHelpTopic extends HelpTopic {
 
-  /** The command manager that has the plugin that its help topic is being created */
   @NonNull @Getter private final CommandManager manager;
-  /** The messages provider to format messages for the help topic */
   @NonNull @Getter private final MessagesProvider provider;
 
   /**
-   * Create the help topic
+   * Create the an instance of the help topic
    *
    * @param plugin the plugin that is using the framework
-   * @param manager the plugin manager that has the plugin
-   * @param provider the messages provider to format the messages
+   * @param manager the command manager that the plugin uses
+   * @param provider the messages provider to format the messages see {@link
+   *     MessagesProvider#helpTopicShort(Plugin)}, {@link MessagesProvider#helpTopicFull(String,
+   *     String, Plugin)}
    */
   public PluginHelpTopic(
       @NonNull Plugin plugin, @NonNull CommandManager manager, @NonNull MessagesProvider provider) {
@@ -34,16 +39,19 @@ public class PluginHelpTopic extends HelpTopic {
   }
 
   /**
-   * Get all the commands that the plugin has
+   * Gets the message to include in {@link MessagesProvider#helpTopicFull(String, String, Plugin)},
+   * Using a {@link StringBuilder} getting all the commands registered in {@link #manager} and
+   * adding its {@link MessagesProvider#helpTopicCommand(EasyBukkitCommand)} to the builder.
    *
-   * @return the commands that the plugin has
+   * @return the message that includes the commands for {@link
+   *     MessagesProvider#helpTopicFull(String, String, Plugin)}}
    */
   @NonNull
   private String getCommands() {
     StringBuilder builder = new StringBuilder();
-    this.manager
-        .getCommands()
-        .forEach(command -> builder.append(this.provider.helpTopicCommand(command)));
+    for (EasyBukkitCommand command : this.manager.getCommands()) {
+      builder.append(this.provider.helpTopicCommand(command));
+    }
     return builder.toString();
   }
 

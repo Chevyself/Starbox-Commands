@@ -80,10 +80,12 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * The name of the command in the help topic
    *
    * @param command the command that is being built the help topic to
+   * @param parentName the name of the parent of the command which can be null to be appended to
+   *     differentiate from other commands
    * @return the command
    */
   @NonNull
-  String commandName(EasyBukkitCommand command);
+  String commandName(EasyBukkitCommand command, String parentName);
 
   /**
    * Get the full text of a help topic for a parent command
@@ -95,56 +97,10 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the full text of the help topic
    */
   @NonNull
-  String parentCommandFull(
+  String commandFullText(
       @NonNull EasyBukkitCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
-      @NonNull String buildArguments);
-
-  /**
-   * Get the short text for parent commands
-   *
-   * @param command the parent command that is being built the help topic to
-   * @param shortText the short text for every command
-   * @return the short text for the parent command
-   */
-  @NonNull
-  String parentCommandShort(@NonNull EasyBukkitCommand command, @NonNull String shortText);
-
-  /**
-   * Get the name of a child command help topic
-   *
-   * @param command the child command which requires a name for its help topic
-   * @param parent the parent of this child
-   * @return the name for the command help topic
-   */
-  @NonNull
-  String childCommandName(@NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent);
-
-  /**
-   * Get the short text for a child command help topic
-   *
-   * @param command the command which requires a short text for its help topic
-   * @param parent the parent of this child
-   * @return the short text of the child command help topic
-   */
-  @NonNull
-  String childCommandShort(@NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent);
-
-  /**
-   * Get the full text for a child command help topic
-   *
-   * @param command the command which requires a full text for its help topic
-   * @param parent the parent of this child
-   * @param shortText the short text of the child command
-   * @param buildArguments the arguments of the command
-   * @return the full text for the command help topic
-   */
-  @NonNull
-  String childCommandFull(
-      @NonNull EasyBukkitCommand command,
-      @NonNull EasyBukkitCommand parent,
-      @NonNull String shortText,
       @NonNull String buildArguments);
 
   /**

@@ -25,8 +25,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 /**
- * This is the direct extension of {@link EasyBukkitCommand} for reflection commands this is returned
- * from {@link CommandManager#getCommands()}
+ * This is the direct extension of {@link EasyBukkitCommand} for reflection commands this is
+ * returned from {@link CommandManager#getCommands()}
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
  */
