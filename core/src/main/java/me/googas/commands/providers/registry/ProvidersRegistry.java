@@ -12,6 +12,7 @@ import me.googas.commands.providers.IntegerProvider;
 import me.googas.commands.providers.JoinedStringsProvider;
 import me.googas.commands.providers.LongProvider;
 import me.googas.commands.providers.StringProvider;
+import me.googas.commands.providers.TimeProvider;
 import me.googas.commands.providers.type.EasyArgumentProvider;
 import me.googas.commands.providers.type.EasyContextualProvider;
 import me.googas.commands.providers.type.EasyExtraArgumentProvider;
@@ -45,6 +46,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
     this.addProvider(new JoinedStringsProvider<>());
     this.addProvider(new LongProvider<>(messages));
     this.addProvider(new StringProvider<>());
+    this.addProvider(new TimeProvider<>(messages));
   }
 
   /** Create the registry with no providers */

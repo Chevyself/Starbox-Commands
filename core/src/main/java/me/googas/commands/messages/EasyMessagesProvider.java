@@ -12,7 +12,7 @@ import me.googas.commands.context.EasyCommandContext;
 public interface EasyMessagesProvider<T extends EasyCommandContext> {
 
   /**
-   * The message sent when a string is not valid as a long
+   * The message sent when a {@link String} is not valid as a {@link Long}
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -22,7 +22,7 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
   String invalidLong(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a string is not valid as a integer
+   * The message sent when a {@link String} is not valid as a {@link Integer}
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -32,7 +32,7 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
   String invalidInteger(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a string is not valid as a double
+   * The message sent when a {@link String} is not valid as a {@link Double}
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -42,7 +42,7 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
   String invalidDouble(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a string is not valid as a boolean
+   * The message sent when a {@link String} is not valid as a {@link Boolean}
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -52,7 +52,7 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
   String invalidBoolean(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a string is not valid as Time
+   * The message sent when a {@link String} is not valid as {@link me.googas.commands.time.Time}
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -62,13 +62,14 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
   String invalidTime(@NonNull String string, @NonNull T context);
 
   /**
-   * Get the message to send when there's a missing a argument
+   * Get the message to send when there's a missing an {@link me.googas.commands.arguments.Argument}
    *
+   * @see me.googas.commands.arguments.Argument
    * @param name the name of the argument
    * @param description the description of the argument
    * @param position the position of the argument
    * @param context the context of the command
-   * @return The error when the message is missing arguments
+   * @return the message to tell that the command execution is missing an argument
    */
   @NonNull
   String missingArgument(
@@ -78,13 +79,15 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
    * Get the message sent when a {@link MultipleArgument#getMinSize()} is bigger than the context
    * strings
    *
+   * @see me.googas.commands.arguments.Argument
+   * @see MultipleArgument
    * @param name the name of the argument
    * @param description the description of the argument
    * @param position the position of the argument
-   * @param minSize the minimum size of the strings
+   * @param minSize the minimum size of the arguments
    * @param missing how many strings are missing
    * @param context the context of the command
-   * @return the message
+   * @return the message to tell that the command execution is missing arguments
    */
   @NonNull
   String missingStrings(
