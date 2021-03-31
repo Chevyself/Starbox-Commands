@@ -5,7 +5,7 @@ import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.utility.Strings;
 
 /** The default messages provider for bungee */
-public class DefaultMessagesProvider implements MessagesProvider {
+public class BungeeMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {

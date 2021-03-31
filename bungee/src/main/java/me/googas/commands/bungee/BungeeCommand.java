@@ -13,8 +13,25 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
+/**
+ * This is the direct implementation of {@link EasyCommand} for the "Bungee" module extending this
+ * class allows to register commands in the {@link CommandManager} using {@link
+ * CommandManager#register(BungeeCommand)} the creation of a reflection command using {@link
+ * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
+ *
+ * <p>To parse {@link AnnotatedCommand} is required to use the annotation {@link
+ * me.googas.commands.bungee.annotations.Command} if you would like to create an extension the
+ * method to override is {@link #execute(CommandContext)} but also you can override {@link
+ * #onTabComplete(CommandSender, String[])} at the moment the only tab complete will only return the
+ * names of the children commands {@link #getChildren()} {@link #getChildrenNames()}
+ *
+ * <p>This also allows to use the command asynchronously check {@link #BungeeCommand(String, List,
+ * CommandManager, boolean)} or {@link #BungeeCommand(String, String, List, CommandManager, boolean,
+ * String...)}
+ */
 public abstract class BungeeCommand extends Command
     implements EasyCommand<CommandContext, BungeeCommand>, TabExecutor {
 
@@ -22,6 +39,18 @@ public abstract class BungeeCommand extends Command
   @NonNull @Getter private final List<BungeeCommand> children;
   protected boolean async;
 
+  /**
+   * Create the command
+   *
+   * @param name the name of the command
+   * @param children the list of children commands which can be used with this parent prefix. Learn
+   *     more in {@link me.googas.commands.annotations.Parent}
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
+   *     about asynchronization check <a
+   *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   */
   public BungeeCommand(
       String name,
       @NonNull List<BungeeCommand> children,
@@ -33,6 +62,21 @@ public abstract class BungeeCommand extends Command
     this.async = async;
   }
 
+  /**
+   * Create the command
+   *
+   * @param name the name of the command
+   * @param permission the permission that the sender requires to execute the command {@link
+   *     CommandSender#hasPermission(String)}
+   * @param children the list of children commands which can be used with this parent prefix. Learn
+   *     more in {@link me.googas.commands.annotations.Parent}
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
+   *     about asynchronization check <a
+   *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   * @param aliases the aliases which also allow to execute the command
+   */
   public BungeeCommand(
       String name,
       String permission,
@@ -47,10 +91,12 @@ public abstract class BungeeCommand extends Command
   }
 
   /**
-   * // TODO documentation this checks if it should run sync
+   * Checks if the command should be running async if so it will create the task with {@link
+   * net.md_5.bungee.api.scheduler.TaskScheduler#runAsync(Plugin, Runnable)} this uses the {@link
+   * CommandManager} plugin
    *
-   * @param sender TODO
-   * @param args TODO
+   * @param sender the executor of the command
+   * @param args the arguments used in the command execution
    */
   public void runCheckSync(@NonNull CommandSender sender, @NonNull String[] args) {
     if (this.async) {
@@ -62,6 +108,17 @@ public abstract class BungeeCommand extends Command
     }
   }
 
+  /**
+   * This method does the command execution after {@link #runCheckSync(CommandSender, String[])}
+   * finishes checking whether to run async or not.
+   *
+   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be send to the
+   * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(BaseComponent)}
+   * and {@link Result} components
+   *
+   * @param sender the executor of the command
+   * @param args the arguments used in the command execution
+   */
   public void run(@NonNull CommandSender sender, @NonNull String[] args) {
     Result result =
         this.execute(
@@ -74,6 +131,11 @@ public abstract class BungeeCommand extends Command
     }
   }
 
+  /**
+   * Get the name of the children that have been added inside the command {@link #getChildren()}
+   *
+   * @return the list with the names of the children commands
+   */
   @NonNull
   public List<String> getChildrenNames() {
     List<String> names = new ArrayList<>();

@@ -11,13 +11,40 @@ import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.messages.BungeeMessagesProvider;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.providers.type.EasyContextualProvider;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
-/** The command manager for bungee commands */
+/**
+ * This manager is used for registering commands inside the {@link PluginManager} which makes them
+ * work in any Bungee server.
+ *
+ * <p>The easiest way to create commands is using reflection with the method {@link
+ * #parseCommands(Object)} those parsed commands can be later registered in the {@link
+ * PluginManager} using {@link #registerAll(Collection)}.
+ *
+ * <p>To create a {@link CommandManager} instance you simply need the {@link Plugin} which will be
+ * related to the commands, a {@link ProvidersRegistry} you can use {@link
+ * me.googas.commands.bungee.providers.registry.BungeeProvidersRegistry} which includes some
+ * providers that are intended for Bungee use you can even extend it to add more in the constructor
+ * or use {@link ProvidersRegistry#addProvider(EasyContextualProvider)}, you also ned a {@link
+ * MessagesProvider} which is used to display error commands the commands the default implementation
+ * is {@link BungeeMessagesProvider}.
+ *
+ * <pre>{@code
+ * CommandManager manager =
+ *         new CommandManager(
+ *              this, new BungeeMessagesProvider(), new BungeeProvidersRegistry());
+ *
+ * }</pre>
+ *
+ * You can learn more about it in {@link BungeeCommand} which is the main class for the
+ * easy-commands Bungee plugin.
+ */
 public class CommandManager implements EasyCommandManager<CommandContext, BungeeCommand> {
 
   @NonNull @Getter private final Plugin plugin;
@@ -29,9 +56,11 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bungee
   /**
    * Create an instance
    *
-   * @param plugin the plugin that will create the commands
-   * @param messagesProvider the messages provider
-   * @param providersRegistry the registry for commands
+   * @param plugin the plugin that is related to the commands and other Bungee actions such as
+   *     creating tasks with the {@link net.md_5.bungee.api.scheduler.TaskScheduler}
+   * @param messagesProvider the messages provider for important messages
+   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
    */
   public CommandManager(
       @NonNull Plugin plugin,
@@ -83,12 +112,6 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bungee
     }
     Command command = method.getAnnotation(Command.class);
     return new AnnotatedCommand(
-        command,
-        new ArrayList<>(),
-        this,
-        this.plugin,
-        object,
-        method,
-        Argument.parseArguments(method));
+        command, new ArrayList<>(), this, object, method, Argument.parseArguments(method));
   }
 }

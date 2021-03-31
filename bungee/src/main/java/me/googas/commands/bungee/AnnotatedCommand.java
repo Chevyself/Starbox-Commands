@@ -16,6 +16,7 @@ import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
 import me.googas.commands.bungee.providers.type.BungeeMultiArgumentProvider;
 import me.googas.commands.bungee.result.Result;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.providers.registry.ProvidersRegistry;
@@ -24,7 +25,12 @@ import me.googas.commands.utility.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 
-/** The annotated command for bungee */
+/**
+ * This is the direct extension of {@link BungeeCommand} for reflection commands this is returned
+ * from {@link CommandManager#parseCommands(Object)}
+ *
+ * <p>The methods that are annotated with {@link Command} represent of this commands
+ */
 public class AnnotatedCommand extends BungeeCommand
     implements ReflectCommand<CommandContext, BungeeCommand> {
 
@@ -35,11 +41,25 @@ public class AnnotatedCommand extends BungeeCommand
   @NonNull private final Method method;
   @NonNull private final List<Argument<?>> arguments;
 
+  /**
+   * Create the command
+   *
+   * @param command the annotation that will be used to get the name and aliases of the command
+   *     {@link Command#aliases()} whether to execute the command async {@link Command#async()} and
+   *     the permission {@link Command#permission()}
+   * @param children the list of children commands which can be used with this parent prefix. Learn
+   *     more in {@link me.googas.commands.annotations.Parent}
+   * @param manager the manager that parsed the command
+   * @param object the instance of the object used to invoke the method see more in {@link
+   *     #getObject()}
+   * @param method the method to execute as the command see more in {@link #getMethod()}
+   * @param arguments the list of arguments that are used to {@link #getObjects(EasyCommandContext)}
+   *     and invoke the {@link #getMethod()}
+   */
   public AnnotatedCommand(
       Command command,
       @NonNull List<BungeeCommand> children,
       @NonNull CommandManager manager,
-      @NonNull Plugin plugin,
       @NonNull Object object,
       @NonNull Method method,
       @NonNull List<Argument<?>> arguments) {
@@ -50,7 +70,7 @@ public class AnnotatedCommand extends BungeeCommand
         manager,
         command.async(),
         Arrays.copyOfRange(command.aliases(), 1, command.aliases().length));
-    this.plugin = plugin;
+    this.plugin = manager.getPlugin();
     this.object = object;
     this.method = method;
     this.arguments = arguments;

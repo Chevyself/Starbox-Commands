@@ -39,8 +39,7 @@ import org.bukkit.plugin.Plugin;
  * or use {@link ProvidersRegistry#addProvider(EasyContextualProvider)}, you also ned a {@link
  * MessagesProvider} which is mostly used to display error commands or create the {@link
  * org.bukkit.help.HelpTopic} for the commands registered in this manager to be added inside the
- * built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}.
- * Finally, you need a list which will keep track of all the registered commands:
+ * built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}:
  *
  * <pre>{@code
  * CommandManager manager =
@@ -77,32 +76,10 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final List<EasyBukkitCommand> commands;
+  @NonNull @Getter private final List<EasyBukkitCommand> commands = new ArrayList<>();
 
   /**
    * Create an instance
-   *
-   * @param plugin the plugin that is related to the commands and other Bukkit actions such as
-   *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
-   * @param providersRegistry the providers registry to provide the array of {@link Object} to
-   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
-   * @param messagesProvider the messages provider for important messages and {@link
-   *     org.bukkit.help.HelpTopic} of commands and the "plugin"
-   * @param commands the list that will keep track of all the registered commands
-   */
-  public CommandManager(
-      @NonNull Plugin plugin,
-      @NonNull ProvidersRegistry<CommandContext> providersRegistry,
-      @NonNull MessagesProvider messagesProvider,
-      @NonNull List<EasyBukkitCommand> commands) {
-    this.plugin = plugin;
-    this.providersRegistry = providersRegistry;
-    this.messagesProvider = messagesProvider;
-    this.commands = commands;
-  }
-
-  /**
-   * Create an instance with an empty {@link ArrayList}
    *
    * @param plugin the plugin that is related to the commands and other Bukkit actions such as
    *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
@@ -115,7 +92,9 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
       @NonNull Plugin plugin,
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
       @NonNull MessagesProvider messagesProvider) {
-    this(plugin, providersRegistry, messagesProvider, new ArrayList<>());
+    this.plugin = plugin;
+    this.providersRegistry = providersRegistry;
+    this.messagesProvider = messagesProvider;
   }
 
   /**
