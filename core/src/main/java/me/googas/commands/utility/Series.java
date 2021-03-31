@@ -74,8 +74,8 @@ public class Series {
   /**
    * Copy the elements from a list to another if those match the predicate
    *
-   * <p>If you have the list [1, 2, 3, 4, 5, 6, 7, 8, 9] and you want to copy if the number is > 5
-   * the elements added to the list are [6, 7, 8, 9]
+   * <p>If you have the list [1, 2, 3, 4, 5, 6, 7, 8, 9] and you want to copy if the number is &gt;
+   * 5 the elements added to the list are [6, 7, 8, 9]
    *
    * @param list the list to paste the values to
    * @param toAdd the list to copy the values from

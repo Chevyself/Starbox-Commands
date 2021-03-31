@@ -59,7 +59,7 @@ public interface EasyCommand<C extends EasyCommandContext, T extends EasyCommand
   /**
    * Get a children command by an alias
    *
-   * @see {@link EasyCommand#hasAlias(String)}
+   * @see EasyCommand#hasAlias(String)
    * @param alias the alias to match the command
    * @return the command if one has the alias, null otherwise
    */

@@ -114,9 +114,8 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
   }
 
   /**
-   * Get the argument of certain position. A basic loop checking if the {@link
-   * SingleArgument#getPosition()} matches the queried position. Ignore the extra arguments as those
-   * don't have positions
+   * Get the argument of certain position. A basic loop checking if the {@link SingleArgument}
+   * position matches the queried position. Ignore the extra arguments as those don't have positions
    *
    * @param position the position to get the argument of
    * @return the argument if exists, null otherwise

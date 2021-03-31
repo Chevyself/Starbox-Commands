@@ -62,8 +62,8 @@ public abstract class EasyBukkitCommand extends Command
    *     about usage messages in {@link me.googas.commands.arguments.Argument}
    * @param aliases the aliases which also allow to execute the command
    * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
-   *     about asynchronization check
-   *     <ahref="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   *     about asynchronization check <a
+   *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
    * @param manager where the command will be registered used to get the {@link
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    */
@@ -85,7 +85,7 @@ public abstract class EasyBukkitCommand extends Command
    *
    * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be send to the
    * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(String)} and
-   * {@link Result#getComponents()}
+   * {@link Result} components
    *
    * @param sender the executor of the command
    * @param args the arguments used in the command execution
@@ -105,7 +105,7 @@ public abstract class EasyBukkitCommand extends Command
   /**
    * Checks if the command should be running async if so it will create the task with {@link
    * org.bukkit.scheduler.BukkitScheduler#runTaskAsynchronously(Plugin, Runnable)} this uses the
-   * {@link CommandManager#getPlugin()}
+   * {@link CommandManager} plugin
    *
    * @param sender the executor of the command
    * @param args the arguments used in the command execution

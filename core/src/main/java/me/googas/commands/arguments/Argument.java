@@ -37,7 +37,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *
  * <p>Here's an example:
  *
- * <pre>
+ * <pre>{@code
  *  public class ArgumentsSample {
  *
  *     public static void main(String[] args) throws NoSuchMethodException {
@@ -60,23 +60,24 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *         // A MultipleArgument: the messages
  *     }
  * }
- *  </pre>
+ * }</pre>
  *
  * A list of arguments may also be used to get the usage of a command. From <a
  * href="https://en.wikipedia.org/wiki/Usage_message">Wikipedia</a>
  *
  * <ul>
- *   <li>Required arguments are indicated with angles brackets: '<>' ex: '<name>'
+ *   <li>Required arguments are indicated with angles brackets: '&lt;&gt;' ex: '&lt;name&gt;'
  *   <li>Optional arguments are indicated with square brackets: '[]' ex: '[name]'
  *   <li>Flags start with the vertical bar and are indicated using square brackets: ex: [-f]
  *   <li>Flags with a value are just like normal flags but the value is separated with a single
- *       space ' ' ex: [-f <value>] They can also contain a key and a value as such: [-f
- *       <key>=<value>] with the equals sign '=' separating the key and value
+ *       space ' ' ex: [-f &lt;value&gt;] They can also contain a key and a value as such: [-f
+ *       &lt;key&gt;=&lt;value&gt;] with the equals sign '=' separating the key and value
  * </ul>
  *
  * Here's an example:
  *
- * <p>Usage: command [-f] [--help | -H] [-c <child_name>] [-p <number>] <arg1> <arg2> [arg3]
+ * <p>Usage: command [-f] [--help | -H] [-c &lt;child_name&gt;] [-p &lt;number&gt;] &lt;arg1&gt;
+ * &lt;arg2&gt; [arg3]
  *
  * @param <O> the type of the class that the argument has to supply
  */

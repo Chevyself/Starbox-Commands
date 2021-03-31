@@ -76,7 +76,7 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
       @NonNull String name, @NonNull String description, int position, T context);
 
   /**
-   * Get the message sent when a {@link MultipleArgument#getMinSize()} is bigger than the context
+   * Get the message sent when a {@link MultipleArgument} min size is bigger than the context
    * strings
    *
    * @see me.googas.commands.arguments.Argument

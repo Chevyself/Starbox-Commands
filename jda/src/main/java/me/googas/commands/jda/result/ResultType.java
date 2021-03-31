@@ -49,8 +49,9 @@ public enum ResultType {
   }
 
   /**
-   * Get the color that represents the result. It applies when {@link
-   * ManagerOptions#isEmbedMessages()} is true
+   * Get the color that represents the result.
+   *
+   * <p>It applies when {@link ManagerOptions} has embed messages as true
    *
    * @param options the manager options to get the color from
    * @return the color

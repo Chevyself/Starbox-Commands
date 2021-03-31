@@ -26,7 +26,7 @@ public @interface Command {
   /**
    * TODO documentation
    *
-   * @return
+   * @return whether to execute the command async
    */
   boolean async() default false;
 }

@@ -49,7 +49,8 @@ public abstract class BungeeCommand extends Command
   /**
    * // TODO documentation this checks if it should run sync
    *
-   * @param args
+   * @param sender TODO
+   * @param args TODO
    */
   public void runCheckSync(@NonNull CommandSender sender, @NonNull String[] args) {
     if (this.async) {

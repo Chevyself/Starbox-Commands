@@ -20,7 +20,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
 
   /**
    * @param context the context of the command
-   * @return The footer in case {@link ManagerOptions#isEmbedMessages()} is true
+   * @return The footer in case {@link ManagerOptions} embed messages is true
    */
   @NonNull
   String footer(CommandContext context);

@@ -42,11 +42,12 @@ import org.bukkit.plugin.Plugin;
  * built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}.
  * Finally, you need a list which will keep track of all the registered commands:
  *
- * <pre>
+ * <pre>{@code
  * CommandManager manager =
  *         new CommandManager(
- *             this, new BukkitProvidersRegistry(), new BukkitMessagesProvider(), new ArrayList<>());
- * </pre>
+ *              this, new BukkitProvidersRegistry(), new BukkitMessagesProvider(), new ArrayList<>());
+ *
+ * }</pre>
  *
  * You can learn more about it in {@link me.googas.commands.bukkit.plugin.EasyCommandsBukkit} which
  * is the main class for the easy-commands Bukkit plugin.

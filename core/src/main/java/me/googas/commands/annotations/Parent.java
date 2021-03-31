@@ -14,7 +14,7 @@ import me.googas.commands.EasyCommand;
  * me.googas.commands.EasyCommand#addChildren(EasyCommand)} and the command execution with be as
  * follows:
  *
- * <p>/hello <command> <**args>
+ * <p>/hello &lt;command&gt; &lt;**args&gt;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

@@ -66,26 +66,25 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    *
    * <p>For example if you have the provider
    *
-   * <pre>
-   * public class StringProvider<T extends EasyCommandContext>
-   *     implements EasyArgumentProvider<String, T> {
+   * <pre>{@code
+   * public class StringProvider&lt;T extends EasyCommandContext&gt; implements EasyArgumentProvider&lt;String, T&gt; {
    *
-   *   @Override
-   *   public @NonNull Class<String> getClazz() {
+   *  &#64;Override
+   *   public @NonNull Class&lt;String&gt; getClazz() {
    *     return String.class;
    *   }
    *
-   *   @NonNull
-   *   @Override
+   *   &#64;NonNull
+   *   &#64;Override
    *   public String fromString(@NonNull String string, @NonNull T context) {
    *     return string;
    *   }
    * }
-   * </pre>
+   * }</pre>
    *
-   * And you register it using {@link #addProvider(EasyContextualProvider)}
+   * <p>And you register it using {@link #addProvider(EasyContextualProvider)}
    *
-   * <p>You can get it with this method with {@link String#getClass()}
+   * <p>You can get it with this method with {@link String#getClass()} ()}
    *
    * @param clazz the queried class
    * @return a list of providers for the queried class

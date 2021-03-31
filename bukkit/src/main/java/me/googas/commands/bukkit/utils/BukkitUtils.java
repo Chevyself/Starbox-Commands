@@ -29,7 +29,7 @@ public class BukkitUtils {
   /**
    * Give colors to a message and format using {@link Strings#format(String)}.
    *
-   * <p>Colors must be given with the color code char: '&'
+   * <p>Colors must be given with the color code char: '&amp;'
    *
    * <p>To know how to give colors to a message checkout <a
    * href="https://codepen.io/0biwan/full/ggVemP">this snippet</a>
@@ -37,38 +37,37 @@ public class BukkitUtils {
    * <p>A simple line to give colors should look like this:
    *
    * <ul>
-   *   <li>'&lHere's bold text'
-   *   <li>'&cThis is red text'
-   *   <li>'&5This is purple text'
-   *   <li>'&l&6This is bold and gold text'
-   *   <li/>
+   *   <li>'&amp;lHere's bold text'
+   *   <li>'&amp;cThis is red text'
+   *   <li>'&amp;5This is purple text'
+   *   <li>'&amp;l&amp;6This is bold and gold text'
    * </ul>
    *
    * Here's each code of color:
    *
    * <ul>
-   *   <li>'&0' = Black
-   *   <li>'&1' = Dark blue
-   *   <li>'&2' = Dark green
-   *   <li>'&3' = Cyan
-   *   <li>'&4' = Dark red
-   *   <li>'&5' = Purple
-   *   <li>'&6' = Gold
-   *   <li>'&7' = Gray
-   *   <li>'&8' = Dark gray
-   *   <li>'&9' = Blue
-   *   <li>'&a' = Green
-   *   <li>'&b' = Aqua
-   *   <li>'&c' = Red
-   *   <li>'&d' = Magenta
-   *   <li>'&e' = Yellow
-   *   <li>'&f' = White
-   *   <li>'&l' = Bold
-   *   <li>'&n' = Underline
-   *   <li>'&o' = Italic
-   *   <li>'&m' = Strikethrough
-   *   <li>'&k' = Obfuscated
-   *   <li>'&r' = Resets the color
+   *   <li>'&amp;0' = Black
+   *   <li>'&amp;1' = Dark blue
+   *   <li>'&amp;2' = Dark green
+   *   <li>'&amp;3' = Cyan
+   *   <li>'&amp;4' = Dark red
+   *   <li>'&amp;5' = Purple
+   *   <li>'&amp;6' = Gold
+   *   <li>'&amp;7' = Gray
+   *   <li>'&amp;8' = Dark gray
+   *   <li>'&amp;9' = Blue
+   *   <li>'&amp;a' = Green
+   *   <li>'&amp;b' = Aqua
+   *   <li>'&amp;c' = Red
+   *   <li>'&amp;d' = Magenta
+   *   <li>'&amp;e' = Yellow
+   *   <li>'&amp;f' = White
+   *   <li>'&amp;l' = Bold
+   *   <li>'&amp;n' = Underline
+   *   <li>'&amp;o' = Italic
+   *   <li>'&amp;m' = Strikethrough
+   *   <li>'&amp;k' = Obfuscated
+   *   <li>'&amp;r' = Resets the color
    * </ul>
    *
    * @param string the message to format
