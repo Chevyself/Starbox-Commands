@@ -1,21 +1,23 @@
 package me.googas.commands.jda;
 
 import lombok.Getter;
-import lombok.NonNull;
+import net.dv8tion.jda.api.entities.User;
 
-/** An user that is inside the cooldown of a command */
+/**
+ * This is an instance of an {@link net.dv8tion.jda.api.entities.User} that is inside the {@link
+ * EasyJdaCommand} cooldown and cannot execute the command until {@link #isExpired()} = true
+ */
 public class CooldownUser {
 
-  /** The time when the user can execute the command again */
   @Getter private final long expires;
-  /** The id of the user */
   @Getter private final long id;
 
   /**
    * Create an instance
    *
-   * @param toRemove the time to remove the user from the cooldown in getMillis
-   * @param id the id of the user
+   * @param toRemove the time to remove the user from the cooldown in getMillis {@link #expires}
+   *     will be the result of this parameter + {@link System#currentTimeMillis()}
+   * @param id the long id of the {@link net.dv8tion.jda.api.entities.User} {@link User#getIdLong()}
    */
   public CooldownUser(long toRemove, long id) {
     this.expires = System.currentTimeMillis() + toRemove;
@@ -23,7 +25,8 @@ public class CooldownUser {
   }
 
   /**
-   * Get whether the user can execute the command again
+   * Get whether the user can execute the command again. This means that {@link #expires} is less
+   * than {@link System#currentTimeMillis()}
    *
    * @return true if the cooldown time has expired
    */
@@ -32,12 +35,12 @@ public class CooldownUser {
   }
 
   /**
-   * Get the time in which the user can execute the command again
+   * Get the time in which the user can execute the command again in millis. This is the result from
+   * {@link #expires} less the {@link System#currentTimeMillis()}
    *
    * @return the time in which the user can execute the command again
    */
-  @NonNull
-  public long getTimeLeft() {
+  public long getTimeLeftMillis() {
     if (this.isExpired()) return 0;
     return expires - System.currentTimeMillis();
   }

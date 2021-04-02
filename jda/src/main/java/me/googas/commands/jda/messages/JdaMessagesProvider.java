@@ -6,7 +6,7 @@ import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.utility.Strings;
 
 /** This is a default {@link MessagesProvider} to use if you don't want to create one of your own */
-public class DefaultMessagesProvider implements MessagesProvider {
+public class JdaMessagesProvider implements MessagesProvider {
 
   @NonNull
   @Override

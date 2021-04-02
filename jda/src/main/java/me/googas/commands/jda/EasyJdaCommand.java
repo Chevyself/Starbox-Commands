@@ -14,6 +14,16 @@ import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.time.Time;
 import net.dv8tion.jda.api.entities.User;
 
+/**
+ * This is the direct implementation of {@link EasyCommand} for the "JDA" module extending this
+ * class allows to register commands in the {@link CommandManager} using {@link
+ * CommandManager#register(EasyJdaCommand)} the creation of a reflection command using {@link
+ * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
+ *
+ * <p>To parse {@link AnnotatedCommand} is required to use the annotation {@link
+ * me.googas.commands.jda.annotations.Command} if you would like to create an extension the method
+ * to override is {@link #execute(CommandContext)}
+ */
 public abstract class EasyJdaCommand implements EasyCommand<CommandContext, EasyJdaCommand> {
 
   @NonNull protected final CommandManager manager;
@@ -22,6 +32,19 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
   @Getter @Setter private EasyPermission permission;
   @Getter @Setter private boolean excluded;
 
+  /**
+   * Create the command
+   *
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param permission the permission that the sender requires to execute the command {@link
+   *     me.googas.commands.jda.permissions.PermissionChecker#checkPermission(CommandContext,
+   *     EasyPermission)}
+   * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
+   *     is {@link ResultType#GENERIC}
+   * @param cooldown the time that users must wait until they can use the command again {@link
+   *     #checkCooldown(User, CommandContext)}
+   */
   public EasyJdaCommand(
       @NonNull CommandManager manager,
       EasyPermission permission,
@@ -33,16 +56,29 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
     this.cooldown = cooldown;
   }
 
+  /**
+   * Create the command
+   *
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
+   *     is {@link ResultType#GENERIC}
+   * @param cooldown the time that users must wait until they can use the command again {@link
+   *     #checkCooldown(User, CommandContext)}
+   */
   public EasyJdaCommand(@NonNull CommandManager manager, boolean excluded, @NonNull Time cooldown) {
     this(manager, null, excluded, cooldown);
   }
 
   /**
-   * Check the cooldown of the sender
+   * Check the cooldown of the sender. If there's still an instance of {@link CooldownUser} in
+   * {@link #cooldownUsers} a {@link Result} will be returned therefore the command will not be
+   * executed.
    *
-   * @param sender the sender of the command
+   * @param sender the sender of the command to check
    * @param context the context of the command
-   * @return an usage error if the sender is not allowed to use the command yet else null
+   * @return a {@link ResultType#ERROR} if the sender is not allowed to use the command yet else
+   *     null
    */
   public Result checkCooldown(@NonNull User sender, CommandContext context) {
     if (cooldown.toMillis() > 0) {
@@ -51,17 +87,18 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
       if (cooldownUser != null && !cooldownUser.isExpired()) {
         return new Result(
             ResultType.USAGE,
-            this.manager.getMessagesProvider().cooldown(cooldownUser.getTimeLeft(), context));
+            this.manager.getMessagesProvider().cooldown(cooldownUser.getTimeLeftMillis(), context));
       }
     }
     return null;
   }
 
   /**
-   * Get a cooldown user
+   * Get an instance of cooldown user. If the user is still in cooldown an instance of {@link
+   * CooldownUser} will be returned else null
    *
-   * @param sender the sender to check the cooldown
-   * @return a cooldown user if it exists
+   * @param sender the sender to get the {@link CooldownUser} if it is on cooldown
+   * @return an instance if the sender is in cooldown
    */
   public CooldownUser getCooldownUser(@NonNull User sender) {
     for (CooldownUser user : this.cooldownUsers) {
@@ -70,11 +107,26 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
     return null;
   }
 
+  /**
+   * Get the name of the command. This is used to execute the command as follows:
+   *
+   * <p>'[prefix][command_name]'
+   *
+   * @return the name of the command
+   */
   @NonNull
   public String getName() {
     return getAliases().get(0);
   }
 
+  /**
+   * Get the list of aliases of the command. This is used to execute the command as {@link
+   * #getName()}
+   *
+   * <p>'[prefix][command_alias]'
+   *
+   * @return the list of aliases
+   */
   @NonNull
   public abstract List<String> getAliases();
 

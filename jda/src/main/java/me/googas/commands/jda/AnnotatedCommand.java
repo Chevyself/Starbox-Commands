@@ -2,12 +2,14 @@ package me.googas.commands.jda;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
+import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.exceptions.type.SimpleException;
@@ -22,6 +24,12 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.time.Time;
 import net.dv8tion.jda.api.Permission;
 
+/**
+ * This is the direct extension of {@link EasyJdaCommand} for reflection commands this is returned
+ * from {@link CommandManager#parseCommands(Object)}
+ *
+ * <p>The methods that are annotated with {@link Command} represent of this commands
+ */
 public class AnnotatedCommand extends EasyJdaCommand
     implements ReflectCommand<CommandContext, EasyJdaCommand> {
 
@@ -29,21 +37,32 @@ public class AnnotatedCommand extends EasyJdaCommand
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
   @NonNull @Getter private final List<String> aliases;
-  @NonNull @Getter private final List<EasyJdaCommand> children;
+  @NonNull @Getter private final List<EasyJdaCommand> children = new ArrayList<>();
 
+  /**
+   * Create the command
+   *
+   * @param manager the manager that parsed the command
+   * @param command the annotation that will be used to get the name and aliases of the command
+   *     {@link Command#aliases()} whether to exclude the command {@link Command#excluded()} the
+   *     cooldown {@link Command#cooldown()} and the permission {@link Command#permission()}
+   * @param method the method to execute as the command see more in {@link #getMethod()}
+   * @param object the instance of the object used to invoke the method see more in {@link
+   *     #getObject()}
+   * @param arguments the list of arguments that are used to {@link #getObjects(EasyCommandContext)}
+   *     and invoke the {@link #getMethod()}
+   */
   public AnnotatedCommand(
       @NonNull CommandManager manager,
       @NonNull Command command,
       @NonNull Method method,
       @NonNull Object object,
-      @NonNull List<Argument<?>> arguments,
-      @NonNull List<EasyJdaCommand> children) {
+      @NonNull List<Argument<?>> arguments) {
     super(manager, command.excluded(), Time.of(command.cooldown()));
     this.method = method;
     this.object = object;
     this.arguments = arguments;
     this.aliases = Arrays.asList(command.aliases());
-    this.children = children;
     if (command.permission() != Permission.UNKNOWN || !command.node().isEmpty()) {
       this.setPermission(new SimplePermission(command.node(), command.permission()));
     }

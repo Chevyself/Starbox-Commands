@@ -41,9 +41,6 @@ import net.md_5.bungee.api.plugin.PluginManager;
  *              this, new BungeeMessagesProvider(), new BungeeProvidersRegistry());
  *
  * }</pre>
- *
- * You can learn more about it in {@link BungeeCommand} which is the main class for the
- * easy-commands Bungee plugin.
  */
 public class CommandManager implements EasyCommandManager<CommandContext, BungeeCommand> {
 
