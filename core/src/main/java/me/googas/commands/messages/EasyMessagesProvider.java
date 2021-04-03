@@ -52,7 +52,7 @@ public interface EasyMessagesProvider<T extends EasyCommandContext> {
   String invalidBoolean(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a {@link String} is not valid as {@link me.googas.commands.time.Time}
+   * The message sent when a {@link String} is not valid as {@link me.googas.utility.time.Time}
    *
    * @param string the string that is invalid
    * @param context the context of the command

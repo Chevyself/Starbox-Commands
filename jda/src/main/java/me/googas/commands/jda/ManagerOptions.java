@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import lombok.Data;
 import lombok.NonNull;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.time.Time;
-import me.googas.commands.time.unit.Unit;
+import me.googas.utility.time.Time;
+import me.googas.utility.time.unit.Unit;
 import net.dv8tion.jda.api.entities.Message;
 
 /**

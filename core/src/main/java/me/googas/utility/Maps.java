@@ -1,4 +1,4 @@
-package me.googas.commands.utility;
+package me.googas.utility;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package me.googas.commands.time.unit;
+package me.googas.utility.time.unit;
 
 import java.time.Duration;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.time.Time;
+import me.googas.utility.time.Time;
 
 /**
  * An enumeration implementing {@link EasyUnit} as an standard for {@link Time}

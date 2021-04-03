@@ -6,7 +6,7 @@ import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.type.EasyArgumentProvider;
-import me.googas.commands.time.Time;
+import me.googas.utility.time.Time;
 
 /**
  * Provides the {@link EasyCommandManager} with a {@link Time}

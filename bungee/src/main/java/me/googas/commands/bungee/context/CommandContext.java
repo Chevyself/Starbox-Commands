@@ -5,8 +5,8 @@ import lombok.experimental.Delegate;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.utility.Series;
-import me.googas.commands.utility.Strings;
+import me.googas.utility.Series;
+import me.googas.utility.Strings;
 import net.md_5.bungee.api.CommandSender;
 
 /** The context for bungee commands */

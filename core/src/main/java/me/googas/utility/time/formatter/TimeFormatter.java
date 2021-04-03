@@ -1,7 +1,7 @@
-package me.googas.commands.time.formatter;
+package me.googas.utility.time.formatter;
 
 import lombok.NonNull;
-import me.googas.commands.time.Time;
+import me.googas.utility.time.Time;
 
 /**
  * Implementations of this class convert {@link Time} into a readable {@link String} such as {@link

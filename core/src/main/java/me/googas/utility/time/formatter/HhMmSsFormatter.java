@@ -1,8 +1,8 @@
-package me.googas.commands.time.formatter;
+package me.googas.utility.time.formatter;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.time.Time;
+import me.googas.utility.time.Time;
 
 /**
  * Formats time into the 'Hh:Mm:Ss' format:

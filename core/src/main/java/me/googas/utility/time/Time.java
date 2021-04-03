@@ -1,4 +1,4 @@
-package me.googas.commands.time;
+package me.googas.utility.time;
 
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAmount;
@@ -9,9 +9,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.annotations.TimeAmount;
-import me.googas.commands.time.formatter.TimeFormatter;
-import me.googas.commands.time.unit.EasyUnit;
-import me.googas.commands.time.unit.Unit;
+import me.googas.utility.time.formatter.TimeFormatter;
+import me.googas.utility.time.unit.EasyUnit;
+import me.googas.utility.time.unit.Unit;
 
 /**
  * This class represents an amount of time such as: '1.3 years'
@@ -231,7 +231,7 @@ public class Time implements TemporalAmount {
   /**
    * Format this time in the given formatter
    *
-   * @see me.googas.commands.time.formatter.HhMmSsFormatter
+   * @see me.googas.utility.time.formatter.HhMmSsFormatter
    * @see TimeFormatter#format(Time)
    * @param formatter the time formatter to format this time
    * @return the formatted {@link String}

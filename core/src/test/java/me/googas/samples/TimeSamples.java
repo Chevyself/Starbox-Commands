@@ -1,7 +1,7 @@
 package me.googas.samples;
 
-import me.googas.commands.time.Time;
-import me.googas.commands.time.unit.Unit;
+import me.googas.utility.time.Time;
+import me.googas.utility.time.unit.Unit;
 
 public class TimeSamples {
 

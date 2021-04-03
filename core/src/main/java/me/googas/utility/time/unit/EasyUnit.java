@@ -1,14 +1,14 @@
-package me.googas.commands.time.unit;
+package me.googas.utility.time.unit;
 
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalUnit;
 import lombok.NonNull;
-import me.googas.commands.time.Time;
+import me.googas.utility.time.Time;
 
 /**
  * An unit of time such as seconds, minutes, days or years
  *
- * <p>The direct implementation to use in {@link me.googas.commands.time.Time} is {@link Unit} but
+ * <p>The direct implementation to use in {@link me.googas.utility.time.Time} is {@link Unit} but
  * classes implementing this interface should represent an unit that is used to measure time.
  */
 public interface EasyUnit extends TemporalUnit {

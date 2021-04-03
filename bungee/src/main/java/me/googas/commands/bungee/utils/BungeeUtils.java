@@ -2,8 +2,8 @@ package me.googas.commands.bungee.utils;
 
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.commands.utility.JsonUtils;
-import me.googas.commands.utility.Strings;
+import me.googas.utility.JsonUtils;
+import me.googas.utility.Strings;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
