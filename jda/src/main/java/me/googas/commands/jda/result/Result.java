@@ -8,25 +8,49 @@ import me.googas.commands.jda.utils.message.MessageQuery;
 import me.googas.commands.result.EasyResult;
 import net.dv8tion.jda.api.entities.Message;
 
-/** This is your general type of result */
+/**
+ * This is the implementation for {@link EasyResult} to be used in the execution of {@link
+ * me.googas.commands.jda.EasyJdaCommand}.
+ *
+ * <p>The result for {@link me.googas.commands.jda.EasyJdaCommand} must include
+ *
+ * <ul>
+ *   <li>{@link #type} which changes the output in the {@link
+ *       me.googas.commands.jda.listener.CommandListener}
+ *   <li>{@link #discordMessage} the message that will be send to the {@link
+ *       net.dv8tion.jda.api.entities.TextChannel} where the command was executed
+ *   <li>{@link #message} the content of the {@link #discordMessage} as a {@link String} if {@link
+ *       #discordMessage} is null then the content will be added to a {@link Message}
+ *   <li>{@link #success} which is the consumer of the {@link #discordMessage} after it is sent
+ * </ul>
+ */
 public class Result implements EasyResult {
 
-  /** The type of the result */
+  /**
+   * Which changes the output in the {@link me.googas.commands.jda.listener.CommandListener} depends
+   * on the command output
+   */
   @NonNull @Getter private final ResultType type;
-  /** The message send as a result. The discord message will be send over the message string */
+  /**
+   * The message that will be send to the {@link net.dv8tion.jda.api.entities.TextChannel} where the
+   * command was executed
+   */
   @Getter private final Message discordMessage;
-  /** A more simple message to send as a result */
+  /**
+   * The content of the {@link #discordMessage} as a {@link String} if {@link #discordMessage} is
+   * null then the content will be added to a {@link Message}
+   */
   private final String message;
-  /** The action to do with the message after it is sent */
+  /** Which is the consumer of the {@link #discordMessage} after it is sent */
   @Getter private final Consumer<Message> success;
 
   /**
    * Create an instance
    *
-   * @param type the type of the result
+   * @param type the type of the result depending on the command output
    * @param discordMessage the discord message to send
-   * @param message the message to send
-   * @param success the action to do after the message
+   * @param message the content of the message to send
+   * @param success the action to do after the message is sent
    */
   public Result(
       @NonNull ResultType type, Message discordMessage, String message, Consumer<Message> success) {
@@ -39,9 +63,9 @@ public class Result implements EasyResult {
   /**
    * Create an instance
    *
-   * @param type the type of the result
+   * @param type the type of the result depending on the command output
    * @param discordMessage the discord message to send
-   * @param success the action to do after the message
+   * @param success the action to do after the message is sent
    */
   public Result(
       @NonNull ResultType type, @NonNull Message discordMessage, Consumer<Message> success) {
@@ -51,7 +75,7 @@ public class Result implements EasyResult {
   /**
    * Create an instance
    *
-   * @param type the type of the result
+   * @param type the type of the result depending on the command output
    * @param discordMessage the discord message to send
    */
   public Result(@NonNull ResultType type, @NonNull Message discordMessage) {
@@ -61,9 +85,9 @@ public class Result implements EasyResult {
   /**
    * Create an instance
    *
-   * @param type the type of the result
-   * @param message the message to send
-   * @param success the action to do after the message
+   * @param type the type of the result depending on the command output
+   * @param message the content of the message to send
+   * @param success the action to do after the message is sent
    */
   public Result(@NonNull ResultType type, @NonNull String message, Consumer<Message> success) {
     this(type, null, message, success);
@@ -197,7 +221,10 @@ public class Result implements EasyResult {
     this(ResultType.GENERIC, query);
   }
 
-  /** Create an instance with no message */
+  /**
+   * Create an empty instance which will not send anything to the {@link
+   * net.dv8tion.jda.api.entities.TextChannel} where the command was executed
+   */
   public Result() {
     this(ResultType.GENERIC, null, null, null);
   }
