@@ -74,6 +74,11 @@ public class DefaultListenerOptions implements ListenerOptions {
    * ResultType} is {@link ResultType#isError()}
    */
   @NonNull private Color error = new Color(0xff0202);
+  /**
+   * Whether to handle {@link #handle(Throwable, CommandContext)} by sending the error to the {@link
+   * net.dv8tion.jda.api.entities.User} that execute the command
+   */
+  private boolean sendErrors = false;
 
   @NonNull
   private Color getColor(@NonNull ResultType type) {
@@ -170,5 +175,22 @@ public class DefaultListenerOptions implements ListenerOptions {
       }
     }
     return null;
+  }
+
+  @Override
+  public void handle(@NonNull Throwable fail, @NonNull CommandContext context) {
+    if (!isSendErrors()) return;
+    fail.printStackTrace();
+    context
+        .getMessage()
+        .getAuthor()
+        .openPrivateChannel()
+        .queue(
+            channel -> {
+              Message message =
+                  this.processResult(new Result(ResultType.ERROR, fail.getMessage()), context);
+              channel.sendMessage(message).queue();
+            },
+            failure -> {});
   }
 }

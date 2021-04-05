@@ -64,4 +64,14 @@ public interface ListenerOptions {
    *     Consumer} happens to be null nothing will be done using the message
    */
   Consumer<Message> processConsumer(Result result, @NonNull CommandContext context);
+
+  /**
+   * Handles any kind of error that is thrown in {@link
+   * me.googas.commands.jda.listener.CommandListener}
+   *
+   * @param fail any kind of exception thrown in {@link
+   *     me.googas.commands.jda.listener.CommandListener}
+   * @param context the context of the command execution
+   */
+  void handle(@NonNull Throwable fail, @NonNull CommandContext context);
 }

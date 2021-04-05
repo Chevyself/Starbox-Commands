@@ -70,9 +70,15 @@ public class CommandListener implements EventListener {
     Consumer<Message> consumer = getConsumer(result, context);
     if (response != null) {
       if (consumer != null && !(event.getMessage() instanceof FakeMessage)) {
-        event.getChannel().sendMessage(response).queue(consumer);
+        event
+            .getChannel()
+            .sendMessage(response)
+            .queue(consumer, fail -> listenerOptions.handle(fail, context));
       } else {
-        event.getChannel().sendMessage(response).queue();
+        event
+            .getChannel()
+            .sendMessage(response)
+            .queue(null, fail -> listenerOptions.handle(fail, context));
       }
     }
   }
