@@ -1,7 +1,7 @@
 package me.googas.commands.jda.messages;
 
 import lombok.NonNull;
-import me.googas.commands.jda.ManagerOptions;
+import me.googas.commands.jda.ListenerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.EasyMessagesProvider;
@@ -20,7 +20,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
 
   /**
    * @param context the context of the command
-   * @return The footer in case {@link ManagerOptions} embed messages is true
+   * @return The footer in case {@link ListenerOptions} embed messages is true
    */
   @NonNull
   String footer(CommandContext context);

@@ -40,14 +40,14 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * create an implementation of {@link PermissionChecker} or just use its default method {@link
  * PermissionChecker#checkPermission(CommandContext, EasyPermission)} which only checks for {@link
  * net.dv8tion.jda.api.Permission}, the instance of {@link JDA} is required to register the {@link
- * CommandListener}, the {@link ManagerOptions} changes some of the logic inside {@link
+ * CommandListener}, the {@link ListenerOptions} changes some of the logic inside {@link
  * CommandListener} and finally the prefix is the {@link String} that must contain the message at
  * the start
  *
  * <pre>{@code
  * JDA jda = ...
  * MessagesProvider messagesProvider = ...
- * new CommandManager(new JdaProvidersRegistry(messagesProvider), messagesProvider, () -&gt; messagesProvider, jda, new ManagerOptions(), "-");
+ * new CommandManager(new JdaProvidersRegistry(messagesProvider), messagesProvider, () -&gt; messagesProvider, jda, new ListenerOptions(), "-");
  * }</pre>
  */
 public class CommandManager implements EasyCommandManager<CommandContext, EasyJdaCommand> {
@@ -57,7 +57,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final PermissionChecker permissionChecker;
   @NonNull @Getter private final JDA jda;
-  @NonNull @Getter private final ManagerOptions managerOptions;
+  @NonNull @Getter private final ListenerOptions listenerOptions;
   @NonNull @Getter private final CommandListener listener;
 
   /**
@@ -69,7 +69,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
    * @param permissionChecker to check the permissions of {@link net.dv8tion.jda.api.entities.User}
    *     upon command execution
    * @param jda the instance to register the {@link #listener} on
-   * @param managerOptions to change some of the login in the {@link #listener}
+   * @param listenerOptions to change some of the login in the {@link #listener}
    * @param prefix the prefix that message must have to execute commands
    */
   public CommandManager(
@@ -77,14 +77,14 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
       @NonNull MessagesProvider messagesProvider,
       @NonNull PermissionChecker permissionChecker,
       @NonNull JDA jda,
-      @NonNull ManagerOptions managerOptions,
+      @NonNull ListenerOptions listenerOptions,
       @NonNull String prefix) {
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
     this.permissionChecker = permissionChecker;
     this.jda = jda;
-    this.managerOptions = managerOptions;
-    this.listener = new CommandListener(prefix, this, managerOptions, messagesProvider);
+    this.listenerOptions = listenerOptions;
+    this.listener = new CommandListener(prefix, this, listenerOptions, messagesProvider);
     jda.addEventListener(listener);
   }
 

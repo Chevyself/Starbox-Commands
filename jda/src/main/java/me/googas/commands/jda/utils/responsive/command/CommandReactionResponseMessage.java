@@ -1,12 +1,13 @@
 package me.googas.commands.jda.utils.responsive.command;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import lombok.NonNull;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.EasyJdaCommand;
+import me.googas.commands.jda.ListenerOptions;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.result.Result;
-import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
 import me.googas.commands.jda.utils.responsive.ReactionResponse;
 import net.dv8tion.jda.api.entities.Message;
@@ -58,8 +59,12 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
             name);
     Result result = this.getCommand().execute(context);
     if (result != null) {
-      EmbedFactory.fromResult(result, manager.getListener(), context)
-          .send(context, msg -> manager.getManagerOptions().getErrorDeleteConsumer());
+      ListenerOptions options = getCommandManager().getListenerOptions();
+      Message resultMessage = options.processResult(result, context);
+      Consumer<Message> consumer = options.processConsumer(result, context);
+      if (resultMessage != null) {
+        context.getChannel().sendMessage(resultMessage).queue(consumer);
+      }
     }
     return false;
   }

@@ -3,8 +3,6 @@ package me.googas.commands.jda.result;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.jda.utils.embeds.EmbedQuery;
-import me.googas.commands.jda.utils.message.MessageQuery;
 import me.googas.commands.result.EasyResult;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -96,129 +94,49 @@ public class Result implements EasyResult {
   /**
    * Create an instance
    *
-   * @param type the type of the result
-   * @param message the message to send
+   * @param type the type of the result depending on the command output
+   * @param message the content of the message to send
    */
   public Result(@NonNull ResultType type, @NonNull String message) {
     this(type, message, null);
   }
 
   /**
-   * Create an instance
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
    *
-   * @param type the type of the result
-   * @param query the message query to send
-   * @param success the action to do after the message
-   */
-  public Result(@NonNull ResultType type, @NonNull MessageQuery query, Consumer<Message> success) {
-    this(type, query.build(), null, success);
-  }
-
-  /**
-   * Create an instance
-   *
-   * @param type the type of the result
-   * @param query the message query to send
-   */
-  public Result(@NonNull ResultType type, @NonNull MessageQuery query) {
-    this(type, query, null);
-  }
-
-  /**
-   * Create an instance
-   *
-   * @param type the type of the result
-   * @param query the embed query to send
-   * @param success the action to do after the message
-   */
-  public Result(@NonNull ResultType type, @NonNull EmbedQuery query, Consumer<Message> success) {
-    this(type, query.getAsMessageQuery().build(), null, success);
-  }
-
-  /**
-   * Create an instance
-   *
-   * @param type the type of the result
-   * @param query the embed query to send
-   */
-  public Result(@NonNull ResultType type, @NonNull EmbedQuery query) {
-    this(type, query.getAsMessageQuery().build(), null);
-  }
-
-  /**
-   * Create an instance with generic result type
-   *
-   * @param discordMessage the message to send
-   * @param success the action to do after the message
+   * @param discordMessage the discord message to send
+   * @param success the action to do after the message is sent
    */
   public Result(@NonNull Message discordMessage, Consumer<Message> success) {
     this(ResultType.GENERIC, discordMessage, success);
   }
 
   /**
-   * Create an instance with generic result type
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
    *
-   * @param discordMessage the message to send
+   * @param discordMessage the discord message to send
    */
   public Result(@NonNull Message discordMessage) {
     this(ResultType.GENERIC, discordMessage);
   }
 
   /**
-   * Create an instance with generic result type
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
    *
-   * @param message the message to send
-   * @param success the action to do after the message
+   * @param message the content of the message to send
+   * @param success the action to do after the message is sent
    */
   public Result(@NonNull String message, Consumer<Message> success) {
     this(ResultType.GENERIC, message, success);
   }
 
   /**
-   * Create an instance with generic result type
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
    *
-   * @param message the message to send
+   * @param message the content of the message to send
    */
   public Result(@NonNull String message) {
     this(ResultType.GENERIC, message);
-  }
-
-  /**
-   * Create an instance with generic result type
-   *
-   * @param query the message query to send
-   * @param success the action to do after the message
-   */
-  public Result(@NonNull MessageQuery query, Consumer<Message> success) {
-    this(ResultType.GENERIC, query, success);
-  }
-
-  /**
-   * Create an instance with generic result type
-   *
-   * @param query the message query to send
-   */
-  public Result(@NonNull MessageQuery query) {
-    this(ResultType.GENERIC, query);
-  }
-
-  /**
-   * Create an instance with generic result type
-   *
-   * @param query the embed query to send
-   * @param success the action to do after the message
-   */
-  public Result(@NonNull EmbedQuery query, Consumer<Message> success) {
-    this(ResultType.GENERIC, query, success);
-  }
-
-  /**
-   * Create an instance with generic result type
-   *
-   * @param query the embed query to send
-   */
-  public Result(@NonNull EmbedQuery query) {
-    this(ResultType.GENERIC, query);
   }
 
   /**

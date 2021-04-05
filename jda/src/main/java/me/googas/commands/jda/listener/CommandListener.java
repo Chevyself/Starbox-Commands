@@ -6,21 +6,15 @@ import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.EasyJdaCommand;
-import me.googas.commands.jda.ManagerOptions;
+import me.googas.commands.jda.ListenerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.jda.utils.embeds.EmbedFactory;
 import me.googas.commands.jda.utils.message.FakeMessage;
-import me.googas.commands.jda.utils.message.MessagesFactory;
 import me.googas.utility.Series;
-import me.googas.utility.Strings;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -31,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public class CommandListener implements EventListener {
 
   @NonNull @Getter private final CommandManager manager;
-  @NonNull @Getter private final ManagerOptions managerOptions;
+  @NonNull @Getter private final ListenerOptions listenerOptions;
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter @Setter private String prefix;
 
@@ -40,23 +34,18 @@ public class CommandListener implements EventListener {
    *
    * @param prefix the prefix to listen
    * @param manager the command manager
-   * @param managerOptions the options of the manager
+   * @param listenerOptions the options of the manager
    * @param messagesProvider the provider of messages
    */
   public CommandListener(
       @NonNull String prefix,
       @NonNull CommandManager manager,
-      @NonNull ManagerOptions managerOptions,
+      @NonNull ListenerOptions listenerOptions,
       @NonNull MessagesProvider messagesProvider) {
     this.prefix = prefix;
     this.manager = manager;
-    this.managerOptions = managerOptions;
+    this.listenerOptions = listenerOptions;
     this.messagesProvider = messagesProvider;
-  }
-
-  public void dispatch(@NonNull User user, Member member, Message message) {
-    this.onMessageReceivedEvent(
-        new MessageReceivedEvent(this.manager.getJda(), 0, new FakeMessage(user, member, message)));
   }
 
   /**
@@ -71,16 +60,14 @@ public class CommandListener implements EventListener {
     if (!commandName.startsWith(this.prefix)) {
       return;
     }
-    if (managerOptions.isDeleteCommands() && event.getChannelType() != ChannelType.PRIVATE) {
-      event.getMessage().delete().queue();
-    }
+    listenerOptions.preCommand(event, commandName, strings);
     commandName = commandName.substring(prefix.length());
     EasyJdaCommand command = manager.getCommand(commandName);
     CommandContext context =
         getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = getResult(command, commandName, context);
     Message response = getMessage(result, context);
-    Consumer<Message> consumer = getConsumer(result);
+    Consumer<Message> consumer = getConsumer(result, context);
     if (response != null) {
       if (consumer != null && !(event.getMessage() instanceof FakeMessage)) {
         event.getChannel().sendMessage(response).queue(consumer);
@@ -94,53 +81,22 @@ public class CommandListener implements EventListener {
    * Get the action to do with the message sent from a result
    *
    * @param result the result to get the action from
+   * @param context the context of the command execution
    * @return the action from the result or null if it doesn't have any
    */
-  public Consumer<Message> getConsumer(Result result) {
-    if (result != null) {
-      if (result.getSuccess() != null) {
-        return result.getSuccess();
-      } else if (managerOptions.isDeleteErrors() && result.getType().isError()) {
-        return managerOptions.getErrorDeleteConsumer();
-      } else if (managerOptions.isDeleteSuccess() && !result.getType().isError()) {
-        return managerOptions.getSuccessDeleteConsumer();
-      }
-    }
-    return null;
+  public Consumer<Message> getConsumer(Result result, @NonNull CommandContext context) {
+    return listenerOptions.processConsumer(result, context);
   }
 
   /**
    * Get the message that will be send from a result
    *
    * @param result the result to get the message from
-   * @param context the context of the command
+   * @param context the context of the command execution
    * @return the message
    */
   private Message getMessage(Result result, CommandContext context) {
-    if (result != null && result.getDiscordMessage() == null) {
-      if (managerOptions.isEmbedMessages()) {
-        if (result.getMessage() != null) {
-          return EmbedFactory.fromResult(result, this, context).getAsMessageQuery().build();
-        } else {
-          return null;
-        }
-      } else {
-        if (result.getMessage() != null) {
-          return MessagesFactory.fromString(
-                  Strings.format(
-                      messagesProvider.response(
-                          result.getType().getTitle(messagesProvider, context),
-                          result.getMessage(),
-                          context)))
-              .build();
-        } else {
-          return null;
-        }
-      }
-    } else if (result != null) {
-      return result.getDiscordMessage();
-    }
-    return null;
+    return this.listenerOptions.processResult(result, context);
   }
 
   /**

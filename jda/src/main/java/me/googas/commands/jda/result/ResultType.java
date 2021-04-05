@@ -2,7 +2,6 @@ package me.googas.commands.jda.result;
 
 import java.awt.*;
 import lombok.NonNull;
-import me.googas.commands.jda.ManagerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 
@@ -46,23 +45,6 @@ public enum ResultType {
   public String getTitle(MessagesProvider provider, CommandContext context) {
     if (provider != null) return provider.getTitle(this, context);
     return title;
-  }
-
-  /**
-   * Get the color that represents the result.
-   *
-   * <p>It applies when {@link ManagerOptions} has embed messages as true
-   *
-   * @param options the manager options to get the color from
-   * @return the color
-   */
-  @NonNull
-  public Color getColor(@NonNull ManagerOptions options) {
-    if (isError) {
-      return options.getError();
-    } else {
-      return options.getSuccess();
-    }
   }
 
   /**
