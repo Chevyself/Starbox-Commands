@@ -125,13 +125,14 @@ public class DefaultListenerOptions implements ListenerOptions {
     if (result != null && result.getDiscordMessage() == null) {
       MessageBuilder builder = new MessageBuilder();
       MessagesProvider messagesProvider = context.getMessagesProvider();
+      String thumbnail = messagesProvider.thumbnailUrl(context);
       if (this.isEmbedMessages()) {
         if (result.getMessage() != null) {
           EmbedBuilder embedBuilder =
               new EmbedBuilder()
                   .setTitle(result.getType().getTitle(messagesProvider, context))
                   .setDescription(result.getMessage())
-                  .setThumbnail(messagesProvider.thumbnailUrl(context))
+                  .setThumbnail(thumbnail.isEmpty() ? null : thumbnail)
                   .setFooter(messagesProvider.footer(context))
                   .setColor(this.getColor(result.getType()));
           return builder.setEmbed(embedBuilder.build()).build();
