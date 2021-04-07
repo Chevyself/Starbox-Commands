@@ -87,9 +87,8 @@ public class BukkitMessagesProvider implements MessagesProvider {
   public @NonNull String helpTopicFull(
       @NonNull String shortText, @NonNull String commands, @NonNull Plugin plugin) {
     return BukkitUtils.format(
-        "&7%short% \n &7Title: &e%name% \n &7Version: &e%version% \n &7Description: &e%description% \n &7Commands (use /help <command>): &e%commands%",
-        Maps.builder("short", shortText)
-            .append("name", plugin.getName())
+        "&7Title: &e%name% \n &7Version: &e%version% \n &7Description: &e%description% \n &7Commands (use /help <command>): &e%commands%",
+        Maps.builder("name", plugin.getName())
             .append(
                 "description",
                 plugin.getDescription().getDescription() == null

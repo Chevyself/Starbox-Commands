@@ -169,8 +169,11 @@ public class AnnotatedCommand extends EasyBukkitCommand
       @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings)
       throws IllegalArgumentException {
     if (strings.length == 1) {
-      return StringUtil.copyPartialMatches(
-          strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
+      List<String> children =
+          StringUtil.copyPartialMatches(
+              strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
+      children.addAll(reflectTabComplete(sender, strings));
+      return children;
     } else if (strings.length >= 2) {
       final EasyBukkitCommand command = this.getChildren(strings[0]);
       if (command != null) {

@@ -77,7 +77,7 @@ public class AnnotatedCommand extends BungeeCommand
   }
 
   @NonNull
-  public Iterable<String> onReflectTabComplete(CommandSender sender, String[] strings) {
+  public List<String> onReflectTabComplete(CommandSender sender, String[] strings) {
     CommandContext context =
         new CommandContext(
             sender, strings, manager.getMessagesProvider(), manager.getProvidersRegistry());
@@ -168,7 +168,10 @@ public class AnnotatedCommand extends BungeeCommand
   @Override
   public Iterable<String> onTabComplete(CommandSender sender, String[] strings) {
     if (strings.length == 1) {
-      return Strings.copyPartials(strings[strings.length - 1], this.getChildrenNames());
+      List<String> children =
+          Strings.copyPartials(strings[strings.length - 1], this.getChildrenNames());
+      children.addAll(onReflectTabComplete(sender, strings));
+      return children;
     } else if (strings.length >= 2) {
       final BungeeCommand command = this.getChildren(strings[0]);
       if (command != null) {
