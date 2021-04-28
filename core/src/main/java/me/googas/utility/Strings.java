@@ -1,6 +1,8 @@
 package me.googas.utility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -131,5 +133,38 @@ public class Strings {
     List<String> matching = new ArrayList<>();
     return Series.addIf(
         matching, list, string -> string.toLowerCase().startsWith(toMatch.toLowerCase()));
+  }
+
+  /**
+   * Builds the aliases usage from a collection of Strings.
+   *
+   * If the collection looks like: ["hello", "world", "foo"]
+   *
+   * The returning string will be: hello|world|foo
+   *
+   * @param aliases the collection of aliases for the string
+   * @return the built string
+   * @throws IllegalArgumentException if the collection is empty
+   */
+  @NonNull
+  public static String buildUsageAliases(@NonNull Collection<String> aliases) {
+    if (aliases.isEmpty()) throw new IllegalArgumentException("Aliases collection may not be empty!");
+    StringBuilder builder = new StringBuilder();
+    for (String alias : aliases) {
+      builder.append(alias).append("|");
+    }
+    return builder.deleteCharAt(builder.length() - 1).toString();
+  }
+
+  /**
+   * Builds the aliases usage from an array of Strings
+   *
+   * @see #buildUsageAliases(Collection)
+   * @param aliases the array of aliases for the string
+   * @return the built string
+   * @throws IllegalArgumentException if the array is empty
+   */
+  public static String buildUsageAliases(@NonNull String... aliases) {
+    return buildUsageAliases(Arrays.asList(aliases));
   }
 }

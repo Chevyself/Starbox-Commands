@@ -21,6 +21,7 @@ import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.utility.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
@@ -63,7 +64,7 @@ public class AnnotatedCommand extends EasyBukkitCommand
     super(
         command.aliases()[0],
         command.description(),
-        "",
+        "/" + Strings.buildUsageAliases(command.aliases()) + " " + Argument.generateUsage(arguments),
         command.aliases().length > 1
             ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
             : new ArrayList<>(),

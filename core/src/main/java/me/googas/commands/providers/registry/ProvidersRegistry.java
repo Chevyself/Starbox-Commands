@@ -8,6 +8,7 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.BooleanProvider;
 import me.googas.commands.providers.DoubleProvider;
+import me.googas.commands.providers.FloatProvider;
 import me.googas.commands.providers.IntegerProvider;
 import me.googas.commands.providers.JoinedStringsProvider;
 import me.googas.commands.providers.LongProvider;
@@ -42,6 +43,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
   public ProvidersRegistry(@NonNull EasyMessagesProvider<T> messages) {
     this.addProvider(new BooleanProvider<>(messages));
     this.addProvider(new DoubleProvider<>(messages));
+    this.addProvider(new FloatProvider<>(messages));
     this.addProvider(new IntegerProvider<>(messages));
     this.addProvider(new JoinedStringsProvider<>());
     this.addProvider(new LongProvider<>(messages));

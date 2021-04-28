@@ -62,22 +62,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  * }
  * }</pre>
  *
- * A list of arguments may also be used to get the usage of a command. From <a
- * href="https://en.wikipedia.org/wiki/Usage_message">Wikipedia</a>
- *
- * <ul>
- *   <li>Required arguments are indicated with angles brackets: '&lt;&gt;' ex: '&lt;name&gt;'
- *   <li>Optional arguments are indicated with square brackets: '[]' ex: '[name]'
- *   <li>Flags start with the vertical bar and are indicated using square brackets: ex: [-f]
- *   <li>Flags with a value are just like normal flags but the value is separated with a single
- *       space ' ' ex: [-f &lt;value&gt;] They can also contain a key and a value as such: [-f
- *       &lt;key&gt;=&lt;value&gt;] with the equals sign '=' separating the key and value
- * </ul>
- *
- * Here's an example:
- *
- * <p>Usage: command [-f] [--help | -H] [-c &lt;child_name&gt;] [-p &lt;number&gt;] &lt;arg1&gt;
- * &lt;arg2&gt; [arg3]
+ * To know how to create usage messages check: {@link #generateUsage(List)}
  *
  * @param <O> the type of the class that the argument has to supply
  */
@@ -247,6 +232,45 @@ public interface Argument<O> {
     } else {
       return new SingleArgument<>(name, description, suggestions, parameter, required, position);
     }
+  }
+
+  /**
+   * Generates an usage message for the provided {@link List} of {@link Argument}
+   *
+   * <p>A list of arguments may also be used to get the usage of a command. From <a
+   * href="https://en.wikipedia.org/wiki/Usage_message">Wikipedia</a>
+   *
+   * <ul>
+   *   <li>Required arguments are indicated with angles brackets: '&lt;&gt;' ex: '&lt;name&gt;'
+   *   <li>Optional arguments are indicated with square brackets: '[]' ex: '[name]'
+   *   <li>Flags start with the vertical bar and are indicated using square brackets: ex: [-f]
+   *   <li>Flags with a value are just like normal flags but the value is separated with a single
+   *       space ' ' ex: [-f &lt;value&gt;] They can also contain a key and a value as such: [-f
+   *       &lt;key&gt;=&lt;value&gt;] with the equals sign '=' separating the key and value
+   * </ul>
+   *
+   * Here's an example:
+   *
+   * <p>Usage: command [-f] [--help | -H] [-c &lt;child_name&gt;] [-p &lt;number&gt;] &lt;arg1&gt;
+   * &lt;arg2&gt; [arg3]
+   *
+   * @param arguments the list of arguments used to generate the usage message
+   * @return the usage message which may be empty if the {@link List} is empty or there's no {@link
+   *     SingleArgument}
+   */
+  @NonNull
+  static String generateUsage(@NonNull List<Argument<?>> arguments) {
+    StringBuilder builder = new StringBuilder();
+    for (Argument<?> argument : arguments) {
+      if (!(argument instanceof SingleArgument)) continue;
+      String name = ((SingleArgument<?>) argument).getName();
+      if (((SingleArgument<?>) argument).isRequired()) {
+        builder.append("<").append(name).append("> ");
+      } else {
+        builder.append("[").append(name).append("] ");
+      }
+    }
+    return builder.toString();
   }
 
   /**
