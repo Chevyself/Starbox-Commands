@@ -131,6 +131,12 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
   @NonNull
   public abstract List<String> getAliases();
 
+  /**
+   * This is called after {@link #execute(CommandContext)} if no children command is executed
+   *
+   * @param context the context to execute this command
+   * @return the result of the command execution
+   */
   abstract Result run(@NonNull CommandContext context);
 
   @Override
