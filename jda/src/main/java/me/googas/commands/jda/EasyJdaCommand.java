@@ -1,5 +1,6 @@
 package me.googas.commands.jda;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -130,8 +131,27 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
   @NonNull
   public abstract List<String> getAliases();
 
+  abstract Result run(@NonNull CommandContext context);
+
   @Override
-  public abstract Result execute(@NonNull CommandContext context);
+  public Result execute(@NonNull CommandContext context) {
+    @NonNull String[] strings = context.getStrings();
+    if (strings.length >= 1) {
+      EasyJdaCommand command = this.getChildren(strings[0]);
+      if (command != null) {
+        return command.execute(
+            new CommandContext(
+                context.getMessage(),
+                context.getSender(),
+                Arrays.copyOfRange(strings, 1, strings.length),
+                context.getChannel(),
+                context.getMessagesProvider(),
+                context.getRegistry(),
+                command.getName()));
+      }
+    }
+    return this.run(context);
+  }
 
   @Override
   public boolean hasAlias(@NonNull String alias) {

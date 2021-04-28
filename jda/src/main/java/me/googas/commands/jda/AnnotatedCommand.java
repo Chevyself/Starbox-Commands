@@ -79,7 +79,7 @@ public class AnnotatedCommand extends EasyJdaCommand
   }
 
   @Override
-  public Result execute(@NonNull CommandContext context) {
+  public Result run(@NonNull CommandContext context) {
     Result result =
         this.manager.getPermissionChecker().checkPermission(context, this.getPermission());
     if (result != null) {
