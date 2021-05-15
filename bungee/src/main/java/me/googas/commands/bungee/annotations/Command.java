@@ -5,7 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** This allows the command manager to identify a methods as a command */
+/**
+ * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
+ * me.googas.commands.bungee.CommandManager#parseCommands(Object)} it tells it that the {@link
+ * java.lang.reflect.Method} must create a {@link me.googas.commands.bungee.AnnotatedCommand}
+ *
+ * @see me.googas.commands.bungee.CommandManager#parseCommands(Object)
+ * @see me.googas.commands.bungee.AnnotatedCommand
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Command {

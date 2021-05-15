@@ -31,6 +31,34 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
   EasyCommandManager<C, T> register(@NonNull T command);
 
   /**
+   * Register the commands contained inside the class of the provided object. This will execute
+   * {@link #parseCommands(Object)} to later {@link #registerAll(Collection)}
+   *
+   * @param object the object to parse the commands from
+   * @return this same command manager instance to allow chain method calls
+   */
+  @NonNull
+  default EasyCommandManager<C, T> register(@NonNull Object object) {
+    this.registerAll(this.parseCommands(object));
+    return this;
+  }
+
+  /**
+   * Register all the objects in an array. This will loop around each object to execute {@link
+   * #register(Object)}
+   *
+   * @param objects the objects to parse and register commands from
+   * @return this same command manager instance to allow chain method calls
+   */
+  @NonNull
+  default EasyCommandManager<C, T> registerAll(@NonNull Object... objects) {
+    for (Object object : objects) {
+      this.register(object);
+    }
+    return this;
+  }
+
+  /**
    * Parse the {@link ReflectCommand} from the provided object. This depends on each implementation
    * of the command manager.
    *

@@ -8,7 +8,14 @@ import lombok.NonNull;
 import me.googas.commands.annotations.TimeAmount;
 import net.dv8tion.jda.api.Permission;
 
-/** This annotation is used to tell what method is a command inside a class */
+/**
+ * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
+ * me.googas.commands.jda.CommandManager#parseCommands(Object)} it tells it that the {@link
+ * java.lang.reflect.Method} must create a {@link me.googas.commands.jda.AnnotatedCommand}
+ *
+ * @see me.googas.commands.jda.CommandManager#parseCommands(Object)
+ * @see me.googas.commands.jda.AnnotatedCommand
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Command {

@@ -111,4 +111,25 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bungee
     return new AnnotatedCommand(
         command, new ArrayList<>(), this, object, method, Argument.parseArguments(method));
   }
+
+  @Override
+  public @NonNull CommandManager register(@NonNull Object object) {
+    return (CommandManager) EasyCommandManager.super.register(object);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(@NonNull Object... objects) {
+    return (CommandManager) EasyCommandManager.super.register(objects);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(
+      @NonNull Collection<? extends BungeeCommand> commands) {
+    return (CommandManager) EasyCommandManager.super.register(commands);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(@NonNull BungeeCommand... commands) {
+    return (CommandManager) EasyCommandManager.super.register(commands);
+  }
 }

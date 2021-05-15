@@ -138,9 +138,9 @@ public class Strings {
   /**
    * Builds the aliases usage from a collection of Strings.
    *
-   * If the collection looks like: ["hello", "world", "foo"]
+   * <p>If the collection looks like: ["hello", "world", "foo"]
    *
-   * The returning string will be: hello|world|foo
+   * <p>The returning string will be: hello|world|foo
    *
    * @param aliases the collection of aliases for the string
    * @return the built string
@@ -148,7 +148,8 @@ public class Strings {
    */
   @NonNull
   public static String buildUsageAliases(@NonNull Collection<String> aliases) {
-    if (aliases.isEmpty()) throw new IllegalArgumentException("Aliases collection may not be empty!");
+    if (aliases.isEmpty())
+      throw new IllegalArgumentException("Aliases collection may not be empty!");
     StringBuilder builder = new StringBuilder();
     for (String alias : aliases) {
       builder.append(alias).append("|");

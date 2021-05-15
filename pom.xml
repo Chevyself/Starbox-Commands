@@ -20,6 +20,7 @@
         <module>bungee</module>
         <module>core</module>
         <module>jda</module>
+        <module>system</module>
     </modules>
 
     <build>

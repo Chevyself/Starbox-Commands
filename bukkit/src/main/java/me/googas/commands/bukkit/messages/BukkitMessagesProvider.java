@@ -7,7 +7,7 @@ import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.utility.Maps;
 import org.bukkit.plugin.Plugin;
 
-/** The default messages provider for bukkit */
+/** The default {@link MessagesProvider} for Bukkit */
 public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override

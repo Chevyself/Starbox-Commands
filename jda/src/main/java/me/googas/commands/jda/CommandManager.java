@@ -142,4 +142,25 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
     return new AnnotatedCommand(
         this, method.getAnnotation(Command.class), method, object, Argument.parseArguments(method));
   }
+
+  @Override
+  public @NonNull CommandManager register(@NonNull Object object) {
+    return (CommandManager) EasyCommandManager.super.register(object);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(@NonNull Object... objects) {
+    return (CommandManager) EasyCommandManager.super.register(objects);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(
+      @NonNull Collection<? extends EasyJdaCommand> commands) {
+    return (CommandManager) EasyCommandManager.super.register(commands);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(@NonNull EasyJdaCommand... commands) {
+    return (CommandManager) EasyCommandManager.super.register(commands);
+  }
 }

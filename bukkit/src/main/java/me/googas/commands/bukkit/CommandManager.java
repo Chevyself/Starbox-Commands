@@ -155,4 +155,25 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
         this,
         new ArrayList<>());
   }
+
+  @Override
+  public @NonNull CommandManager register(@NonNull Object object) {
+    return (CommandManager) EasyCommandManager.super.register(object);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(@NonNull Object... objects) {
+    return (CommandManager) EasyCommandManager.super.register(objects);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(
+      @NonNull Collection<? extends EasyBukkitCommand> commands) {
+    return (CommandManager) EasyCommandManager.super.register(commands);
+  }
+
+  @Override
+  public @NonNull CommandManager registerAll(@NonNull EasyBukkitCommand... commands) {
+    return (CommandManager) EasyCommandManager.super.register(commands);
+  }
 }

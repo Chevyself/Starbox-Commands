@@ -64,7 +64,10 @@ public class AnnotatedCommand extends EasyBukkitCommand
     super(
         command.aliases()[0],
         command.description(),
-        "/" + Strings.buildUsageAliases(command.aliases()) + " " + Argument.generateUsage(arguments),
+        "/"
+            + Strings.buildUsageAliases(command.aliases())
+            + " "
+            + Argument.generateUsage(arguments),
         command.aliases().length > 1
             ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
             : new ArrayList<>(),
