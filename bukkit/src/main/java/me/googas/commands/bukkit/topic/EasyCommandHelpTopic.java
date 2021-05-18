@@ -52,14 +52,14 @@ class EasyCommandHelpTopic extends HelpTopic {
       EasyCommandHelpTopic parent,
       @NonNull MessagesProvider provider) {
     this.provider = provider;
-    this.amendedPermission = getAmendedPermission(command);
+    this.amendedPermission = EasyCommandHelpTopic.getAmendedPermission(command);
     this.name = provider.commandName(command, parent == null ? null : parent.getName());
     this.shortText = provider.commandShortText(command);
     this.fullText =
         provider.commandFullText(
             command, this.shortText, this.buildChildren(command), command.getUsage());
     for (EasyBukkitCommand child : command.getChildren()) {
-      helpMap.addTopic(new EasyCommandHelpTopic(child, this, provider));
+      EasyCommandHelpTopic.helpMap.addTopic(new EasyCommandHelpTopic(child, this, provider));
     }
   }
 
@@ -87,7 +87,7 @@ class EasyCommandHelpTopic extends HelpTopic {
     StringBuilder builder = new StringBuilder();
     final Collection<EasyBukkitCommand> commands = command.getChildren();
     for (EasyBukkitCommand child : commands) {
-      builder.append(provider.childCommand(child, command));
+      builder.append(this.provider.childCommand(child, command));
     }
     return builder.toString();
   }

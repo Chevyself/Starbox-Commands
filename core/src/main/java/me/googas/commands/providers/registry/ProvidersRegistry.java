@@ -121,7 +121,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
   @NonNull
   public Object getObject(@NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (EasyContextualProvider<?, T> provider : getProviders(clazz)) {
+    for (EasyContextualProvider<?, T> provider : this.getProviders(clazz)) {
       if (provider instanceof EasyExtraArgumentProvider) {
         return ((EasyExtraArgumentProvider<?, T>) provider).getObject(context);
       }
@@ -151,7 +151,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
   @NonNull
   public Object fromString(@NonNull String string, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (EasyContextualProvider<?, T> provider : getProviders(clazz)) {
+    for (EasyContextualProvider<?, T> provider : this.getProviders(clazz)) {
       if (provider instanceof EasyArgumentProvider) {
         return ((EasyArgumentProvider<?, T>) provider).fromString(string, context);
       }
@@ -180,7 +180,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
   @NonNull
   public Object fromStrings(@NonNull String[] strings, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (EasyContextualProvider<?, T> provider : getProviders(clazz)) {
+    for (EasyContextualProvider<?, T> provider : this.getProviders(clazz)) {
       if (provider instanceof EasyMultipleArgumentProvider) {
         return ((EasyMultipleArgumentProvider<?, T>) provider).fromStrings(strings, context);
       }

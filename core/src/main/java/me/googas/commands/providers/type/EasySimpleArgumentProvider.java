@@ -20,7 +20,7 @@ public interface EasySimpleArgumentProvider<O> {
    * @return true if it provides it
    */
   default boolean provides(@NonNull Class<?> clazz) {
-    return clazz.isAssignableFrom(getClazz());
+    return clazz.isAssignableFrom(this.getClazz());
   }
 
   /**

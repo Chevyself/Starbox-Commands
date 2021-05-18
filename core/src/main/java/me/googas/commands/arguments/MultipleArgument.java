@@ -51,9 +51,9 @@ public class MultipleArgument<O> extends SingleArgument<O> {
   public String toString() {
     return "MultipleArgument{"
         + "minSize="
-        + minSize
+        + this.minSize
         + ", maxSize="
-        + maxSize
+        + this.maxSize
         + "} "
         + super.toString();
   }

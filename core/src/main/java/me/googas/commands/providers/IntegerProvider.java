@@ -39,7 +39,7 @@ public class IntegerProvider<T extends EasyCommandContext>
     try {
       return Integer.parseInt(string);
     } catch (NumberFormatException e) {
-      throw new ArgumentProviderException(messagesProvider.invalidInteger(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidInteger(string, context));
     }
   }
 

@@ -38,7 +38,7 @@ public class PlayerProvider implements BukkitArgumentProvider<Player> {
 
   @Override
   public @NonNull List<String> getSuggestions(@NonNull String string, CommandContext context) {
-    return getPlayerNames();
+    return PlayerProvider.getPlayerNames();
   }
 
   @Override
@@ -54,7 +54,7 @@ public class PlayerProvider implements BukkitArgumentProvider<Player> {
     if (player != null) {
       return player;
     } else {
-      throw new ArgumentProviderException(messagesProvider.invalidPlayer(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidPlayer(string, context));
     }
   }
 }

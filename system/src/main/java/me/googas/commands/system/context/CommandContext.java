@@ -19,7 +19,7 @@ public class CommandContext implements EasyCommandContext {
   @NonNull @Getter private final String[] strings;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> registry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter String string;
+  @NonNull @Getter final String string;
 
   /**
    * Create the command context
@@ -46,7 +46,7 @@ public class CommandContext implements EasyCommandContext {
 
   @Override
   public boolean hasFlag(@NonNull String flag) {
-    for (String string : strings) {
+    for (String string : this.strings) {
       if (string.equalsIgnoreCase(flag)) return true;
     }
     return false;

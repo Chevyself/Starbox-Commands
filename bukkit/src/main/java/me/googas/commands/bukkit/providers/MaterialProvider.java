@@ -37,11 +37,11 @@ public class MaterialProvider implements BukkitArgumentProvider<Material> {
         string = string.substring(10);
       }
       if (string.isEmpty()) {
-        throw new ArgumentProviderException(messagesProvider.invalidMaterialEmpty(context));
+        throw new ArgumentProviderException(this.messagesProvider.invalidMaterialEmpty(context));
       }
       return Material.valueOf(string.toUpperCase());
     } catch (IllegalArgumentException e) {
-      throw new ArgumentProviderException(messagesProvider.invalidMaterial(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidMaterial(string, context));
     }
   }
 

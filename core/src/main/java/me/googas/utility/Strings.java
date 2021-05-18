@@ -166,6 +166,6 @@ public class Strings {
    * @throws IllegalArgumentException if the array is empty
    */
   public static String buildUsageAliases(@NonNull String... aliases) {
-    return buildUsageAliases(Arrays.asList(aliases));
+    return Strings.buildUsageAliases(Arrays.asList(aliases));
   }
 }

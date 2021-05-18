@@ -108,7 +108,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
   @NonNull
   @Override
   public CommandManager register(@NonNull EasyBukkitCommand command) {
-    commandMap.register(this.plugin.getName(), command);
+    CommandManager.commandMap.register(this.plugin.getName(), command);
     this.commands.add(command);
     return this;
   }

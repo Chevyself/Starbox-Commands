@@ -1,6 +1,5 @@
 package me.googas.commands.jda;
 
-import java.awt.*;
 import java.util.function.Consumer;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;

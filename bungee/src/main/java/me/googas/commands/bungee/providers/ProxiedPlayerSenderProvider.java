@@ -32,7 +32,7 @@ public class ProxiedPlayerSenderProvider implements BungeeExtraArgumentProvider<
     if (context.getSender() instanceof ProxiedPlayer) {
       return (ProxiedPlayer) context.getSender();
     } else {
-      throw new ArgumentProviderException(messagesProvider.onlyPlayers(context));
+      throw new ArgumentProviderException(this.messagesProvider.onlyPlayers(context));
     }
   }
 }

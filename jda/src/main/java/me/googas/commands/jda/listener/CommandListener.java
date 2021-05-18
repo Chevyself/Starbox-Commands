@@ -1,5 +1,6 @@
 package me.googas.commands.jda.listener;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
@@ -13,7 +14,6 @@ import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.jda.utils.message.FakeMessage;
-import me.googas.utility.Series;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -60,25 +60,25 @@ public class CommandListener implements EventListener {
     if (!commandName.startsWith(this.prefix)) {
       return;
     }
-    listenerOptions.preCommand(event, commandName, strings);
-    commandName = commandName.substring(prefix.length());
-    EasyJdaCommand command = manager.getCommand(commandName);
+    this.listenerOptions.preCommand(event, commandName, strings);
+    commandName = commandName.substring(this.prefix.length());
+    EasyJdaCommand command = this.manager.getCommand(commandName);
     CommandContext context =
-        getCommandContext(event, strings, command == null ? null : command.getName());
-    Result result = getResult(command, commandName, context);
-    Message response = getMessage(result, context);
-    Consumer<Message> consumer = getConsumer(result, context);
+        this.getCommandContext(event, strings, command == null ? null : command.getName());
+    Result result = this.getResult(command, commandName, context);
+    Message response = this.getMessage(result, context);
+    Consumer<Message> consumer = this.getConsumer(result, context);
     if (response != null) {
       if (consumer != null && !(event.getMessage() instanceof FakeMessage)) {
         event
             .getChannel()
             .sendMessage(response)
-            .queue(consumer, fail -> listenerOptions.handle(fail, context));
+            .queue(consumer, fail -> this.listenerOptions.handle(fail, context));
       } else {
         event
             .getChannel()
             .sendMessage(response)
-            .queue(null, fail -> listenerOptions.handle(fail, context));
+            .queue(null, fail -> this.listenerOptions.handle(fail, context));
       }
     }
   }
@@ -91,7 +91,7 @@ public class CommandListener implements EventListener {
    * @return the action from the result or null if it doesn't have any
    */
   public Consumer<Message> getConsumer(Result result, @NonNull CommandContext context) {
-    return listenerOptions.processConsumer(result, context);
+    return this.listenerOptions.processConsumer(result, context);
   }
 
   /**
@@ -118,7 +118,8 @@ public class CommandListener implements EventListener {
     if (command != null) {
       return command.execute(context);
     } else {
-      return new Result(ResultType.ERROR, messagesProvider.commandNotFound(commandName, context));
+      return new Result(
+          ResultType.ERROR, this.messagesProvider.commandNotFound(commandName, context));
     }
   }
 
@@ -133,7 +134,7 @@ public class CommandListener implements EventListener {
   @NonNull
   private CommandContext getCommandContext(
       @NonNull MessageReceivedEvent event, @NonNull String[] strings, String commandName) {
-    strings = Series.arrayFrom(1, strings);
+    strings = Arrays.copyOfRange(strings, 1, strings.length);
     if (event.getMember() != null) {
       return new GuildCommandContext(
           event.getMessage(),
@@ -141,8 +142,8 @@ public class CommandListener implements EventListener {
           strings,
           event.getChannel(),
           event,
-          messagesProvider,
-          manager.getProvidersRegistry(),
+          this.messagesProvider,
+          this.manager.getProvidersRegistry(),
           commandName);
     } else {
       return new CommandContext(
@@ -150,8 +151,8 @@ public class CommandListener implements EventListener {
           event.getAuthor(),
           strings,
           event.getChannel(),
-          messagesProvider,
-          manager.getProvidersRegistry(),
+          this.messagesProvider,
+          this.manager.getProvidersRegistry(),
           commandName);
     }
   }

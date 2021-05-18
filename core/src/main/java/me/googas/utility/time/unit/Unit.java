@@ -41,21 +41,6 @@ public enum Unit implements EasyUnit {
     this.duration = duration;
   }
 
-  @Override
-  public boolean isDurationEstimated() {
-    return this.compareTo(DAYS) >= 0;
-  }
-
-  @Override
-  public boolean isDateBased() {
-    return this.compareTo(DAYS) >= 0;
-  }
-
-  @Override
-  public boolean isTimeBased() {
-    return this.compareTo(DAYS) < 0;
-  }
-
   /**
    * Get the unit that matches the character. This means that:
    *
@@ -72,7 +57,7 @@ public enum Unit implements EasyUnit {
   @NonNull
   public static Unit fromCharacter(char single) {
     single = Character.toUpperCase(single);
-    for (Unit value : values()) {
+    for (Unit value : Unit.values()) {
       if (value.getSingle() == single) return value;
     }
     throw new IllegalArgumentException(single + " does not match any Unit#getSingle()");
@@ -97,7 +82,7 @@ public enum Unit implements EasyUnit {
   public static Unit fromString(@NonNull String string) {
     if (string.isEmpty()) throw new IllegalArgumentException("Received an empty string");
     string = string.toUpperCase();
-    for (Unit value : values()) {
+    for (Unit value : Unit.values()) {
       if (value.getSingle() == string.charAt(0) || value.name().equalsIgnoreCase(string))
         return value;
     }
@@ -124,12 +109,27 @@ public enum Unit implements EasyUnit {
   @NonNull
   public static Unit fromMillis(long millis) {
     if (millis < 0) throw new IllegalArgumentException("millis must be higher than 0");
-    Unit unit = MILLIS;
-    for (Unit value : values()) {
+    Unit unit = Unit.MILLIS;
+    for (Unit value : Unit.values()) {
       if (value.millis <= millis) {
         unit = value;
       }
     }
     return unit;
+  }
+
+  @Override
+  public boolean isDurationEstimated() {
+    return this.compareTo(Unit.DAYS) >= 0;
+  }
+
+  @Override
+  public boolean isDateBased() {
+    return this.compareTo(Unit.DAYS) >= 0;
+  }
+
+  @Override
+  public boolean isTimeBased() {
+    return this.compareTo(Unit.DAYS) < 0;
   }
 }

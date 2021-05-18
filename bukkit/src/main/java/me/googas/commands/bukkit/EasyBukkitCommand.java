@@ -35,7 +35,7 @@ public abstract class EasyBukkitCommand extends Command
     implements EasyCommand<CommandContext, EasyBukkitCommand> {
 
   @NonNull @Getter protected final CommandManager manager;
-  protected boolean async;
+  protected final boolean async;
 
   /**
    * Create the command
@@ -94,7 +94,10 @@ public abstract class EasyBukkitCommand extends Command
     Result result =
         this.execute(
             new CommandContext(
-                sender, args, manager.getMessagesProvider(), manager.getProvidersRegistry()));
+                sender,
+                args,
+                this.manager.getMessagesProvider(),
+                this.manager.getProvidersRegistry()));
     if (result != null) {
       for (BaseComponent component : result.getComponents()) {
         sender.sendMessage(component.toLegacyText());
@@ -112,9 +115,10 @@ public abstract class EasyBukkitCommand extends Command
    */
   public void runCheckSync(@NonNull CommandSender sender, @NonNull String[] args) {
     if (this.async) {
-      Bukkit.getScheduler().runTaskAsynchronously(manager.getPlugin(), () -> run(sender, args));
+      Bukkit.getScheduler()
+          .runTaskAsynchronously(this.manager.getPlugin(), () -> this.run(sender, args));
     } else {
-      run(sender, args);
+      this.run(sender, args);
     }
   }
 

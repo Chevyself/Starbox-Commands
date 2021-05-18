@@ -65,7 +65,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, System
    *     null if none matches
    */
   public SystemCommand getCommand(@NonNull String name) {
-    for (SystemCommand command : commands) {
+    for (SystemCommand command : this.commands) {
       if (command.hasAlias(name)) return command;
     }
     return null;
@@ -73,7 +73,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, System
 
   @Override
   public @NonNull CommandManager register(@NonNull SystemCommand command) {
-    commands.add(command);
+    this.commands.add(command);
     return this;
   }
 

@@ -57,31 +57,31 @@ public class CommandContext implements EasyCommandContext {
   @NonNull
   @Override
   public User getSender() {
-    return sender;
+    return this.sender;
   }
 
   @NonNull
   @Override
   public String getString() {
-    return Strings.fromArray(strings);
+    return Strings.fromArray(this.strings);
   }
 
   @NonNull
   @Override
   public String[] getStrings() {
-    return strings;
+    return this.strings;
   }
 
   @NonNull
   @Override
   public ProvidersRegistry<CommandContext> getRegistry() {
-    return registry;
+    return this.registry;
   }
 
   @NonNull
   @Override
   public MessagesProvider getMessagesProvider() {
-    return messagesProvider;
+    return this.messagesProvider;
   }
 
   @Override
@@ -98,13 +98,13 @@ public class CommandContext implements EasyCommandContext {
   public String toString() {
     return "CommandContext{"
         + "message="
-        + message
+        + this.message
         + ", sender="
-        + sender
+        + this.sender
         + ", strings="
-        + Arrays.toString(strings)
+        + Arrays.toString(this.strings)
         + ", channel="
-        + channel
+        + this.channel
         + '}';
   }
 }

@@ -149,6 +149,6 @@ public class Result implements EasyResult {
 
   @Override
   public String getMessage() {
-    return message;
+    return this.message;
   }
 }

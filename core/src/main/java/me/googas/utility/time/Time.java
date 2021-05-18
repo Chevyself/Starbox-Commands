@@ -177,7 +177,7 @@ public class Time implements TemporalAmount {
       }
     }
     millis += Unit.fromString(string.substring(last)).getMillis(value);
-    return ofMillis(millis, effective);
+    return Time.ofMillis(millis, effective);
   }
 
   /**
@@ -196,7 +196,7 @@ public class Time implements TemporalAmount {
    * @return the amount of time in millis
    */
   public double toMillis() {
-    return this.value * unit.getMillis();
+    return this.value * this.unit.getMillis();
   }
 
   /**
@@ -243,8 +243,8 @@ public class Time implements TemporalAmount {
 
   @Override
   public long get(TemporalUnit temporalUnit) {
-    if (temporalUnit == unit) {
-      return (long) value;
+    if (temporalUnit == this.unit) {
+      return (long) this.value;
     }
     return 0;
   }

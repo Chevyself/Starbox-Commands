@@ -80,14 +80,17 @@ public class AnnotatedCommand extends BungeeCommand
   public List<String> onReflectTabComplete(CommandSender sender, String[] strings) {
     CommandContext context =
         new CommandContext(
-            sender, strings, manager.getMessagesProvider(), manager.getProvidersRegistry());
-    SingleArgument<?> argument = getArgument(strings.length - 1);
+            sender,
+            strings,
+            this.manager.getMessagesProvider(),
+            this.manager.getProvidersRegistry());
+    SingleArgument<?> argument = this.getArgument(strings.length - 1);
     if (argument != null) {
       if (argument.getSuggestions(context).size() > 0) {
         return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
       } else {
         List<EasyContextualProvider<?, CommandContext>> providers =
-            getRegistry().getProviders(argument.getClazz());
+            this.getRegistry().getProviders(argument.getClazz());
         for (EasyContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BungeeArgumentProvider) {
             return Strings.copyPartials(
@@ -109,7 +112,7 @@ public class AnnotatedCommand extends BungeeCommand
   @NonNull
   @Override
   public List<Argument<?>> getArguments() {
-    return arguments;
+    return this.arguments;
   }
 
   @Override
@@ -118,11 +121,11 @@ public class AnnotatedCommand extends BungeeCommand
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
       if (!sender.hasPermission(permission)) {
-        return new Result(manager.getMessagesProvider().notAllowed(context));
+        return new Result(this.manager.getMessagesProvider().notAllowed(context));
       }
     }
     try {
-      Object invoke = this.method.invoke(this.object, getObjects(context));
+      Object invoke = this.method.invoke(this.object, this.getObjects(context));
       if (invoke instanceof Result) {
         return (Result) invoke;
       }
@@ -146,23 +149,23 @@ public class AnnotatedCommand extends BungeeCommand
   @NonNull
   @Override
   public Method getMethod() {
-    return method;
+    return this.method;
   }
 
   @NonNull
   @Override
   public Object getObject() {
-    return object;
+    return this.object;
   }
 
   @Override
   public @NonNull MessagesProvider getMessagesProvider() {
-    return manager.getMessagesProvider();
+    return this.manager.getMessagesProvider();
   }
 
   @Override
   public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return manager.getProvidersRegistry();
+    return this.manager.getProvidersRegistry();
   }
 
   @Override
@@ -170,17 +173,17 @@ public class AnnotatedCommand extends BungeeCommand
     if (strings.length == 1) {
       List<String> children =
           Strings.copyPartials(strings[strings.length - 1], this.getChildrenNames());
-      children.addAll(onReflectTabComplete(sender, strings));
+      children.addAll(this.onReflectTabComplete(sender, strings));
       return children;
     } else if (strings.length >= 2) {
       final BungeeCommand command = this.getChildren(strings[0]);
       if (command != null) {
         return command.onTabComplete(sender, Arrays.copyOfRange(strings, 1, strings.length));
       } else {
-        return onReflectTabComplete(sender, strings);
+        return this.onReflectTabComplete(sender, strings);
       }
     } else {
-      return onReflectTabComplete(sender, strings);
+      return this.onReflectTabComplete(sender, strings);
     }
   }
 }

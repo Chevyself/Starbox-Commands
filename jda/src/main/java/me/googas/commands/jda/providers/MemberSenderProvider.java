@@ -28,7 +28,7 @@ public class MemberSenderProvider implements JdaExtraArgumentProvider<Member> {
   @Override
   public Member getObject(@NonNull CommandContext context) throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
+      throw new ArgumentProviderException(this.messagesProvider.guildOnly(context));
     } else {
       return ((GuildCommandContext) context).getMember();
     }

@@ -93,19 +93,19 @@ public class ReflectSystemCommand
 
   @Override
   public @NonNull String getUsage() {
-    return manager.getListener().getPrefix()
+    return this.manager.getListener().getPrefix()
         + Strings.buildUsageAliases(this.getAliases())
         + Argument.generateUsage(this.getArguments());
   }
 
   @Override
   public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return getManager().getProvidersRegistry();
+    return this.getManager().getProvidersRegistry();
   }
 
   @Override
   public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
-    return getManager().getMessagesProvider();
+    return this.getManager().getMessagesProvider();
   }
 
   @Override

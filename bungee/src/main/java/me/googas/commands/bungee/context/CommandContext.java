@@ -1,11 +1,11 @@
 package me.googas.commands.bungee.context;
 
+import java.util.Arrays;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.utility.Series;
 import me.googas.utility.Strings;
 import net.md_5.bungee.api.CommandSender;
 
@@ -65,7 +65,7 @@ public class CommandContext implements EasyCommandContext {
   @NonNull
   @Override
   public MessagesProvider getMessagesProvider() {
-    return messagesProvider;
+    return this.messagesProvider;
   }
 
   @Override
@@ -81,6 +81,6 @@ public class CommandContext implements EasyCommandContext {
   @NonNull
   @Override
   public String[] getStringsFrom(int position) {
-    return Series.arrayFrom(position, this.strings);
+    return Arrays.copyOfRange(this.strings, position, this.strings.length);
   }
 }

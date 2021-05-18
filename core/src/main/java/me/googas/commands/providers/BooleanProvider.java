@@ -46,7 +46,7 @@ public class BooleanProvider<T extends EasyCommandContext>
     } else if (string.equals("0")) {
       result = false;
     } else {
-      throw new ArgumentProviderException(messagesProvider.invalidBoolean(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidBoolean(string, context));
     }
     return result;
   }

@@ -30,6 +30,6 @@ public class ExtraArgument<O> implements Argument<O> {
 
   @Override
   public String toString() {
-    return "ExtraArgument{" + "clazz=" + clazz + '}';
+    return "ExtraArgument{" + "clazz=" + this.clazz + '}';
   }
 }

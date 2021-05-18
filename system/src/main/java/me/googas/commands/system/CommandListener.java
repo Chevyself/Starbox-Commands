@@ -30,23 +30,24 @@ public class CommandListener extends Thread {
     this.prefix = prefix;
   }
 
+  @SuppressWarnings("InfiniteLoopStatement")
   @Override
   public void run() {
     while (true) {
-      if (scanner.hasNextLine()) {
-        String line = scanner.nextLine().trim();
+      if (this.scanner.hasNextLine()) {
+        String line = this.scanner.nextLine().trim();
         String[] split = line.split(" ");
         String name = split[0];
-        if (!name.startsWith(prefix)) continue;
-        SystemCommand command = manager.getCommand(name.substring(1));
+        if (!name.startsWith(this.prefix)) continue;
+        SystemCommand command = this.manager.getCommand(name.substring(1));
         if (command != null) {
           Result result =
               command.execute(
                   new CommandContext(
                       ConsoleCommandSender.INSTANCE,
                       Arrays.copyOfRange(split, 1, split.length),
-                      manager.getProvidersRegistry(),
-                      manager.getMessagesProvider()));
+                      this.manager.getProvidersRegistry(),
+                      this.manager.getMessagesProvider()));
           String message = result.getMessage();
           if (!message.isEmpty()) System.out.println(message);
         } else {

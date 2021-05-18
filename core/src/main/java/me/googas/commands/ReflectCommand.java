@@ -68,11 +68,11 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
   @NonNull
   default Object[] getObjects(C context)
       throws MissingArgumentException, ArgumentProviderException {
-    Object[] objects = new Object[getArguments().size()];
-    for (int i = 0; i < getArguments().size(); i++) {
-      Argument<?> argument = getArguments().get(i);
+    Object[] objects = new Object[this.getArguments().size()];
+    for (int i = 0; i < this.getArguments().size(); i++) {
+      Argument<?> argument = this.getArguments().get(i);
       if (argument instanceof ExtraArgument<?>) {
-        objects[i] = getRegistry().getObject(argument.getClazz(), context);
+        objects[i] = this.getRegistry().getObject(argument.getClazz(), context);
       } else if (argument instanceof MultipleArgument<?>) {
         String[] strings = context.getStringsFrom(((MultipleArgument<?>) argument).getPosition());
         if (strings.length < ((MultipleArgument<?>) argument).getMinSize()) {
@@ -90,12 +90,12 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
             && ((MultipleArgument<?>) argument).getMaxSize() < strings.length) {
           i = ((MultipleArgument<?>) argument).getMaxSize();
         }
-        objects[i] = getRegistry().fromStrings(strings, argument.getClazz(), context);
+        objects[i] = this.getRegistry().fromStrings(strings, argument.getClazz(), context);
       } else if (argument instanceof SingleArgument<?>) {
-        String string = getArgument((SingleArgument<?>) argument, context);
+        String string = ReflectCommand.getArgument((SingleArgument<?>) argument, context);
         if (string == null && ((SingleArgument<?>) argument).isRequired()) {
           throw new MissingArgumentException(
-              getMessagesProvider()
+              this.getMessagesProvider()
                   .missingArgument(
                       ((SingleArgument<?>) argument).getName(),
                       ((SingleArgument<?>) argument).getDescription(),
@@ -106,7 +106,7 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
         } else if (string == null) {
           objects[i] = null;
         } else {
-          objects[i] = getRegistry().fromString(string, argument.getClazz(), context);
+          objects[i] = this.getRegistry().fromString(string, argument.getClazz(), context);
         }
       }
     }
@@ -188,7 +188,7 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
   @Override
   default EasyResult execute(@NonNull C context) {
     try {
-      return (EasyResult) getMethod().invoke(getObject(), getObjects(context));
+      return (EasyResult) this.getMethod().invoke(this.getObject(), this.getObjects(context));
     } catch (MissingArgumentException
         | ArgumentProviderException
         | IllegalAccessException

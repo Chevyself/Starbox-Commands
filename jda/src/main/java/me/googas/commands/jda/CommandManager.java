@@ -85,7 +85,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
     this.jda = jda;
     this.listenerOptions = listenerOptions;
     this.listener = new CommandListener(prefix, this, listenerOptions, messagesProvider);
-    jda.addEventListener(listener);
+    jda.addEventListener(this.listener);
   }
 
   /**
@@ -104,7 +104,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
 
   @Override
   public @NonNull CommandManager register(@NonNull EasyJdaCommand command) {
-    commands.add(command);
+    this.commands.add(command);
     return this;
   }
 

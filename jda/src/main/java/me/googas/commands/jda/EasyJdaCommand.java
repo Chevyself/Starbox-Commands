@@ -82,8 +82,8 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
    *     null
    */
   public Result checkCooldown(@NonNull User sender, CommandContext context) {
-    if (cooldown.toMillis() > 0) {
-      CooldownUser cooldownUser = getCooldownUser(sender);
+    if (this.cooldown.toMillis() > 0) {
+      CooldownUser cooldownUser = this.getCooldownUser(sender);
       // TODO make them ignore if the user has certain permission
       if (cooldownUser != null && !cooldownUser.isExpired()) {
         return new Result(
@@ -117,7 +117,7 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
    */
   @NonNull
   public String getName() {
-    return getAliases().get(0);
+    return this.getAliases().get(0);
   }
 
   /**

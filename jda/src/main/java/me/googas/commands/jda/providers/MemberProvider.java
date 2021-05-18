@@ -28,14 +28,14 @@ public class MemberProvider implements JdaArgumentProvider<Member> {
   public Member fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
+      throw new ArgumentProviderException(this.messagesProvider.guildOnly(context));
     } else {
       for (Member member : context.getMessage().getMentionedMembers()) {
         if (string.contains(member.getId())) {
           return member;
         }
       }
-      throw new ArgumentProviderException(messagesProvider.invalidMember(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidMember(string, context));
     }
   }
 

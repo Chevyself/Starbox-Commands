@@ -77,7 +77,7 @@ public interface Argument<O> {
    * @return the list of arguments from the method
    */
   static List<Argument<?>> parseArguments(@NonNull Method method) {
-    return parseArguments(method.getParameterTypes(), method.getParameterAnnotations());
+    return Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations());
   }
 
   /**
@@ -101,10 +101,11 @@ public interface Argument<O> {
     int position = 0;
     for (int i = 0; i < parameters.length; i++) {
       Annotation[] paramAnnotations = annotations[i];
-      if (isEmpty(paramAnnotations)) {
+      if (Argument.isEmpty(paramAnnotations)) {
         arguments.add(i, new ExtraArgument<>(parameters[i]));
       } else {
-        SingleArgument<?> argument = parseArgument(parameters[i], annotations[i], position);
+        SingleArgument<?> argument =
+            Argument.parseArgument(parameters[i], annotations[i], position);
         arguments.add(i, argument);
         if (argument instanceof MultipleArgument) {
           position = +((MultipleArgument<?>) argument).getMinSize();
@@ -140,18 +141,20 @@ public interface Argument<O> {
   @NonNull
   static SingleArgument<?> parseArgument(
       @NonNull Class<?> parameter, @NonNull Annotation[] annotations, int position) {
-    Multiple multiple = getMultiple(annotations);
+    Multiple multiple = Argument.getMultiple(annotations);
     for (Annotation annotation : annotations) {
       if (annotation instanceof Required) {
         String name = ((Required) annotation).name();
         String description = ((Required) annotation).description();
         List<String> suggestions = Arrays.asList(((Required) annotation).suggestions());
-        return getArgument(parameter, position, multiple, true, name, description, suggestions);
+        return Argument.getArgument(
+            parameter, position, multiple, true, name, description, suggestions);
       } else if (annotation instanceof Optional) {
         String name = ((Optional) annotation).name();
         String description = ((Optional) annotation).description();
         List<String> suggestions = Arrays.asList(((Optional) annotation).suggestions());
-        return getArgument(parameter, position, multiple, false, name, description, suggestions);
+        return Argument.getArgument(
+            parameter, position, multiple, false, name, description, suggestions);
       }
     }
     throw new CommandRegistrationException(

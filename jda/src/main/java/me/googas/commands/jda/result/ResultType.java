@@ -1,6 +1,5 @@
 package me.googas.commands.jda.result;
 
-import java.awt.*;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
@@ -44,7 +43,7 @@ public enum ResultType {
   @NonNull
   public String getTitle(MessagesProvider provider, CommandContext context) {
     if (provider != null) return provider.getTitle(this, context);
-    return title;
+    return this.title;
   }
 
   /**
@@ -53,6 +52,6 @@ public enum ResultType {
    * @return true if is an error
    */
   public boolean isError() {
-    return isError;
+    return this.isError;
   }
 }

@@ -34,7 +34,7 @@ public class PlayerSenderProvider implements BukkitExtraArgumentProvider<Player>
     if (context.getSender() instanceof Player) {
       return (Player) context.getSender();
     } else {
-      throw new ArgumentProviderException(messagesProvider.playersOnly(context));
+      throw new ArgumentProviderException(this.messagesProvider.playersOnly(context));
     }
   }
 }

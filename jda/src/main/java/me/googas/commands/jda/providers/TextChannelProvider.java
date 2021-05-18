@@ -32,7 +32,7 @@ public class TextChannelProvider implements JdaArgumentProvider<TextChannel> {
         return channel;
       }
     }
-    throw new ArgumentProviderException(messagesProvider.invalidTextChannel(string, context));
+    throw new ArgumentProviderException(this.messagesProvider.invalidTextChannel(string, context));
   }
 
   @Override

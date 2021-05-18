@@ -29,6 +29,6 @@ public class EasyCommandHelpTopicFactory implements HelpTopicFactory<AnnotatedCo
 
   @Override
   public @NonNull HelpTopic createTopic(@NonNull AnnotatedCommand annotatedCommand) {
-    return new EasyCommandHelpTopic(annotatedCommand, null, provider);
+    return new EasyCommandHelpTopic(annotatedCommand, null, this.provider);
   }
 }

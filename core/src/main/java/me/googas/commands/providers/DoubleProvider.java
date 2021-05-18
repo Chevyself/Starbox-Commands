@@ -39,7 +39,7 @@ public class DoubleProvider<T extends EasyCommandContext>
     try {
       return Double.parseDouble(string);
     } catch (NumberFormatException e) {
-      throw new ArgumentProviderException(messagesProvider.invalidDouble(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidDouble(string, context));
     }
   }
 

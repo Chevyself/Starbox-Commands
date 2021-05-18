@@ -38,7 +38,7 @@ public class TimeProvider<T extends EasyCommandContext> implements EasyArgumentP
     try {
       return Time.parse(string, true);
     } catch (IllegalArgumentException e) {
-      throw new ArgumentProviderException(messagesProvider.invalidTime(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidTime(string, context));
     }
   }
 }

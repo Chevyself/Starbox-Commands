@@ -85,12 +85,12 @@ public class AnnotatedCommand extends EasyJdaCommand
     if (result != null) {
       return result;
     }
-    result = checkCooldown(context.getSender(), context);
+    result = this.checkCooldown(context.getSender(), context);
     if (result != null) {
       return result;
     }
     try {
-      Object[] objects = getObjects(context);
+      Object[] objects = this.getObjects(context);
       Object object = this.method.invoke(this.object, objects);
       if (object instanceof Result) {
         result = (Result) object;

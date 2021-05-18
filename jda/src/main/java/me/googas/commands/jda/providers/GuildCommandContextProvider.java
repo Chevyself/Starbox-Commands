@@ -27,7 +27,7 @@ public class GuildCommandContextProvider implements JdaExtraArgumentProvider<Gui
   public GuildCommandContext getObject(@NonNull CommandContext context)
       throws ArgumentProviderException {
     if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(messagesProvider.guildOnly(context));
+      throw new ArgumentProviderException(this.messagesProvider.guildOnly(context));
     }
     return (GuildCommandContext) context;
   }

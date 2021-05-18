@@ -100,7 +100,7 @@ public class DefaultListenerOptions implements ListenerOptions {
    */
   public Consumer<Message> getErrorDeleteConsumer() {
     return msg ->
-        msg.delete().queueAfter(getToDeleteErrors().toMillisRound(), TimeUnit.MILLISECONDS);
+        msg.delete().queueAfter(this.getToDeleteErrors().toMillisRound(), TimeUnit.MILLISECONDS);
   }
 
   /**
@@ -114,7 +114,7 @@ public class DefaultListenerOptions implements ListenerOptions {
    */
   public Consumer<Message> getSuccessDeleteConsumer() {
     return msg ->
-        msg.delete().queueAfter(getToDeleteSuccess().toMillisRound(), TimeUnit.MILLISECONDS);
+        msg.delete().queueAfter(this.getToDeleteSuccess().toMillisRound(), TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -179,7 +179,7 @@ public class DefaultListenerOptions implements ListenerOptions {
 
   @Override
   public void handle(@NonNull Throwable fail, @NonNull CommandContext context) {
-    if (!isSendErrors()) return;
+    if (!this.isSendErrors()) return;
     fail.printStackTrace();
     context
         .getMessage()

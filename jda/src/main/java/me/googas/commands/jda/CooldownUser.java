@@ -31,7 +31,7 @@ public class CooldownUser {
    * @return true if the cooldown time has expired
    */
   public boolean isExpired() {
-    return expires < System.currentTimeMillis();
+    return this.expires < System.currentTimeMillis();
   }
 
   /**
@@ -42,6 +42,6 @@ public class CooldownUser {
    */
   public long getTimeLeftMillis() {
     if (this.isExpired()) return 0;
-    return expires - System.currentTimeMillis();
+    return this.expires - System.currentTimeMillis();
   }
 }

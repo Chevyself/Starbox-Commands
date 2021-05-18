@@ -19,7 +19,7 @@ public interface PermissionChecker {
    * @return this default checker will return null if the permission is not {@link
    *     Permission#UNKNOWN} neither empty and if the {@link Permission} is not {@link
    *     Permission#UNKNOWN} it will check the context if it is not a guild context the permission
-   *     cannot be checked therefor a result with an error will be given else depending on the
+   *     cannot be checked therefore a result with an error will be given else depending on the
    *     {@link net.dv8tion.jda.api.entities.Member#hasPermission(Permission...)} a result will be
    *     given
    */

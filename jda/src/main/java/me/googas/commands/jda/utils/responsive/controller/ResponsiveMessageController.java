@@ -19,7 +19,7 @@ public interface ResponsiveMessageController {
    */
   default void onMessageReactionAdd(MessageReactionAddEvent event) {
     if (event.getUser() != null
-        && (!event.getUser().isBot() || event.getUser().isBot() && acceptBots())) {
+        && (!event.getUser().isBot() || event.getUser().isBot() && this.acceptBots())) {
       ResponsiveMessage responsiveMessage =
           this.getResponsiveMessage(event.getGuild(), event.getMessageIdLong());
       if (responsiveMessage != null) {

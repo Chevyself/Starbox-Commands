@@ -97,7 +97,7 @@ public class Test {
 
 ### Arguments for commands
 
-There is three types of arguments:
+There are three types of arguments:
 
 #### Extra
 

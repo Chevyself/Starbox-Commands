@@ -38,7 +38,7 @@ public class FloatProvider<T extends EasyCommandContext> implements EasyArgument
     try {
       return Float.parseFloat(string);
     } catch (NumberFormatException e) {
-      throw new ArgumentProviderException(messagesProvider.invalidDouble(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidDouble(string, context));
     }
   }
 

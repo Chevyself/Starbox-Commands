@@ -42,12 +42,12 @@ public class SimpleResponsiveMessage implements ResponsiveMessage {
 
   @Override
   public long getId() {
-    return id;
+    return this.id;
   }
 
   @NonNull
   @Override
   public Set<ReactionResponse> getReactions() {
-    return reactions;
+    return this.reactions;
   }
 }

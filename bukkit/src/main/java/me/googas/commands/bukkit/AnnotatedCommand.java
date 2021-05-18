@@ -87,7 +87,10 @@ public class AnnotatedCommand extends EasyBukkitCommand
       @NonNull CommandSender sender, @NonNull String[] strings) {
     CommandContext context =
         new CommandContext(
-            sender, strings, manager.getMessagesProvider(), manager.getProvidersRegistry());
+            sender,
+            strings,
+            this.manager.getMessagesProvider(),
+            this.manager.getProvidersRegistry());
     SingleArgument<?> argument = this.getArgument(strings.length - 1);
     if (argument != null) {
       if (argument.getSuggestions(context).size() > 0) {
@@ -95,7 +98,7 @@ public class AnnotatedCommand extends EasyBukkitCommand
             strings[strings.length - 1], argument.getSuggestions(context), new ArrayList<>());
       } else {
         List<EasyContextualProvider<?, CommandContext>> providers =
-            getRegistry().getProviders(argument.getClazz());
+            this.getRegistry().getProviders(argument.getClazz());
         for (EasyContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BukkitArgumentProvider) {
             return StringUtil.copyPartialMatches(
@@ -119,12 +122,12 @@ public class AnnotatedCommand extends EasyBukkitCommand
 
   @Override
   public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
-    return manager.getMessagesProvider();
+    return this.manager.getMessagesProvider();
   }
 
   @Override
   public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return manager.getProvidersRegistry();
+    return this.manager.getProvidersRegistry();
   }
 
   @Override
@@ -142,7 +145,7 @@ public class AnnotatedCommand extends EasyBukkitCommand
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
       if (!sender.hasPermission(permission)) {
-        return new Result(manager.getMessagesProvider().notAllowed(context));
+        return new Result(this.manager.getMessagesProvider().notAllowed(context));
       }
     }
     try {
@@ -176,17 +179,17 @@ public class AnnotatedCommand extends EasyBukkitCommand
       List<String> children =
           StringUtil.copyPartialMatches(
               strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
-      children.addAll(reflectTabComplete(sender, strings));
+      children.addAll(this.reflectTabComplete(sender, strings));
       return children;
     } else if (strings.length >= 2) {
       final EasyBukkitCommand command = this.getChildren(strings[0]);
       if (command != null) {
         return command.tabComplete(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
       } else {
-        return reflectTabComplete(sender, strings);
+        return this.reflectTabComplete(sender, strings);
       }
     } else {
-      return reflectTabComplete(sender, strings);
+      return this.reflectTabComplete(sender, strings);
     }
   }
 }

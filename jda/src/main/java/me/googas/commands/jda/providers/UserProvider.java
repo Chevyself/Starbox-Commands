@@ -36,6 +36,6 @@ public class UserProvider implements JdaArgumentProvider<User> {
         return user;
       }
     }
-    throw new ArgumentProviderException(messagesProvider.invalidUser(string, context));
+    throw new ArgumentProviderException(this.messagesProvider.invalidUser(string, context));
   }
 }

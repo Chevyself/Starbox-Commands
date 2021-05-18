@@ -31,7 +31,7 @@ public class RoleProvider implements JdaArgumentProvider<Role> {
         return role;
       }
     }
-    throw new ArgumentProviderException(messagesProvider.invalidRole(string, context));
+    throw new ArgumentProviderException(this.messagesProvider.invalidRole(string, context));
   }
 
   @Override

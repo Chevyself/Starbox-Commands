@@ -44,6 +44,6 @@ public class ProxiedPlayerProvider implements BungeeArgumentProvider<ProxiedPlay
       throws ArgumentProviderException {
     ProxiedPlayer player = ProxyServer.getInstance().getPlayer(string);
     if (player != null) return player;
-    throw new ArgumentProviderException(messagesProvider.invalidPlayer(string, context));
+    throw new ArgumentProviderException(this.messagesProvider.invalidPlayer(string, context));
   }
 }

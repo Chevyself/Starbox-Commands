@@ -116,7 +116,7 @@ public class BukkitUtils {
    */
   public static void dispatch(
       @NonNull CommandSender sender, @NonNull String command, Object... objects) {
-    dispatch(sender, Strings.format(command, objects));
+    Bukkit.dispatchCommand(sender, Strings.format(command, objects));
   }
 
   /**
@@ -130,7 +130,7 @@ public class BukkitUtils {
       @NonNull CommandSender sender,
       @NonNull String command,
       @NonNull Map<String, String> placeholders) {
-    dispatch(sender, Strings.format(command, placeholders));
+    BukkitUtils.dispatch(sender, Strings.format(command, placeholders));
   }
 
   /**

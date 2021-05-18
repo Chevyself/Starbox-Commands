@@ -45,14 +45,14 @@ public class GuildCommandContext extends CommandContext {
       ProvidersRegistry<CommandContext> registry,
       String commandName) {
     super(message, sender, args, channel, messagesProvider, registry, commandName);
-    member =
+    this.member =
         Objects.requireNonNull(
             message.getMember(), "Guild command context must have a valid member");
-    guild = message.getGuild();
+    this.guild = message.getGuild();
   }
 
   @Override
   public String toString() {
-    return "GuildCommandContext{" + "member=" + member + ", guild=" + guild + '}';
+    return "GuildCommandContext{" + "member=" + this.member + ", guild=" + this.guild + '}';
   }
 }

@@ -37,7 +37,7 @@ public abstract class BungeeCommand extends Command
 
   @NonNull @Getter protected final CommandManager manager;
   @NonNull @Getter private final List<BungeeCommand> children;
-  protected boolean async;
+  protected final boolean async;
 
   /**
    * Create the command
@@ -102,9 +102,9 @@ public abstract class BungeeCommand extends Command
     if (this.async) {
       ProxyServer.getInstance()
           .getScheduler()
-          .runAsync(this.manager.getPlugin(), () -> run(sender, args));
+          .runAsync(this.manager.getPlugin(), () -> this.run(sender, args));
     } else {
-      run(sender, args);
+      this.run(sender, args);
     }
   }
 
@@ -123,7 +123,10 @@ public abstract class BungeeCommand extends Command
     Result result =
         this.execute(
             new CommandContext(
-                sender, args, manager.getMessagesProvider(), manager.getProvidersRegistry()));
+                sender,
+                args,
+                this.manager.getMessagesProvider(),
+                this.manager.getProvidersRegistry()));
     if (result != null) {
       for (BaseComponent component : result.getComponents()) {
         sender.sendMessage(component);

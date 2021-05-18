@@ -37,7 +37,7 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
   @NonNull
   default EasyJdaCommand getCommand() {
     return Objects.requireNonNull(
-        getCommandManager().getCommand(this.getCommandName()),
+        this.getCommandManager().getCommand(this.getCommandName()),
         "The command " + this.getCommandName() + " seems to not be registered");
   }
 
@@ -59,7 +59,7 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
             name);
     Result result = this.getCommand().execute(context);
     if (result != null) {
-      ListenerOptions options = getCommandManager().getListenerOptions();
+      ListenerOptions options = this.getCommandManager().getListenerOptions();
       Message resultMessage = options.processResult(result, context);
       Consumer<Message> consumer = options.processConsumer(result, context);
       if (resultMessage != null) {

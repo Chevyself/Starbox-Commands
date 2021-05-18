@@ -37,18 +37,21 @@ public class ArgumentsSample {
     // An ExtraArgument: the context
     // Two SingleArgument: The name and description
     // A MultipleArgument: the messages
+    System.out.println(name + " has a description " + description);
   }
 
   public void AMethod(EasyCommandContext context) {
     // The class of the argument is EasyCommandContext
+    System.out.println(context);
   }
 
   public void AMethod(@Required String name, @Optional(suggestions = "20") int age) {
     // A required argument is name
     // An optional argument is age
+    System.out.println(name + " is " + age + " years old");
   }
 
   public void AMethod(@Multiple @Optional(suggestions = "Hello world") String message) {
-    // A MultipleArgument is the message
+    System.out.println(message);
   }
 }

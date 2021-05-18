@@ -38,7 +38,7 @@ public class LongProvider<T extends EasyCommandContext> implements EasyArgumentP
     try {
       return Long.parseLong(string);
     } catch (NumberFormatException e) {
-      throw new ArgumentProviderException(messagesProvider.invalidLong(string, context));
+      throw new ArgumentProviderException(this.messagesProvider.invalidLong(string, context));
     }
   }
 
