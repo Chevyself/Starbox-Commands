@@ -113,23 +113,24 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bungee
   }
 
   @Override
-  public @NonNull CommandManager register(@NonNull Object object) {
-    return (CommandManager) EasyCommandManager.super.register(object);
+  public @NonNull CommandManager parseAndRegister(@NonNull Object object) {
+    this.registerAll(this.parseCommands(object));
+    return this;
   }
 
   @Override
-  public @NonNull CommandManager registerAll(@NonNull Object... objects) {
-    return (CommandManager) EasyCommandManager.super.register(objects);
+  public @NonNull CommandManager parseAndRegisterAll(@NonNull Object... objects) {
+    return (CommandManager) EasyCommandManager.super.parseAndRegisterAll(objects);
   }
 
   @Override
   public @NonNull CommandManager registerAll(
       @NonNull Collection<? extends BungeeCommand> commands) {
-    return (CommandManager) EasyCommandManager.super.register(commands);
+    return (CommandManager) EasyCommandManager.super.registerAll(commands);
   }
 
   @Override
   public @NonNull CommandManager registerAll(@NonNull BungeeCommand... commands) {
-    return (CommandManager) EasyCommandManager.super.register(commands);
+    return (CommandManager) EasyCommandManager.super.registerAll(commands);
   }
 }

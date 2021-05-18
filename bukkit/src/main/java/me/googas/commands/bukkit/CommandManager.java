@@ -54,8 +54,8 @@ import org.bukkit.plugin.Plugin;
 public class CommandManager implements EasyCommandManager<CommandContext, EasyBukkitCommand> {
 
   /**
-   * The Bukkit HelpMap which is used to register the {@link org.bukkit.help.HelpTopic} for the
-   * {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link
+   * The Bukkit HelpMap which is used to parseAndRegister the {@link org.bukkit.help.HelpTopic} for
+   * the {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link
    * EasyBukkitCommand}
    */
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
@@ -157,23 +157,24 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
   }
 
   @Override
-  public @NonNull CommandManager register(@NonNull Object object) {
-    return (CommandManager) EasyCommandManager.super.register(object);
+  public @NonNull CommandManager parseAndRegister(@NonNull Object object) {
+    this.registerAll(this.parseCommands(object));
+    return this;
   }
 
   @Override
-  public @NonNull CommandManager registerAll(@NonNull Object... objects) {
-    return (CommandManager) EasyCommandManager.super.register(objects);
+  public @NonNull CommandManager parseAndRegisterAll(@NonNull Object... objects) {
+    return (CommandManager) EasyCommandManager.super.parseAndRegisterAll(objects);
   }
 
   @Override
   public @NonNull CommandManager registerAll(
       @NonNull Collection<? extends EasyBukkitCommand> commands) {
-    return (CommandManager) EasyCommandManager.super.register(commands);
+    return (CommandManager) EasyCommandManager.super.registerAll(commands);
   }
 
   @Override
   public @NonNull CommandManager registerAll(@NonNull EasyBukkitCommand... commands) {
-    return (CommandManager) EasyCommandManager.super.register(commands);
+    return (CommandManager) EasyCommandManager.super.registerAll(commands);
   }
 }

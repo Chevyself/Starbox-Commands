@@ -18,7 +18,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 
 /**
  * This is the direct implementation of {@link EasyCommand} for the "Bungee" module extending this
- * class allows to register commands in the {@link CommandManager} using {@link
+ * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(BungeeCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
  *

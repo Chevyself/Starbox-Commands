@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.entities.User;
 
 /**
  * This is the direct implementation of {@link EasyCommand} for the "JDA" module extending this
- * class allows to register commands in the {@link CommandManager} using {@link
+ * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(EasyJdaCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
  *

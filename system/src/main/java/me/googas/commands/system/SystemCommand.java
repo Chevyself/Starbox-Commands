@@ -8,7 +8,7 @@ import me.googas.commands.system.context.CommandContext;
 
 /**
  * This is the direct implementation of {@link EasyCommand} for the "System" module extending this
- * class allows to register commands in the {@link CommandManager} using {@link
+ * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(SystemCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link ReflectSystemCommand}
  *

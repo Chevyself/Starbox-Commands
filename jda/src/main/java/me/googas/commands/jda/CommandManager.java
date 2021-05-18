@@ -39,8 +39,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * permissions of the {@link net.dv8tion.jda.api.entities.User} that execute the command you can
  * create an implementation of {@link PermissionChecker} or just use its default method {@link
  * PermissionChecker#checkPermission(CommandContext, EasyPermission)} which only checks for {@link
- * net.dv8tion.jda.api.Permission}, the instance of {@link JDA} is required to register the {@link
- * CommandListener}, the {@link ListenerOptions} changes some of the logic inside {@link
+ * net.dv8tion.jda.api.Permission}, the instance of {@link JDA} is required to parseAndRegister the
+ * {@link CommandListener}, the {@link ListenerOptions} changes some of the logic inside {@link
  * CommandListener} and finally the prefix is the {@link String} that must contain the message at
  * the start
  *
@@ -68,7 +68,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
    * @param messagesProvider the messages provider for important messages
    * @param permissionChecker to check the permissions of {@link net.dv8tion.jda.api.entities.User}
    *     upon command execution
-   * @param jda the instance to register the {@link #listener} on
+   * @param jda the instance to parseAndRegister the {@link #listener} on
    * @param listenerOptions to change some of the login in the {@link #listener}
    * @param prefix the prefix that message must have to execute commands
    */
@@ -144,23 +144,24 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
   }
 
   @Override
-  public @NonNull CommandManager register(@NonNull Object object) {
-    return (CommandManager) EasyCommandManager.super.register(object);
+  public @NonNull CommandManager parseAndRegister(@NonNull Object object) {
+    this.registerAll(this.parseCommands(object));
+    return this;
   }
 
   @Override
-  public @NonNull CommandManager registerAll(@NonNull Object... objects) {
-    return (CommandManager) EasyCommandManager.super.register(objects);
+  public @NonNull CommandManager parseAndRegisterAll(@NonNull Object... objects) {
+    return (CommandManager) EasyCommandManager.super.parseAndRegisterAll(objects);
   }
 
   @Override
   public @NonNull CommandManager registerAll(
       @NonNull Collection<? extends EasyJdaCommand> commands) {
-    return (CommandManager) EasyCommandManager.super.register(commands);
+    return (CommandManager) EasyCommandManager.super.registerAll(commands);
   }
 
   @Override
   public @NonNull CommandManager registerAll(@NonNull EasyJdaCommand... commands) {
-    return (CommandManager) EasyCommandManager.super.register(commands);
+    return (CommandManager) EasyCommandManager.super.registerAll(commands);
   }
 }

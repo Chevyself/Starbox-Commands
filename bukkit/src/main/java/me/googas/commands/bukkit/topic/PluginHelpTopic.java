@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * Plugin {@link HelpTopic} is basically the messages that appear in the command '/help
  * &lt;plugin_name&gt;'. This helps creating a {@link HelpTopic} for {@link
- * org.bukkit.plugin.java.JavaPlugin} that uses {@link CommandManager} to register commands
+ * org.bukkit.plugin.java.JavaPlugin} that uses {@link CommandManager} to parseAndRegister commands
  */
 public class PluginHelpTopic extends HelpTopic {
 

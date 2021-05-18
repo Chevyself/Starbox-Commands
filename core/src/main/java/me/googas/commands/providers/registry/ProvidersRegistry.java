@@ -57,7 +57,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
   /**
    * Registers a provider in the providers registry
    *
-   * @param provider the provider to register
+   * @param provider the provider to parseAndRegister
    */
   public void addProvider(@NonNull EasyContextualProvider<?, T> provider) {
     this.providers.add(provider);
@@ -84,7 +84,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * }
    * }</pre>
    *
-   * <p>And you register it using {@link #addProvider(EasyContextualProvider)}
+   * <p>And you parseAndRegister it using {@link #addProvider(EasyContextualProvider)}
    *
    * <p>You can get it with this method with {@link String#getClass()} ()}
    *

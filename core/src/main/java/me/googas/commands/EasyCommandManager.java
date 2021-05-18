@@ -38,22 +38,19 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  default EasyCommandManager<C, T> register(@NonNull Object object) {
-    this.registerAll(this.parseCommands(object));
-    return this;
-  }
+  EasyCommandManager<C, T> parseAndRegister(@NonNull Object object);
 
   /**
    * Register all the objects in an array. This will loop around each object to execute {@link
-   * #register(Object)}
+   * #parseAndRegister(Object)}
    *
-   * @param objects the objects to parse and register commands from
+   * @param objects the objects to parse and parseAndRegister commands from
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  default EasyCommandManager<C, T> registerAll(@NonNull Object... objects) {
+  default EasyCommandManager<C, T> parseAndRegisterAll(@NonNull Object... objects) {
     for (Object object : objects) {
-      this.register(object);
+      this.parseAndRegister(object);
     }
     return this;
   }

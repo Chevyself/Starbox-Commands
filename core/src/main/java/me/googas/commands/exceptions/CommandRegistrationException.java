@@ -5,7 +5,7 @@ import me.googas.commands.exceptions.type.SimpleRuntimeException;
 
 /**
  * This command is thrown by the {@link me.googas.commands.EasyCommandManager} when it cannot
- * register an {@link me.googas.commands.EasyCommand}
+ * parseAndRegister an {@link me.googas.commands.EasyCommand}
  */
 public class CommandRegistrationException extends SimpleRuntimeException {
 

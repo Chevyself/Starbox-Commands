@@ -17,7 +17,7 @@ import org.bukkit.util.StringUtil;
 
 /**
  * This is the direct implementation of {@link EasyCommand} for the "Bukkit" module extending this
- * class allows to register commands in the {@link CommandManager} using {@link
+ * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(EasyBukkitCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
  *

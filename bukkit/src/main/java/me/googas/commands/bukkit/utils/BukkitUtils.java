@@ -151,8 +151,8 @@ public class BukkitUtils {
   }
 
   /**
-   * Get Bukkit {@link CommandMap} it is used to register commands and to get it reflection need to
-   * be used:
+   * Get Bukkit {@link CommandMap} it is used to parseAndRegister commands and to get it reflection
+   * need to be used:
    *
    * <p>Getting the {@link Server} class this will get the declared field 'commandMap' which
    * contains the {@link CommandMap}

@@ -24,7 +24,7 @@ import org.bukkit.help.HelpTopic;
 class EasyCommandHelpTopic extends HelpTopic {
 
   @NonNull private static final Server server = Bukkit.getServer();
-  /** This instance of {@link HelpMap} is used to register topics for children commands */
+  /** This instance of {@link HelpMap} is used to parseAndRegister topics for children commands */
   @NonNull private static final HelpMap helpMap = EasyCommandHelpTopic.server.getHelpMap();
 
   @NonNull @Getter @Setter private MessagesProvider provider;
