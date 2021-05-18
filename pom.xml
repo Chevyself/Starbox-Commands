@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.googas.commands</groupId>
-    <artifactId>easy-commands</artifactId>
+    <artifactId>starbox-commands</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <description>An easy to use command framework for Bukkit, Bungee or JDA (Discord)</description>
