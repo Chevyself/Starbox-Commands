@@ -6,7 +6,7 @@ import lombok.experimental.Delegate;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.utility.Strings;
+import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 
 /** The context of a bukkit command */

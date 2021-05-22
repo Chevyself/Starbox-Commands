@@ -21,7 +21,7 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.EasyContextualProvider;
-import me.googas.utility.Strings;
+import me.googas.starbox.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 

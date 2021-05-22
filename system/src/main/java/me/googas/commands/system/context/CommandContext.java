@@ -6,7 +6,7 @@ import me.googas.commands.context.EasyCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.MessagesProvider;
 import me.googas.commands.system.context.sender.CommandSender;
-import me.googas.utility.Strings;
+import me.googas.starbox.Strings;
 
 /**
  * This context to execute {@link me.googas.commands.system.SystemCommand} that does not include

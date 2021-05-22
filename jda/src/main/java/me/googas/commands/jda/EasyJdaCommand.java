@@ -12,7 +12,7 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.permissions.EasyPermission;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.utility.time.Time;
+import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.entities.User;
 
 /**

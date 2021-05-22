@@ -2,7 +2,7 @@ package me.googas.commands.objects;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.utility.Strings;
+import me.googas.starbox.Strings;
 
 /**
  * This class is a wrapped array of {@link String}. This is used for commands that require many

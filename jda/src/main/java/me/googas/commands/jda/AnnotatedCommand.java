@@ -21,7 +21,7 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.utility.time.Time;
+import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.Permission;
 
 /**

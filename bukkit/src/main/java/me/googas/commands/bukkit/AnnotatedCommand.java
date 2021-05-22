@@ -21,7 +21,7 @@ import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.EasyMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.EasyContextualProvider;
-import me.googas.utility.Strings;
+import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 

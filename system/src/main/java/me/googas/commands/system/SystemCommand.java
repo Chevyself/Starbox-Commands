@@ -33,7 +33,7 @@ public interface SystemCommand extends EasyCommand<CommandContext, SystemCommand
    * arguments to successfully run the command
    *
    * @return the usage of the command in case it is a {@link ReflectSystemCommand} it will be
-   *     auto-generated using {@link me.googas.utility.Strings#buildUsageAliases(String...)} and
+   *     auto-generated using {@link me.googas.starbox.Strings#buildUsageAliases(String...)} and
    *     {@link me.googas.commands.arguments.Argument#generateUsage(List)}
    */
   @NonNull

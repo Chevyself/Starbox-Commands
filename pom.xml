@@ -79,13 +79,18 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <artifactId>core</artifactId>
+            <groupId>com.github.xChevy.Starbox</groupId>
+            <version>359acd664f</version>
+        </dependency>
     </dependencies>
 
-    <distributionManagement>
+    <repositories>
         <repository>
-            <id>repsy</id>
-            <url>https://repo.repsy.io/mvn/chevy/starfish</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
-    </distributionManagement>
+    </repositories>
 
 </project>

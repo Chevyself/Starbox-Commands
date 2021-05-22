@@ -3,7 +3,7 @@ package me.googas.commands.jda.messages;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.utility.Strings;
+import me.googas.starbox.Strings;
 
 /** This is a default {@link MessagesProvider} to use if you don't want to create one of your own */
 public class JdaMessagesProvider implements MessagesProvider {
