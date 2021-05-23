@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.EasyJdaCommand;
 import me.googas.commands.jda.ListenerOptions;
@@ -27,22 +26,18 @@ public class CommandListener implements EventListener {
   @NonNull @Getter private final CommandManager manager;
   @NonNull @Getter private final ListenerOptions listenerOptions;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter @Setter private String prefix;
 
   /**
    * Create an instance
    *
-   * @param prefix the prefix to listen
    * @param manager the command manager
    * @param listenerOptions the options of the manager
    * @param messagesProvider the provider of messages
    */
   public CommandListener(
-      @NonNull String prefix,
       @NonNull CommandManager manager,
       @NonNull ListenerOptions listenerOptions,
       @NonNull MessagesProvider messagesProvider) {
-    this.prefix = prefix;
     this.manager = manager;
     this.listenerOptions = listenerOptions;
     this.messagesProvider = messagesProvider;
@@ -57,11 +52,12 @@ public class CommandListener implements EventListener {
   public void onMessageReceivedEvent(@NonNull MessageReceivedEvent event) {
     String[] strings = event.getMessage().getContentRaw().split(" +");
     String commandName = strings[0];
-    if (!commandName.startsWith(this.prefix)) {
+    String prefix = listenerOptions.getPrefix(event.getGuild());
+    if (!commandName.startsWith(prefix)) {
       return;
     }
     this.listenerOptions.preCommand(event, commandName, strings);
-    commandName = commandName.substring(this.prefix.length());
+    commandName = commandName.substring(prefix.length());
     EasyJdaCommand command = this.manager.getCommand(commandName);
     CommandContext context =
         this.getCommandContext(event, strings, command == null ? null : command.getName());

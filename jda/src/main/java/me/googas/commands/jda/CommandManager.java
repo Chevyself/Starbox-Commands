@@ -84,7 +84,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
     this.permissionChecker = permissionChecker;
     this.jda = jda;
     this.listenerOptions = listenerOptions;
-    this.listener = new CommandListener(prefix, this, listenerOptions, messagesProvider);
+    this.listener = new CommandListener(this, listenerOptions, messagesProvider);
     jda.addEventListener(this.listener);
   }
 

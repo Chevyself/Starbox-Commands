@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
@@ -14,6 +15,7 @@ import me.googas.starbox.time.unit.Unit;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -42,6 +44,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  */
 @Data
 public class DefaultListenerOptions implements ListenerOptions {
+
+  @NonNull @Getter private String prefix = "-";
 
   /** Whether to delete the message that execute the command */
   private boolean deleteCommands = false;
@@ -79,6 +83,12 @@ public class DefaultListenerOptions implements ListenerOptions {
    * net.dv8tion.jda.api.entities.User} that execute the command
    */
   private boolean sendErrors = false;
+
+  @NonNull
+  public DefaultListenerOptions setPrefix(String prefix) {
+    this.prefix = prefix;
+    return this;
+  }
 
   @NonNull
   private Color getColor(@NonNull ResultType type) {
@@ -192,5 +202,10 @@ public class DefaultListenerOptions implements ListenerOptions {
               channel.sendMessage(message).queue();
             },
             failure -> {});
+  }
+
+  @Override
+  public @NonNull String getPrefix(Guild guild) {
+    return null;
   }
 }

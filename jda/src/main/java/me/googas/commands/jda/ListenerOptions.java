@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.Result;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -73,4 +74,15 @@ public interface ListenerOptions {
    * @param context the context of the command execution
    */
   void handle(@NonNull Throwable fail, @NonNull CommandContext context);
+
+  /**
+   * Get the prefix that is used for commands inside a {@link Guild} if the parameter {@link Guild}
+   * is null means that the command was not executed inside of one meaning that the message was sent
+   * in private messages
+   *
+   * @param guild the guild where the command was executed or null if it was not executed in one
+   * @return the prefix that runs the commands inside the guild
+   */
+  @NonNull
+  String getPrefix(Guild guild);
 }
