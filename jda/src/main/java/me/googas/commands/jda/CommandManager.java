@@ -70,15 +70,13 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
    *     upon command execution
    * @param jda the instance to parseAndRegister the {@link #listener} on
    * @param listenerOptions to change some of the login in the {@link #listener}
-   * @param prefix the prefix that message must have to execute commands
    */
   public CommandManager(
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
       @NonNull MessagesProvider messagesProvider,
       @NonNull PermissionChecker permissionChecker,
       @NonNull JDA jda,
-      @NonNull ListenerOptions listenerOptions,
-      @NonNull String prefix) {
+      @NonNull ListenerOptions listenerOptions) {
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
     this.permissionChecker = permissionChecker;

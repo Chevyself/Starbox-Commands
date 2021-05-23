@@ -206,6 +206,6 @@ public class DefaultListenerOptions implements ListenerOptions {
 
   @Override
   public @NonNull String getPrefix(Guild guild) {
-    return null;
+    return this.prefix;
   }
 }
