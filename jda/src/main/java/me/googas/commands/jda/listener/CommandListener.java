@@ -137,7 +137,6 @@ public class CommandListener implements EventListener {
           event.getAuthor(),
           strings,
           event.getChannel(),
-          event,
           this.messagesProvider,
           this.manager.getProvidersRegistry(),
           commandName);

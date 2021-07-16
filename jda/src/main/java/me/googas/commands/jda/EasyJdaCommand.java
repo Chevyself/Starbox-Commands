@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.EasyCommand;
 import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.permissions.EasyPermission;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
@@ -145,15 +146,30 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
     if (strings.length >= 1) {
       EasyJdaCommand command = this.getChildren(strings[0]);
       if (command != null) {
-        return command.execute(
-            new CommandContext(
-                context.getMessage(),
-                context.getSender(),
-                Arrays.copyOfRange(strings, 1, strings.length),
-                context.getChannel(),
-                context.getMessagesProvider(),
-                context.getRegistry(),
-                command.getName()));
+        @NonNull String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
+        CommandContext childContext;
+        if (context instanceof GuildCommandContext) {
+          childContext =
+              new GuildCommandContext(
+                  context.getMessage(),
+                  context.getSender(),
+                  copy,
+                  context.getChannel(),
+                  context.getMessagesProvider(),
+                  context.getRegistry(),
+                  context.getCommandName());
+        } else {
+          childContext =
+              new CommandContext(
+                  context.getMessage(),
+                  context.getSender(),
+                  copy,
+                  context.getChannel(),
+                  context.getMessagesProvider(),
+                  context.getRegistry(),
+                  command.getName());
+        }
+        return command.execute(childContext);
       }
     }
     return this.run(context);

@@ -53,7 +53,6 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
             event.getUser(),
             this.getArguments(),
             event.getChannel(),
-            null,
             manager.getMessagesProvider(),
             manager.getProvidersRegistry(),
             name);
