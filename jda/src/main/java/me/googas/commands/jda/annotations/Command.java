@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
-import me.googas.starbox.annotations.TimeAmount;
+import me.googas.annotations.TimeAmount;
 import net.dv8tion.jda.api.Permission;
 
 /**
