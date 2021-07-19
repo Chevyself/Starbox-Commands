@@ -81,7 +81,7 @@
         </dependency>
         <dependency>
             <artifactId>core</artifactId>
-            <groupId>com.github.xChevy.Starbox</groupId>
+            <groupId>com.github.Chevyself.Starbox</groupId>
             <version>8d65b5c7e2</version>
         </dependency>
     </dependencies>
