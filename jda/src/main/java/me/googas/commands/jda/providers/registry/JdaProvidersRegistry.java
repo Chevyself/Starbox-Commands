@@ -1,6 +1,5 @@
 package me.googas.commands.jda.providers.registry;
 
-import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
@@ -13,7 +12,6 @@ import me.googas.commands.jda.providers.RoleProvider;
 import me.googas.commands.jda.providers.TextChannelProvider;
 import me.googas.commands.jda.providers.UserProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.StarboxContextualProvider;
 
 /** The providers registry for jda */
 public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
@@ -25,24 +23,13 @@ public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
    */
   public JdaProvidersRegistry(@NonNull MessagesProvider messages) {
     super(messages);
-    this.addProvider(new CommandContextProvider());
-    this.addProvider(new GuildCommandContextProvider(messages));
-    this.addProvider(new GuildProvider(messages));
-    this.addProvider(new MemberProvider(messages));
-    this.addProvider(new MessageProvider());
-    this.addProvider(new RoleProvider(messages));
-    this.addProvider(new TextChannelProvider(messages));
-    this.addProvider(new UserProvider(messages));
-  }
-
-  /**
-   * Get all the providers for the queried class
-   *
-   * @param clazz the queried class
-   * @return a list of providers for the queried class
-   */
-  @Override
-  public List<StarboxContextualProvider<?, CommandContext>> getProviders(@NonNull Class<?> clazz) {
-    return super.getProviders(clazz);
+    this.addProvider(new CommandContextProvider())
+        .addProvider(new GuildCommandContextProvider(messages))
+        .addProvider(new GuildProvider(messages))
+        .addProvider(new MemberProvider(messages))
+        .addProvider(new MessageProvider())
+        .addProvider(new RoleProvider(messages))
+        .addProvider(new TextChannelProvider(messages))
+        .addProvider(new UserProvider(messages));
   }
 }

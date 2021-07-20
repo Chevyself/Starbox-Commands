@@ -1,6 +1,8 @@
 package me.googas.commands.providers.registry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.context.StarboxCommandContext;
@@ -41,26 +43,55 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
    * @param messages the messages provider for the messages sent in the default providers
    */
   public ProvidersRegistry(@NonNull StarboxMessagesProvider<T> messages) {
-    this.addProvider(new BooleanProvider<>(messages));
-    this.addProvider(new DoubleProvider<>(messages));
-    this.addProvider(new FloatProvider<>(messages));
-    this.addProvider(new IntegerProvider<>(messages));
-    this.addProvider(new JoinedStringsProvider<>());
-    this.addProvider(new LongProvider<>(messages));
-    this.addProvider(new StringProvider<>());
-    this.addProvider(new TimeProvider<>(messages));
+    this.addProvider(new BooleanProvider<>(messages))
+        .addProvider(new DoubleProvider<>(messages))
+        .addProvider(new FloatProvider<>(messages))
+        .addProvider(new IntegerProvider<>(messages))
+        .addProvider(new JoinedStringsProvider<>())
+        .addProvider(new LongProvider<>(messages))
+        .addProvider(new StringProvider<>())
+        .addProvider(new TimeProvider<>(messages));
   }
 
-  /** Create the registry with no providers */
+  /** Creates the registry with no providers */
   public ProvidersRegistry() {}
 
   /**
    * Registers a provider in the providers registry
    *
-   * @param provider the provider to parseAndRegister
+   * @param provider the provider to register
+   * @return this same instance of registry
    */
-  public void addProvider(@NonNull StarboxContextualProvider<?, T> provider) {
+  @NonNull
+  public ProvidersRegistry<T> addProvider(@NonNull StarboxContextualProvider<?, T> provider) {
     this.providers.add(provider);
+    return this;
+  }
+
+  /**
+   * Registers many providers in the providers registry
+   *
+   * @param providers the providers to register
+   * @return this same instance of registry
+   */
+  @NonNull
+  public ProvidersRegistry<T> addProviders(
+      @NonNull Collection<StarboxContextualProvider<?, T>> providers) {
+    for (StarboxContextualProvider<?, T> provider : providers) {
+      this.addProvider(provider);
+    }
+    return this;
+  }
+
+  /**
+   * Registers many providers in the providers registry
+   *
+   * @param providers the providers to register
+   * @return this same instance of registry
+   */
+  @NonNull
+  public ProvidersRegistry<T> addProviders(@NonNull StarboxContextualProvider<?, T>... providers) {
+    return this.addProviders(Arrays.asList(providers));
   }
 
   /**
@@ -91,6 +122,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
    * @param clazz the queried class
    * @return a list of providers for the queried class
    */
+  @NonNull
   public List<StarboxContextualProvider<?, T>> getProviders(@NonNull Class<?> clazz) {
     List<StarboxContextualProvider<?, T>> list = new ArrayList<>();
     for (StarboxContextualProvider<?, T> provider : this.providers) {

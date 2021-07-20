@@ -18,8 +18,8 @@ public class BungeeProvidersRegistry extends ProvidersRegistry<CommandContext> {
    */
   public BungeeProvidersRegistry(@NonNull MessagesProvider messages) {
     super(messages);
-    this.addProvider(new CommandContextProvider());
-    this.addProvider(new CommandSenderProvider());
-    this.addProvider(new ProxiedPlayerProvider(messages));
+    this.addProvider(new CommandContextProvider())
+        .addProvider(new CommandSenderProvider())
+        .addProvider(new ProxiedPlayerProvider(messages));
   }
 }

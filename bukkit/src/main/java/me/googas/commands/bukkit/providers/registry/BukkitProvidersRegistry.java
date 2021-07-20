@@ -20,11 +20,11 @@ public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
    */
   public BukkitProvidersRegistry(@NonNull MessagesProvider messages) {
     super(messages);
-    this.addProvider(new CommandContextProvider());
-    this.addProvider(new CommandSenderArgumentProvider());
-    this.addProvider(new MaterialProvider(messages));
-    this.addProvider(new OfflinePlayerProvider());
-    this.addProvider(new PlayerProvider(messages));
+    this.addProvider(new CommandContextProvider())
+        .addProvider(new CommandSenderArgumentProvider())
+        .addProvider(new MaterialProvider(messages))
+        .addProvider(new OfflinePlayerProvider())
+        .addProvider(new PlayerProvider(messages));
   }
 
   /** Create the registry with the default providers */
