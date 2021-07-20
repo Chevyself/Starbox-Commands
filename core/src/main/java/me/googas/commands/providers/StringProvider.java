@@ -3,7 +3,10 @@ package me.googas.commands.providers;
 import lombok.NonNull;
 import me.googas.commands.EasyCommandManager;
 import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.providers.type.EasyArgumentProvider;
+import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
+import me.googas.starbox.Strings;
 
 /**
  * Provides the {@link EasyCommandManager} with {@link String}
@@ -11,7 +14,7 @@ import me.googas.commands.providers.type.EasyArgumentProvider;
  * @param <T> the type of context that this requires to provide the object
  */
 public class StringProvider<T extends EasyCommandContext>
-    implements EasyArgumentProvider<String, T> {
+    implements EasyArgumentProvider<String, T>, EasyMultipleArgumentProvider<String, T> {
 
   @Override
   public @NonNull Class<String> getClazz() {
@@ -22,5 +25,11 @@ public class StringProvider<T extends EasyCommandContext>
   @Override
   public String fromString(@NonNull String string, @NonNull T context) {
     return string;
+  }
+
+  @Override
+  public @NonNull String fromStrings(@NonNull String[] strings, @NonNull T context)
+      throws ArgumentProviderException {
+    return Strings.fromArray(strings);
   }
 }

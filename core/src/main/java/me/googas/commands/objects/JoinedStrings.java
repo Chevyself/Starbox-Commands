@@ -1,5 +1,6 @@
 package me.googas.commands.objects;
 
+import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.starbox.Strings;
@@ -25,5 +26,10 @@ public class JoinedStrings {
   public JoinedStrings(@NonNull String[] strings) {
     this.strings = strings;
     this.string = Strings.fromArray(strings);
+  }
+
+  @Override
+  public String toString() {
+    return this.string;
   }
 }
