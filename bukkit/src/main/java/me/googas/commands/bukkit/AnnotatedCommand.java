@@ -15,29 +15,29 @@ import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.bukkit.providers.type.BukkitMultiArgumentProvider;
 import me.googas.commands.bukkit.result.Result;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.commands.providers.type.StarboxContextualProvider;
 import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 /**
- * This is the direct extension of {@link EasyBukkitCommand} for reflection commands this is
+ * This is the direct extension of {@link StarboxBukkitCommand} for reflection commands this is
  * returned from {@link CommandManager#parseCommands(Object)}
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
  */
-public class AnnotatedCommand extends EasyBukkitCommand
-    implements ReflectCommand<CommandContext, EasyBukkitCommand> {
+public class AnnotatedCommand extends StarboxBukkitCommand
+    implements ReflectCommand<CommandContext, StarboxBukkitCommand> {
 
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
-  @NonNull @Getter private final List<EasyBukkitCommand> children;
+  @NonNull @Getter private final List<StarboxBukkitCommand> children;
 
   /**
    * Create the command
@@ -48,8 +48,8 @@ public class AnnotatedCommand extends EasyBukkitCommand
    * @param method the method to execute as the command see more in {@link #getMethod()}
    * @param object the instance of the object used to invoke the method see more in {@link
    *     #getObject()}
-   * @param arguments the list of arguments that are used to {@link #getObjects(EasyCommandContext)}
-   *     and invoke the {@link #getMethod()}
+   * @param arguments the list of arguments that are used to {@link
+   *     #getObjects(StarboxCommandContext)} and invoke the {@link #getMethod()}
    * @param manager the manager that parsed the command
    * @param children the list of children commands which can be used with this parent prefix. Learn
    *     more in {@link me.googas.commands.annotations.Parent}
@@ -60,7 +60,7 @@ public class AnnotatedCommand extends EasyBukkitCommand
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments,
       @NonNull CommandManager manager,
-      @NonNull List<EasyBukkitCommand> children) {
+      @NonNull List<StarboxBukkitCommand> children) {
     super(
         command.aliases()[0],
         command.description(),
@@ -97,9 +97,9 @@ public class AnnotatedCommand extends EasyBukkitCommand
         return StringUtil.copyPartialMatches(
             strings[strings.length - 1], argument.getSuggestions(context), new ArrayList<>());
       } else {
-        List<EasyContextualProvider<?, CommandContext>> providers =
+        List<StarboxContextualProvider<?, CommandContext>> providers =
             this.getRegistry().getProviders(argument.getClazz());
-        for (EasyContextualProvider<?, CommandContext> provider : providers) {
+        for (StarboxContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BukkitArgumentProvider) {
             return StringUtil.copyPartialMatches(
                 strings[strings.length - 1],
@@ -121,7 +121,7 @@ public class AnnotatedCommand extends EasyBukkitCommand
   }
 
   @Override
-  public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
+  public @NonNull StarboxMessagesProvider<CommandContext> getMessagesProvider() {
     return this.manager.getMessagesProvider();
   }
 
@@ -182,7 +182,7 @@ public class AnnotatedCommand extends EasyBukkitCommand
       children.addAll(this.reflectTabComplete(sender, strings));
       return children;
     } else if (strings.length >= 2) {
-      final EasyBukkitCommand command = this.getChildren(strings[0]);
+      final StarboxBukkitCommand command = this.getChildren(strings[0]);
       if (command != null) {
         return command.tabComplete(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
       } else {

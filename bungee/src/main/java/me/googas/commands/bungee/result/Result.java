@@ -8,13 +8,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.utils.BungeeUtils;
-import me.googas.commands.result.EasyResult;
+import me.googas.commands.result.StarboxResult;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
- * This is the implementation for {@link EasyResult} to be used in the execution of {@link
+ * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
  * me.googas.commands.bungee.BungeeCommand}. This includes a {@link List} of {@link BaseComponent}
  * which will be send to the {@link net.md_5.bungee.api.CommandSender} upon the command execution.
  *
@@ -29,7 +29,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
  * href="https://minecraft.tools/en/tellraw.php">minecraft-tools</a> or the <a
  * href="https://ci.md-5.net/job/BungeeCord/ws/chat/target/apidocs/overview-summary.html">bungee-api-chat</a>.
  */
-public class Result implements EasyResult {
+public class Result implements StarboxResult {
 
   /** The components that will be send after the execution */
   @NonNull @Getter private final List<BaseComponent> components = new ArrayList<>();

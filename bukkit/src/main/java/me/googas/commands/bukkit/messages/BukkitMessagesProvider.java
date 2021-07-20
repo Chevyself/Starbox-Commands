@@ -3,7 +3,7 @@ package me.googas.commands.bukkit.messages;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.commands.bukkit.EasyBukkitCommand;
+import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import org.bukkit.plugin.Plugin;
@@ -102,23 +102,23 @@ public class BukkitMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String helpTopicCommand(@NonNull EasyBukkitCommand command) {
+  public @NonNull String helpTopicCommand(@NonNull StarboxBukkitCommand command) {
     return BukkitUtils.format("&7- &e" + command.getName());
   }
 
   @Override
-  public @NonNull String commandShortText(@NonNull EasyBukkitCommand command) {
+  public @NonNull String commandShortText(@NonNull StarboxBukkitCommand command) {
     return command.getDescription();
   }
 
   @Override
-  public @NonNull String commandName(@NonNull EasyBukkitCommand command, String parentName) {
+  public @NonNull String commandName(@NonNull StarboxBukkitCommand command, String parentName) {
     return "/" + (parentName == null ? command.getName() : parentName + "." + command.getName());
   }
 
   @Override
   public @NonNull String commandFullText(
-      @NonNull EasyBukkitCommand command,
+      @NonNull StarboxBukkitCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
       @NonNull String buildArguments) {
@@ -129,7 +129,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String childCommand(
-      @NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent) {
+      @NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent) {
     return "\n - " + command.getName();
   }
 

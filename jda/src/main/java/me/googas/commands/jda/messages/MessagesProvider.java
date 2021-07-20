@@ -4,10 +4,10 @@ import lombok.NonNull;
 import me.googas.commands.jda.ListenerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 
 /** Provides messages to results */
-public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
+public interface MessagesProvider extends StarboxMessagesProvider<CommandContext> {
 
   /**
    * @param command is the input string that's not found as a command

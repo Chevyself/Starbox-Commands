@@ -5,11 +5,11 @@ import lombok.NonNull;
 /**
  * This is the interface that every provider has to extend or implement
  *
- * <p>The first implementation to check is {@link EasyContextualProvider}
+ * <p>The first implementation to check is {@link StarboxContextualProvider}
  *
  * @param <O> the type of object to provide
  */
-public interface EasySimpleArgumentProvider<O> {
+public interface StarboxSimpleArgumentProvider<O> {
 
   /**
    * Get if the provider provides with the queried class

@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.User;
 
 /**
  * This is an instance of an {@link net.dv8tion.jda.api.entities.User} that is inside the {@link
- * EasyJdaCommand} cooldown and cannot execute the command until {@link #isExpired()} = true
+ * JdaCommand} cooldown and cannot execute the command until {@link #isExpired()} = true
  */
 public class CooldownUser {
 

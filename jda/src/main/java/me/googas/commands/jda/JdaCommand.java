@@ -7,7 +7,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import me.googas.commands.EasyCommand;
+import me.googas.commands.StarboxCommand;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.permissions.EasyPermission;
@@ -17,16 +17,16 @@ import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.entities.User;
 
 /**
- * This is the direct implementation of {@link EasyCommand} for the "JDA" module extending this
+ * This is the direct implementation of {@link StarboxCommand} for the "JDA" module extending this
  * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
- * CommandManager#register(EasyJdaCommand)} the creation of a reflection command using {@link
+ * CommandManager#register(JdaCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
  *
  * <p>To parse {@link AnnotatedCommand} is required to use the annotation {@link
  * me.googas.commands.jda.annotations.Command} if you would like to create an extension the method
  * to override is {@link #execute(CommandContext)}
  */
-public abstract class EasyJdaCommand implements EasyCommand<CommandContext, EasyJdaCommand> {
+public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCommand> {
 
   @NonNull protected final CommandManager manager;
   @NonNull @Getter private final Time cooldown;
@@ -47,7 +47,7 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
    * @param cooldown the time that users must wait until they can use the command again {@link
    *     #checkCooldown(User, CommandContext)}
    */
-  public EasyJdaCommand(
+  public JdaCommand(
       @NonNull CommandManager manager,
       EasyPermission permission,
       boolean excluded,
@@ -68,7 +68,7 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
    * @param cooldown the time that users must wait until they can use the command again {@link
    *     #checkCooldown(User, CommandContext)}
    */
-  public EasyJdaCommand(@NonNull CommandManager manager, boolean excluded, @NonNull Time cooldown) {
+  public JdaCommand(@NonNull CommandManager manager, boolean excluded, @NonNull Time cooldown) {
     this(manager, null, excluded, cooldown);
   }
 
@@ -144,7 +144,7 @@ public abstract class EasyJdaCommand implements EasyCommand<CommandContext, Easy
   public Result execute(@NonNull CommandContext context) {
     @NonNull String[] strings = context.getStrings();
     if (strings.length >= 1) {
-      EasyJdaCommand command = this.getChildren(strings[0]);
+      JdaCommand command = this.getChildren(strings[0]);
       if (command != null) {
         @NonNull String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
         CommandContext childContext;

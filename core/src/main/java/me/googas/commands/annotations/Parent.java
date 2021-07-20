@@ -4,15 +4,14 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import me.googas.commands.EasyCommand;
+import me.googas.commands.StarboxCommand;
 
 /**
  * Used to represent the parent commands that are parsed using reflection
  *
- * <p>Lets suppose to have the prefix '/'. If you have the {@link me.googas.commands.EasyCommand}
- * 'hello' you can parseAndRegister other {@link me.googas.commands.EasyCommand} using {@link
- * me.googas.commands.EasyCommand#addChildren(EasyCommand)} and the command execution with be as
- * follows:
+ * <p>Lets suppose to have the prefix '/'. If you have the {@link StarboxCommand} 'hello' you can
+ * parseAndRegister other {@link StarboxCommand} using {@link
+ * StarboxCommand#addChildren(StarboxCommand)} and the command execution with be as follows:
  *
  * <p>/hello &lt;command&gt; &lt;**args&gt;
  */

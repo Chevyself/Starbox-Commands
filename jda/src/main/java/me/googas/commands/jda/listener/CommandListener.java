@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.jda.CommandManager;
-import me.googas.commands.jda.EasyJdaCommand;
+import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.jda.ListenerOptions;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
@@ -58,7 +58,7 @@ public class CommandListener implements EventListener {
     }
     this.listenerOptions.preCommand(event, commandName, strings);
     commandName = commandName.substring(prefix.length());
-    EasyJdaCommand command = this.manager.getCommand(commandName);
+    JdaCommand command = this.manager.getCommand(commandName);
     CommandContext context =
         this.getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = this.getResult(command, commandName, context);
@@ -110,7 +110,7 @@ public class CommandListener implements EventListener {
    * @return the result of the command execution
    */
   private Result getResult(
-      EasyJdaCommand command, @NonNull String commandName, CommandContext context) {
+      JdaCommand command, @NonNull String commandName, CommandContext context) {
     if (command != null) {
       return command.execute(context);
     } else {

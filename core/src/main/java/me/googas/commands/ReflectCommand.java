@@ -8,13 +8,13 @@ import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.ExtraArgument;
 import me.googas.commands.arguments.MultipleArgument;
 import me.googas.commands.arguments.SingleArgument;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.EasyArgumentProvider;
-import me.googas.commands.result.EasyResult;
+import me.googas.commands.providers.type.StarboxArgumentProvider;
+import me.googas.commands.result.StarboxResult;
 
 /**
  * A reflect command is a command that is parsed using Java reflection. That's why this includes
@@ -23,12 +23,12 @@ import me.googas.commands.result.EasyResult;
  * @param <C> the type of context that is required to run the command
  * @param <T> the type of command that can be children
  */
-public interface ReflectCommand<C extends EasyCommandContext, T extends EasyCommand<C, T>>
-    extends EasyCommand<C, T> {
+public interface ReflectCommand<C extends StarboxCommandContext, T extends StarboxCommand<C, T>>
+    extends StarboxCommand<C, T> {
 
   /**
    * Get the string that will be used to get the object to pass to the command method as a parameter
-   * (Check {@link EasyArgumentProvider}).
+   * (Check {@link StarboxArgumentProvider}).
    *
    * @param argument the argument requested in the position
    * @param context the context of the command execution
@@ -38,7 +38,7 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
    *     then it will return that one
    */
   static String getArgument(
-      @NonNull SingleArgument<?> argument, @NonNull EasyCommandContext context) {
+      @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext context) {
     String[] strings = context.getStrings();
     if (strings.length - 1 < argument.getPosition()) {
       if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
@@ -53,11 +53,11 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
 
   /**
    * Get the objects that should be used in the parameters to invoke {@link #getMethod()}. For each
-   * {@link EasyCommandContext#getStrings()} it will try to get one object, unless the argument in
-   * the position of the string is a {@link MultipleArgument}. Check the {@link #getRegistry()} to
-   * get which classes can be provided as an object.
+   * {@link StarboxCommandContext#getStrings()} it will try to get one object, unless the argument
+   * in the position of the string is a {@link MultipleArgument}. Check the {@link #getRegistry()}
+   * to get which classes can be provided as an object.
    *
-   * @param context the context to get the parameters {@link EasyCommandContext#getStrings()}
+   * @param context the context to get the parameters {@link StarboxCommandContext#getStrings()}
    * @return the objects to use as parameters in the {@link #getMethod()}
    * @throws ArgumentProviderException if the argument could not be provided, see {@link
    *     ArgumentProviderException}
@@ -155,7 +155,7 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
 
   /**
    * Get the {@link List} of the arguments for the command. It is used in {@link #getArgument(int)}
-   * therefore in {@link #getObjects(EasyCommandContext)}
+   * therefore in {@link #getObjects(StarboxCommandContext)}
    *
    * @return the {@link List} of {@link Argument}
    */
@@ -177,7 +177,7 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
    * @return the messages provider
    */
   @NonNull
-  EasyMessagesProvider<C> getMessagesProvider();
+  StarboxMessagesProvider<C> getMessagesProvider();
 
   /**
    * Executes the command and gives a result of its execution
@@ -186,9 +186,9 @@ public interface ReflectCommand<C extends EasyCommandContext, T extends EasyComm
    * @return the result of the command execution
    */
   @Override
-  default EasyResult execute(@NonNull C context) {
+  default StarboxResult execute(@NonNull C context) {
     try {
-      return (EasyResult) this.getMethod().invoke(this.getObject(), this.getObjects(context));
+      return (StarboxResult) this.getMethod().invoke(this.getObject(), this.getObjects(context));
     } catch (MissingArgumentException
         | ArgumentProviderException
         | IllegalAccessException

@@ -3,20 +3,20 @@ package me.googas.commands.exceptions.type;
 import lombok.NonNull;
 
 /**
- * This is the same as a {@link SimpleException} but it implements {@link RuntimeException} as it
+ * This is the same as a {@link StarboxException} but it implements {@link RuntimeException} as it
  * might be a programmer exception
  */
-public class SimpleRuntimeException extends RuntimeException {
+public class StarboxRuntimeException extends RuntimeException {
 
   /** Create an exception with no message */
-  public SimpleRuntimeException() {}
+  public StarboxRuntimeException() {}
 
   /**
    * Create a simple exception with a simple message
    *
    * @param message the message with the cause of the exception
    */
-  public SimpleRuntimeException(@NonNull String message) {
+  public StarboxRuntimeException(@NonNull String message) {
     super(message);
   }
 
@@ -26,7 +26,7 @@ public class SimpleRuntimeException extends RuntimeException {
    * @param message the message to detail the cause of the exception
    * @param cause the other cause of this exception
    */
-  public SimpleRuntimeException(String message, @NonNull Throwable cause) {
+  public StarboxRuntimeException(String message, @NonNull Throwable cause) {
     super(message, cause);
   }
 
@@ -35,7 +35,7 @@ public class SimpleRuntimeException extends RuntimeException {
    *
    * @param cause the cause of the exception
    */
-  public SimpleRuntimeException(@NonNull Throwable cause) {
+  public StarboxRuntimeException(@NonNull Throwable cause) {
     super(cause);
   }
 }

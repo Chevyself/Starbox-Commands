@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
+import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.jda.annotations.Command;
@@ -17,7 +17,7 @@ import me.googas.commands.jda.permissions.EasyPermission;
 import me.googas.commands.jda.permissions.PermissionChecker;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.commands.providers.type.StarboxContextualProvider;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -33,8 +33,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * <p>To create a {@link CommandManager} instance you simply need a {@link ProvidersRegistry} you
  * can use {@link me.googas.commands.jda.providers.registry.JdaProvidersRegistry} which includes
  * some providers that are intended for JDA use you can even extend it to add more in the
- * constructor or use {@link ProvidersRegistry#addProvider(EasyContextualProvider)}, you also ned a
- * {@link MessagesProvider} which is used to display error commands the commands the default
+ * constructor or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also ned
+ * a {@link MessagesProvider} which is used to display error commands the commands the default
  * implementation is {@link me.googas.commands.jda.messages.JdaMessagesProvider}, to check the
  * permissions of the {@link net.dv8tion.jda.api.entities.User} that execute the command you can
  * create an implementation of {@link PermissionChecker} or just use its default method {@link
@@ -50,9 +50,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * new CommandManager(new JdaProvidersRegistry(messagesProvider), messagesProvider, () -&gt; messagesProvider, jda, new ListenerOptions(), "-");
  * }</pre>
  */
-public class CommandManager implements EasyCommandManager<CommandContext, EasyJdaCommand> {
+public class CommandManager implements StarboxCommandManager<CommandContext, JdaCommand> {
 
-  @NonNull @Getter private final List<EasyJdaCommand> commands = new ArrayList<>();
+  @NonNull @Getter private final List<JdaCommand> commands = new ArrayList<>();
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final PermissionChecker permissionChecker;
@@ -88,20 +88,20 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
 
   /**
    * Get the command instance that matches the name. This will loop thru all the {@link #commands}
-   * until one is {@link EasyJdaCommand#hasAlias(String)} = true.
+   * until one is {@link JdaCommand#hasAlias(String)} = true.
    *
    * @param name the name to match the command
    * @return the instance of the command if found else null
    */
-  public EasyJdaCommand getCommand(@NonNull String name) {
-    for (EasyJdaCommand command : this.commands) {
+  public JdaCommand getCommand(@NonNull String name) {
+    for (JdaCommand command : this.commands) {
       if (command.hasAlias(name)) return command;
     }
     return null;
   }
 
   @Override
-  public @NonNull CommandManager register(@NonNull EasyJdaCommand command) {
+  public @NonNull CommandManager register(@NonNull JdaCommand command) {
     this.commands.add(command);
     return this;
   }
@@ -149,17 +149,16 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyJd
 
   @Override
   public @NonNull CommandManager parseAndRegisterAll(@NonNull Object... objects) {
-    return (CommandManager) EasyCommandManager.super.parseAndRegisterAll(objects);
+    return (CommandManager) StarboxCommandManager.super.parseAndRegisterAll(objects);
   }
 
   @Override
-  public @NonNull CommandManager registerAll(
-      @NonNull Collection<? extends EasyJdaCommand> commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+  public @NonNull CommandManager registerAll(@NonNull Collection<? extends JdaCommand> commands) {
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 
   @Override
-  public @NonNull CommandManager registerAll(@NonNull EasyJdaCommand... commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+  public @NonNull CommandManager registerAll(@NonNull JdaCommand... commands) {
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 }

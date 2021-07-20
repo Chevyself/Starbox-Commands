@@ -9,35 +9,35 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.exceptions.type.SimpleException;
-import me.googas.commands.exceptions.type.SimpleRuntimeException;
+import me.googas.commands.exceptions.type.StarboxException;
+import me.googas.commands.exceptions.type.StarboxRuntimeException;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.permissions.SimplePermission;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.Permission;
 
 /**
- * This is the direct extension of {@link EasyJdaCommand} for reflection commands this is returned
- * from {@link CommandManager#parseCommands(Object)}
+ * This is the direct extension of {@link JdaCommand} for reflection commands this is returned from
+ * {@link CommandManager#parseCommands(Object)}
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
  */
-public class AnnotatedCommand extends EasyJdaCommand
-    implements ReflectCommand<CommandContext, EasyJdaCommand> {
+public class AnnotatedCommand extends JdaCommand
+    implements ReflectCommand<CommandContext, JdaCommand> {
 
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
   @NonNull @Getter private final List<String> aliases;
-  @NonNull @Getter private final List<EasyJdaCommand> children = new ArrayList<>();
+  @NonNull @Getter private final List<JdaCommand> children = new ArrayList<>();
 
   /**
    * Create the command
@@ -49,8 +49,8 @@ public class AnnotatedCommand extends EasyJdaCommand
    * @param method the method to execute as the command see more in {@link #getMethod()}
    * @param object the instance of the object used to invoke the method see more in {@link
    *     #getObject()}
-   * @param arguments the list of arguments that are used to {@link #getObjects(EasyCommandContext)}
-   *     and invoke the {@link #getMethod()}
+   * @param arguments the list of arguments that are used to {@link
+   *     #getObjects(StarboxCommandContext)} and invoke the {@link #getMethod()}
    */
   public AnnotatedCommand(
       @NonNull CommandManager manager,
@@ -74,7 +74,7 @@ public class AnnotatedCommand extends EasyJdaCommand
   }
 
   @Override
-  public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
+  public @NonNull StarboxMessagesProvider<CommandContext> getMessagesProvider() {
     return this.manager.getMessagesProvider();
   }
 
@@ -115,8 +115,8 @@ public class AnnotatedCommand extends EasyJdaCommand
     } catch (final InvocationTargetException e) {
       final String message = e.getTargetException().getMessage();
       if (message != null && !message.isEmpty()) {
-        if (!(e.getTargetException() instanceof SimpleException)
-            | !(e.getTargetException() instanceof SimpleRuntimeException)) {
+        if (!(e.getTargetException() instanceof StarboxException)
+            | !(e.getTargetException() instanceof StarboxRuntimeException)) {
           e.printStackTrace();
         }
         return new Result(ResultType.ERROR, message);

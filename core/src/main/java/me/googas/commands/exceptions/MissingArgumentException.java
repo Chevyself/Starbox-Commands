@@ -1,7 +1,7 @@
 package me.googas.commands.exceptions;
 
 import lombok.NonNull;
-import me.googas.commands.exceptions.type.SimpleException;
+import me.googas.commands.exceptions.type.StarboxException;
 
 /**
  * This exception is thrown by {@link me.googas.commands.ReflectCommand} when an {@link
@@ -20,7 +20,7 @@ import me.googas.commands.exceptions.type.SimpleException;
  *
  * <p>/hello world!
  */
-public class MissingArgumentException extends SimpleException {
+public class MissingArgumentException extends StarboxException {
 
   /**
    * Create a simple exception with a simple message

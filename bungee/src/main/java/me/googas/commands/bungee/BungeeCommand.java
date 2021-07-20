@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.EasyCommand;
+import me.googas.commands.StarboxCommand;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.result.Result;
 import me.googas.starbox.Strings;
@@ -17,8 +17,8 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
 /**
- * This is the direct implementation of {@link EasyCommand} for the "Bungee" module extending this
- * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
+ * This is the direct implementation of {@link StarboxCommand} for the "Bungee" module extending
+ * this class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(BungeeCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
  *
@@ -33,7 +33,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
  * String...)}
  */
 public abstract class BungeeCommand extends Command
-    implements EasyCommand<CommandContext, BungeeCommand>, TabExecutor {
+    implements StarboxCommand<CommandContext, BungeeCommand>, TabExecutor {
 
   @NonNull @Getter protected final CommandManager manager;
   @NonNull @Getter private final List<BungeeCommand> children;

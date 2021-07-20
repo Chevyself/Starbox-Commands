@@ -5,7 +5,7 @@ import me.googas.commands.annotations.Multiple;
 import me.googas.commands.annotations.Optional;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.arguments.Argument;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 
 public class ArgumentsSample {
 
@@ -13,12 +13,16 @@ public class ArgumentsSample {
     List<Argument<?>> arguments =
         Argument.parseArguments(
             ArgumentsSample.class.getMethod(
-                "AMethod", EasyCommandContext.class, String.class, String.class, String[].class));
+                "AMethod",
+                StarboxCommandContext.class,
+                String.class,
+                String.class,
+                String[].class));
     for (Argument<?> argument : arguments) {
       System.out.println("argument = " + argument);
     }
     // Output:
-    // argument = ExtraArgument{clazz=interface me.googas.commands.context.EasyCommandContext}
+    // argument = ExtraArgument{clazz=interface me.googas.commands.context.StarboxCommandContext}
     // argument = SingleArgument{name='No name provided', description='No description provided',
     // suggestions=[], clazz=class java.lang.String, required=true, position=0}
     // argument = SingleArgument{name='No name provided', description='No description provided',
@@ -29,7 +33,7 @@ public class ArgumentsSample {
   }
 
   public void AMethod(
-      EasyCommandContext context,
+      StarboxCommandContext context,
       @Required String name,
       @Optional String description,
       @Required @Multiple String[] messages) {
@@ -40,8 +44,8 @@ public class ArgumentsSample {
     System.out.println(name + " has a description " + description);
   }
 
-  public void AMethod(EasyCommandContext context) {
-    // The class of the argument is EasyCommandContext
+  public void AMethod(StarboxCommandContext context) {
+    // The class of the argument is StarboxCommandContext
     System.out.println(context);
   }
 

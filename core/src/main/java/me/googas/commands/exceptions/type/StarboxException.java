@@ -3,10 +3,10 @@ package me.googas.commands.exceptions.type;
 import lombok.NonNull;
 
 /** Represent a simple exception to easily create messages */
-public class SimpleException extends Exception {
+public class StarboxException extends Exception {
 
   /** Create an exception with no message */
-  public SimpleException() {
+  public StarboxException() {
     super();
   }
 
@@ -15,7 +15,7 @@ public class SimpleException extends Exception {
    *
    * @param message the message with the cause of the exception
    */
-  public SimpleException(@NonNull String message) {
+  public StarboxException(@NonNull String message) {
     super(message);
   }
 
@@ -25,7 +25,7 @@ public class SimpleException extends Exception {
    * @param message the message to detail the cause of the exception
    * @param cause the other cause of this exception
    */
-  public SimpleException(String message, @NonNull Throwable cause) {
+  public StarboxException(String message, @NonNull Throwable cause) {
     super(message, cause);
   }
 
@@ -34,7 +34,7 @@ public class SimpleException extends Exception {
    *
    * @param cause the cause of the exception
    */
-  public SimpleException(@NonNull Throwable cause) {
+  public StarboxException(@NonNull Throwable cause) {
     super(cause);
   }
 }

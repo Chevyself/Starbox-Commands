@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import lombok.NonNull;
-import me.googas.commands.context.EasyCommandContext;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /**
- * This represents the object where {@link EasyCommand} are registered and queried for execution.
+ * This represents the object where {@link StarboxCommand} are registered and queried for execution.
  * The implementation for this variates from module to module. This contains the principal methods
  * which are intended for its use
  *
@@ -18,7 +18,8 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
  * @param <C> the type of command context that is used to run the commands
  * @param <T> the type of command that this instance manages
  */
-public interface EasyCommandManager<C extends EasyCommandContext, T extends EasyCommand<C, T>> {
+public interface StarboxCommandManager<
+    C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
    * Register a new command into the manager. Any command that implements the type T can be
@@ -28,7 +29,7 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  EasyCommandManager<C, T> register(@NonNull T command);
+  StarboxCommandManager<C, T> register(@NonNull T command);
 
   /**
    * Register the commands contained inside the class of the provided object. This will execute
@@ -38,7 +39,7 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  EasyCommandManager<C, T> parseAndRegister(@NonNull Object object);
+  StarboxCommandManager<C, T> parseAndRegister(@NonNull Object object);
 
   /**
    * Register all the objects in an array. This will loop around each object to execute {@link
@@ -48,7 +49,7 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  default EasyCommandManager<C, T> parseAndRegisterAll(@NonNull Object... objects) {
+  default StarboxCommandManager<C, T> parseAndRegisterAll(@NonNull Object... objects) {
     for (Object object : objects) {
       this.parseAndRegister(object);
     }
@@ -81,13 +82,13 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
   ReflectCommand<C, T> parseCommand(@NonNull Object object, @NonNull Method method);
 
   /**
-   * Registers the collection of commands. This will call {@link #register(EasyCommand)} on loop
+   * Registers the collection of commands. This will call {@link #register(StarboxCommand)} on loop
    *
    * @param commands the commands to be registered
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  default EasyCommandManager<C, T> registerAll(@NonNull Collection<? extends T> commands) {
+  default StarboxCommandManager<C, T> registerAll(@NonNull Collection<? extends T> commands) {
     for (T command : commands) {
       this.register(command);
     }
@@ -97,18 +98,18 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
   /**
    * Registers the collection of commands. This will call {@link #registerAll(Collection)}
    *
-   * @see #register(EasyCommand)
+   * @see #register(StarboxCommand)
    * @param commands the commands to be registered
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  default EasyCommandManager<C, T> registerAll(@NonNull T... commands) {
+  default StarboxCommandManager<C, T> registerAll(@NonNull T... commands) {
     return this.registerAll(Arrays.asList(commands));
   }
 
   /**
-   * Get all the {@link EasyCommand} that are registered in this instance. This will contain all the
-   * commands that were registered using {@link #register(EasyCommand)}
+   * Get all the {@link StarboxCommand} that are registered in this instance. This will contain all
+   * the commands that were registered using {@link #register(StarboxCommand)}
    *
    * @return the registered commands.
    */
@@ -116,7 +117,7 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
   Collection<T> getCommands();
 
   /**
-   * Get the providers registry that this manager may use for {@link EasyCommandContext}
+   * Get the providers registry that this manager may use for {@link StarboxCommandContext}
    *
    * @return the providers registry
    */
@@ -124,10 +125,10 @@ public interface EasyCommandManager<C extends EasyCommandContext, T extends Easy
   ProvidersRegistry<C> getProvidersRegistry();
 
   /**
-   * Get the messages provider that this manager may use for {@link EasyCommand} messages
+   * Get the messages provider that this manager may use for {@link StarboxCommand} messages
    *
    * @return the messages provider
    */
   @NonNull
-  EasyMessagesProvider<C> getMessagesProvider();
+  StarboxMessagesProvider<C> getMessagesProvider();
 }

@@ -4,13 +4,13 @@ import java.util.Arrays;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 import me.googas.commands.bukkit.messages.MessagesProvider;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 
 /** The context of a bukkit command */
-public class CommandContext implements EasyCommandContext {
+public class CommandContext implements StarboxCommandContext {
 
   @NonNull private final CommandSender sender;
   @NonNull private final String string;

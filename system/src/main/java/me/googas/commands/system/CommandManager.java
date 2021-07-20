@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
+import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.providers.registry.ProvidersRegistry;
@@ -31,7 +31,7 @@ import me.googas.commands.system.context.CommandContext;
  *
  * }</pre>
  */
-public class CommandManager implements EasyCommandManager<CommandContext, SystemCommand> {
+public class CommandManager implements StarboxCommandManager<CommandContext, SystemCommand> {
 
   @NonNull @Getter private final List<SystemCommand> commands = new ArrayList<>();
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
@@ -126,17 +126,17 @@ public class CommandManager implements EasyCommandManager<CommandContext, System
 
   @Override
   public @NonNull CommandManager parseAndRegisterAll(@NonNull Object... objects) {
-    return (CommandManager) EasyCommandManager.super.parseAndRegisterAll(objects);
+    return (CommandManager) StarboxCommandManager.super.parseAndRegisterAll(objects);
   }
 
   @Override
   public @NonNull CommandManager registerAll(
       @NonNull Collection<? extends SystemCommand> commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 
   @Override
   public @NonNull CommandManager registerAll(@NonNull SystemCommand... commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 }

@@ -2,7 +2,7 @@ package me.googas.commands.context;
 
 import java.util.Arrays;
 import lombok.NonNull;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /**
@@ -10,7 +10,7 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
  * sender and the strings that represent the arguments, obviously, each implementation has a
  * different context but this gives an important idea .
  */
-public interface EasyCommandContext {
+public interface StarboxCommandContext {
 
   /**
    * Get if the command was executed using the given flag
@@ -60,12 +60,12 @@ public interface EasyCommandContext {
    *
    * @return the providers registry
    */
-  ProvidersRegistry<? extends EasyCommandContext> getRegistry();
+  ProvidersRegistry<? extends StarboxCommandContext> getRegistry();
 
   /**
    * Get the messages provider used in this context
    *
    * @return the messages provider used in this context
    */
-  EasyMessagesProvider<? extends EasyCommandContext> getMessagesProvider();
+  StarboxMessagesProvider<? extends StarboxCommandContext> getMessagesProvider();
 }

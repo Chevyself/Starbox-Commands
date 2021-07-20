@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import lombok.NonNull;
 import me.googas.commands.jda.CommandManager;
-import me.googas.commands.jda.EasyJdaCommand;
+import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.jda.ListenerOptions;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.result.Result;
@@ -35,7 +35,7 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
   CommandManager getCommandManager();
 
   @NonNull
-  default EasyJdaCommand getCommand() {
+  default JdaCommand getCommand() {
     return Objects.requireNonNull(
         this.getCommandManager().getCommand(this.getCommandName()),
         "The command " + this.getCommandName() + " seems to not be registered");

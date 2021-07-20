@@ -3,12 +3,12 @@ package me.googas.commands.system;
 import java.util.Arrays;
 import java.util.List;
 import lombok.NonNull;
-import me.googas.commands.EasyCommand;
+import me.googas.commands.StarboxCommand;
 import me.googas.commands.system.context.CommandContext;
 
 /**
- * This is the direct implementation of {@link EasyCommand} for the "System" module extending this
- * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
+ * This is the direct implementation of {@link StarboxCommand} for the "System" module extending
+ * this class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(SystemCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link ReflectSystemCommand}
  *
@@ -16,7 +16,7 @@ import me.googas.commands.system.context.CommandContext;
  * me.googas.commands.system.Command} if you would like to create an extension the method to
  * override is {@link #run(CommandContext)}
  */
-public interface SystemCommand extends EasyCommand<CommandContext, SystemCommand> {
+public interface SystemCommand extends StarboxCommand<CommandContext, SystemCommand> {
 
   /**
    * Execute the command. This will run after {@link #execute(CommandContext)} does not find any

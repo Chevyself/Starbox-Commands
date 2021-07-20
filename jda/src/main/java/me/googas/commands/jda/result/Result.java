@@ -3,14 +3,15 @@ package me.googas.commands.jda.result;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.result.EasyResult;
+import me.googas.commands.jda.JdaCommand;
+import me.googas.commands.result.StarboxResult;
 import net.dv8tion.jda.api.entities.Message;
 
 /**
- * This is the implementation for {@link EasyResult} to be used in the execution of {@link
- * me.googas.commands.jda.EasyJdaCommand}.
+ * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
+ * JdaCommand}.
  *
- * <p>The result for {@link me.googas.commands.jda.EasyJdaCommand} must include
+ * <p>The result for {@link JdaCommand} must include
  *
  * <ul>
  *   <li>{@link #type} which changes the output in the {@link
@@ -22,7 +23,7 @@ import net.dv8tion.jda.api.entities.Message;
  *   <li>{@link #success} which is the consumer of the {@link #discordMessage} after it is sent
  * </ul>
  */
-public class Result implements EasyResult {
+public class Result implements StarboxResult {
 
   /**
    * Which changes the output in the {@link me.googas.commands.jda.listener.CommandListener} depends

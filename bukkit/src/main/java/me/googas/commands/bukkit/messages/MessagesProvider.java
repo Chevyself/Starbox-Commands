@@ -1,13 +1,13 @@
 package me.googas.commands.bukkit.messages;
 
 import lombok.NonNull;
-import me.googas.commands.bukkit.EasyBukkitCommand;
+import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import org.bukkit.plugin.Plugin;
 
 /** Provides the messages for bukkit responses */
-public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
+public interface MessagesProvider extends StarboxMessagesProvider<CommandContext> {
 
   /**
    * The message sent when a player is not found
@@ -65,7 +65,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    *     topic
    */
   @NonNull
-  String helpTopicCommand(@NonNull EasyBukkitCommand command);
+  String helpTopicCommand(@NonNull StarboxBukkitCommand command);
 
   /**
    * The short text for a command help topic
@@ -74,7 +74,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the short text
    */
   @NonNull
-  String commandShortText(@NonNull EasyBukkitCommand command);
+  String commandShortText(@NonNull StarboxBukkitCommand command);
 
   /**
    * The name of the command in the help topic
@@ -85,7 +85,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the command
    */
   @NonNull
-  String commandName(EasyBukkitCommand command, String parentName);
+  String commandName(StarboxBukkitCommand command, String parentName);
 
   /**
    * Get the full text of a help topic for a parent command
@@ -98,7 +98,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    */
   @NonNull
   String commandFullText(
-      @NonNull EasyBukkitCommand command,
+      @NonNull StarboxBukkitCommand command,
       @NonNull String shortText,
       @NonNull String buildChildren,
       @NonNull String buildArguments);
@@ -111,7 +111,7 @@ public interface MessagesProvider extends EasyMessagesProvider<CommandContext> {
    * @return the child command description
    */
   @NonNull
-  String childCommand(@NonNull EasyBukkitCommand command, @NonNull EasyBukkitCommand parent);
+  String childCommand(@NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent);
 
   /**
    * The message to tell the users that materials have a name and it cannot be empty

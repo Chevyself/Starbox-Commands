@@ -1,14 +1,14 @@
 package me.googas.commands.exceptions;
 
 import lombok.NonNull;
-import me.googas.commands.exceptions.type.SimpleException;
-import me.googas.commands.providers.type.EasyArgumentProvider;
+import me.googas.commands.exceptions.type.StarboxException;
+import me.googas.commands.providers.type.StarboxArgumentProvider;
 
 /**
- * This exception is thrown by {@link EasyArgumentProvider} when they cannot provide the object as
- * they are required to
+ * This exception is thrown by {@link StarboxArgumentProvider} when they cannot provide the object
+ * as they are required to
  */
-public class ArgumentProviderException extends SimpleException {
+public class ArgumentProviderException extends StarboxException {
 
   /** Create an exception with no message */
   public ArgumentProviderException() {}

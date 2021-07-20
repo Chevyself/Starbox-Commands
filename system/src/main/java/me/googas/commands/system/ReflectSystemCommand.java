@@ -7,10 +7,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.system.context.sender.CommandSender;
@@ -38,8 +38,8 @@ public class ReflectSystemCommand
    * @param method the method to execute as the command see more in {@link #getMethod()}
    * @param object the instance of the object used to invoke the method see more in {@link
    *     #getObject()}
-   * @param arguments the list of arguments that are used to {@link #getObjects(EasyCommandContext)}
-   *     and invoke the {@link #getMethod()}
+   * @param arguments the list of arguments that are used to {@link
+   *     #getObjects(StarboxCommandContext)} and invoke the {@link #getMethod()}
    * @param manager the manager that parsed the command
    * @param aliases the aliases that match the command for its execution
    * @param children the list of children commands which can be used with this parent prefix. Learn
@@ -104,7 +104,7 @@ public class ReflectSystemCommand
   }
 
   @Override
-  public @NonNull EasyMessagesProvider<CommandContext> getMessagesProvider() {
+  public @NonNull StarboxMessagesProvider<CommandContext> getMessagesProvider() {
     return this.getManager().getMessagesProvider();
   }
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.Delegate;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.starbox.Strings;
@@ -14,7 +14,7 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
 /** This context is used for every command {@link User being the sender} */
-public class CommandContext implements EasyCommandContext {
+public class CommandContext implements StarboxCommandContext {
 
   /** The message that executed the command */
   @NonNull @Getter private final Message message;

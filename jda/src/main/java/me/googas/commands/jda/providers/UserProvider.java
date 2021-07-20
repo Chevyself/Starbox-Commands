@@ -1,7 +1,7 @@
 package me.googas.commands.jda.providers;
 
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
+import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
@@ -9,7 +9,7 @@ import me.googas.commands.jda.providers.type.JdaArgumentProvider;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.User;
 
-/** Provides the {@link EasyCommandManager} with a {@link User} */
+/** Provides the {@link StarboxCommandManager} with a {@link User} */
 public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgumentProvider<User> {
 
   private final MessagesProvider messagesProvider;

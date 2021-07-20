@@ -7,22 +7,21 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
-import me.googas.commands.result.EasyResult;
+import me.googas.commands.result.StarboxResult;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
- * This is the implementation for {@link EasyResult} to be used in the execution of {@link
- * me.googas.commands.bukkit.EasyBukkitCommand}. This includes a {@link List} of {@link
- * BaseComponent} which will be send to the {@link org.bukkit.command.CommandSender} upon the
- * command execution.
+ * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
+ * StarboxBukkitCommand}. This includes a {@link List} of {@link BaseComponent} which will be send
+ * to the {@link org.bukkit.command.CommandSender} upon the command execution.
  *
- * <p>If the {@link Result} from {@link
- * me.googas.commands.bukkit.EasyBukkitCommand#execute(CommandContext)} is null or empty no message
- * will be shown to the sender.
+ * <p>If the {@link Result} from {@link StarboxBukkitCommand#execute(CommandContext)} is null or
+ * empty no message will be shown to the sender.
  *
  * <p>Exceptions will show a simple {@link Result} message and the stack trace will be printed.
  *
@@ -31,7 +30,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
  * href="https://minecraft.tools/en/tellraw.php">minecraft-tools</a> or the <a
  * href="https://ci.md-5.net/job/BungeeCord/ws/chat/target/apidocs/overview-summary.html">bungee-api-chat</a>.
  */
-public class Result implements EasyResult {
+public class Result implements StarboxResult {
 
   @Getter @Setter @NonNull private List<BaseComponent> components = new ArrayList<>();
 

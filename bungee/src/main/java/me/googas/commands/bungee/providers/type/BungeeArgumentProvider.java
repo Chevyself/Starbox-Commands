@@ -3,14 +3,14 @@ package me.googas.commands.bungee.providers.type;
 import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
-import me.googas.commands.providers.type.EasyArgumentProvider;
+import me.googas.commands.providers.type.StarboxArgumentProvider;
 
 /**
  * A provider made for bungee commands
  *
  * @param <O> the type of the object to provider
  */
-public interface BungeeArgumentProvider<O> extends EasyArgumentProvider<O, CommandContext> {
+public interface BungeeArgumentProvider<O> extends StarboxArgumentProvider<O, CommandContext> {
 
   /**
    * Get the suggestions for a command

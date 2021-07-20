@@ -3,7 +3,7 @@ package me.googas.commands.bukkit.topic;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.bukkit.CommandManager;
-import me.googas.commands.bukkit.EasyBukkitCommand;
+import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.help.HelpTopic;
@@ -41,7 +41,7 @@ public class PluginHelpTopic extends HelpTopic {
   /**
    * Gets the message to include in {@link MessagesProvider#helpTopicFull(String, String, Plugin)},
    * Using a {@link StringBuilder} getting all the commands registered in {@link #manager} and
-   * adding its {@link MessagesProvider#helpTopicCommand(EasyBukkitCommand)} to the builder.
+   * adding its {@link MessagesProvider#helpTopicCommand(StarboxBukkitCommand)} to the builder.
    *
    * @return the message that includes the commands for {@link
    *     MessagesProvider#helpTopicFull(String, String, Plugin)}}
@@ -49,7 +49,7 @@ public class PluginHelpTopic extends HelpTopic {
   @NonNull
   private String getCommands() {
     StringBuilder builder = new StringBuilder();
-    for (EasyBukkitCommand command : this.manager.getCommands()) {
+    for (StarboxBukkitCommand command : this.manager.getCommands()) {
       builder.append(this.provider.helpTopicCommand(command));
     }
     return builder.toString();

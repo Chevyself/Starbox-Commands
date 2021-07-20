@@ -2,15 +2,16 @@ package me.googas.commands.objects;
 
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.starbox.Strings;
 
 /**
  * This class is a wrapped array of {@link String}. This is used for commands that require many
  * strings as an argument. You can check this instance being used in the context of a command
- * execution too in {@link me.googas.commands.context.EasyCommandContext}
+ * execution too in {@link StarboxCommandContext}
  *
  * @see me.googas.commands.arguments.MultipleArgument
- * @see me.googas.commands.context.EasyCommandContext
+ * @see StarboxCommandContext
  */
 public class JoinedStrings {
 

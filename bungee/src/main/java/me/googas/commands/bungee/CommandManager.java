@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
+import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.bungee.annotations.Command;
@@ -15,7 +15,7 @@ import me.googas.commands.bungee.messages.BungeeMessagesProvider;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.commands.providers.type.StarboxContextualProvider;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -31,7 +31,7 @@ import net.md_5.bungee.api.plugin.PluginManager;
  * related to the commands, a {@link ProvidersRegistry} you can use {@link
  * me.googas.commands.bungee.providers.registry.BungeeProvidersRegistry} which includes some
  * providers that are intended for Bungee use you can even extend it to add more in the constructor
- * or use {@link ProvidersRegistry#addProvider(EasyContextualProvider)}, you also ned a {@link
+ * or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also ned a {@link
  * MessagesProvider} which is used to display error commands the commands the default implementation
  * is {@link BungeeMessagesProvider}.
  *
@@ -42,7 +42,7 @@ import net.md_5.bungee.api.plugin.PluginManager;
  *
  * }</pre>
  */
-public class CommandManager implements EasyCommandManager<CommandContext, BungeeCommand> {
+public class CommandManager implements StarboxCommandManager<CommandContext, BungeeCommand> {
 
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final PluginManager manager;
@@ -120,17 +120,17 @@ public class CommandManager implements EasyCommandManager<CommandContext, Bungee
 
   @Override
   public @NonNull CommandManager parseAndRegisterAll(@NonNull Object... objects) {
-    return (CommandManager) EasyCommandManager.super.parseAndRegisterAll(objects);
+    return (CommandManager) StarboxCommandManager.super.parseAndRegisterAll(objects);
   }
 
   @Override
   public @NonNull CommandManager registerAll(
       @NonNull Collection<? extends BungeeCommand> commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 
   @Override
   public @NonNull CommandManager registerAll(@NonNull BungeeCommand... commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 }

@@ -16,11 +16,11 @@ import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
 import me.googas.commands.bungee.providers.type.BungeeMultiArgumentProvider;
 import me.googas.commands.bungee.result.Result;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.commands.providers.type.StarboxContextualProvider;
 import me.googas.starbox.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -53,8 +53,8 @@ public class AnnotatedCommand extends BungeeCommand
    * @param object the instance of the object used to invoke the method see more in {@link
    *     #getObject()}
    * @param method the method to execute as the command see more in {@link #getMethod()}
-   * @param arguments the list of arguments that are used to {@link #getObjects(EasyCommandContext)}
-   *     and invoke the {@link #getMethod()}
+   * @param arguments the list of arguments that are used to {@link
+   *     #getObjects(StarboxCommandContext)} and invoke the {@link #getMethod()}
    */
   public AnnotatedCommand(
       Command command,
@@ -89,9 +89,9 @@ public class AnnotatedCommand extends BungeeCommand
       if (argument.getSuggestions(context).size() > 0) {
         return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
       } else {
-        List<EasyContextualProvider<?, CommandContext>> providers =
+        List<StarboxContextualProvider<?, CommandContext>> providers =
             this.getRegistry().getProviders(argument.getClazz());
-        for (EasyContextualProvider<?, CommandContext> provider : providers) {
+        for (StarboxContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BungeeArgumentProvider) {
             return Strings.copyPartials(
                 strings[strings.length - 1],

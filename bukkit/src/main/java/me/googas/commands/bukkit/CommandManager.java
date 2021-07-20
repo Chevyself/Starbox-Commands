@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
+import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.bukkit.annotations.Command;
@@ -18,7 +18,7 @@ import me.googas.commands.bukkit.topic.PluginHelpTopic;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.exceptions.CommandRegistrationException;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.commands.providers.type.StarboxContextualProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.help.HelpMap;
@@ -36,7 +36,7 @@ import org.bukkit.plugin.Plugin;
  * related to the commands, a {@link ProvidersRegistry} you can use {@link
  * me.googas.commands.bukkit.providers.registry.BukkitProvidersRegistry} which includes some
  * providers that are intended for Bukkit use you can even extend it to add more in the constructor
- * or use {@link ProvidersRegistry#addProvider(EasyContextualProvider)}, you also ned a {@link
+ * or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also ned a {@link
  * MessagesProvider} which is mostly used to display error commands or create the {@link
  * org.bukkit.help.HelpTopic} for the commands registered in this manager to be added inside the
  * built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}:
@@ -47,16 +47,13 @@ import org.bukkit.plugin.Plugin;
  *              this, new BukkitProvidersRegistry(), new BukkitMessagesProvider(), new ArrayList<>());
  *
  * }</pre>
- *
- * You can learn more about it in {@link me.googas.commands.bukkit.plugin.EasyCommandsBukkit} which
- * is the main class for the easy-commands Bukkit plugin.
  */
-public class CommandManager implements EasyCommandManager<CommandContext, EasyBukkitCommand> {
+public class CommandManager implements StarboxCommandManager<CommandContext, StarboxBukkitCommand> {
 
   /**
    * The Bukkit HelpMap which is used to parseAndRegister the {@link org.bukkit.help.HelpTopic} for
    * the {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link
-   * EasyBukkitCommand}
+   * StarboxBukkitCommand}
    */
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
   /**
@@ -76,7 +73,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final List<EasyBukkitCommand> commands = new ArrayList<>();
+  @NonNull @Getter private final List<StarboxBukkitCommand> commands = new ArrayList<>();
 
   /**
    * Create an instance
@@ -107,7 +104,7 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
 
   @NonNull
   @Override
-  public CommandManager register(@NonNull EasyBukkitCommand command) {
+  public CommandManager register(@NonNull StarboxBukkitCommand command) {
     CommandManager.commandMap.register(this.plugin.getName(), command);
     this.commands.add(command);
     return this;
@@ -164,17 +161,17 @@ public class CommandManager implements EasyCommandManager<CommandContext, EasyBu
 
   @Override
   public @NonNull CommandManager parseAndRegisterAll(@NonNull Object... objects) {
-    return (CommandManager) EasyCommandManager.super.parseAndRegisterAll(objects);
+    return (CommandManager) StarboxCommandManager.super.parseAndRegisterAll(objects);
   }
 
   @Override
   public @NonNull CommandManager registerAll(
-      @NonNull Collection<? extends EasyBukkitCommand> commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+      @NonNull Collection<? extends StarboxBukkitCommand> commands) {
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 
   @Override
-  public @NonNull CommandManager registerAll(@NonNull EasyBukkitCommand... commands) {
-    return (CommandManager) EasyCommandManager.super.registerAll(commands);
+  public @NonNull CommandManager registerAll(@NonNull StarboxBukkitCommand... commands) {
+    return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
 }

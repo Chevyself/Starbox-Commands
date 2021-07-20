@@ -2,11 +2,11 @@ package me.googas.commands.system;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.result.EasyResult;
+import me.googas.commands.result.StarboxResult;
 import me.googas.commands.system.context.CommandContext;
 
 /**
- * This is the implementation for {@link EasyResult} to be used in the execution of {@link
+ * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
  * me.googas.commands.system.SystemCommand}. This includes a single {@link String} which will be
  * printed for the sender.
  *
@@ -16,7 +16,7 @@ import me.googas.commands.system.context.CommandContext;
  *
  * <p>Exceptions will show a simple {@link Result} message and the stack trace will be printed.
  */
-public class Result implements EasyResult {
+public class Result implements StarboxResult {
 
   @NonNull @Getter private final String message;
 

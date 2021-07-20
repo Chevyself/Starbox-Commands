@@ -42,18 +42,18 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *
  *     public static void main(String[] args) throws NoSuchMethodException {
  *         // Parsing from the AMethod of this same class
- *         List<Argument<?>> arguments = Argument.parseArguments(ArgumentsSample.class.getMethod("AMethod", EasyCommandContext.class, String.class, String.class, String[].class));
+ *         List<Argument<?>> arguments = Argument.parseArguments(ArgumentsSample.class.getMethod("AMethod", StarboxCommandContext.class, String.class, String.class, String[].class));
  *         for (Argument<?> argument : arguments) {
  *             System.out.println("argument = " + argument);
  *         }
  *         // Output:
- *         // argument = ExtraArgument{clazz=interface me.googas.commands.context.EasyCommandContext}
+ *         // argument = ExtraArgument{clazz=interface me.googas.commands.context.StarboxCommandContext}
  *         // argument = SingleArgument{name='No name provided', description='No description provided', suggestions=[], clazz=class java.lang.String, required=true, position=0}
  *         // argument = SingleArgument{name='No name provided', description='No description provided', suggestions=[], clazz=class java.lang.String, required=false, position=1}
  *         // argument = MultipleArgument{minSize=1, maxSize=-1} SingleArgument{name='No name provided', description='No description provided', suggestions=[], clazz=class [Ljava.lang.String;, required=true, position=2}
  *     }
  *
- *     public void AMethod(EasyCommandContext context, @Required String name, @Optional String description, @Required @Multiple String[] messages) {
+ *     public void AMethod(StarboxCommandContext context, @Required String name, @Optional String description, @Required @Multiple String[] messages) {
  *         // Has 4 arguments
  *         // An ExtraArgument: the context
  *         // Two SingleArgument: The name and description
@@ -280,8 +280,8 @@ public interface Argument<O> {
    * Get the class of the argument.
    *
    * <pre>
-   * public void AMethod(EasyCommandContext context) {
-   *       // The class of the argument is EasyCommandContext
+   * public void AMethod(StarboxCommandContext context) {
+   *       // The class of the argument is StarboxCommandContext
    * }
    * </pre>
    *

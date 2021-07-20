@@ -2,8 +2,8 @@ package me.googas.commands;
 
 import java.util.Collection;
 import lombok.NonNull;
-import me.googas.commands.context.EasyCommandContext;
-import me.googas.commands.result.EasyResult;
+import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.result.StarboxResult;
 
 /**
  * This class represents a Command which may be executed by an user depending on the implementations
@@ -23,7 +23,7 @@ import me.googas.commands.result.EasyResult;
  * @param <C> the context that is required to run the command
  * @param <T> the type of commands that are allowed as children commands
  */
-public interface EasyCommand<C extends EasyCommandContext, T extends EasyCommand<C, T>> {
+public interface StarboxCommand<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
    * Execute the command
@@ -31,7 +31,7 @@ public interface EasyCommand<C extends EasyCommandContext, T extends EasyCommand
    * @param context the context that is required to execute the command
    * @return the result of the command execution
    */
-  EasyResult execute(@NonNull C context);
+  StarboxResult execute(@NonNull C context);
 
   /**
    * Check if the command can the command be recognized by the given alias. This is used because
@@ -51,7 +51,7 @@ public interface EasyCommand<C extends EasyCommandContext, T extends EasyCommand
    * @param command the child command to add
    * @return this same command instance to allow chain methods
    */
-  default EasyCommand<C, T> addChildren(@NonNull T command) {
+  default StarboxCommand<C, T> addChildren(@NonNull T command) {
     this.getChildren().add(command);
     return this;
   }
@@ -59,7 +59,7 @@ public interface EasyCommand<C extends EasyCommandContext, T extends EasyCommand
   /**
    * Get a children command by an alias
    *
-   * @see EasyCommand#hasAlias(String)
+   * @see StarboxCommand#hasAlias(String)
    * @param alias the alias to match the command
    * @return the command if one has the alias, null otherwise
    */
@@ -72,7 +72,7 @@ public interface EasyCommand<C extends EasyCommandContext, T extends EasyCommand
 
   /**
    * Get the collection of registered children in this parent. All the children added in this
-   * collection add from {@link #addChildren(EasyCommand)}
+   * collection add from {@link #addChildren(StarboxCommand)}
    *
    * @return the collection of children
    */

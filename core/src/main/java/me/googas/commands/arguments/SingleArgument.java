@@ -3,7 +3,7 @@ package me.googas.commands.arguments;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.objects.Mappable;
 
 /**
@@ -59,7 +59,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
    * @return the list of suggestions
    */
   @NonNull
-  public List<String> getSuggestions(@NonNull EasyCommandContext context) {
+  public List<String> getSuggestions(@NonNull StarboxCommandContext context) {
     return this.suggestions;
   }
 

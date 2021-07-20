@@ -1,20 +1,21 @@
 package me.googas.commands.providers;
 
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.StarboxCommandManager;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import me.googas.commands.messages.EasyMessagesProvider;
-import me.googas.commands.providers.type.EasyArgumentProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
+import me.googas.commands.providers.type.StarboxArgumentProvider;
 
 /**
- * Provides the {@link EasyCommandManager} with a {@link Float}
+ * Provides the {@link StarboxCommandManager} with a {@link Float}
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public class FloatProvider<T extends EasyCommandContext> implements EasyArgumentProvider<Float, T> {
+public class FloatProvider<T extends StarboxCommandContext>
+    implements StarboxArgumentProvider<Float, T> {
 
-  private final EasyMessagesProvider<T> messagesProvider;
+  private final StarboxMessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance
@@ -22,7 +23,7 @@ public class FloatProvider<T extends EasyCommandContext> implements EasyArgument
    * @param messagesProvider to send the error message in case that the {@link Float} could not be
    *     parsed
    */
-  public FloatProvider(EasyMessagesProvider<T> messagesProvider) {
+  public FloatProvider(StarboxMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

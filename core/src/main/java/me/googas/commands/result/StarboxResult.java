@@ -14,7 +14,7 @@ package me.googas.commands.result;
  *
  * This will be used to inform the command sender the output of the command
  */
-public interface EasyResult {
+public interface StarboxResult {
 
   /**
    * Get the result message

@@ -13,7 +13,7 @@ import me.googas.commands.jda.providers.RoleProvider;
 import me.googas.commands.jda.providers.TextChannelProvider;
 import me.googas.commands.jda.providers.UserProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.providers.type.EasyContextualProvider;
+import me.googas.commands.providers.type.StarboxContextualProvider;
 
 /** The providers registry for jda */
 public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
@@ -42,7 +42,7 @@ public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
    * @return a list of providers for the queried class
    */
   @Override
-  public List<EasyContextualProvider<?, CommandContext>> getProviders(@NonNull Class<?> clazz) {
+  public List<StarboxContextualProvider<?, CommandContext>> getProviders(@NonNull Class<?> clazz) {
     return super.getProviders(clazz);
   }
 }

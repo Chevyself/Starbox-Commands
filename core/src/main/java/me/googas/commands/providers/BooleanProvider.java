@@ -1,21 +1,21 @@
 package me.googas.commands.providers;
 
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.StarboxCommandManager;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import me.googas.commands.messages.EasyMessagesProvider;
-import me.googas.commands.providers.type.EasyArgumentProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
+import me.googas.commands.providers.type.StarboxArgumentProvider;
 
 /**
- * Provides the {@link EasyCommandManager} with a {@link Boolean}
+ * Provides the {@link StarboxCommandManager} with a {@link Boolean}
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public class BooleanProvider<T extends EasyCommandContext>
-    implements EasyArgumentProvider<Boolean, T> {
+public class BooleanProvider<T extends StarboxCommandContext>
+    implements StarboxArgumentProvider<Boolean, T> {
 
-  private final EasyMessagesProvider<T> messagesProvider;
+  private final StarboxMessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance
@@ -23,7 +23,7 @@ public class BooleanProvider<T extends EasyCommandContext>
    * @param messagesProvider to send the error message in case that the {@link Boolean} could not be
    *     parsed
    */
-  public BooleanProvider(EasyMessagesProvider<T> messagesProvider) {
+  public BooleanProvider(StarboxMessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

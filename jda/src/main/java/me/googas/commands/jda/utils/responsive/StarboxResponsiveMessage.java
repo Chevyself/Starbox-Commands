@@ -4,7 +4,7 @@ import java.util.Set;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Message;
 
-public class SimpleResponsiveMessage implements ResponsiveMessage {
+public class StarboxResponsiveMessage implements ResponsiveMessage {
 
   /** The set of reactions to which this message will respond */
   @NonNull protected final Set<ReactionResponse> reactions;
@@ -18,7 +18,7 @@ public class SimpleResponsiveMessage implements ResponsiveMessage {
    * @param id the id of the responsive message
    * @param reactions the reactions to add in the message
    */
-  public SimpleResponsiveMessage(long id, @NonNull Set<ReactionResponse> reactions) {
+  public StarboxResponsiveMessage(long id, @NonNull Set<ReactionResponse> reactions) {
     this.id = id;
     this.reactions = reactions;
   }
@@ -30,7 +30,7 @@ public class SimpleResponsiveMessage implements ResponsiveMessage {
    * @param message the message to make the responsive message
    * @param reactions the reactions to use
    */
-  public SimpleResponsiveMessage(
+  public StarboxResponsiveMessage(
       @NonNull Message message, @NonNull Set<ReactionResponse> reactions) {
     this(message.getIdLong(), reactions);
     for (ReactionResponse reaction : this.reactions) {

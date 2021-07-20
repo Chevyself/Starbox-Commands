@@ -2,7 +2,7 @@ package me.googas.commands.system.context;
 
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.MessagesProvider;
 import me.googas.commands.system.context.sender.CommandSender;
@@ -10,10 +10,10 @@ import me.googas.starbox.Strings;
 
 /**
  * This context to execute {@link me.googas.commands.system.SystemCommand} that does not include
- * anything different from {@link EasyCommandContext} the {@link #sender} is the static instance of
- * {@link me.googas.commands.system.context.sender.ConsoleCommandSender#INSTANCE}
+ * anything different from {@link StarboxCommandContext} the {@link #sender} is the static instance
+ * of {@link me.googas.commands.system.context.sender.ConsoleCommandSender#INSTANCE}
  */
-public class CommandContext implements EasyCommandContext {
+public class CommandContext implements StarboxCommandContext {
 
   @NonNull @Getter private final CommandSender sender;
   @NonNull @Getter private final String[] strings;

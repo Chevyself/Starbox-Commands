@@ -3,9 +3,9 @@ package me.googas.commands.providers.registry;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import me.googas.commands.messages.EasyMessagesProvider;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.BooleanProvider;
 import me.googas.commands.providers.DoubleProvider;
 import me.googas.commands.providers.FloatProvider;
@@ -14,33 +14,33 @@ import me.googas.commands.providers.JoinedStringsProvider;
 import me.googas.commands.providers.LongProvider;
 import me.googas.commands.providers.StringProvider;
 import me.googas.commands.providers.TimeProvider;
-import me.googas.commands.providers.type.EasyArgumentProvider;
-import me.googas.commands.providers.type.EasyContextualProvider;
-import me.googas.commands.providers.type.EasyExtraArgumentProvider;
-import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
-import me.googas.commands.providers.type.EasySimpleArgumentProvider;
+import me.googas.commands.providers.type.StarboxArgumentProvider;
+import me.googas.commands.providers.type.StarboxContextualProvider;
+import me.googas.commands.providers.type.StarboxExtraArgumentProvider;
+import me.googas.commands.providers.type.StarboxMultipleArgumentProvider;
+import me.googas.commands.providers.type.StarboxSimpleArgumentProvider;
 
 /**
- * This registry contains the {@link EasyArgumentProvider} that gives {@link
+ * This registry contains the {@link StarboxArgumentProvider} that gives {@link
  * me.googas.commands.ReflectCommand} the parameters to be executed with the help of its {@link
  * me.googas.commands.arguments.Argument} to learn more bout the registry you can check the {@link
- * me.googas.commands.ReflectCommand#getObjects(EasyCommandContext)}
+ * me.googas.commands.ReflectCommand#getObjects(StarboxCommandContext)}
  *
- * <p>To add new providers use {@link #addProvider(EasyContextualProvider)} and to get an object you
- * can use {@link #getObject(Class, EasyCommandContext)}, {@link #fromString(String, Class,
- * EasyCommandContext)} or {@link #fromStrings(String[], Class, EasyCommandContext)}
+ * <p>To add new providers use {@link #addProvider(StarboxContextualProvider)} and to get an object
+ * you can use {@link #getObject(Class, StarboxCommandContext)}, {@link #fromString(String, Class,
+ * StarboxCommandContext)} or {@link #fromStrings(String[], Class, StarboxCommandContext)}
  */
-public class ProvidersRegistry<T extends EasyCommandContext> {
+public class ProvidersRegistry<T extends StarboxCommandContext> {
 
   /** The providers that must be given with a context */
-  protected final List<EasyContextualProvider<?, T>> providers = new ArrayList<>();
+  protected final List<StarboxContextualProvider<?, T>> providers = new ArrayList<>();
 
   /**
    * Create the registry with the default providers
    *
    * @param messages the messages provider for the messages sent in the default providers
    */
-  public ProvidersRegistry(@NonNull EasyMessagesProvider<T> messages) {
+  public ProvidersRegistry(@NonNull StarboxMessagesProvider<T> messages) {
     this.addProvider(new BooleanProvider<>(messages));
     this.addProvider(new DoubleProvider<>(messages));
     this.addProvider(new FloatProvider<>(messages));
@@ -59,7 +59,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    *
    * @param provider the provider to parseAndRegister
    */
-  public void addProvider(@NonNull EasyContextualProvider<?, T> provider) {
+  public void addProvider(@NonNull StarboxContextualProvider<?, T> provider) {
     this.providers.add(provider);
   }
 
@@ -69,7 +69,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * <p>For example if you have the provider
    *
    * <pre>{@code
-   * public class StringProvider&lt;T extends EasyCommandContext&gt; implements EasyArgumentProvider&lt;String, T&gt; {
+   * public class StringProvider&lt;T extends StarboxCommandContext&gt; implements StarboxArgumentProvider&lt;String, T&gt; {
    *
    *  &#64;Override
    *   public @NonNull Class&lt;String&gt; getClazz() {
@@ -84,16 +84,16 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * }
    * }</pre>
    *
-   * <p>And you parseAndRegister it using {@link #addProvider(EasyContextualProvider)}
+   * <p>And you parseAndRegister it using {@link #addProvider(StarboxContextualProvider)}
    *
    * <p>You can get it with this method with {@link String#getClass()} ()}
    *
    * @param clazz the queried class
    * @return a list of providers for the queried class
    */
-  public List<EasyContextualProvider<?, T>> getProviders(@NonNull Class<?> clazz) {
-    List<EasyContextualProvider<?, T>> list = new ArrayList<>();
-    for (EasyContextualProvider<?, T> provider : this.providers) {
+  public List<StarboxContextualProvider<?, T>> getProviders(@NonNull Class<?> clazz) {
+    List<StarboxContextualProvider<?, T>> list = new ArrayList<>();
+    for (StarboxContextualProvider<?, T> provider : this.providers) {
       if (provider.provides(clazz)) {
         list.add(provider);
       }
@@ -106,28 +106,28 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * {@link me.googas.commands.arguments.ExtraArgument}
    *
    * <p>We will get all the providers using {@link #getProviders(Class)} to get a {@link
-   * EasyExtraArgumentProvider}
+   * StarboxExtraArgumentProvider}
    *
-   * <p>{@link EasySimpleArgumentProvider#provides(Class)} makes it safe to cast
+   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast
    *
    * @param clazz the clazz to get the provider from
    * @param context the context of the command execution
-   * @return the object provided by the {@link EasyExtraArgumentProvider}
+   * @return the object provided by the {@link StarboxExtraArgumentProvider}
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
    *     the object for some reason, see {@link
-   *     EasyExtraArgumentProvider#getObject(EasyCommandContext)}
+   *     StarboxExtraArgumentProvider#getObject(StarboxCommandContext)}
    */
   @SuppressWarnings("unchecked")
   @NonNull
   public Object getObject(@NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (EasyContextualProvider<?, T> provider : this.getProviders(clazz)) {
-      if (provider instanceof EasyExtraArgumentProvider) {
-        return ((EasyExtraArgumentProvider<?, T>) provider).getObject(context);
+    for (StarboxContextualProvider<?, T> provider : this.getProviders(clazz)) {
+      if (provider instanceof StarboxExtraArgumentProvider) {
+        return ((StarboxExtraArgumentProvider<?, T>) provider).getObject(context);
       }
     }
     throw new ArgumentProviderException(
-        EasyExtraArgumentProvider.class + " was not found for " + clazz);
+        StarboxExtraArgumentProvider.class + " was not found for " + clazz);
   }
 
   /**
@@ -135,28 +135,29 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * provides a {@link me.googas.commands.arguments.SingleArgument}
    *
    * <p>We will get all the providers using {@link #getProviders(Class)} to get a {@link
-   * EasyArgumentProvider}
+   * StarboxArgumentProvider}
    *
-   * <p>{@link EasySimpleArgumentProvider#provides(Class)} makes it safe to cast
+   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast
    *
    * @param string the string to get the object from
    * @param clazz the clazz to get the provider from
    * @param context the context of the command execution
-   * @return the object provided by the {@link EasyExtraArgumentProvider}
+   * @return the object provided by the {@link StarboxExtraArgumentProvider}
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link EasyArgumentProvider#fromString(String,
-   *     EasyCommandContext)}
+   *     the object for some reason, see {@link StarboxArgumentProvider#fromString(String,
+   *     StarboxCommandContext)}
    */
   @SuppressWarnings("unchecked")
   @NonNull
   public Object fromString(@NonNull String string, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (EasyContextualProvider<?, T> provider : this.getProviders(clazz)) {
-      if (provider instanceof EasyArgumentProvider) {
-        return ((EasyArgumentProvider<?, T>) provider).fromString(string, context);
+    for (StarboxContextualProvider<?, T> provider : this.getProviders(clazz)) {
+      if (provider instanceof StarboxArgumentProvider) {
+        return ((StarboxArgumentProvider<?, T>) provider).fromString(string, context);
       }
     }
-    throw new ArgumentProviderException(EasyArgumentProvider.class + " was not found for " + clazz);
+    throw new ArgumentProviderException(
+        StarboxArgumentProvider.class + " was not found for " + clazz);
   }
 
   /**
@@ -164,34 +165,34 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * provides a {@link me.googas.commands.arguments.MultipleArgument}
    *
    * <p>We will get all the providers using {@link #getProviders(Class)} to get a {@link
-   * EasyMultipleArgumentProvider}
+   * StarboxMultipleArgumentProvider}
    *
-   * <p>{@link EasySimpleArgumentProvider#provides(Class)} makes it safe to cast
+   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast
    *
    * @param strings the strings to get the object from
    * @param clazz the clazz to get the provider from
    * @param context the context of the command execution
-   * @return the object provided by the {@link EasyMultipleArgumentProvider}
+   * @return the object provided by the {@link StarboxMultipleArgumentProvider}
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link EasyMultipleArgumentProvider#fromStrings(String[],
-   *     EasyCommandContext)}
+   *     the object for some reason, see {@link
+   *     StarboxMultipleArgumentProvider#fromStrings(String[], StarboxCommandContext)}
    */
   @SuppressWarnings("unchecked")
   @NonNull
   public Object fromStrings(@NonNull String[] strings, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (EasyContextualProvider<?, T> provider : this.getProviders(clazz)) {
-      if (provider instanceof EasyMultipleArgumentProvider) {
-        return ((EasyMultipleArgumentProvider<?, T>) provider).fromStrings(strings, context);
+    for (StarboxContextualProvider<?, T> provider : this.getProviders(clazz)) {
+      if (provider instanceof StarboxMultipleArgumentProvider) {
+        return ((StarboxMultipleArgumentProvider<?, T>) provider).fromStrings(strings, context);
       }
     }
     throw new ArgumentProviderException(
-        EasyMultipleArgumentProvider.class + " was not found for " + clazz);
+        StarboxMultipleArgumentProvider.class + " was not found for " + clazz);
   }
 
   /**
-   * This method uses {@link #getObject(Class, EasyCommandContext)} and casts the returned object as
-   * it is safe to do so
+   * This method uses {@link #getObject(Class, StarboxCommandContext)} and casts the returned object
+   * as it is safe to do so
    *
    * @param clazz the clazz to get the provider from
    * @param context the context of the command execution
@@ -199,7 +200,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * @return the object returned by the provided
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
    *     the object for some reason, see {@link
-   *     EasyExtraArgumentProvider#getObject(EasyCommandContext)}
+   *     StarboxExtraArgumentProvider#getObject(StarboxCommandContext)}
    */
   @NonNull
   public <O> O get(@NonNull Class<O> clazz, @NonNull T context) throws ArgumentProviderException {
@@ -207,8 +208,8 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
   }
 
   /**
-   * This method uses {@link #fromString(String, Class, EasyCommandContext)} and casts the returned
-   * object as it is safe to do so
+   * This method uses {@link #fromString(String, Class, StarboxCommandContext)} and casts the
+   * returned object as it is safe to do so
    *
    * @param string the string to get the object from
    * @param clazz the clazz to get the provider from
@@ -216,7 +217,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * @param <O> the type of object to get from the provider
    * @return the object returned by the provider
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link EasyArgumentProvider}
+   *     the object for some reason, see {@link StarboxArgumentProvider}
    */
   @NonNull
   public <O> O get(@NonNull String string, @NonNull Class<O> clazz, @NonNull T context)
@@ -225,7 +226,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
   }
 
   /**
-   * This method uses {@link #fromStrings(String[], Class, EasyCommandContext)} and casts the
+   * This method uses {@link #fromStrings(String[], Class, StarboxCommandContext)} and casts the
    * returned object as it is safe to do so
    *
    * @param strings the strings to get the object from
@@ -234,7 +235,7 @@ public class ProvidersRegistry<T extends EasyCommandContext> {
    * @param <O> the type of object to get from the provider
    * @return the object returned by the provider
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link EasyMultipleArgumentProvider}
+   *     the object for some reason, see {@link StarboxMultipleArgumentProvider}
    */
   @NonNull
   public <O> O get(@NonNull String[] strings, @NonNull Class<O> clazz, @NonNull T context)

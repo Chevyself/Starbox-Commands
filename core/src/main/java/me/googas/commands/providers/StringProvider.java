@@ -1,20 +1,20 @@
 package me.googas.commands.providers;
 
 import lombok.NonNull;
-import me.googas.commands.EasyCommandManager;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.StarboxCommandManager;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
-import me.googas.commands.providers.type.EasyArgumentProvider;
-import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
+import me.googas.commands.providers.type.StarboxArgumentProvider;
+import me.googas.commands.providers.type.StarboxMultipleArgumentProvider;
 import me.googas.starbox.Strings;
 
 /**
- * Provides the {@link EasyCommandManager} with {@link String}
+ * Provides the {@link StarboxCommandManager} with {@link String}
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public class StringProvider<T extends EasyCommandContext>
-    implements EasyArgumentProvider<String, T>, EasyMultipleArgumentProvider<String, T> {
+public class StringProvider<T extends StarboxCommandContext>
+    implements StarboxArgumentProvider<String, T>, StarboxMultipleArgumentProvider<String, T> {
 
   @Override
   public @NonNull Class<String> getClazz() {

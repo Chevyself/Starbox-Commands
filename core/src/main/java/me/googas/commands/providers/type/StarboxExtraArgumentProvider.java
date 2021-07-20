@@ -2,7 +2,7 @@ package me.googas.commands.providers.type;
 
 import lombok.NonNull;
 import me.googas.commands.arguments.ExtraArgument;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 
 /**
@@ -12,8 +12,8 @@ import me.googas.commands.exceptions.ArgumentProviderException;
  * @param <O> the type of object to provide
  * @param <T> the type of context that this requires to provide the object
  */
-public interface EasyExtraArgumentProvider<O, T extends EasyCommandContext>
-    extends EasyContextualProvider<O, T> {
+public interface StarboxExtraArgumentProvider<O, T extends StarboxCommandContext>
+    extends StarboxContextualProvider<O, T> {
 
   /**
    * Get the instance of the {@link #getClazz()} to provide

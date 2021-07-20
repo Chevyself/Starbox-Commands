@@ -1,7 +1,7 @@
 package me.googas.commands.jda.providers.type;
 
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
+import me.googas.commands.providers.type.StarboxMultipleArgumentProvider;
 
 /**
  * An extension for a multiple argument provider using JDA
@@ -9,4 +9,4 @@ import me.googas.commands.providers.type.EasyMultipleArgumentProvider;
  * @param <T> the type of object to provide
  */
 public interface JdaMultiArgumentProvider<T>
-    extends EasyMultipleArgumentProvider<T, CommandContext> {}
+    extends StarboxMultipleArgumentProvider<T, CommandContext> {}

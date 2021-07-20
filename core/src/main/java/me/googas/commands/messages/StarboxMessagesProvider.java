@@ -2,14 +2,14 @@ package me.googas.commands.messages;
 
 import lombok.NonNull;
 import me.googas.commands.arguments.MultipleArgument;
-import me.googas.commands.context.EasyCommandContext;
+import me.googas.commands.context.StarboxCommandContext;
 
 /**
  * Provides messages for different instances of the manager
  *
  * @param <T> the command context
  */
-public interface EasyMessagesProvider<T extends EasyCommandContext> {
+public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
 
   /**
    * The message sent when a {@link String} is not valid as a {@link Long}

@@ -1,4 +1,4 @@
-# Easy-Commands
+# Starbox-Commands
 
 This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come. It includes some utilities to shorten the amount of lines in your project.
 
@@ -93,7 +93,7 @@ There are three types of arguments:
 
 #### Extra
 
-Extra arguments do not require any type of annotation and to register the provider it must extend `EasyExtraArgumentProvider`
+Extra arguments do not require any type of annotation and to register the provider it must extend `StarboxExtraArgumentProvider`
 or just implement the interface given by the module:
 
 * Bukkit: [BukkitExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitExtraArgumentProvider.java)
@@ -113,7 +113,7 @@ public class Test {
 
 #### Required and Optional
 
-Both arguments require an input from the user, and the provider must extend `EasyArgumentProvider` or just implement the interface given by the module: The provider will never
+Both arguments require an input from the user, and the provider must extend `Starbox` or just implement the interface given by the module: The provider will never
 return `null` as it may be needed as a required argument, and the `String` parameter is never null too.
 
 * Bukkit: [BukkitArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitArgumentProvider.java)
@@ -135,7 +135,7 @@ public class Test {
 #### Multiple
 
 It is just as `@Required` or `@Optional` but requires multiple strings, it requires any of the above annotation plus
-`@Multiple` and the provider must extend `EasyMultipleArgumentProvider` or just implement the interface given by the module.
+`@Multiple` and the provider must extend `StarboxMultipleArgumentProvider` or just implement the interface given by the module.
 
 * Bukkit: [BukkitMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitMultiArgumentProvider.java)
 * Bungee: [BungeeMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeMultiArgumentProvider.java)
@@ -160,7 +160,7 @@ CommandManager manager = new CommandManager(
         );
 ```
 
-2. You can either create a command extending the class in the module that implements `EasyCommand` or using `CommandManager#parseCommand(Object)` which will get the commands using 
+2. You can either create a command extending the class in the module that implements `StarboxCommand` or using `CommandManager#parseCommand(Object)` which will get the commands using 
 reflection as shown in [creating a command](#creating-a-command)
 
 ```java

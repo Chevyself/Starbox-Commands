@@ -28,10 +28,10 @@ public interface ListenerOptions {
 
   /**
    * Called before the command is executed. This means before {@link
-   * EasyJdaCommand#execute(CommandContext)}
+   * JdaCommand#execute(CommandContext)}
    *
    * @param event the event that is causing a command to be executed
-   * @param commandName the alias of the {@link EasyJdaCommand} that is going to be executed
+   * @param commandName the alias of the {@link JdaCommand} that is going to be executed
    * @param strings the arguments used to execute the command
    */
   void preCommand(
