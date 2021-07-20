@@ -8,7 +8,6 @@ import me.googas.commands.bukkit.providers.CommandSenderArgumentProvider;
 import me.googas.commands.bukkit.providers.MaterialProvider;
 import me.googas.commands.bukkit.providers.OfflinePlayerProvider;
 import me.googas.commands.bukkit.providers.PlayerProvider;
-import me.googas.commands.bukkit.providers.PlayerSenderProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /** The providers registry for bukkit */
@@ -26,7 +25,6 @@ public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
     this.addProvider(new MaterialProvider(messages));
     this.addProvider(new OfflinePlayerProvider());
     this.addProvider(new PlayerProvider(messages));
-    this.addProvider(new PlayerSenderProvider(messages));
   }
 
   /** Create the registry with the default providers */

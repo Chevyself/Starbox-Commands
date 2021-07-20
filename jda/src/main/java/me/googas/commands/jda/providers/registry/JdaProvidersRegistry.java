@@ -8,13 +8,10 @@ import me.googas.commands.jda.providers.CommandContextProvider;
 import me.googas.commands.jda.providers.GuildCommandContextProvider;
 import me.googas.commands.jda.providers.GuildProvider;
 import me.googas.commands.jda.providers.MemberProvider;
-import me.googas.commands.jda.providers.MemberSenderProvider;
 import me.googas.commands.jda.providers.MessageProvider;
 import me.googas.commands.jda.providers.RoleProvider;
-import me.googas.commands.jda.providers.TextChannelExtraProvider;
 import me.googas.commands.jda.providers.TextChannelProvider;
 import me.googas.commands.jda.providers.UserProvider;
-import me.googas.commands.jda.providers.UserSenderProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.EasyContextualProvider;
 
@@ -32,13 +29,10 @@ public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
     this.addProvider(new GuildCommandContextProvider(messages));
     this.addProvider(new GuildProvider(messages));
     this.addProvider(new MemberProvider(messages));
-    this.addProvider(new MemberSenderProvider(messages));
     this.addProvider(new MessageProvider());
     this.addProvider(new RoleProvider(messages));
-    this.addProvider(new TextChannelExtraProvider());
     this.addProvider(new TextChannelProvider(messages));
     this.addProvider(new UserProvider(messages));
-    this.addProvider(new UserSenderProvider());
   }
 
   /**

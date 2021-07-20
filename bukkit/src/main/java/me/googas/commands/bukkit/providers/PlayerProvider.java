@@ -7,12 +7,14 @@ import me.googas.commands.bukkit.CommandManager;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
+import me.googas.commands.bukkit.providers.type.BukkitExtraArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /** Provides the {@link CommandManager} with the object of {@link Player} */
-public class PlayerProvider implements BukkitArgumentProvider<Player> {
+public class PlayerProvider
+    implements BukkitArgumentProvider<Player>, BukkitExtraArgumentProvider<Player> {
 
   @NonNull private final MessagesProvider messagesProvider;
 
@@ -55,6 +57,16 @@ public class PlayerProvider implements BukkitArgumentProvider<Player> {
       return player;
     } else {
       throw new ArgumentProviderException(this.messagesProvider.invalidPlayer(string, context));
+    }
+  }
+
+  @Override
+  public @NonNull Player getObject(@NonNull CommandContext context)
+      throws ArgumentProviderException {
+    if (context.getSender() instanceof Player) {
+      return (Player) context.getSender();
+    } else {
+      throw new ArgumentProviderException(this.messagesProvider.playersOnly(context));
     }
   }
 }

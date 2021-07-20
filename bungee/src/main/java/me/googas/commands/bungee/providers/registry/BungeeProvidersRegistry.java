@@ -6,7 +6,6 @@ import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.CommandContextProvider;
 import me.googas.commands.bungee.providers.CommandSenderProvider;
 import me.googas.commands.bungee.providers.ProxiedPlayerProvider;
-import me.googas.commands.bungee.providers.ProxiedPlayerSenderProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /** The implementation of providers registry for bungee */
@@ -22,6 +21,5 @@ public class BungeeProvidersRegistry extends ProvidersRegistry<CommandContext> {
     this.addProvider(new CommandContextProvider());
     this.addProvider(new CommandSenderProvider());
     this.addProvider(new ProxiedPlayerProvider(messages));
-    this.addProvider(new ProxiedPlayerSenderProvider(messages));
   }
 }

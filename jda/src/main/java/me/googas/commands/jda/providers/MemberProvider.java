@@ -7,10 +7,12 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.type.JdaArgumentProvider;
+import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.Member;
 
 /** Provides the {@link EasyCommandManager} with a {@link Member} */
-public class MemberProvider implements JdaArgumentProvider<Member> {
+public class MemberProvider
+    implements JdaArgumentProvider<Member>, JdaExtraArgumentProvider<Member> {
 
   private final MessagesProvider messagesProvider;
 
@@ -42,5 +44,15 @@ public class MemberProvider implements JdaArgumentProvider<Member> {
   @Override
   public @NonNull Class<Member> getClazz() {
     return Member.class;
+  }
+
+  @Override
+  public @NonNull Member getObject(@NonNull CommandContext context)
+      throws ArgumentProviderException {
+    if (!(context instanceof GuildCommandContext)) {
+      throw new ArgumentProviderException(this.messagesProvider.guildOnly(context));
+    } else {
+      return ((GuildCommandContext) context).getMember();
+    }
   }
 }

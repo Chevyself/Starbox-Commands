@@ -6,12 +6,14 @@ import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
+import me.googas.commands.bungee.providers.type.BungeeExtraArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /** Provides a proxied player */
-public class ProxiedPlayerProvider implements BungeeArgumentProvider<ProxiedPlayer> {
+public class ProxiedPlayerProvider
+    implements BungeeArgumentProvider<ProxiedPlayer>, BungeeExtraArgumentProvider<ProxiedPlayer> {
 
   @NonNull private final MessagesProvider messagesProvider;
 
@@ -45,5 +47,15 @@ public class ProxiedPlayerProvider implements BungeeArgumentProvider<ProxiedPlay
     ProxiedPlayer player = ProxyServer.getInstance().getPlayer(string);
     if (player != null) return player;
     throw new ArgumentProviderException(this.messagesProvider.invalidPlayer(string, context));
+  }
+
+  @Override
+  public @NonNull ProxiedPlayer getObject(@NonNull CommandContext context)
+      throws ArgumentProviderException {
+    if (context.getSender() instanceof ProxiedPlayer) {
+      return (ProxiedPlayer) context.getSender();
+    } else {
+      throw new ArgumentProviderException(this.messagesProvider.onlyPlayers(context));
+    }
   }
 }

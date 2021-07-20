@@ -6,11 +6,13 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.type.JdaArgumentProvider;
+import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
 /** Provides the {@link EasyCommandManager} with a {@link User} */
-public class TextChannelProvider implements JdaArgumentProvider<TextChannel> {
+public class TextChannelProvider
+    implements JdaArgumentProvider<TextChannel>, JdaExtraArgumentProvider<TextChannel> {
 
   private final MessagesProvider messagesProvider;
 
@@ -38,5 +40,11 @@ public class TextChannelProvider implements JdaArgumentProvider<TextChannel> {
   @Override
   public @NonNull Class<TextChannel> getClazz() {
     return TextChannel.class;
+  }
+
+  @Override
+  public @NonNull TextChannel getObject(@NonNull CommandContext context)
+      throws ArgumentProviderException {
+    return context.getMessage().getTextChannel();
   }
 }
