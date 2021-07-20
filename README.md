@@ -1,9 +1,9 @@
-# Starbox-Commands
-
+Starbox-Commands [![Jitpack](https://jitpack.io/v/xChevy/Starbox-Commands.svg)](https://jitpack.io/#xChevy/Starbox-Commands)
+===
 This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come. It includes some utilities to shorten the amount of lines in your project.
 
-## Installing
-
+Installing
+--------
 1. Add the repository to your maven project
 
 ```xml
@@ -59,7 +59,8 @@ This is used to create implementations of the `core` framework
 </dependency>
 ```
 
-## Usage
+Usage
+--------
 
 ### Creating a command
 
@@ -83,7 +84,7 @@ public class Test {
 
 5. You can also create parent commands which will make the execution as follows:
 
-> <prefix><parent> <command>
+> (prefix)(parent) (command)
 
 6. Just add the annotation `@Parent` to the method that should be the parent method.
 
@@ -150,7 +151,8 @@ public class Test {
 }            
 ```    
 
-### Registering commands
+Registering commands
+--------
 
 1. Creating the Command Manager. Each `CommandManager` has its own options.
 
