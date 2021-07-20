@@ -8,10 +8,10 @@ This project aims to provide an easy creation of commands for Bukkit, Bungee, JD
 
 ```xml
 <repositories>
-    <repository>
-        <id>repsy</id>
-        <url>https://repo.repsy.io/mvn/chevy/starfish</url>
-    </repository>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
 </repositories>
 ```
 
@@ -20,37 +20,31 @@ This project aims to provide an easy creation of commands for Bukkit, Bungee, JD
 ### Bukkit
 
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>com.starfishst.commands</groupId>
-        <artifactId>bukkit</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-</dependencies>
+<dependency>
+  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <artifactId>bukkit</artifactId>
+  <version>Tag</version>
+</dependency>
 ```
 
 ### Bungee
 
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>com.starfishst.commands</groupId>
-        <artifactId>bungee</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-</dependencies>
+<dependency>
+  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <artifactId>bungee</artifactId>
+  <version>Tag</version>
+</dependency>
 ```
 
 ### JDA
 
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>com.starfishst.commands</groupId>
-        <artifactId>jda</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-</dependencies>
+<dependency>
+  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <artifactId>jda</artifactId>
+  <version>Tag</version>
+</dependency>
 ```
 
 ### Core
@@ -58,13 +52,11 @@ This project aims to provide an easy creation of commands for Bukkit, Bungee, JD
 This is used to create implementations of the `core` framework
 
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>com.starfishst.commands</groupId>
-        <artifactId>core</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-</dependencies>
+<dependency>
+  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <artifactId>core</artifactId>
+  <version>Tag</version>
+</dependency>
 ```
 
 ## Usage
@@ -91,7 +83,7 @@ public class Test {
 
 5. You can also create parent commands which will make the execution as follows:
 
-> (prefix)(parent) (command)
+> <prefix><parent> <command>
 
 6. Just add the annotation `@Parent` to the method that should be the parent method.
 
@@ -102,7 +94,11 @@ There are three types of arguments:
 #### Extra
 
 Extra arguments do not require any type of annotation and to register the provider it must extend `EasyExtraArgumentProvider`
-or just implement the interface given by the module
+or just implement the interface given by the module:
+
+* Bukkit: [BukkitExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitExtraArgumentProvider.java)
+* Bungee: [BungeeExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeExtraArgumentProvider.java)
+* JDA: [JdaExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaExtraArgumentProvider.java)
 
 In general extra arguments is the context of the command, the input, the sender, and such.
 
@@ -117,8 +113,12 @@ public class Test {
 
 #### Required and Optional
 
-Both arguments require an input from the user, and the provider must extend `EasuArgumentProvider` or just implement the interface given by the module. The provider will never
+Both arguments require an input from the user, and the provider must extend `EasyArgumentProvider` or just implement the interface given by the module: The provider will never
 return `null` as it may be needed as a required argument, and the `String` parameter is never null too.
+
+* Bukkit: [BukkitArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitArgumentProvider.java)
+* Bungee: [BungeeArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeArgumentProvider.java)
+* JDA: [JdaArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaArgumentProvider.java)
 
 It is easy to understand each annotation as a `NonNull` and `Nullable`. This may be used as arguments for a different
 output in the logic.
@@ -136,6 +136,10 @@ public class Test {
 
 It is just as `@Required` or `@Optional` but requires multiple strings, it requires any of the above annotation plus
 `@Multiple` and the provider must extend `EasyMultipleArgumentProvider` or just implement the interface given by the module.
+
+* Bukkit: [BukkitMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitMultiArgumentProvider.java)
+* Bungee: [BungeeMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeMultiArgumentProvider.java)
+* JDA: [JdaMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaMultiArgumentProvider.java)
 
 ```java
 public class Test {
@@ -161,6 +165,8 @@ reflection as shown in [creating a command](#creating-a-command)
 
 ```java
 manager.register(manager.parseCommand(cmd));
+// or
+manager.parseAndRegister(cmd);
 ```
 
 4. You are done! You've registered your commands.
