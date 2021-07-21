@@ -5,10 +5,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import lombok.NonNull;
 import me.googas.commands.annotations.Multiple;
 import me.googas.commands.annotations.Optional;
 import me.googas.commands.annotations.Required;
+import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.CommandRegistrationException;
 
 /**
@@ -274,6 +276,137 @@ public interface Argument<O> {
       }
     }
     return builder.toString();
+  }
+
+  /**
+   * Parses a {@link Argument} from a {@link String}. It must be formatted as follows:
+   *
+   * <h1>IMPORTANT</h1>
+   *
+   * The parameter mappings are a key {@link String} which represents name for a {@link Class} this
+   * means that:
+   *
+   * <ul>
+   *   <li>String = java.lang.String
+   *   <li>Long = java.lang.Long
+   *   <li>JoinedStrings = me.googas.commands.objects.JoinedStrings
+   * </ul>
+   *
+   * Are possible mappings which may be used in the parse of a command
+   *
+   * <p>If the {@link String} starts with a '@' it will be considered as a {@link
+   * me.googas.commands.annotations.Multiple} annotation next (Ignoring the optional starting '@'):
+   * The {@link String} must start with '&lt;' and end with '&gt;' for a required argument and start
+   * with '[' and end with ']' for an optional argument.
+   *
+   * <p>The {@link Class}, name and description must be split by a ':' and replace the spaces of the
+   * description with '-'
+   *
+   * <p>Some correct formatted strings, using the mappings shown above would be as follows:
+   *
+   * <ul>
+   *   <li>@&lt;String:name:The-name-of-a-user&gt;
+   *   <li>&lt;Long:number&gt;
+   *   <li>[JoinedStrings:strings]
+   * </ul>
+   *
+   * @param mappings the map of {@link Class} mappings
+   * @param string the string to parse
+   * @param suggestions the suggestions that can be given to input the {@link Argument} check {@link
+   *     SingleArgument#getSuggestions(StarboxCommandContext)}
+   * @param position the position in which the argument must be input
+   * @return the parsed argument
+   * @throws IllegalArgumentException if the {@link String} does not start and end with either
+   *     '&lt;&gt;' or '[]', or if the {@link String} does not contain ':' separating the {@link
+   *     Class} and name (description is optional) and if the key for the {@link Class} mapping does
+   *     not map to anything (it is case sensitive)
+   */
+  @NonNull
+  static Argument<?> parse(
+      @NonNull Map<String, String> mappings,
+      @NonNull String string,
+      @NonNull List<String> suggestions,
+      int position) {
+    return Argument.parse(mappings, string, suggestions, false, position);
+  }
+
+  /**
+   * Recursive method for {@link #parse(Map, String, List, int)}
+   *
+   * @param mappings the map of {@link Class} mappings
+   * @param string the string to parse
+   * @param suggestions the suggestions that can be given to input the {@link Argument} check {@link
+   *     SingleArgument#getSuggestions(StarboxCommandContext)}
+   * @param multiple whether it is a multiple strings parameter
+   * @param position the position in which the argument must be input
+   * @return the parsed argument
+   * @throws IllegalArgumentException if the {@link String} does not start and end with either
+   *     '&lt;&gt;' or '[]', or if the {@link String} does not contain ':' separating the {@link
+   *     Class} and name (description is optional) and if the key for the {@link Class} mapping does
+   *     not map to anything (it is case sensitive)
+   */
+  @NonNull
+  static Argument<?> parse(
+      @NonNull Map<String, String> mappings,
+      @NonNull String string,
+      @NonNull List<String> suggestions,
+      boolean multiple,
+      int position) {
+    if (string.startsWith("@")) {
+      return Argument.parse(mappings, string.substring(1), suggestions, true, position);
+    } else {
+      boolean required;
+      if (string.startsWith("<") && string.endsWith(">")) {
+        required = true;
+      } else if (string.startsWith("[") && string.endsWith("]")) {
+        required = false;
+      } else {
+        throw new IllegalArgumentException(
+            string + " does not start and end with either: '<>' or '[]'");
+      }
+      string = string.substring(1, string.length() - 1);
+      String[] split = string.split(":");
+      if (split.length < 2) {
+        throw new IllegalArgumentException(
+            string + " does not have ':' separating class, name and description");
+      }
+      try {
+        String key = split[0];
+        String value = mappings.get(key);
+        if (value == null) throw new IllegalArgumentException(key + " did not match any mapping");
+        Class<?> clazz = Class.forName(mappings.get(split[0]));
+        String name = split[1];
+        String description = split.length > 2 ? split[2].replace("-", " ") : "No description given";
+        if (multiple) {
+          return new MultipleArgument<>(
+              name, description, suggestions, clazz, required, position, 1, -1);
+        } else {
+          return new SingleArgument<>(name, description, suggestions, clazz, required, position);
+        }
+      } catch (ClassNotFoundException e) {
+        throw new IllegalArgumentException(
+            string + " does not have a correct mapping in: " + split[0]);
+      }
+    }
+  }
+
+  /**
+   * Parse from a single {@link String} many arguments using {@link #parse(Map, String, List, int)}
+   * the {@link String} will be split using the character ' '
+   *
+   * @param mappings the map of {@link Class} mappings
+   * @param string the string to parse
+   * @return the parsed arguments
+   */
+  @NonNull
+  static List<Argument<?>> parseArguments(
+      @NonNull Map<String, String> mappings, @NonNull String string) {
+    String[] split = string.split(" ");
+    List<Argument<?>> arguments = new ArrayList<>(split.length);
+    for (int i = 0; i < split.length; i++) {
+      arguments.add(Argument.parse(mappings, split[i], new ArrayList<>(), i));
+    }
+    return arguments;
   }
 
   /**
