@@ -41,7 +41,7 @@ public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgument
   }
 
   @Override
-  public @NonNull User getObject(@NonNull CommandContext context) throws ArgumentProviderException {
+  public @NonNull User getObject(@NonNull CommandContext context) {
     return context.getSender();
   }
 }

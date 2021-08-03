@@ -3,7 +3,6 @@ package me.googas.commands.providers;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.context.StarboxCommandContext;
-import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
 import me.googas.commands.providers.type.StarboxMultipleArgumentProvider;
 import me.googas.starbox.Strings;
@@ -28,8 +27,7 @@ public class StringProvider<T extends StarboxCommandContext>
   }
 
   @Override
-  public @NonNull String fromStrings(@NonNull String[] strings, @NonNull T context)
-      throws ArgumentProviderException {
+  public @NonNull String fromStrings(@NonNull String[] strings, @NonNull T context) {
     return Strings.fromArray(strings);
   }
 }

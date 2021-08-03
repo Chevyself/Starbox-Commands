@@ -89,8 +89,10 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
    * @param providers the providers to register
    * @return this same instance of registry
    */
+  @SafeVarargs
   @NonNull
-  public ProvidersRegistry<T> addProviders(@NonNull StarboxContextualProvider<?, T>... providers) {
+  public final ProvidersRegistry<T> addProviders(
+      @NonNull StarboxContextualProvider<?, T>... providers) {
     return this.addProviders(Arrays.asList(providers));
   }
 

@@ -150,7 +150,7 @@ public class DefaultListenerOptions implements ListenerOptions {
                   .setThumbnail(thumbnail.isEmpty() ? null : thumbnail)
                   .setFooter(messagesProvider.footer(context))
                   .setColor(this.getColor(result.getType()));
-          return builder.setEmbed(embedBuilder.build()).build();
+          return builder.setEmbeds(embedBuilder.build()).build();
         } else {
           return null;
         }

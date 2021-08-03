@@ -43,8 +43,7 @@ public class TextChannelProvider
   }
 
   @Override
-  public @NonNull TextChannel getObject(@NonNull CommandContext context)
-      throws ArgumentProviderException {
+`  public @NonNull TextChannel getObject(@NonNull CommandContext context) {
     return context.getMessage().getTextChannel();
   }
 }
