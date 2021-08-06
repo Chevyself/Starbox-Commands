@@ -13,11 +13,11 @@ import me.googas.commands.jda.providers.TextChannelProvider;
 import me.googas.commands.jda.providers.UserProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
-/** The providers registry for jda */
+/** The providers registry for jda. */
 public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
 
   /**
-   * Create the providers registry for jda
+   * Create the providers registry for jda.
    *
    * @param messages the messages provider for the registry
    */

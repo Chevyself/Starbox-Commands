@@ -6,11 +6,11 @@ import me.googas.commands.jda.context.CommandContext;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
-/** Utils for sending messages in discord */
+/** Utils for sending messages in discord. */
 public class Chat {
 
   /**
-   * Sends a message and adds the option of a callback
+   * Sends a message and adds the option of a callback.
    *
    * @param channel the channel to send the message
    * @param message the message to send
@@ -28,7 +28,7 @@ public class Chat {
   }
 
   /**
-   * Sends a message to a channel
+   * Sends a message to a channel.
    *
    * @param channel the channel to send the message
    * @param message the message to send
@@ -38,7 +38,7 @@ public class Chat {
   }
 
   /**
-   * Send a message using the channel of a 'context' and provide the option of a callback
+   * Send a message using the channel of a 'context' and provide the option of a callback.
    *
    * @param context the context to send the message
    * @param message the message to send
@@ -52,7 +52,7 @@ public class Chat {
   }
 
   /**
-   * Send a message using the channel of a 'context'
+   * Send a message using the channel of a 'context'.
    *
    * @param context the context of the message
    * @param message the message to send

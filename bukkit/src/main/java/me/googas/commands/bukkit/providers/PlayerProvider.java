@@ -12,14 +12,14 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/** Provides the {@link CommandManager} with the object of {@link Player} */
+/** Provides the {@link CommandManager} with the object of {@link Player}. */
 public class PlayerProvider
     implements BukkitArgumentProvider<Player>, BukkitExtraArgumentProvider<Player> {
 
   @NonNull private final MessagesProvider messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param messagesProvider the provider of the message in case the player is not found
    */
@@ -28,7 +28,7 @@ public class PlayerProvider
   }
 
   /**
-   * Get the name of the players that are online the server
+   * Get the name of the players that are online the server.
    *
    * @return the name of the players that are online the server
    */

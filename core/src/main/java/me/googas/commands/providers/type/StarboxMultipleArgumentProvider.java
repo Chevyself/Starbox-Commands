@@ -15,7 +15,7 @@ public interface StarboxMultipleArgumentProvider<O, T extends StarboxCommandCont
     extends StarboxContextualProvider<O, T> {
 
   /**
-   * Get the instance of the {@link #getClazz()} to provide
+   * Get the instance of the {@link #getClazz()} to provide.
    *
    * @param strings the strings to get the object from
    * @param context the context of the command execution

@@ -9,11 +9,11 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
-/** The controller to use the responsive messages */
+/** The controller to use the responsive messages. */
 public interface ResponsiveMessageController {
 
   /**
-   * Listen for the reaction being added to a message
+   * Listen for the reaction being added to a message.
    *
    * @param event the event of a reaction being added to a message
    */
@@ -41,7 +41,7 @@ public interface ResponsiveMessageController {
   }
 
   /**
-   * Get the responsive message matching the id
+   * Get the responsive message matching the id.
    *
    * @param guild the guild to get the responsive message
    * @param messageId the id to match
@@ -57,7 +57,7 @@ public interface ResponsiveMessageController {
   }
 
   /**
-   * Get the unicode or the name of the emote from a reaction event
+   * Get the unicode or the name of the emote from a reaction event.
    *
    * @param emote the emote of the reaction that was added
    * @return the unicode
@@ -82,14 +82,14 @@ public interface ResponsiveMessageController {
   }
 
   /**
-   * Whether or not bots can use this responsive message
+   * Whether or not bots can use this responsive message.
    *
    * @return true if they can
    */
   boolean acceptBots();
 
   /**
-   * Get the responsive messages used in this controller
+   * Get the responsive messages used in this controller.
    *
    * @param guild the guild that requires the messages
    * @return the responsive messages

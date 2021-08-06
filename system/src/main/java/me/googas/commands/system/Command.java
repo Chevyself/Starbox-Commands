@@ -19,7 +19,7 @@ import lombok.NonNull;
 public @interface Command {
 
   /**
-   * Get the array of aliases to match the command in {@link CommandManager#getCommand(String)}
+   * Get the array of aliases to match the command in {@link CommandManager#getCommand(String)}.,
    *
    * @return the array of aliases
    */

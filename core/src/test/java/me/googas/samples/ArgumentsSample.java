@@ -7,6 +7,7 @@ import me.googas.commands.annotations.Required;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.context.StarboxCommandContext;
 
+@SuppressWarnings("JavaDoc")
 public class ArgumentsSample {
 
   public static void main(String[] args) throws NoSuchMethodException {

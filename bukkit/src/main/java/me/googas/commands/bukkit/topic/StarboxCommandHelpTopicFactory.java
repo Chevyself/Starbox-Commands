@@ -18,7 +18,7 @@ public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<Annotate
   @NonNull private final MessagesProvider provider;
 
   /**
-   * Create the factory
+   * Create the factory.
    *
    * @param provider the messages provider to format the help topics see {@link
    *     StarboxCommandHelpTopic}

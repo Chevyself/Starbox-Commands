@@ -1,7 +1,7 @@
 package me.googas.commands.result;
 
 /**
- * When a command is executed it will give a result:
+ * When a command is executed it will give a result.
  *
  * <pre>{@code
  * public class AClass {
@@ -17,7 +17,7 @@ package me.googas.commands.result;
 public interface StarboxResult {
 
   /**
-   * Get the result message
+   * Get the result message.
    *
    * @return the result message
    */

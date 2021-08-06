@@ -9,7 +9,7 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.starbox.Strings;
 import org.bukkit.command.CommandSender;
 
-/** The context of a bukkit command */
+/** The context of a Bukkit command. */
 public class CommandContext implements StarboxCommandContext {
 
   @NonNull private final CommandSender sender;
@@ -19,7 +19,7 @@ public class CommandContext implements StarboxCommandContext {
   @NonNull @Delegate private final ProvidersRegistry<CommandContext> registry;
 
   /**
-   * Create a bukkit context
+   * Create a Bukkit context.
    *
    * @param sender the sender of the bukkit command
    * @param strings the strings from the command execution

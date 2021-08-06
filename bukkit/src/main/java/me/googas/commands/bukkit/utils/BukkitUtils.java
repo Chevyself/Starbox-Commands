@@ -15,7 +15,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 
 /**
- * Static utilities for bukkit:
+ * Static utilities for bukkit.
  *
  * <p>Here you will find
  *
@@ -79,7 +79,7 @@ public class BukkitUtils {
   }
 
   /**
-   * Give colors to a message and format using {@link Strings#format(String, Map)}
+   * Give colors to a message and format using {@link Strings#format(String, Map)}.
    *
    * <p>To know how to use colors check {@link BukkitUtils#format(String)}
    *
@@ -108,7 +108,7 @@ public class BukkitUtils {
   }
 
   /**
-   * Dispatch a command
+   * Dispatch a command.
    *
    * @param sender the sender of the command
    * @param command the command to send
@@ -120,7 +120,7 @@ public class BukkitUtils {
   }
 
   /**
-   * Dispatch a command
+   * Dispatch a command.
    *
    * @param sender the sender of the command
    * @param command the command to send
@@ -152,7 +152,7 @@ public class BukkitUtils {
 
   /**
    * Get Bukkit {@link CommandMap} it is used to parseAndRegister commands and to get it reflection
-   * need to be used:
+   * need to be used.
    *
    * <p>Getting the {@link Server} class this will get the declared field 'commandMap' which
    * contains the {@link CommandMap}

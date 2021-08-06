@@ -8,7 +8,7 @@ import me.googas.commands.providers.type.StarboxMultipleArgumentProvider;
 import me.googas.starbox.Strings;
 
 /**
- * Provides the {@link StarboxCommandManager} with {@link String}
+ * Provides the {@link StarboxCommandManager} with {@link String}.
  *
  * @param <T> the type of context that this requires to provide the object
  */

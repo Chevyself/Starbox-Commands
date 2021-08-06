@@ -7,11 +7,11 @@ import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message;
 
-/** A responsive message is created for the user to react to the message with an */
+/** A responsive message is created for the user to react to the message with an. */
 public interface ResponsiveMessage {
 
   /**
-   * Get the reactions of the message matching an unicode
+   * Get the reactions of the message matching an unicode.
    *
    * @return the reactions
    * @param unicode the unicode to match
@@ -29,7 +29,7 @@ public interface ResponsiveMessage {
   }
 
   /**
-   * Add a reaction response to the set
+   * Add a reaction response to the set.
    *
    * @param response the reaction response to add to the set
    */
@@ -38,7 +38,7 @@ public interface ResponsiveMessage {
   }
 
   /**
-   * Add a reaction response to the set
+   * Add a reaction response to the set.
    *
    * @param response the reaction response to add to the set
    * @param message the message to add the reaction
@@ -61,14 +61,14 @@ public interface ResponsiveMessage {
   }
 
   /**
-   * Get the id of the message
+   * Get the id of the message.
    *
    * @return the id
    */
   long getId();
 
   /**
-   * Get the reactions of the message
+   * Get the reactions of the message.
    *
    * @return the reactions
    */

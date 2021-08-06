@@ -8,7 +8,7 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
 
 /**
- * Provides the {@link StarboxCommandManager} with a {@link Long}
+ * Provides the {@link StarboxCommandManager} with a {@link Long}.
  *
  * @param <T> the type of context that this requires to provide the object
  */
@@ -18,7 +18,7 @@ public class LongProvider<T extends StarboxCommandContext>
   private final StarboxMessagesProvider<T> messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param messagesProvider to send the error message in case that the {@link Long} could not be
    *     parsed
@@ -44,7 +44,7 @@ public class LongProvider<T extends StarboxCommandContext>
   }
 
   /**
-   * Get if the provider provides with the queried class
+   * Get if the provider provides with the queried class.
    *
    * @param clazz the queried class
    * @return true if it provides it

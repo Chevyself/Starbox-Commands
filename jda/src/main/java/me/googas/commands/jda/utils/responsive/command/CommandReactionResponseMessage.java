@@ -13,10 +13,11 @@ import me.googas.commands.jda.utils.responsive.ReactionResponse;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
+/** Represents a {@link ReactionResponse} that when reacted runs a command. */
 public interface CommandReactionResponseMessage extends ReactionResponse {
 
   /**
-   * Get the name of the command to execute
+   * Get the name of the command to execute.
    *
    * @return the name of the command to execute
    */
@@ -24,16 +25,26 @@ public interface CommandReactionResponseMessage extends ReactionResponse {
   String getCommandName();
 
   /**
-   * Get the arguments to use in the execution of the command
+   * Get the arguments to use in the execution of the command.
    *
    * @return the arguments
    */
   @NonNull
   String[] getArguments();
 
+  /**
+   * Get the command manager where the command is registered.
+   *
+   * @return the command manager
+   */
   @NonNull
   CommandManager getCommandManager();
 
+  /**
+   * Get the actual command.
+   *
+   * @return the actual command
+   */
   @NonNull
   default JdaCommand getCommand() {
     return Objects.requireNonNull(

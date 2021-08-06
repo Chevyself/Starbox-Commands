@@ -17,21 +17,21 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Command {
   /**
-   * The aliases of the command
+   * The aliases of the command.
    *
    * @return an array of aliases
    */
   String[] aliases();
 
   /**
-   * The permission to use the command
+   * The permission to use the command.
    *
    * @return the permission node
    */
   String permission() default "";
 
   /**
-   * TODO documentation
+   * TODO documentation.
    *
    * @return whether to execute the command async
    */

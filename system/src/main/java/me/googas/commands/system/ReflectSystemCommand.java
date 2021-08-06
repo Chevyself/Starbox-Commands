@@ -18,7 +18,7 @@ import me.googas.starbox.Strings;
 
 /**
  * This is the direct extension of {@link SystemCommand} for reflection commands this is returned
- * from {@link CommandManager#parseCommands(Object)}
+ * from {@link CommandManager#parseCommands(Object)}.
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
  */
@@ -33,7 +33,7 @@ public class ReflectSystemCommand
   @NonNull @Getter private final List<SystemCommand> children;
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param method the method to execute as the command see more in {@link #getMethod()}
    * @param object the instance of the object used to invoke the method see more in {@link

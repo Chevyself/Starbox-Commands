@@ -10,11 +10,11 @@ import me.googas.commands.bukkit.providers.OfflinePlayerProvider;
 import me.googas.commands.bukkit.providers.PlayerProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
-/** The providers registry for bukkit */
+/** The providers registry for bukkit. */
 public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
 
   /**
-   * Create the registry with the default providers
+   * Create the registry with the default providers.
    *
    * @param messages the messages providers for the messages sent in the provider
    */
@@ -27,6 +27,6 @@ public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
         .addProvider(new PlayerProvider(messages));
   }
 
-  /** Create the registry with the default providers */
+  /** Create the registry with the default providers. */
   public BukkitProvidersRegistry() {}
 }

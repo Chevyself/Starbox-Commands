@@ -5,7 +5,7 @@ import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.providers.type.BungeeExtraArgumentProvider;
 import net.md_5.bungee.api.CommandSender;
 
-/** Provides the command manager the sender of the command */
+/** Provides the command manager the sender of the command. */
 public class CommandSenderProvider implements BungeeExtraArgumentProvider<CommandSender> {
 
   @NonNull

@@ -61,7 +61,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   @NonNull @Getter private final CommandListener listener;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param providersRegistry the providers registry to provide the array of {@link Object} to
    *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}

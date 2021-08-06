@@ -20,7 +20,7 @@ public class ExtraArgument<O> implements Argument<O> {
   @NonNull @Getter private final Class<O> clazz;
 
   /**
-   * Create a new extra argument instance
+   * Create a new extra argument instance.
    *
    * @param clazz the class of the argument
    */

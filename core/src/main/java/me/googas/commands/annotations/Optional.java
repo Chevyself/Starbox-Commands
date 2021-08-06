@@ -28,7 +28,7 @@ import me.googas.commands.arguments.Argument;
 public @interface Optional {
 
   /**
-   * Get the name of the argument
+   * Get the name of the argument.
    *
    * @return The name of the argument as a string
    */
@@ -36,7 +36,7 @@ public @interface Optional {
   String name() default "No name provided";
 
   /**
-   * Get the description of the argument
+   * Get the description of the argument.
    *
    * @return The description of the argument as a string
    */
@@ -44,7 +44,7 @@ public @interface Optional {
   String description() default "No description provided";
 
   /**
-   * Get an array of suggestions that the user can input to execute the command correctly
+   * Get an array of suggestions that the user can input to execute the command correctly.
    *
    * @return The default value of the optional argument will be the first entry of the array the
    *     other will be suggestions which can be send to the user in case the command is executed

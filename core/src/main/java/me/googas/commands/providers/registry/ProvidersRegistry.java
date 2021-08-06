@@ -34,11 +34,11 @@ import me.googas.commands.providers.type.StarboxSimpleArgumentProvider;
  */
 public class ProvidersRegistry<T extends StarboxCommandContext> {
 
-  /** The providers that must be given with a context */
+  /** The providers that must be given with a context. */
   protected final List<StarboxContextualProvider<?, T>> providers = new ArrayList<>();
 
   /**
-   * Create the registry with the default providers
+   * Create the registry with the default providers.
    *
    * @param messages the messages provider for the messages sent in the default providers
    */
@@ -53,11 +53,11 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
         .addProvider(new TimeProvider<>(messages));
   }
 
-  /** Creates the registry with no providers */
+  /** Creates the registry with no providers. */
   public ProvidersRegistry() {}
 
   /**
-   * Registers a provider in the providers registry
+   * Registers a provider in the providers registry.
    *
    * @param provider the provider to register
    * @return this same instance of registry
@@ -69,7 +69,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   }
 
   /**
-   * Registers many providers in the providers registry
+   * Registers many providers in the providers registry.
    *
    * @param providers the providers to register
    * @return this same instance of registry
@@ -84,7 +84,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   }
 
   /**
-   * Registers many providers in the providers registry
+   * Registers many providers in the providers registry.
    *
    * @param providers the providers to register
    * @return this same instance of registry
@@ -226,7 +226,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
 
   /**
    * This method uses {@link #getObject(Class, StarboxCommandContext)} and casts the returned object
-   * as it is safe to do so
+   * as it is safe to do so.
    *
    * @param clazz the clazz to get the provider from
    * @param context the context of the command execution
@@ -243,7 +243,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
 
   /**
    * This method uses {@link #fromString(String, Class, StarboxCommandContext)} and casts the
-   * returned object as it is safe to do so
+   * returned object as it is safe to do so.
    *
    * @param string the string to get the object from
    * @param clazz the clazz to get the provider from
@@ -261,7 +261,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
 
   /**
    * This method uses {@link #fromStrings(String[], Class, StarboxCommandContext)} and casts the
-   * returned object as it is safe to do so
+   * returned object as it is safe to do so.
    *
    * @param strings the strings to get the object from
    * @param clazz the clazz to get the provider from

@@ -9,7 +9,7 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.starbox.Strings;
 import net.md_5.bungee.api.CommandSender;
 
-/** The context for bungee commands */
+/** The context for bungee commands. */
 public class CommandContext implements StarboxCommandContext {
 
   @NonNull private final CommandSender sender;
@@ -19,7 +19,7 @@ public class CommandContext implements StarboxCommandContext {
   @NonNull @Delegate private final ProvidersRegistry<CommandContext> registry;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param sender the sender of the command
    * @param strings the command line in separated strings

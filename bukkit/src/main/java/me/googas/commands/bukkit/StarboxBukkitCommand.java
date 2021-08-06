@@ -38,7 +38,7 @@ public abstract class StarboxBukkitCommand extends Command
   protected final boolean async;
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param name the name of the command
    * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
@@ -55,7 +55,7 @@ public abstract class StarboxBukkitCommand extends Command
   }
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param name the name of the command
    * @param description a simple description of the command
@@ -124,7 +124,7 @@ public abstract class StarboxBukkitCommand extends Command
   }
 
   /**
-   * Get the name of the children that have been added inside the command {@link #getChildren()}
+   * Get the name of the children that have been added inside the command {@link #getChildren()}.
    *
    * @return the list with the names of the children commands
    */

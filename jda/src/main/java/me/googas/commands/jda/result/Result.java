@@ -37,14 +37,14 @@ public class Result implements StarboxResult {
   @Getter private final Message discordMessage;
   /**
    * The content of the {@link #discordMessage} as a {@link String} if {@link #discordMessage} is
-   * null then the content will be added to a {@link Message}
+   * null then the content will be added to a {@link Message}.
    */
   private final String message;
-  /** Which is the consumer of the {@link #discordMessage} after it is sent */
+  /** Which is the consumer of the {@link #discordMessage} after it is sent. */
   @Getter private final Consumer<Message> success;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param type the type of the result depending on the command output
    * @param discordMessage the discord message to send
@@ -60,7 +60,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param type the type of the result depending on the command output
    * @param discordMessage the discord message to send
@@ -72,7 +72,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param type the type of the result depending on the command output
    * @param discordMessage the discord message to send
@@ -82,7 +82,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param type the type of the result depending on the command output
    * @param message the content of the message to send
@@ -93,7 +93,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param type the type of the result depending on the command output
    * @param message the content of the message to send
@@ -103,7 +103,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
    *
    * @param discordMessage the discord message to send
    * @param success the action to do after the message is sent
@@ -113,7 +113,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
    *
    * @param discordMessage the discord message to send
    */
@@ -122,7 +122,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
    *
    * @param message the content of the message to send
    * @param success the action to do after the message is sent
@@ -132,7 +132,7 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}
+   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
    *
    * @param message the content of the message to send
    */

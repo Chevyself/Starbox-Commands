@@ -3,7 +3,7 @@ package me.googas.commands.providers.type;
 import lombok.NonNull;
 
 /**
- * This is the interface that every provider has to extend or implement
+ * This is the interface that every provider has to extend or implement.
  *
  * <p>The first implementation to check is {@link StarboxContextualProvider}
  *
@@ -12,7 +12,7 @@ import lombok.NonNull;
 public interface StarboxSimpleArgumentProvider<O> {
 
   /**
-   * Get if the provider provides with the queried class
+   * Get if the provider provides with the queried class.
    *
    * <p>By default this will check using {@link #getClazz()} {@link Class#isAssignableFrom(Class)}
    *
@@ -24,7 +24,7 @@ public interface StarboxSimpleArgumentProvider<O> {
   }
 
   /**
-   * Get the class to provide
+   * Get the class to provide.
    *
    * @return the class to provide
    */

@@ -19,7 +19,7 @@ import me.googas.commands.bukkit.AnnotatedCommand;
 public @interface Command {
 
   /**
-   * The aliases of the command
+   * The aliases of the command.
    *
    * @see AnnotatedCommand#getAliases()
    * @return the aliases of the command
@@ -27,7 +27,7 @@ public @interface Command {
   String[] aliases() default {};
 
   /**
-   * Get a brief description of the command
+   * Get a brief description of the command.
    *
    * @see AnnotatedCommand
    * @return the description of the command
@@ -35,7 +35,7 @@ public @interface Command {
   String description() default "No description provided";
 
   /**
-   * Get the permission node of the command
+   * Get the permission node of the command.
    *
    * @return the permission node of the command
    */

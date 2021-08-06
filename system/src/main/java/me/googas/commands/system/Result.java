@@ -21,7 +21,7 @@ public class Result implements StarboxResult {
   @NonNull @Getter private final String message;
 
   /**
-   * Create a result with a message to print
+   * Create a result with a message to print.
    *
    * @param message the message to print
    */
@@ -29,7 +29,7 @@ public class Result implements StarboxResult {
     this.message = message;
   }
 
-  /** Create an empty result with no message to print */
+  /** Create an empty result with no message to print. */
   public Result() {
     this("");
   }

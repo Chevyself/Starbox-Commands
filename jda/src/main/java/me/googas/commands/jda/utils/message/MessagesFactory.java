@@ -5,14 +5,14 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-/** A factory for creating messages easily */
+/** A factory for creating messages easily. */
 public class MessagesFactory {
 
-  /** The builder for messages */
+  /** The builder for messages. */
   private static final MessageBuilder messageBuilder = new MessageBuilder();
 
   /**
-   * Get a message from a string
+   * Get a message from a string.
    *
    * @param string the string to send as message
    * @return a message query built from a string
@@ -22,7 +22,7 @@ public class MessagesFactory {
   }
 
   /**
-   * Get a message query from an embed
+   * Get a message query from an embed.
    *
    * @param embed the embed to use as message
    * @return the embed as message

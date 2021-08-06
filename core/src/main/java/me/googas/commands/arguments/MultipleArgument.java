@@ -6,7 +6,7 @@ import lombok.NonNull;
 
 /**
  * This argument is just like a {@link SingleArgument} but it has many places in a command which
- * means that multiple inputs are allowed:
+ * means that multiple inputs are allowed.
  *
  * <p>[prefix][command] [argument 1] [argument 1] [argument 1] [argument 2]
  *
@@ -22,7 +22,7 @@ public class MultipleArgument<O> extends SingleArgument<O> {
   @Getter private final int maxSize;
 
   /**
-   * Get a new instance of the multiple argument
+   * Get a new instance of the multiple argument.
    *
    * @param name the name of the argument
    * @param description the description of the argument

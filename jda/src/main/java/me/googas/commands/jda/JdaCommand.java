@@ -35,7 +35,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @Getter @Setter private boolean excluded;
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param manager where the command will be registered used to get the {@link
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
@@ -59,7 +59,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   }
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param manager where the command will be registered used to get the {@link
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
@@ -133,7 +133,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   public abstract List<String> getAliases();
 
   /**
-   * This is called after {@link #execute(CommandContext)} if no children command is executed
+   * This is called after {@link #execute(CommandContext)} if no children command is executed.
    *
    * @param context the context to execute this command
    * @return the result of the command execution

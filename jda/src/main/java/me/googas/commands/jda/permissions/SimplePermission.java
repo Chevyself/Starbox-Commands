@@ -6,16 +6,19 @@ import net.dv8tion.jda.api.Permission;
 
 /**
  * This object represents a permission which is created with {@link Command#node()} and {@link
- * Command#permission()}
+ * Command#permission()}.
  */
 public class SimplePermission implements EasyPermission {
 
-  /** @see Command#node() */
   @NonNull private final String node;
-
-  /** @see Command#permission() */
   @NonNull private final Permission permission;
 
+  /**
+   * Create the permission.
+   *
+   * @param node the node of the permission
+   * @param permission the discord permission
+   */
   public SimplePermission(@NonNull String node, @NonNull Permission permission) {
     this.node = node;
     this.permission = permission;

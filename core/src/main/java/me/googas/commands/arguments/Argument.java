@@ -183,7 +183,7 @@ public interface Argument<O> {
   }
 
   /**
-   * Get the annotation {@link Multiple} from an array of annotations
+   * Get the annotation {@link Multiple} from an array of annotations.
    *
    * @param annotations the array of annotations
    * @return the annotation if the array contains it else null
@@ -331,7 +331,7 @@ public interface Argument<O> {
   }
 
   /**
-   * Recursive method for {@link #parse(Map, String, List, int)}
+   * Recursive method for {@link #parse(Map, String, List, int)}.
    *
    * @param mappings the map of {@link Class} mappings
    * @param string the string to parse
@@ -391,7 +391,7 @@ public interface Argument<O> {
   }
 
   /**
-   * Parse from a single {@link String} many arguments using {@link #parse(Map, String, List, int)}
+   * Parse from a single {@link String}. Many arguments using {@link #parse(Map, String, List, int)}
    * the {@link String} will be split using the character ' '
    *
    * @param mappings the map of {@link Class} mappings

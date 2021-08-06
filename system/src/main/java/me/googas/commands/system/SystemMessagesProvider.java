@@ -3,7 +3,7 @@ package me.googas.commands.system;
 import lombok.NonNull;
 import me.googas.commands.system.context.CommandContext;
 
-/** The default {@link MessagesProvider} for System commands */
+/** The default {@link MessagesProvider} for System commands. */
 public class SystemMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {

@@ -11,14 +11,14 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-/** Provides a proxied player */
+/** Provides a proxied player. */
 public class ProxiedPlayerProvider
     implements BungeeArgumentProvider<ProxiedPlayer>, BungeeExtraArgumentProvider<ProxiedPlayer> {
 
   @NonNull private final MessagesProvider messagesProvider;
 
   /**
-   * Create the provider
+   * Create the provider.
    *
    * @param messagesProvider the message provider for the error
    */

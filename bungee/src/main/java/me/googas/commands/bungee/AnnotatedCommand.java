@@ -26,7 +26,7 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 
 /**
- * This is the direct extension of {@link BungeeCommand} for reflection commands this is returned
+ * This is the direct extension of {@link BungeeCommand} for reflection commands. This is returned
  * from {@link CommandManager#parseCommands(Object)}
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
@@ -34,7 +34,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 public class AnnotatedCommand extends BungeeCommand
     implements ReflectCommand<CommandContext, BungeeCommand> {
 
-  /** The plugin where this command was registered */
+  /** The plugin where this command was registered. */
   @NonNull @Getter protected final Plugin plugin;
 
   @NonNull private final Object object;
@@ -76,6 +76,13 @@ public class AnnotatedCommand extends BungeeCommand
     this.arguments = arguments;
   }
 
+  /**
+   * Tab complete suggestions using reflection.
+   *
+   * @param sender The sender which will get the suggestions
+   * @param strings the current strings in the command to be completed
+   * @return the list of suggested strings
+   */
   @NonNull
   public List<String> onReflectTabComplete(CommandSender sender, String[] strings) {
     CommandContext context =

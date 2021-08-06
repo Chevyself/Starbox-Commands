@@ -23,14 +23,14 @@ import me.googas.commands.objects.JoinedStrings;
 public @interface Multiple {
 
   /**
-   * The minimum size that the argument accepts
+   * The minimum size that the argument accepts.
    *
    * @return the minimum size as an {@link Integer}
    */
   int min() default 1;
 
   /**
-   * The maximum size that the argument accepts or -1 for infinite
+   * The maximum size that the argument accepts or -1 for infinite.
    *
    * @return the maximum size as an {@link Integer}
    */

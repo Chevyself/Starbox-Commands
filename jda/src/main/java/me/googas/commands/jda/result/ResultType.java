@@ -4,26 +4,26 @@ import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 
-/** The different types of results */
+/** The different types of results./ */
 public enum ResultType {
-  /** An error result */
+  /** An error result. */
   ERROR("**Error**:", true),
-  /** An unknown error result */
+  /** An unknown error result. */
   UNKNOWN("**Error**: → Unknown error", true),
-  /** An usage error result */
+  /** An usage error result. */
   USAGE("**Error**: → Wrong usage", true),
-  /** A normal result */
+  /** A normal result. */
   GENERIC("Success!", false),
-  /** An error permission result */
+  /** An error permission result. */
   PERMISSION("**Error**: → No permission", true);
 
-  /** The tile of the type for messages */
+  /** The tile of the type for messages. */
   @NonNull private final String title;
-  /** Whether the result is an error */
+  /** Whether the result is an error. */
   private final boolean isError;
 
   /**
-   * The type of result of a command
+   * The type of result of a command.
    *
    * @param title the title of the result
    * @param isError whether this type of result is an error
@@ -34,7 +34,7 @@ public enum ResultType {
   }
 
   /**
-   * Get the title of the result
+   * Get the title of the result.
    *
    * @param provider in case that there's provider use it to get the title
    * @param context the context of the command
@@ -47,7 +47,7 @@ public enum ResultType {
   }
 
   /**
-   * Get if the result is an error
+   * Get if the result is an error.
    *
    * @return true if is an error
    */

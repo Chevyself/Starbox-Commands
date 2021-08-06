@@ -7,7 +7,7 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import net.dv8tion.jda.api.Permission;
 
-/** Checks for the permissions of an user when executing a command */
+/** Checks for the permissions of an user when executing a command. */
 public interface PermissionChecker {
 
   /**

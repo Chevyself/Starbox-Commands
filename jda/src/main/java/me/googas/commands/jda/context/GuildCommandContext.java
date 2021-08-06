@@ -12,18 +12,18 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
 /**
- * This context is used when the command is executed inside of a guild the context is still a {@link
- * User} but you can also get the {@link Member}
+ * This context is used when the command is executed inside of a guild. The context is still a
+ * {@link User} but you can also get the {@link Member}
  */
 public class GuildCommandContext extends CommandContext {
 
-  /** The sender of the command as a member */
+  /** The sender of the command as a member. */
   @NonNull @Getter private final Member member;
-  /** The guild where the command was executed */
+  /** The guild where the command was executed. */
   @NonNull @Getter private final Guild guild;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param message the message that executed the command
    * @param sender the sender of the command

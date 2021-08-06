@@ -51,14 +51,14 @@ import org.bukkit.plugin.Plugin;
 public class CommandManager implements StarboxCommandManager<CommandContext, StarboxBukkitCommand> {
 
   /**
-   * The Bukkit HelpMap which is used to parseAndRegister the {@link org.bukkit.help.HelpTopic} for
+   * The Bukkit HelpMap which is used to parseAndRegister. the {@link org.bukkit.help.HelpTopic} for
    * the {@link Plugin} using {@link #registerPlugin()} or all the topics for the {@link
    * StarboxBukkitCommand}
    */
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
   /**
-   * This is the {@link CommandMap} which contains all the registered commands and it is obtained
-   * using reflection thru the method {@link BukkitUtils#getCommandMap()}
+   * This is the {@link CommandMap} which contains all the registered commands. It is obtained using
+   * reflection thru the method {@link BukkitUtils#getCommandMap()}
    */
   @NonNull private static final CommandMap commandMap;
 

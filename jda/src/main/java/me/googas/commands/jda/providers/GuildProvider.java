@@ -9,13 +9,13 @@ import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.Guild;
 
-/** Provides the {@link StarboxCommandManager} with a {@link Guild} */
+/** Provides the {@link StarboxCommandManager} with a {@link Guild}. */
 public class GuildProvider implements JdaExtraArgumentProvider<Guild> {
 
   private final MessagesProvider messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */

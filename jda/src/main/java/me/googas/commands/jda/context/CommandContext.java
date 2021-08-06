@@ -13,10 +13,10 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 
-/** This context is used for every command {@link User being the sender} */
+/** This context is used for every command {@link User being the sender}. */
 public class CommandContext implements StarboxCommandContext {
 
-  /** The message that executed the command */
+  /** The message that executed the command. */
   @NonNull @Getter private final Message message;
 
   @NonNull private final User sender;
@@ -27,7 +27,7 @@ public class CommandContext implements StarboxCommandContext {
   @NonNull @Setter private String[] strings;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param message the message where the command was executed
    * @param sender the sender of the command

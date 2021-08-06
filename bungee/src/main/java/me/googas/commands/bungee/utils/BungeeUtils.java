@@ -10,7 +10,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
- * Static utilities for bukkit:
+ * Static utilities for Bungee.
  *
  * <p>Here you will find
  *
@@ -73,7 +73,7 @@ public class BungeeUtils {
   }
 
   /**
-   * Give colors to a message and format using {@link Strings#format(String, Map)}
+   * Give colors to a message and format using {@link Strings#format(String, Map)}.
    *
    * <p>To know how to use colors check {@link BungeeUtils#format(String)}
    *

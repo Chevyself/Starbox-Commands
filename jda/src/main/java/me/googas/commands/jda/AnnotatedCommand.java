@@ -25,7 +25,7 @@ import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.Permission;
 
 /**
- * This is the direct extension of {@link JdaCommand} for reflection commands this is returned from
+ * This is the direct extension of {@link JdaCommand} for reflection commands. This is returned from
  * {@link CommandManager#parseCommands(Object)}
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
@@ -40,7 +40,7 @@ public class AnnotatedCommand extends JdaCommand
   @NonNull @Getter private final List<JdaCommand> children = new ArrayList<>();
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param manager the manager that parsed the command
    * @param command the annotation that will be used to get the name and aliases of the command

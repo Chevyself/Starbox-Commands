@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 
-/** The main listener of command execution */
+/** The main listener of command execution. */
 public class CommandListener implements EventListener {
 
   @NonNull @Getter private final CommandManager manager;
@@ -28,7 +28,7 @@ public class CommandListener implements EventListener {
   @NonNull @Getter private final MessagesProvider messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param manager the command manager
    * @param listenerOptions the options of the manager
@@ -44,7 +44,7 @@ public class CommandListener implements EventListener {
   }
 
   /**
-   * On the event of a message received
+   * On the event of a message received.
    *
    * @param event the event of a message received
    */
@@ -80,7 +80,7 @@ public class CommandListener implements EventListener {
   }
 
   /**
-   * Get the action to do with the message sent from a result
+   * Get the action to do with the message sent from a result.
    *
    * @param result the result to get the action from
    * @param context the context of the command execution
@@ -91,7 +91,7 @@ public class CommandListener implements EventListener {
   }
 
   /**
-   * Get the message that will be send from a result
+   * Get the message that will be send from a result.
    *
    * @param result the result to get the message from
    * @param context the context of the command execution
@@ -102,7 +102,7 @@ public class CommandListener implements EventListener {
   }
 
   /**
-   * Get the result of a command execution
+   * Get the result of a command execution.
    *
    * @param command the command
    * @param commandName the name of the command
@@ -120,7 +120,7 @@ public class CommandListener implements EventListener {
   }
 
   /**
-   * Get the context where the command was executed
+   * Get the context where the command was executed.
    *
    * @param event the event where the command was executed from
    * @param strings the strings representing the arguments of the command

@@ -26,7 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
 /**
- * This is the direct extension of {@link StarboxBukkitCommand} for reflection commands this is
+ * This is the direct extension of {@link StarboxBukkitCommand} for reflection commands. This is
  * returned from {@link CommandManager#parseCommands(Object)}
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
@@ -40,7 +40,7 @@ public class AnnotatedCommand extends StarboxBukkitCommand
   @NonNull @Getter private final List<StarboxBukkitCommand> children;
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param command the annotation that will be used to get the name and aliases of the command
    *     {@link Command#aliases()} the description {@link Command#description()} whether to execute
@@ -83,6 +83,13 @@ public class AnnotatedCommand extends StarboxBukkitCommand
     }
   }
 
+  /**
+   * Tab complete suggestions using reflection.
+   *
+   * @param sender The sender which will get the suggestions
+   * @param strings the current strings in the command to be completed
+   * @return the list of suggested strings
+   */
   public @NonNull List<String> reflectTabComplete(
       @NonNull CommandSender sender, @NonNull String[] strings) {
     CommandContext context =

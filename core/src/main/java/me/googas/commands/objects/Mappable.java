@@ -9,7 +9,7 @@ import lombok.NonNull;
 public interface Mappable {
 
   /**
-   * Get the name of the object
+   * Get the name of the object.
    *
    * @return the name of the object as an string
    */
@@ -17,7 +17,7 @@ public interface Mappable {
   String getName();
 
   /**
-   * Get the description of the object
+   * Get the description of the object.
    *
    * @return the description of the object as an string
    */

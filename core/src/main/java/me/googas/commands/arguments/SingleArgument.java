@@ -8,7 +8,7 @@ import me.googas.commands.objects.Mappable;
 
 /**
  * This argument just like a {@link SingleArgument} but it has many places in a command which means
- * that multiple inputs are allowed:
+ * that multiple inputs are allowed.
  *
  * <p>[prefix][command] [argument 1] [argument 1] [argument 1] [argument 2]
  *
@@ -28,7 +28,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
   @Getter private final int position;
 
   /**
-   * Get a new instance of a single argument
+   * Get a new instance of a single argument.
    *
    * @param name the name of the argument
    * @param description the description of the argument
@@ -53,7 +53,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
   }
 
   /**
-   * Get a list of suggestions to successfully use the argument
+   * Get a list of suggestions to successfully use the argument.
    *
    * @param context the command context to help use the suggestions
    * @return the list of suggestions

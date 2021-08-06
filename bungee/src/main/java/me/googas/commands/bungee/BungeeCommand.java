@@ -40,7 +40,7 @@ public abstract class BungeeCommand extends Command
   protected final boolean async;
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param name the name of the command
    * @param children the list of children commands which can be used with this parent prefix. Learn
@@ -63,7 +63,7 @@ public abstract class BungeeCommand extends Command
   }
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param name the name of the command
    * @param permission the permission that the sender requires to execute the command {@link
@@ -135,7 +135,7 @@ public abstract class BungeeCommand extends Command
   }
 
   /**
-   * Get the name of the children that have been added inside the command {@link #getChildren()}
+   * Get the name of the children that have been added inside the command {@link #getChildren()}.
    *
    * @return the list with the names of the children commands
    */

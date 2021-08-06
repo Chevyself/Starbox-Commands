@@ -24,7 +24,7 @@ import org.bukkit.help.HelpTopic;
 class StarboxCommandHelpTopic extends HelpTopic {
 
   @NonNull private static final Server server = Bukkit.getServer();
-  /** This instance of {@link HelpMap} is used to parseAndRegister topics for children commands */
+  /** This instance of {@link HelpMap} is used to parseAndRegister topics for children commands. */
   @NonNull private static final HelpMap helpMap = StarboxCommandHelpTopic.server.getHelpMap();
 
   @NonNull @Getter @Setter private MessagesProvider provider;
@@ -66,7 +66,7 @@ class StarboxCommandHelpTopic extends HelpTopic {
 
   /**
    * Get the permission that is used for the command {@link HelpTopic} in {@link
-   * StarboxCommandHelpTopic}
+   * StarboxCommandHelpTopic}.
    *
    * @param command the command to get the permission from
    * @return the permission of the command

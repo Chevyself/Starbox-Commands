@@ -9,7 +9,7 @@ import me.googas.commands.providers.type.StarboxArgumentProvider;
 import me.googas.starbox.time.Time;
 
 /**
- * Provides the {@link StarboxCommandManager} with a {@link Time}
+ * Provides the {@link StarboxCommandManager} with a {@link Time}.
  *
  * @param <T> the type of context that this requires to provide the object
  */
@@ -19,7 +19,7 @@ public class TimeProvider<T extends StarboxCommandContext>
   private final StarboxMessagesProvider<T> messagesProvider;
 
   /**
-   * Create an instance of the provider
+   * Create an instance of the provider.
    *
    * @param messagesProvider to send the error message in case that the {@link Time} could not be
    *     parsed

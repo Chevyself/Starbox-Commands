@@ -6,11 +6,11 @@ import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import org.bukkit.plugin.Plugin;
 
-/** Provides the messages for bukkit responses */
+/** Provides the messages for bukkit responses. */
 public interface MessagesProvider extends StarboxMessagesProvider<CommandContext> {
 
   /**
-   * The message sent when a player is not found
+   * The message sent when a player is not found.
    *
    * @param string the input string querying for a player name
    * @param context the context of the command
@@ -20,7 +20,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String invalidPlayer(@NonNull String string, @NonNull CommandContext context);
 
   /**
-   * The message sent when a command is executed by another entity rather than a player
+   * The message sent when a command is executed by another entity rather than a player.
    *
    * @param context the context of the command
    * @return the message to send
@@ -29,7 +29,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String playersOnly(@NonNull CommandContext context);
 
   /**
-   * The message sent when the user that executed the command is not allowed to use it
+   * The message sent when the user that executed the command is not allowed to use it.
    *
    * @param context the context of the command
    * @return the message to send
@@ -38,7 +38,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String notAllowed(@NonNull CommandContext context);
 
   /**
-   * The short message of the help topic in the plugin
+   * The short message of the help topic in the plugin.
    *
    * @param plugin the plugin requesting the short message for its help topic
    * @return the short message of the help topic in the plugin
@@ -47,7 +47,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String helpTopicShort(@NonNull Plugin plugin);
 
   /**
-   * A full message of the help topic in the plugin
+   * A full message of the help topic in the plugin.
    *
    * @param shortText the plugin requesting the message for its help topic
    * @param commands the name of every command to append in the help topic
@@ -58,7 +58,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String helpTopicFull(@NonNull String shortText, @NonNull String commands, @NonNull Plugin plugin);
 
   /**
-   * Get how a command should be appended in a help topic
+   * Get how a command should be appended in a help topic.
    *
    * @param command the command that should be appended in the plugin help topic
    * @return the string that should be appended to give information about a command in the help
@@ -68,7 +68,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String helpTopicCommand(@NonNull StarboxBukkitCommand command);
 
   /**
-   * The short text for a command help topic
+   * The short text for a command help topic.
    *
    * @param command the command that is being built the help topic to
    * @return the short text
@@ -77,7 +77,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String commandShortText(@NonNull StarboxBukkitCommand command);
 
   /**
-   * The name of the command in the help topic
+   * The name of the command in the help topic.
    *
    * @param command the command that is being built the help topic to
    * @param parentName the name of the parent of the command which can be null to be appended to
@@ -88,7 +88,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String commandName(StarboxBukkitCommand command, String parentName);
 
   /**
-   * Get the full text of a help topic for a parent command
+   * Get the full text of a help topic for a parent command.
    *
    * @param command the parent command that is being built the help topic to
    * @param shortText the short text of the command help topic
@@ -104,7 +104,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
       @NonNull String buildArguments);
 
   /**
-   * A simple description for a child command for its parents help topic
+   * A simple description for a child command for its parents help topic.
    *
    * @param command the command that requires the description for its parent
    * @param parent the parent of the command
@@ -114,7 +114,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String childCommand(@NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent);
 
   /**
-   * The message to tell the users that materials have a name and it cannot be empty
+   * The message to tell the users that materials have a name and it cannot be empty.
    *
    * @param context the context of the command
    * @return the message to tell the user
@@ -123,7 +123,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String invalidMaterialEmpty(@NonNull CommandContext context);
 
   /**
-   * The message to tell the users that the material is not found
+   * The message to tell the users that the material is not found.
    *
    * @param string the name of the material that the user queried
    * @param context the context of the command

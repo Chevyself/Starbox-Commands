@@ -5,14 +5,14 @@ import me.googas.commands.arguments.MultipleArgument;
 import me.googas.commands.context.StarboxCommandContext;
 
 /**
- * Provides messages for different instances of the manager
+ * Provides messages for different instances of the manager.
  *
  * @param <T> the command context
  */
 public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
 
   /**
-   * The message sent when a {@link String} is not valid as a {@link Long}
+   * The message sent when a {@link String} is not valid as a {@link Long}.
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -22,7 +22,7 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
   String invalidLong(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a {@link String} is not valid as a {@link Integer}
+   * The message sent when a {@link String} is not valid as a {@link Integer}.
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -32,7 +32,7 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
   String invalidInteger(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a {@link String} is not valid as a {@link Double}
+   * The message sent when a {@link String} is not valid as a {@link Double}.
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -42,7 +42,7 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
   String invalidDouble(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a {@link String} is not valid as a {@link Boolean}
+   * The message sent when a {@link String} is not valid as a {@link Boolean}.
    *
    * @param string the string that is invalid
    * @param context the context of the command
@@ -77,7 +77,7 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
 
   /**
    * Get the message sent when a {@link MultipleArgument} min size is bigger than the context
-   * strings
+   * strings.
    *
    * @see me.googas.commands.arguments.Argument
    * @see MultipleArgument

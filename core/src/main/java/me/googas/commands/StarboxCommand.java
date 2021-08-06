@@ -26,7 +26,7 @@ import me.googas.commands.result.StarboxResult;
 public interface StarboxCommand<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
-   * Execute the command
+   * Execute the command.
    *
    * @param context the context that is required to execute the command
    * @return the result of the command execution
@@ -46,7 +46,7 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   boolean hasAlias(@NonNull String alias);
 
   /**
-   * Add a children that can be used to run in this
+   * Add a children that can be used to run in this.
    *
    * @param command the child command to add
    * @return this same command instance to allow chain methods
@@ -57,7 +57,7 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   }
 
   /**
-   * Get a children command by an alias
+   * Get a children command by an alias.
    *
    * @see StarboxCommand#hasAlias(String)
    * @param alias the alias to match the command

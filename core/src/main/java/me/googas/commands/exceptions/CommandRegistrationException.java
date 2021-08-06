@@ -7,12 +7,12 @@ import me.googas.commands.exceptions.type.StarboxRuntimeException;
 
 /**
  * This command is thrown by the {@link StarboxCommandManager} when it cannot parseAndRegister an
- * {@link StarboxCommand}
+ * {@link StarboxCommand}.
  */
 public class CommandRegistrationException extends StarboxRuntimeException {
 
   /**
-   * Create a simple exception with a simple message
+   * Create a simple exception with a simple message.
    *
    * @param message the message with the cause of the exception
    */

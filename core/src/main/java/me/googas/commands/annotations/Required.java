@@ -23,15 +23,27 @@ import me.googas.commands.arguments.Argument;
 @Target(ElementType.PARAMETER)
 public @interface Required {
 
-  /** @return The name of the argument */
+  /**
+   * Get the name of the argument.
+   *
+   * @return the name of the argument
+   */
   @NonNull
   String name() default "No name provided";
 
-  /** @return The description of the argument */
+  /**
+   * Get the description of the argument.
+   *
+   * @return The description of the argument
+   */
   @NonNull
   String description() default "No description provided";
 
-  /** @return The default value of the optional argument */
+  /**
+   * Get the suggestions of the argument.
+   *
+   * @return the default value of the optional argument
+   */
   @NonNull
   String[] suggestions() default {};
 }

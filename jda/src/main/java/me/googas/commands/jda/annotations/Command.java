@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.Permission;
 public @interface Command {
 
   /**
-   * The aliases that can be used for the command
+   * The aliases that can be used for the command.
    *
    * @return an array of strings representing the aliases
    */
@@ -29,7 +29,7 @@ public @interface Command {
   String[] aliases();
 
   /**
-   * The description of the command
+   * The description of the command.
    *
    * @return the description as a string
    */
@@ -53,8 +53,18 @@ public @interface Command {
   @NonNull
   Permission permission() default Permission.UNKNOWN;
 
+  /**
+   * The amount of time until the command can be executed again.
+   *
+   * @return the time amount
+   */
   @NonNull
   TimeAmount cooldown() default @TimeAmount();
 
+  /**
+   * Whether to exclude the result of this command from being deleted when it is successful.
+   *
+   * @return true if the result should be excluded
+   */
   boolean excluded() default false;
 }

@@ -19,7 +19,7 @@ public class JoinedStrings {
   @NonNull @Getter private final String string;
 
   /**
-   * Create a new instance of {@link JoinedStrings}
+   * Create a new instance.
    *
    * @param strings the array to start the instance
    */

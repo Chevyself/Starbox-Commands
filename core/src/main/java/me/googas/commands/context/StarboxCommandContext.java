@@ -13,7 +13,7 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
 public interface StarboxCommandContext {
 
   /**
-   * Get if the command was executed using the given flag
+   * Get if the command was executed using the given flag.
    *
    * @param flag the flag to check
    * @return true if the command was executed with the given flag
@@ -21,7 +21,7 @@ public interface StarboxCommandContext {
   boolean hasFlag(@NonNull String flag);
 
   /**
-   * Get the joined strings from a certain position
+   * Get the joined strings from a certain position.
    *
    * @param position the position to get the string from
    * @return an array of strings empty if none
@@ -32,7 +32,7 @@ public interface StarboxCommandContext {
   }
 
   /**
-   * Get the sender of the command
+   * Get the sender of the command.
    *
    * @return the sender of the command
    */
@@ -40,7 +40,7 @@ public interface StarboxCommandContext {
   Object getSender();
 
   /**
-   * a Get the joined strings of the command as a single string
+   * a Get the joined strings of the command as a single string.
    *
    * @return the joined strings as a String
    */
@@ -56,14 +56,14 @@ public interface StarboxCommandContext {
   String[] getStrings();
 
   /**
-   * Get the registry used in this context. This allows to get the arguments of the command
+   * Get the registry used in this context. This allows to get the arguments of the command.
    *
    * @return the providers registry
    */
   ProvidersRegistry<? extends StarboxCommandContext> getRegistry();
 
   /**
-   * Get the messages provider used in this context
+   * Get the messages provider used in this context.
    *
    * @return the messages provider used in this context
    */

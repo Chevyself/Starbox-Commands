@@ -13,7 +13,7 @@ public class CooldownUser {
   @Getter private final long id;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param toRemove the time to remove the user from the cooldown in getMillis {@link #expires}
    *     will be the result of this parameter + {@link System#currentTimeMillis()}

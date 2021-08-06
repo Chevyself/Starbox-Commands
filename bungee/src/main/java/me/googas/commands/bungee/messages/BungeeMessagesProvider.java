@@ -4,7 +4,7 @@ import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.starbox.Strings;
 
-/** The default messages provider for bungee */
+/** The default messages provider for bungee. */
 public class BungeeMessagesProvider implements MessagesProvider {
 
   @Override

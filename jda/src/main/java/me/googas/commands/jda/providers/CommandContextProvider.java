@@ -5,7 +5,7 @@ import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 
-/** Provides the {@link StarboxCommandManager} with a {@link CommandContext} */
+/** Provides the {@link StarboxCommandManager} with a {@link CommandContext}. */
 public class CommandContextProvider implements JdaExtraArgumentProvider<CommandContext> {
 
   @NonNull

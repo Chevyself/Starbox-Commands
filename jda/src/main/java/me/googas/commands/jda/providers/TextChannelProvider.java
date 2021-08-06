@@ -10,14 +10,14 @@ import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
-/** Provides the {@link StarboxCommandManager} with a {@link User} */
+/** Provides the {@link StarboxCommandManager} with a {@link User}. */
 public class TextChannelProvider
     implements JdaArgumentProvider<TextChannel>, JdaExtraArgumentProvider<TextChannel> {
 
   private final MessagesProvider messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */
@@ -43,7 +43,7 @@ public class TextChannelProvider
   }
 
   @Override
-`  public @NonNull TextChannel getObject(@NonNull CommandContext context) {
+  public @NonNull TextChannel getObject(@NonNull CommandContext context) {
     return context.getMessage().getTextChannel();
   }
 }

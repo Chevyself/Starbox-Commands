@@ -14,8 +14,8 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
 
 /**
- * This manager is used for registering commands inside the {@link #getCommands()} that is provided
- * to the {@link CommandListener} to get the commands and execute them
+ * This manager is used for registering commands inside the {@link #getCommands()}. Then it is
+ * provided to the {@link CommandListener} to get the commands and execute them
  *
  * @see CommandListener
  *     <p>The easiest way to create commands is using reflection with the method {@link
@@ -39,7 +39,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   @NonNull @Getter private final CommandListener listener;
 
   /**
-   * Create the command manager
+   * Create the command manager.
    *
    * @param prefix the prefix that will differentiate commands from other types of messages
    * @param providersRegistry the providers registry to provide the array of {@link Object} to
@@ -58,7 +58,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   }
 
   /**
-   * Get a command by one of its aliases
+   * Get a command by one of its aliases.
    *
    * @param name the name or aliases to check if the command has
    * @return the command that {@link SystemCommand#hasAlias(String)} matches the parameter name or

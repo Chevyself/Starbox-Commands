@@ -180,7 +180,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
   StarboxMessagesProvider<C> getMessagesProvider();
 
   /**
-   * Executes the command and gives a result of its execution
+   * Executes the command and gives a result of its execution.
    *
    * @param context the context of the command
    * @return the result of the command execution

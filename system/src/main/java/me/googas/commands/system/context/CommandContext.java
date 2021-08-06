@@ -22,7 +22,7 @@ public class CommandContext implements StarboxCommandContext {
   @NonNull @Getter final String string;
 
   /**
-   * Create the command context
+   * Create the command context.
    *
    * @param sender the static instance of {@link
    *     me.googas.commands.system.context.sender.ConsoleCommandSender#INSTANCE}

@@ -5,11 +5,11 @@ import lombok.NonNull;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
 
-/** It's a provider made for bukkit commands */
+/** It's a provider made for bukkit commands. */
 public interface BukkitArgumentProvider<O> extends StarboxArgumentProvider<O, CommandContext> {
 
   /**
-   * Get the suggestions for the command
+   * Get the suggestions for the command.
    *
    * @param string the string that is in the argument position at the moment
    * @param context the context of the command

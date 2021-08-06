@@ -20,7 +20,7 @@ public class CommandListener extends Thread {
   @NonNull @Getter private final String prefix;
 
   /**
-   * Create the listener
+   * Create the listener.
    *
    * @param manager the command manager to get the commands
    * @param prefix the prefix to differentiate messages from commands

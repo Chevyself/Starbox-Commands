@@ -1,10 +1,11 @@
-package me.gordas;
+package me.googas;
 
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.CommandManager;
 import me.googas.commands.system.SystemMessagesProvider;
 import me.googas.commands.system.context.CommandContext;
 
+@SuppressWarnings("JavaDoc")
 public class QuickTest {
 
   public static void main(String[] args) {

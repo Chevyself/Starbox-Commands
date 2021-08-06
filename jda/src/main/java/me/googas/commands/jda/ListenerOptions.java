@@ -76,7 +76,7 @@ public interface ListenerOptions {
   void handle(@NonNull Throwable fail, @NonNull CommandContext context);
 
   /**
-   * Get the prefix that is used for commands inside a {@link Guild} if the parameter {@link Guild}
+   * Get the prefix that is used for commands inside a {@link Guild}. If the parameter {@link Guild}
    * is null means that the command was not executed inside of one meaning that the message was sent
    * in private messages
    *

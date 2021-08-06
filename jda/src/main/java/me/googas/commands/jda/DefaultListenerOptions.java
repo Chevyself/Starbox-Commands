@@ -47,7 +47,7 @@ public class DefaultListenerOptions implements ListenerOptions {
 
   @NonNull @Getter private String prefix = "-";
 
-  /** Whether to delete the message that execute the command */
+  /** Whether to delete the message that execute the command. */
   private boolean deleteCommands = false;
   /**
    * Whether the {@link me.googas.commands.jda.result.Result} of the command should create an {@link
@@ -59,14 +59,14 @@ public class DefaultListenerOptions implements ListenerOptions {
    * ResultType#isError()} should be deleted in
    */
   private boolean deleteErrors = true;
-  /** The {@link Time} to delete the message when it is a {@link ResultType#isError()} */
+  /** The {@link Time} to delete the message when it is a {@link ResultType#isError()}. */
   @NonNull private Time toDeleteErrors = Time.of(15, Unit.SECONDS);
   /**
    * Whether the message of the {@link me.googas.commands.jda.result.Result} when it is not a {@link
    * ResultType#isError()} should be deleted in
    */
   private boolean deleteSuccess = false;
-  /** The {@link Time} to delete the message when it is not a {@link ResultType#isError()} */
+  /** The {@link Time} to delete the message when it is not a {@link ResultType#isError()}. */
   @NonNull private Time toDeleteSuccess = Time.of(15, Unit.SECONDS);
   /**
    * The {@link Color} of the {@link net.dv8tion.jda.api.entities.MessageEmbed} when the {@link
@@ -84,6 +84,12 @@ public class DefaultListenerOptions implements ListenerOptions {
    */
   private boolean sendErrors = false;
 
+  /**
+   * Set the prefix to differentiate commands.
+   *
+   * @param prefix the new prefix value
+   * @return this same instance
+   */
   @NonNull
   public DefaultListenerOptions setPrefix(String prefix) {
     this.prefix = prefix;

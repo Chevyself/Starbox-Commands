@@ -51,7 +51,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
   @NonNull @Getter private final List<BungeeCommand> commands = new ArrayList<>();
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param plugin the plugin that is related to the commands and other Bungee actions such as
    *     creating tasks with the {@link net.md_5.bungee.api.scheduler.TaskScheduler}

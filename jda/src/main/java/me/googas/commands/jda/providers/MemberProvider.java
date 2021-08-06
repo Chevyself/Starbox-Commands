@@ -10,14 +10,14 @@ import me.googas.commands.jda.providers.type.JdaArgumentProvider;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.Member;
 
-/** Provides the {@link StarboxCommandManager} with a {@link Member} */
+/** Provides the {@link StarboxCommandManager} with a {@link Member}. */
 public class MemberProvider
     implements JdaArgumentProvider<Member>, JdaExtraArgumentProvider<Member> {
 
   private final MessagesProvider messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */

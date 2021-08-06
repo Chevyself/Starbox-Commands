@@ -8,13 +8,13 @@ import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 
-/** Provides the {@link StarboxCommandManager} with a {@link GuildCommandContext} */
+/** Provides the {@link StarboxCommandManager} with a {@link GuildCommandContext}. */
 public class GuildCommandContextProvider implements JdaExtraArgumentProvider<GuildCommandContext> {
 
   private final MessagesProvider messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */

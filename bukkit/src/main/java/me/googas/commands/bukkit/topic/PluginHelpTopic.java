@@ -20,7 +20,7 @@ public class PluginHelpTopic extends HelpTopic {
   @NonNull @Getter private final MessagesProvider provider;
 
   /**
-   * Create the an instance of the help topic
+   * Create the an instance of the help topic.
    *
    * @param plugin the plugin that is using the framework
    * @param manager the command manager that the plugin uses

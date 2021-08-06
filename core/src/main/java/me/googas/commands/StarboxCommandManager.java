@@ -117,7 +117,7 @@ public interface StarboxCommandManager<
   Collection<T> getCommands();
 
   /**
-   * Get the providers registry that this manager may use for {@link StarboxCommandContext}
+   * Get the providers registry that this manager may use for {@link StarboxCommandContext}.
    *
    * @return the providers registry
    */
@@ -125,7 +125,7 @@ public interface StarboxCommandManager<
   ProvidersRegistry<C> getProvidersRegistry();
 
   /**
-   * Get the messages provider that this manager may use for {@link StarboxCommand} messages
+   * Get the messages provider that this manager may use for {@link StarboxCommand} messages.
    *
    * @return the messages provider
    */

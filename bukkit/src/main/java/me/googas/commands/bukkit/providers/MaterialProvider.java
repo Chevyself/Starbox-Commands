@@ -9,13 +9,13 @@ import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import org.bukkit.Material;
 
-/** Provides commands with materials */
+/** Provides commands with materials. */
 public class MaterialProvider implements BukkitArgumentProvider<Material> {
 
   @NonNull private final MessagesProvider messagesProvider;
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param messagesProvider the provider of the message in case the material is not found
    */

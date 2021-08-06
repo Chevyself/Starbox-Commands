@@ -4,11 +4,12 @@ import java.util.Set;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Message;
 
+/** A simple {@link ResponsiveMessage} implementation */
 public class StarboxResponsiveMessage implements ResponsiveMessage {
 
-  /** The set of reactions to which this message will respond */
+  /** The set of reactions to which this message will respond. */
   @NonNull protected final Set<ReactionResponse> reactions;
-  /** The id of this message */
+  /** The id of this message. */
   private final long id;
 
   /**

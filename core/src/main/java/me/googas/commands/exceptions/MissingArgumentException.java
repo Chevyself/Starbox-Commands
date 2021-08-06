@@ -23,7 +23,7 @@ import me.googas.commands.exceptions.type.StarboxException;
 public class MissingArgumentException extends StarboxException {
 
   /**
-   * Create a simple exception with a simple message
+   * Create a simple exception with a simple message.
    *
    * @param message the message with the cause of the exception
    */

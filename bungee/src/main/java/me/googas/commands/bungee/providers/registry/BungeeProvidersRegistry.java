@@ -8,11 +8,11 @@ import me.googas.commands.bungee.providers.CommandSenderProvider;
 import me.googas.commands.bungee.providers.ProxiedPlayerProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
-/** The implementation of providers registry for bungee */
+/** The implementation of providers registry for bungee. */
 public class BungeeProvidersRegistry extends ProvidersRegistry<CommandContext> {
 
   /**
-   * Create the registry with the default providers
+   * Create the registry with the default providers.
    *
    * @param messages the messages providers for the messages sent in the provider
    */

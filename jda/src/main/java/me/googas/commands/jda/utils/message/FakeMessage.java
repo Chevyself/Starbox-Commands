@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 
+@Deprecated
 public class FakeMessage implements Message {
 
   @NonNull private final User user;

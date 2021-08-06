@@ -35,7 +35,7 @@ public class Result implements StarboxResult {
   @Getter @Setter @NonNull private List<BaseComponent> components = new ArrayList<>();
 
   /**
-   * Create the result with a single component
+   * Create the result with a single component.
    *
    * @param component the component to send as result
    */
