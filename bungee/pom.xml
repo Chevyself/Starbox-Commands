@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <artifactId>bungee</artifactId>
+    <description>Bungee utils and command framework</description>
+    <version>1.0.0</version>
+
     <parent>
         <groupId>me.googas.commands</groupId>
         <artifactId>starbox-commands</artifactId>
         <version>1.0.0</version>
     </parent>
-
-    <artifactId>bungee</artifactId>
-    <version>1.0.0</version>
-    <description>Bungee utils and command framework</description>
 
     <repositories>
         <repository>

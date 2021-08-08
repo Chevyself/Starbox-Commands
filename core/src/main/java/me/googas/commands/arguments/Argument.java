@@ -78,6 +78,7 @@ public interface Argument<O> {
    * @param method the method to parse the arguments from
    * @return the list of arguments from the method
    */
+  @NonNull
   static List<Argument<?>> parseArguments(@NonNull Method method) {
     return Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations());
   }

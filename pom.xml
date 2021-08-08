@@ -79,10 +79,11 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+        <!-- Starbox core -->
         <dependency>
+            <groupId>me.googas.starbox</groupId>
             <artifactId>core</artifactId>
-            <groupId>com.github.Chevyself.Starbox</groupId>
-            <version>f1f36aadbc</version>
+            <version>03cb6403a9</version>
         </dependency>
     </dependencies>
 
