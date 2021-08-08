@@ -13,7 +13,7 @@ import me.googas.commands.objects.JoinedStrings;
  * object {@link JoinedStrings} which takes many strings to format a bigger {@link String}.
  *
  * <pre>
- * public void AMethod(@Multiple @Optional(suggestions = "Hello world") String message) {
+ * public void AMethod(@Multiple @Free(suggestions = "Hello world") String message) {
  *     // A MultipleArgument is the message
  * }
  * </pre>

@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import lombok.NonNull;
+import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Multiple;
-import me.googas.commands.annotations.Optional;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.CommandRegistrationException;
@@ -25,7 +25,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *       #isEmpty(Annotation[])} if this method returns true it will be considered as an {@link
  *       ExtraArgument}
  *   <li>{@link SingleArgument} this argument expects an user input unless it is annotated with
- *       {@link Optional}. It has a place inside the command usage: [prefix][command] [argument]
+ *       {@link Free}. It has a place inside the command usage: [prefix][command] [argument]
  *       [argument] [argument]
  *   <li>{@link MultipleArgument} just like a {@link SingleArgument} but it has many places in a
  *       command which means that multiple inputs are allowed: [prefix][command] [argument 1]
@@ -55,7 +55,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *         // argument = MultipleArgument{minSize=1, maxSize=-1} SingleArgument{name='No name provided', description='No description provided', suggestions=[], clazz=class [Ljava.lang.String;, required=true, position=2}
  *     }
  *
- *     public void AMethod(StarboxCommandContext context, @Required String name, @Optional String description, @Required @Multiple String[] messages) {
+ *     public void AMethod(StarboxCommandContext context, @Required String name, @Free String description, @Required @Multiple String[] messages) {
  *         // Has 4 arguments
  *         // An ExtraArgument: the context
  *         // Two SingleArgument: The name and description
@@ -124,7 +124,7 @@ public interface Argument<O> {
    * Parse the argument using the parameter class and the annotations of the parameter.
    *
    * <p>This requires that the argument has any of the two annotations: {@link Required} or {@link
-   * Optional} if that is not the case then an exception will be thrown.
+   * Free} if that is not the case then an exception will be thrown.
    *
    * <p>The annotation {@link Multiple} is obtained using {@link #getMultiple(Annotation[])}
    *
@@ -139,7 +139,7 @@ public interface Argument<O> {
    * @return the final parsed argument it could be {@link SingleArgument} or {@link
    *     MultipleArgument}
    * @throws CommandRegistrationException if the parameter does not contain an annotation such as
-   *     {@link Required} or {@link Optional}
+   *     {@link Required} or {@link Free}
    */
   @NonNull
   static SingleArgument<?> parseArgument(
@@ -152,10 +152,10 @@ public interface Argument<O> {
         List<String> suggestions = Arrays.asList(((Required) annotation).suggestions());
         return Argument.getArgument(
             parameter, position, multiple, true, name, description, suggestions);
-      } else if (annotation instanceof Optional) {
-        String name = ((Optional) annotation).name();
-        String description = ((Optional) annotation).description();
-        List<String> suggestions = Arrays.asList(((Optional) annotation).suggestions());
+      } else if (annotation instanceof Free) {
+        String name = ((Free) annotation).name();
+        String description = ((Free) annotation).description();
+        List<String> suggestions = Arrays.asList(((Free) annotation).suggestions());
         return Argument.getArgument(
             parameter, position, multiple, false, name, description, suggestions);
       }
@@ -166,19 +166,19 @@ public interface Argument<O> {
             + " because it may not contain the annotations "
             + Required.class
             + " or "
-            + Optional.class);
+            + Free.class);
   }
 
   /**
    * Checks if the annotations array does not contain either the {@link Required} or {@link
-   * Optional} annotations. Loops around the array and check if it is either one.
+   * Free} annotations. Loops around the array and check if it is either one.
    *
    * @param annotations the array of annotations to check
    * @return true if the array does not contain either of both annotations
    */
   static boolean isEmpty(@NonNull Annotation[] annotations) {
     for (Annotation annotation : annotations) {
-      if (annotation instanceof Required || annotation instanceof Optional) return false;
+      if (annotation instanceof Required || annotation instanceof Free) return false;
     }
     return true;
   }
@@ -248,7 +248,7 @@ public interface Argument<O> {
    *
    * <ul>
    *   <li>Required arguments are indicated with angles brackets: '&lt;&gt;' ex: '&lt;name&gt;'
-   *   <li>Optional arguments are indicated with square brackets: '[]' ex: '[name]'
+   *   <li>Free arguments are indicated with square brackets: '[]' ex: '[name]'
    *   <li>Flags start with the vertical bar and are indicated using square brackets: ex: [-f]
    *   <li>Flags with a value are just like normal flags but the value is separated with a single
    *       space ' ' ex: [-f &lt;value&gt;] They can also contain a key and a value as such: [-f

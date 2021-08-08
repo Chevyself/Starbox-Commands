@@ -13,7 +13,7 @@ import me.googas.commands.arguments.Argument;
  * <p>You can check more about this annotation in {@link Argument}
  *
  * <pre>
- * public void AMethod(@Required String name, @Optional(suggestions = "20") int age) {
+ * public void AMethod(@Required String name, @Free(suggestions = "20") int age) {
  *     // A required argument is name
  *     // An optional argument is age
  * }

@@ -1,8 +1,8 @@
 package me.googas.samples;
 
 import java.util.List;
+`import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Multiple;
-import me.googas.commands.annotations.Optional;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.context.StarboxCommandContext;
@@ -36,7 +36,7 @@ public class ArgumentsSample {
   public void AMethod(
       StarboxCommandContext context,
       @Required String name,
-      @Optional String description,
+      @Free String description,
       @Required @Multiple String[] messages) {
     // Has 4 arguments
     // An ExtraArgument: the context
@@ -50,13 +50,13 @@ public class ArgumentsSample {
     System.out.println(context);
   }
 
-  public void AMethod(@Required String name, @Optional(suggestions = "20") int age) {
+  public void AMethod(@Required String name, @Free(suggestions = "20") int age) {
     // A required argument is name
     // An optional argument is age
     System.out.println(name + " is " + age + " years old");
   }
 
-  public void AMethod(@Multiple @Optional(suggestions = "Hello world") String message) {
+  public void AMethod(@Multiple @Free(suggestions = "Hello world") String message) {
     System.out.println(message);
   }
 }
