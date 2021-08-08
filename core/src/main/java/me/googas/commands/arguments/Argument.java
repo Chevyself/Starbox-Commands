@@ -170,8 +170,8 @@ public interface Argument<O> {
   }
 
   /**
-   * Checks if the annotations array does not contain either the {@link Required} or {@link
-   * Free} annotations. Loops around the array and check if it is either one.
+   * Checks if the annotations array does not contain either the {@link Required} or {@link Free}
+   * annotations. Loops around the array and check if it is either one.
    *
    * @param annotations the array of annotations to check
    * @return true if the array does not contain either of both annotations

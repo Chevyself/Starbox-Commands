@@ -1,4 +1,5 @@
-Starbox-Commands [![Jitpack](https://jitpack.io/v/xChevy/Starbox-Commands.svg)](https://jitpack.io/#xChevy/Starbox-Commands)
+Starbox-Commands [![Jitpack](https://jitpack.io/v/me.googas/starbox-commands.svg)](https://jitpack.io/#me.googas/starbox-commands)
+
 ===
 This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come. It includes some utilities to shorten the amount of lines in your project.
 
@@ -21,9 +22,9 @@ Installing
 
 ```xml
 <dependency>
-  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <groupId>me.googas.starbox-commands</groupId>
   <artifactId>bukkit</artifactId>
-  <version>Tag</version>
+  <version>tag</version>
 </dependency>
 ```
 
@@ -31,7 +32,7 @@ Installing
 
 ```xml
 <dependency>
-  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <groupId>me.googas.starbox-commands</groupId>
   <artifactId>bungee</artifactId>
   <version>Tag</version>
 </dependency>
@@ -41,7 +42,7 @@ Installing
 
 ```xml
 <dependency>
-  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <groupId>me.googas.starbox-commands</groupId>
   <artifactId>jda</artifactId>
   <version>Tag</version>
 </dependency>
@@ -53,7 +54,7 @@ This is used to create implementations of the `core` framework
 
 ```xml
 <dependency>
-  <groupId>com.github.Chevyself.Starbox-Commands</groupId>
+  <groupId>me.googas.starbox-commands</groupId>
   <artifactId>core</artifactId>
   <version>Tag</version>
 </dependency>

@@ -1,7 +1,7 @@
 package me.googas.samples;
 
 import java.util.List;
-`import me.googas.commands.annotations.Free;
+import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Multiple;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.arguments.Argument;
