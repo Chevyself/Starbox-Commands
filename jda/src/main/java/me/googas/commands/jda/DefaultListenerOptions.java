@@ -144,7 +144,7 @@ public class DefaultListenerOptions implements ListenerOptions {
 
   @Override
   public Message processResult(Result result, @NonNull CommandContext context) {
-    if (result != null && result.getDiscordMessage() == null) {
+    if (result != null && !result.getDiscordMessage().isPresent()) {
       MessageBuilder builder = new MessageBuilder();
       MessagesProvider messagesProvider = context.getMessagesProvider();
       String thumbnail = messagesProvider.thumbnailUrl(context);
@@ -174,7 +174,7 @@ public class DefaultListenerOptions implements ListenerOptions {
             .orElse(null);
       }
     } else if (result != null) {
-      return result.getDiscordMessage();
+      return result.getDiscordMessage().orElse(null);
     }
     return null;
   }

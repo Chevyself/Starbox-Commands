@@ -20,11 +20,11 @@ import net.dv8tion.jda.api.entities.Message;
  * <ul>
  *   <li>{@link #type} which changes the output in the {@link
  *       me.googas.commands.jda.listener.CommandListener}
- *   <li>{@link #discordMessage} the message that will be send to the {@link
+ *   <li>{@link #message} the message that will be send to the {@link
  *       net.dv8tion.jda.api.entities.TextChannel} where the command was executed
- *   <li>{@link #description} the content of the {@link #discordMessage} as a {@link String} if
- *       {@link #discordMessage} is null then the content will be added to a {@link Message}
- *   <li>{@link #success} which is the consumer of the {@link #discordMessage} after it is sent
+ *   <li>{@link #description} the content of the {@link #message} as a {@link String} if {@link
+ *       #message} is null then the content will be added to a {@link Message}
+ *   <li>{@link #success} which is the consumer of the {@link #message} after it is sent
  * </ul>
  */
 public class Result implements StarboxResult {
@@ -38,30 +38,27 @@ public class Result implements StarboxResult {
    * The message that will be send to the {@link net.dv8tion.jda.api.entities.TextChannel} where the
    * command was executed
    */
-  @Getter private final Message discordMessage;
+  private final Message message;
   /**
-   * The content of the {@link #discordMessage} as a {@link String} if {@link #discordMessage} is
-   * null then the content will be added to a {@link Message}.
+   * The content of the {@link #message} as a {@link String} if {@link #message} is null then the
+   * content will be added to a {@link Message}.
    */
   private final String description;
-  /** Which is the consumer of the {@link #discordMessage} after it is sent. */
+  /** Which is the consumer of the {@link #message} after it is sent. */
   @Getter private final Consumer<Message> success;
 
   /**
    * Create an instance.
    *
    * @param type the type of the result depending on the command output
-   * @param discordMessage the discord message to send
+   * @param message the discord message to send
    * @param description the content of the message to send
    * @param success the action to do after the message is sent
    */
   protected Result(
-      @NonNull ResultType type,
-      Message discordMessage,
-      String description,
-      Consumer<Message> success) {
+      @NonNull ResultType type, Message message, String description, Consumer<Message> success) {
     this.type = type;
-    this.discordMessage = discordMessage;
+    this.message = message;
     this.description = description;
     this.success = success;
   }
@@ -70,24 +67,23 @@ public class Result implements StarboxResult {
    * Create an instance.
    *
    * @param type the type of the result depending on the command output
-   * @param discordMessage the discord message to send
+   * @param message the discord message to send
    * @param success the action to do after the message is sent
    */
   @Deprecated
-  public Result(
-      @NonNull ResultType type, @NonNull Message discordMessage, Consumer<Message> success) {
-    this(type, discordMessage, null, success);
+  public Result(@NonNull ResultType type, @NonNull Message message, Consumer<Message> success) {
+    this(type, message, null, success);
   }
 
   /**
    * Create an instance.
    *
    * @param type the type of the result depending on the command output
-   * @param discordMessage the discord message to send
+   * @param message the discord message to send
    */
   @Deprecated
-  public Result(@NonNull ResultType type, @NonNull Message discordMessage) {
-    this(type, discordMessage, null);
+  public Result(@NonNull ResultType type, @NonNull Message message) {
+    this(type, message, null);
   }
 
   /**
@@ -116,22 +112,22 @@ public class Result implements StarboxResult {
   /**
    * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
    *
-   * @param discordMessage the discord message to send
+   * @param message the discord message to send
    * @param success the action to do after the message is sent
    */
   @Deprecated
-  public Result(@NonNull Message discordMessage, Consumer<Message> success) {
-    this(ResultType.GENERIC, discordMessage, success);
+  public Result(@NonNull Message message, Consumer<Message> success) {
+    this(ResultType.GENERIC, message, success);
   }
 
   /**
    * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
    *
-   * @param discordMessage the discord message to send
+   * @param message the discord message to send
    */
   @Deprecated
-  public Result(@NonNull Message discordMessage) {
-    this(ResultType.GENERIC, discordMessage);
+  public Result(@NonNull Message message) {
+    this(ResultType.GENERIC, message);
   }
 
   /**
@@ -188,6 +184,11 @@ public class Result implements StarboxResult {
   @Override
   public @NonNull Optional<String> getMessage() {
     return Optional.ofNullable(this.description);
+  }
+
+  @NonNull
+  public Optional<Message> getDiscordMessage() {
+    return Optional.ofNullable(this.message);
   }
 
   /** Builder for results. This will help to create a result in a neater way */

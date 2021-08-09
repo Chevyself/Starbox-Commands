@@ -102,7 +102,7 @@ public class AnnotatedCommand extends JdaCommand
                       this.getCooldown().toMillisRound(), context.getSender().getIdLong()));
         }
         if (result.getSuccess() == null && this.isExcluded()) {
-          Message discordMessage = result.getDiscordMessage();
+          Message discordMessage = result.getDiscordMessage().orElse(null);
           result =
               Result.forType(result.getType())
                   .setMessage(() -> discordMessage)
