@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommandManager;
@@ -61,14 +62,12 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
    * Get a command by one of its aliases.
    *
    * @param name the name or aliases to check if the command has
-   * @return the command that {@link SystemCommand#hasAlias(String)} matches the parameter name or
+   * @return a {@link Optional} holding the nullable command. The command that {@link SystemCommand#hasAlias(String)} matches the parameter name or
    *     null if none matches
    */
-  public SystemCommand getCommand(@NonNull String name) {
-    for (SystemCommand command : this.commands) {
-      if (command.hasAlias(name)) return command;
-    }
-    return null;
+  @NonNull
+  public Optional<SystemCommand> getCommand(@NonNull String name) {
+    return this.commands.stream().filter(command -> command.hasAlias(name)).findFirst();
   }
 
   @Override

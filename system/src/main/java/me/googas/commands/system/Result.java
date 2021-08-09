@@ -36,6 +36,6 @@ public class Result implements StarboxResult {
 
   @Override
   public @NonNull Optional<String> getMessage() {
-    return Optional.ofNullable(message);
+    return Optional.of(message);
   }
 }
