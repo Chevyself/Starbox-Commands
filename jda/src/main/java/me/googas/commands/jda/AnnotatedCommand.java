@@ -23,6 +23,7 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * This is the direct extension of {@link JdaCommand} for reflection commands. This is returned from
@@ -101,20 +102,21 @@ public class AnnotatedCommand extends JdaCommand
                       this.getCooldown().toMillisRound(), context.getSender().getIdLong()));
         }
         if (result.getSuccess() == null && this.isExcluded()) {
+          Message discordMessage = result.getDiscordMessage();
           result =
-              new Result(
-                  result.getType(),
-                  result.getDiscordMessage(),
-                  result.getMessage().orElse(null),
-                  message -> {});
+              Result.forType(result.getType())
+                  .setMessage(() -> discordMessage)
+                  .setDescription(result.getMessage().orElse(null))
+                  .next(message -> {})
+                  .build();
         }
         return result;
-      } else {
-        return null;
       }
+      return null;
     } catch (final IllegalAccessException e) {
       e.printStackTrace();
-      return new Result(ResultType.UNKNOWN, "IllegalAccessException, e");
+      // return new Result(ResultType.UNKNOWN, "IllegalAccessException, e");
+      return Result.forType(ResultType.UNKNOWN).setDescription("IllegalAccessException, e").build();
     } catch (final InvocationTargetException e) {
       final String message = e.getTargetException().getMessage();
       if (message != null && !message.isEmpty()) {
@@ -122,15 +124,17 @@ public class AnnotatedCommand extends JdaCommand
             | !(e.getTargetException() instanceof StarboxRuntimeException)) {
           e.printStackTrace();
         }
-        return new Result(ResultType.ERROR, message);
+        return Result.forType(ResultType.ERROR).setDescription(message).build();
       } else {
         e.printStackTrace();
-        return new Result(ResultType.UNKNOWN, "InvocationTargetException, e");
+        return Result.forType(ResultType.UNKNOWN)
+            .setDescription("InvocationTargetException, e")
+            .build();
       }
     } catch (MissingArgumentException e) {
-      return new Result(ResultType.USAGE, e.getMessage());
+      return Result.forType(ResultType.USAGE).setDescription(e.getMessage()).build();
     } catch (ArgumentProviderException e) {
-      return new Result(ResultType.ERROR, e.getMessage());
+      return Result.forType(ResultType.ERROR).setDescription(e.getMessage()).build();
     }
   }
 }

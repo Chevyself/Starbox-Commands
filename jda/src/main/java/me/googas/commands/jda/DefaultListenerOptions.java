@@ -204,7 +204,9 @@ public class DefaultListenerOptions implements ListenerOptions {
         .queue(
             channel -> {
               Message message =
-                  this.processResult(new Result(ResultType.ERROR, fail.getMessage()), context);
+                  this.processResult(
+                      Result.forType(ResultType.ERROR).setDescription(fail.getMessage()).build(),
+                      context);
               channel.sendMessage(message).queue();
             },
             failure -> {});

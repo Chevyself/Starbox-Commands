@@ -88,9 +88,12 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       CooldownUser cooldownUser = this.getCooldownUser(sender);
       // TODO make them ignore if the user has certain permission
       if (cooldownUser != null && !cooldownUser.isExpired()) {
-        return new Result(
-            ResultType.USAGE,
-            this.manager.getMessagesProvider().cooldown(cooldownUser.getTimeLeftMillis(), context));
+        return Result.forType(ResultType.USAGE)
+            .setDescription(
+                this.manager
+                    .getMessagesProvider()
+                    .cooldown(cooldownUser.getTimeLeftMillis(), context))
+            .build();
       }
     }
     return null;

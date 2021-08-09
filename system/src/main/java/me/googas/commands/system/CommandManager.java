@@ -62,8 +62,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
    * Get a command by one of its aliases.
    *
    * @param name the name or aliases to check if the command has
-   * @return a {@link Optional} holding the nullable command. The command that {@link SystemCommand#hasAlias(String)} matches the parameter name or
-   *     null if none matches
+   * @return a {@link Optional} holding the nullable command. The command that {@link
+   *     SystemCommand#hasAlias(String)} matches the parameter name or null if none matches
    */
   @NonNull
   public Optional<SystemCommand> getCommand(@NonNull String name) {

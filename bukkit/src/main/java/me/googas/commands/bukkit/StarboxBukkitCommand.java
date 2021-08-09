@@ -144,8 +144,7 @@ public abstract class StarboxBukkitCommand extends Command
     if (strings.length >= 1) {
       Optional<StarboxBukkitCommand> command = this.getChildren(strings[0]);
       if (command.isPresent()) {
-        return command.get()
-            .execute(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
+        return command.get().execute(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
       }
     }
     this.runCheckSync(sender, strings);

@@ -1,6 +1,7 @@
 package me.googas.commands.system;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 import lombok.Getter;
 import lombok.NonNull;
@@ -39,15 +40,17 @@ public class CommandListener extends Thread {
         String[] split = line.split(" ");
         String name = split[0];
         if (!name.startsWith(this.prefix)) continue;
-        SystemCommand command = this.manager.getCommand(name.substring(1));
-        if (command != null) {
+        Optional<SystemCommand> optionalCommand = this.manager.getCommand(name.substring(1));
+        if (optionalCommand.isPresent()) {
           Result result =
-              command.execute(
-                  new CommandContext(
-                      ConsoleCommandSender.INSTANCE,
-                      Arrays.copyOfRange(split, 1, split.length),
-                      this.manager.getProvidersRegistry(),
-                      this.manager.getMessagesProvider()));
+              optionalCommand
+                  .get()
+                  .execute(
+                      new CommandContext(
+                          ConsoleCommandSender.INSTANCE,
+                          Arrays.copyOfRange(split, 1, split.length),
+                          this.manager.getProvidersRegistry(),
+                          this.manager.getMessagesProvider()));
           result
               .getMessage()
               .ifPresent(

@@ -114,8 +114,9 @@ public class CommandListener implements EventListener {
     if (command != null) {
       return command.execute(context);
     } else {
-      return new Result(
-          ResultType.ERROR, this.messagesProvider.commandNotFound(commandName, context));
+      return Result.forType(ResultType.ERROR)
+          .setDescription(this.messagesProvider.commandNotFound(commandName, context))
+          .build();
     }
   }
 

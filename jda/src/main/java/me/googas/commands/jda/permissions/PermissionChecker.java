@@ -28,10 +28,14 @@ public interface PermissionChecker {
     Permission permission = perm.getPermission();
     if (permission != Permission.UNKNOWN && context.getMessage().getMember() != null) {
       if (!context.getMessage().getMember().hasPermission(permission)) {
-        return new Result(ResultType.PERMISSION, this.getMessagesProvider().notAllowed(context));
+        return Result.forType(ResultType.PERMISSION)
+            .setDescription(this.getMessagesProvider().notAllowed(context))
+            .build();
       }
     } else if (permission != Permission.UNKNOWN && context.getMessage().getMember() == null) {
-      return new Result(ResultType.ERROR, this.getMessagesProvider().guildOnly(context));
+      return Result.forType(ResultType.ERROR)
+          .setDescription(this.getMessagesProvider().guildOnly(context))
+          .build();
     }
     return null;
   }
