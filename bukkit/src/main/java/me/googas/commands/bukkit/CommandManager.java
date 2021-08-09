@@ -76,7 +76,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   @NonNull @Getter private final List<StarboxBukkitCommand> commands = new ArrayList<>();
 
   /**
-   * Create an instance
+   * Create an instance.
    *
    * @param plugin the plugin that is related to the commands and other Bukkit actions such as
    *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
@@ -95,7 +95,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   }
 
   /**
-   * Registers {@link #plugin} inside the {@link HelpMap} you can learn more about this in {@link
+   * Registers {@link #plugin} inside the {@link HelpMap}. You can learn more about this in {@link
    * PluginHelpTopic} but basically this will make possible to do: "/help [plugin-name]"
    */
   public void registerPlugin() {

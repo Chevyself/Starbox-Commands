@@ -1,6 +1,7 @@
 package me.googas.commands.bukkit.context;
 
 import java.util.Arrays;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 import me.googas.commands.bukkit.messages.MessagesProvider;
@@ -12,15 +13,15 @@ import org.bukkit.command.CommandSender;
 /** The context of a Bukkit command. */
 public class CommandContext implements StarboxCommandContext {
 
-  @NonNull private final CommandSender sender;
-  @NonNull private final String string;
-  @NonNull private final String[] strings;
-  @NonNull private final MessagesProvider messagesProvider;
-  @NonNull @Delegate private final ProvidersRegistry<CommandContext> registry;
+  @NonNull @Getter private final CommandSender sender;
+  @NonNull @Getter private final String string;
+  @NonNull @Getter private final String[] strings;
+  @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter @Delegate private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create a Bukkit context.
-   *
+   *w
    * @param sender the sender of the bukkit command
    * @param strings the strings from the command execution
    * @param messagesProvider the messages provider used in this context
@@ -38,35 +39,6 @@ public class CommandContext implements StarboxCommandContext {
     this.registry = registry;
   }
 
-  @NonNull
-  @Override
-  public CommandSender getSender() {
-    return this.sender;
-  }
-
-  @NonNull
-  @Override
-  public String getString() {
-    return this.string;
-  }
-
-  @NonNull
-  @Override
-  public String[] getStrings() {
-    return this.strings;
-  }
-
-  @NonNull
-  @Override
-  public ProvidersRegistry<CommandContext> getRegistry() {
-    return this.registry;
-  }
-
-  @NonNull
-  @Override
-  public MessagesProvider getMessagesProvider() {
-    return this.messagesProvider;
-  }
 
   @Override
   public boolean hasFlag(@NonNull String flag) {
