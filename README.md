@@ -1,6 +1,6 @@
 Starbox-Commands [![Jitpack](https://jitpack.io/v/me.googas/starbox-commands.svg)](https://jitpack.io/#me.googas/starbox-commands)
-
 ===
+
 This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come. It includes some utilities to shorten the amount of lines in your project.
 
 Installing
