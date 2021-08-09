@@ -113,7 +113,7 @@ public class Test {
 }
 ```
 
-#### Required and Optional
+#### Required and Free
 
 Both arguments require an input from the user, and the provider must extend `Starbox` or just implement the interface given by the module: The provider will never
 return `null` as it may be needed as a required argument, and the `String` parameter is never null too.
@@ -128,7 +128,7 @@ output in the logic.
 ```java
 public class Test {
     @Command(name = "command")
-    public Result command(CommandSender sender, @Required String name, @Optional long size) {
+    public Result command(CommandSender sender, @Required String name, @Free long size) {
         return new Result();
     }
 }            
@@ -136,7 +136,7 @@ public class Test {
 
 #### Multiple
 
-It is just as `@Required` or `@Optional` but requires multiple strings, it requires any of the above annotation plus
+It is just as `@Required` or `@Free` but requires multiple strings, it requires any of the above annotation plus
 `@Multiple` and the provider must extend `StarboxMultipleArgumentProvider` or just implement the interface given by the module.
 
 * Bukkit: [BukkitMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitMultiArgumentProvider.java)
@@ -146,7 +146,7 @@ It is just as `@Required` or `@Optional` but requires multiple strings, it requi
 ```java
 public class Test {
     @Command(name = "command")
-    public Result command(CommandSender sender, @Required String name, @Optional long size, @Multiple @Optional JoinedStrings args) {
+    public Result command(CommandSender sender, @Required String name, @Free long size, @Multiple @Free JoinedStrings args) {
         return new Result();
     }
 }            

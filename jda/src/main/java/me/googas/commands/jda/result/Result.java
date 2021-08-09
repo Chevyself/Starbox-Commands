@@ -1,5 +1,6 @@
 package me.googas.commands.jda.result;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
@@ -149,7 +150,7 @@ public class Result implements StarboxResult {
   }
 
   @Override
-  public String getMessage() {
-    return this.message;
+  public @NonNull Optional<String> getMessage() {
+    return Optional.ofNullable(this.message);
   }
 }

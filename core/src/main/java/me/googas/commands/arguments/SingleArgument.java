@@ -1,6 +1,8 @@
 package me.googas.commands.arguments;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.context.StarboxCommandContext;
@@ -65,21 +67,35 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
 
   @Override
   public String toString() {
-    return "SingleArgument{"
-        + "name='"
-        + this.name
-        + '\''
-        + ", description='"
-        + this.description
-        + '\''
-        + ", suggestions="
-        + this.suggestions
-        + ", clazz="
-        + this.clazz
-        + ", required="
-        + this.required
-        + ", position="
-        + this.position
-        + '}';
+    return new StringJoiner(", ", SingleArgument.class.getSimpleName() + "[", "]")
+        .add("name='" + name + "'")
+        .add("description='" + description + "'")
+        .add("suggestions=" + suggestions)
+        .add("clazz=" + clazz)
+        .add("required=" + required)
+        .add("position=" + position)
+        .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    SingleArgument<?> that = (SingleArgument<?>) o;
+    return required == that.required
+        && position == that.position
+        && name.equals(that.name)
+        && description.equals(that.description)
+        && suggestions.equals(that.suggestions)
+        && clazz.equals(that.clazz);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, description, suggestions, clazz, required, position);
   }
 }

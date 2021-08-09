@@ -1,6 +1,8 @@
 package me.googas.commands.arguments;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -49,12 +51,26 @@ public class MultipleArgument<O> extends SingleArgument<O> {
 
   @Override
   public String toString() {
-    return "MultipleArgument{"
-        + "minSize="
-        + this.minSize
-        + ", maxSize="
-        + this.maxSize
-        + "} "
-        + super.toString();
+    return new StringJoiner(", ", MultipleArgument.class.getSimpleName() + "[", "]")
+        .add("minSize=" + minSize)
+        .add("maxSize=" + maxSize)
+        .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    MultipleArgument<?> that = (MultipleArgument<?>) o;
+    return minSize == that.minSize && maxSize == that.maxSize;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(minSize, maxSize);
   }
 }

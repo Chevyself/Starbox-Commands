@@ -103,7 +103,10 @@ public class AnnotatedCommand extends JdaCommand
         if (result.getSuccess() == null && this.isExcluded()) {
           result =
               new Result(
-                  result.getType(), result.getDiscordMessage(), result.getMessage(), message -> {});
+                  result.getType(),
+                  result.getDiscordMessage(),
+                  result.getMessage().orElse(null),
+                  message -> {});
         }
         return result;
       } else {

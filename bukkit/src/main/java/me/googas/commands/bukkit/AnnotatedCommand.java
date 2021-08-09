@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.ReflectCommand;
@@ -98,8 +99,9 @@ public class AnnotatedCommand extends StarboxBukkitCommand
             strings,
             this.manager.getMessagesProvider(),
             this.manager.getProvidersRegistry());
-    SingleArgument<?> argument = this.getArgument(strings.length - 1);
-    if (argument != null) {
+    Optional<SingleArgument<?>> optionalArgument = this.getArgument(strings.length - 1);
+    if (optionalArgument.isPresent()) {
+      SingleArgument<?> argument = optionalArgument.get();
       if (argument.getSuggestions(context).size() > 0) {
         return StringUtil.copyPartialMatches(
             strings[strings.length - 1], argument.getSuggestions(context), new ArrayList<>());
@@ -189,14 +191,13 @@ public class AnnotatedCommand extends StarboxBukkitCommand
       children.addAll(this.reflectTabComplete(sender, strings));
       return children;
     } else if (strings.length >= 2) {
-      final StarboxBukkitCommand command = this.getChildren(strings[0]);
-      if (command != null) {
-        return command.tabComplete(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
-      } else {
-        return this.reflectTabComplete(sender, strings);
-      }
-    } else {
-      return this.reflectTabComplete(sender, strings);
+      return this.getChildren(strings[0])
+          .map(
+              command ->
+                  command.tabComplete(
+                      sender, alias, Arrays.copyOfRange(strings, 1, strings.length)))
+          .orElseGet(() -> this.reflectTabComplete(sender, strings));
     }
+    return this.reflectTabComplete(sender, strings);
   }
 }

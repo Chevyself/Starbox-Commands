@@ -1,6 +1,7 @@
 package me.googas.commands.jda;
 
 import java.awt.*;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import lombok.Data;
@@ -147,12 +148,13 @@ public class DefaultListenerOptions implements ListenerOptions {
       MessageBuilder builder = new MessageBuilder();
       MessagesProvider messagesProvider = context.getMessagesProvider();
       String thumbnail = messagesProvider.thumbnailUrl(context);
+      Optional<String> optionalMessage = result.getMessage();
       if (this.isEmbedMessages()) {
-        if (result.getMessage() != null) {
+        if (optionalMessage.isPresent()) {
           EmbedBuilder embedBuilder =
               new EmbedBuilder()
                   .setTitle(result.getType().getTitle(messagesProvider, context))
-                  .setDescription(result.getMessage())
+                  .setDescription(optionalMessage.get())
                   .setThumbnail(thumbnail.isEmpty() ? null : thumbnail)
                   .setFooter(messagesProvider.footer(context))
                   .setColor(this.getColor(result.getType()));
@@ -161,17 +163,15 @@ public class DefaultListenerOptions implements ListenerOptions {
           return null;
         }
       } else {
-        if (result.getMessage() != null) {
-          return builder
-              .append(
-                  messagesProvider.response(
-                      result.getType().getTitle(messagesProvider, context),
-                      result.getMessage(),
-                      context))
-              .build();
-        } else {
-          return null;
-        }
+        return optionalMessage
+            .map(
+                s ->
+                    builder
+                        .append(
+                            messagesProvider.response(
+                                result.getType().getTitle(messagesProvider, context), s, context))
+                        .build())
+            .orElse(null);
       }
     } else if (result != null) {
       return result.getDiscordMessage();

@@ -102,6 +102,7 @@ public interface StarboxCommandManager<
    * @param commands the commands to be registered
    * @return this same command manager instance to allow chain method calls
    */
+  @SuppressWarnings("unchecked")
   @NonNull
   default StarboxCommandManager<C, T> registerAll(@NonNull T... commands) {
     return this.registerAll(Arrays.asList(commands));

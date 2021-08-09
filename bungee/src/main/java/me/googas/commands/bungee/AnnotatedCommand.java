@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.ReflectCommand;
@@ -91,8 +92,9 @@ public class AnnotatedCommand extends BungeeCommand
             strings,
             this.manager.getMessagesProvider(),
             this.manager.getProvidersRegistry());
-    SingleArgument<?> argument = this.getArgument(strings.length - 1);
-    if (argument != null) {
+    Optional<SingleArgument<?>> optionalArgument = this.getArgument(strings.length - 1);
+    if (optionalArgument.isPresent()) {
+      SingleArgument<?> argument = optionalArgument.get();
       if (argument.getSuggestions(context).size() > 0) {
         return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
       } else {
@@ -183,14 +185,12 @@ public class AnnotatedCommand extends BungeeCommand
       children.addAll(this.onReflectTabComplete(sender, strings));
       return children;
     } else if (strings.length >= 2) {
-      final BungeeCommand command = this.getChildren(strings[0]);
-      if (command != null) {
-        return command.onTabComplete(sender, Arrays.copyOfRange(strings, 1, strings.length));
-      } else {
-        return this.onReflectTabComplete(sender, strings);
-      }
-    } else {
-      return this.onReflectTabComplete(sender, strings);
+      return this.getChildren(strings[0])
+          .map(
+              command ->
+                  command.onTabComplete(sender, Arrays.copyOfRange(strings, 1, strings.length)))
+          .orElseGet(ArrayList::new);
     }
+    return this.onReflectTabComplete(sender, strings);
   }
 }

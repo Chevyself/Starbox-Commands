@@ -1,6 +1,6 @@
 package me.googas.commands.system;
 
-import lombok.Getter;
+import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.result.StarboxResult;
 import me.googas.commands.system.context.CommandContext;
@@ -18,7 +18,7 @@ import me.googas.commands.system.context.CommandContext;
  */
 public class Result implements StarboxResult {
 
-  @NonNull @Getter private final String message;
+  @NonNull private final String message;
 
   /**
    * Create a result with a message to print.
@@ -32,5 +32,10 @@ public class Result implements StarboxResult {
   /** Create an empty result with no message to print. */
   public Result() {
     this("");
+  }
+
+  @Override
+  public @NonNull Optional<String> getMessage() {
+    return Optional.ofNullable(message);
   }
 }

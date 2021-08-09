@@ -1,6 +1,7 @@
 package me.googas.commands;
 
 import java.util.Collection;
+import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.result.StarboxResult;
@@ -51,6 +52,7 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    * @param command the child command to add
    * @return this same command instance to allow chain methods
    */
+  @NonNull
   default StarboxCommand<C, T> addChildren(@NonNull T command) {
     this.getChildren().add(command);
     return this;
@@ -61,13 +63,11 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    *
    * @see StarboxCommand#hasAlias(String)
    * @param alias the alias to match the command
-   * @return the command if one has the alias, null otherwise
+   * @return a {@link Optional} instance wrapping the nullable children
    */
-  default T getChildren(@NonNull String alias) {
-    for (T child : this.getChildren()) {
-      if (child.hasAlias(alias)) return child;
-    }
-    return null;
+  @NonNull
+  default Optional<T> getChildren(@NonNull String alias) {
+    return this.getChildren().stream().filter(child -> child.hasAlias(alias)).findFirst();
   }
 
   /**

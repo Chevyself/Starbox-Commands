@@ -3,6 +3,7 @@ package me.googas.commands.bungee;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
@@ -151,15 +152,13 @@ public abstract class BungeeCommand extends Command
   @Override
   public void execute(CommandSender sender, String[] strings) {
     if (strings.length >= 1) {
-      BungeeCommand command = this.getChildren(strings[0]);
-      if (command != null) {
-        command.execute(sender, Arrays.copyOfRange(strings, 1, strings.length));
-      } else {
-        this.runCheckSync(sender, strings);
+      Optional<BungeeCommand> optionalCommand = this.getChildren(strings[0]);
+      if (optionalCommand.isPresent()) {
+        optionalCommand.get().execute(sender, Arrays.copyOfRange(strings, 1, strings.length));
+        return;
       }
-    } else {
-      this.runCheckSync(sender, strings);
     }
+    this.runCheckSync(sender, strings);
   }
 
   @Override
@@ -179,14 +178,12 @@ public abstract class BungeeCommand extends Command
     if (strings.length == 1) {
       return Strings.copyPartials(strings[strings.length - 1], this.getChildrenNames());
     } else if (strings.length >= 2) {
-      final BungeeCommand command = this.getChildren(strings[0]);
-      if (command != null) {
-        return command.onTabComplete(sender, Arrays.copyOfRange(strings, 1, strings.length));
-      } else {
-        return new ArrayList<>();
-      }
-    } else {
-      return new ArrayList<>();
+      return this.getChildren(strings[0])
+          .map(
+              command ->
+                  command.onTabComplete(sender, Arrays.copyOfRange(strings, 1, strings.length)))
+          .orElseGet(ArrayList::new);
     }
+    return new ArrayList<>();
   }
 }

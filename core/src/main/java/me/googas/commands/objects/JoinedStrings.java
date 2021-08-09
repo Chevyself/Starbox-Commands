@@ -1,5 +1,6 @@
 package me.googas.commands.objects;
 
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.context.StarboxCommandContext;
@@ -31,5 +32,22 @@ public class JoinedStrings {
   @Override
   public String toString() {
     return this.string;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    JoinedStrings that = (JoinedStrings) o;
+    return string.equals(that.string);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(string);
   }
 }

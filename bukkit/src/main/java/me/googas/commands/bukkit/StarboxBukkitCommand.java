@@ -3,6 +3,7 @@ package me.googas.commands.bukkit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
@@ -141,15 +142,13 @@ public abstract class StarboxBukkitCommand extends Command
   public boolean execute(
       @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings) {
     if (strings.length >= 1) {
-      StarboxBukkitCommand command = this.getChildren(strings[0]);
-      if (command != null) {
-        return command.execute(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
-      } else {
-        this.runCheckSync(sender, strings);
+      Optional<StarboxBukkitCommand> command = this.getChildren(strings[0]);
+      if (command.isPresent()) {
+        return command.get()
+            .execute(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
       }
-    } else {
-      this.runCheckSync(sender, strings);
     }
+    this.runCheckSync(sender, strings);
     return true;
   }
 
@@ -161,15 +160,15 @@ public abstract class StarboxBukkitCommand extends Command
       return StringUtil.copyPartialMatches(
           strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
     } else if (strings.length >= 2) {
-      final StarboxBukkitCommand command = this.getChildren(strings[0]);
-      if (command != null) {
-        return command.tabComplete(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
-      } else {
-        return new ArrayList<>();
-      }
-    } else {
-      return new ArrayList<>();
+      final Optional<StarboxBukkitCommand> optionalCommand = this.getChildren(strings[0]);
+      return optionalCommand
+          .map(
+              starboxBukkitCommand ->
+                  starboxBukkitCommand.tabComplete(
+                      sender, alias, Arrays.copyOfRange(strings, 1, strings.length)))
+          .orElseGet(ArrayList::new);
     }
+    return new ArrayList<>();
   }
 
   @Override

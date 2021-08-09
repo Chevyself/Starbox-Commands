@@ -1,5 +1,8 @@
 package me.googas.commands.result;
 
+import java.util.Optional;
+import lombok.NonNull;
+
 /**
  * When a command is executed it will give a result.
  *
@@ -19,7 +22,8 @@ public interface StarboxResult {
   /**
    * Get the result message.
    *
-   * @return the result message
+   * @return a {@link Optional} instance wrapping the nullable message
    */
-  String getMessage();
+  @NonNull
+  Optional<String> getMessage();
 }

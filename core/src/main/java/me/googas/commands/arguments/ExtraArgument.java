@@ -1,6 +1,8 @@
 package me.googas.commands.arguments;
 
 import java.lang.annotation.Annotation;
+import java.util.Objects;
+import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -30,6 +32,25 @@ public class ExtraArgument<O> implements Argument<O> {
 
   @Override
   public String toString() {
-    return "ExtraArgument{" + "clazz=" + this.clazz + '}';
+    return new StringJoiner(", ", ExtraArgument.class.getSimpleName() + "[", "]")
+        .add("clazz=" + clazz)
+        .toString();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    ExtraArgument<?> that = (ExtraArgument<?>) o;
+    return clazz.equals(that.clazz);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(clazz);
   }
 }

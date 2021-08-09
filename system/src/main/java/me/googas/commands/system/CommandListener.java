@@ -48,8 +48,12 @@ public class CommandListener extends Thread {
                       Arrays.copyOfRange(split, 1, split.length),
                       this.manager.getProvidersRegistry(),
                       this.manager.getMessagesProvider()));
-          String message = result.getMessage();
-          if (!message.isEmpty()) System.out.println(message);
+          result
+              .getMessage()
+              .ifPresent(
+                  message -> {
+                    if (!message.isEmpty()) System.out.println(message);
+                  });
         } else {
           System.out.println("Command " + name + " could not be found");
         }

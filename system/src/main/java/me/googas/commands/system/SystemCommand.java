@@ -2,6 +2,7 @@ package me.googas.commands.system;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.system.context.CommandContext;
@@ -43,14 +44,16 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
   default Result execute(@NonNull CommandContext context) {
     @NonNull String[] strings = context.getStrings();
     if (strings.length >= 1) {
-      SystemCommand command = this.getChildren(strings[0]);
-      if (command != null) {
-        return command.execute(
-            new CommandContext(
-                context.getSender(),
-                Arrays.copyOfRange(strings, 1, strings.length),
-                context.getRegistry(),
-                context.getMessagesProvider()));
+      Optional<SystemCommand> optionalCommand = this.getChildren(strings[0]);
+      if (optionalCommand.isPresent()) {
+        return optionalCommand
+            .get()
+            .execute(
+                new CommandContext(
+                    context.getSender(),
+                    Arrays.copyOfRange(strings, 1, strings.length),
+                    context.getRegistry(),
+                    context.getMessagesProvider()));
       }
     }
     return this.run(context);

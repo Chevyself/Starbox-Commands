@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -86,7 +87,7 @@ public class Result implements StarboxResult {
   }
 
   @Override
-  public String getMessage() {
-    return ComponentSerializer.toString(this.components);
+  public @NonNull Optional<String> getMessage() {
+    return Optional.ofNullable(ComponentSerializer.toString(this.components));
   }
 }

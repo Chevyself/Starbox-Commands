@@ -3,6 +3,7 @@ package me.googas.commands.jda;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
@@ -144,8 +145,9 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   public Result execute(@NonNull CommandContext context) {
     @NonNull String[] strings = context.getStrings();
     if (strings.length >= 1) {
-      JdaCommand command = this.getChildren(strings[0]);
-      if (command != null) {
+      Optional<JdaCommand> optionalCommand = this.getChildren(strings[0]);
+      if (optionalCommand.isPresent()) {
+        JdaCommand command = optionalCommand.get();
         @NonNull String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
         CommandContext childContext;
         if (context instanceof GuildCommandContext) {

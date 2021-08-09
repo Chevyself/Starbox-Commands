@@ -3,6 +3,7 @@ package me.googas.commands;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.ExtraArgument;
@@ -32,23 +33,24 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    *
    * @param argument the argument requested in the position
    * @param context the context of the command execution
-   * @return It will try to get the string in the argument position. If the string in the context is
-   *     null and the argument is not required and it does not have any suggestions it will return
-   *     null else it will return the first suggestion. If the string in the context is not null
-   *     then it will return that one
+   * @return a {@link Optional} instance wrapping the nullable argument. It will try to get the
+   *     string in the argument position. If the string in the context is null and the argument is
+   *     not required and it does not have any suggestions it will return null else it will return
+   *     the first suggestion. If the string in the context is not null then it will return that one
    */
-  static String getArgument(
+  @NonNull
+  static Optional<String> getArgument(
       @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext context) {
     String[] strings = context.getStrings();
+    String string = null;
     if (strings.length - 1 < argument.getPosition()) {
       if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
-        return argument.getSuggestions(context).get(0);
-      } else {
-        return null;
+        string = argument.getSuggestions(context).get(0);
       }
     } else {
-      return strings[argument.getPosition()];
+      string = strings[argument.getPosition()];
     }
+    return Optional.ofNullable(string);
   }
 
   /**
@@ -92,8 +94,9 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
         }
         objects[i] = this.getRegistry().fromStrings(strings, argument.getClazz(), context);
       } else if (argument instanceof SingleArgument<?>) {
-        String string = ReflectCommand.getArgument((SingleArgument<?>) argument, context);
-        if (string == null && ((SingleArgument<?>) argument).isRequired()) {
+        Optional<String> optional =
+            ReflectCommand.getArgument((SingleArgument<?>) argument, context);
+        if (!optional.isPresent() && ((SingleArgument<?>) argument).isRequired()) {
           throw new MissingArgumentException(
               this.getMessagesProvider()
                   .missingArgument(
@@ -101,12 +104,12 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
                       ((SingleArgument<?>) argument).getDescription(),
                       ((SingleArgument<?>) argument).getPosition(),
                       context));
-        } else if (string == null && !((SingleArgument<?>) argument).isRequired()) {
+        } else if (!optional.isPresent() && !((SingleArgument<?>) argument).isRequired()) {
           objects[i] = null;
-        } else if (string == null) {
+        } else if (!optional.isPresent()) {
           objects[i] = null;
         } else {
-          objects[i] = this.getRegistry().fromString(string, argument.getClazz(), context);
+          objects[i] = this.getRegistry().fromString(optional.get(), argument.getClazz(), context);
         }
       }
     }
@@ -120,14 +123,16 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    * @param position the position to get the argument of
    * @return the argument if exists, null otherwise
    */
-  default SingleArgument<?> getArgument(int position) {
+  @NonNull
+  default Optional<SingleArgument<?>> getArgument(int position) {
+    SingleArgument<?> singleArgument = null;
     for (Argument<?> argument : this.getArguments()) {
       if (argument instanceof SingleArgument
           && ((SingleArgument<?>) argument).getPosition() == position) {
-        return (SingleArgument<?>) argument;
+        singleArgument = (SingleArgument<?>) argument;
       }
     }
-    return null;
+    return Optional.ofNullable(singleArgument);
   }
 
   /**
@@ -193,7 +198,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
         | ArgumentProviderException
         | IllegalAccessException
         | InvocationTargetException e) {
-      return () -> "Result in error: " + e.getMessage();
+      return () -> Optional.of("Result in error: " + e.getMessage());
     }
   }
 }

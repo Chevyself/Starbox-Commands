@@ -60,6 +60,7 @@ public interface StarboxCommandContext {
    *
    * @return the providers registry
    */
+  @NonNull
   ProvidersRegistry<? extends StarboxCommandContext> getRegistry();
 
   /**
@@ -67,5 +68,6 @@ public interface StarboxCommandContext {
    *
    * @return the messages provider used in this context
    */
+  @NonNull
   StarboxMessagesProvider<? extends StarboxCommandContext> getMessagesProvider();
 }
