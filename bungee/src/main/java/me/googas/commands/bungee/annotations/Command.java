@@ -4,6 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import lombok.NonNull;
 
 /**
  * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
@@ -21,6 +22,7 @@ public @interface Command {
    *
    * @return an array of aliases
    */
+  @NonNull
   String[] aliases();
 
   /**
@@ -28,6 +30,7 @@ public @interface Command {
    *
    * @return the permission node
    */
+  @NonNull
   String permission() default "";
 
   /**

@@ -1,6 +1,7 @@
 package me.googas.commands.bungee.context;
 
 import java.util.Arrays;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 import me.googas.commands.bungee.messages.MessagesProvider;
@@ -12,11 +13,11 @@ import net.md_5.bungee.api.CommandSender;
 /** The context for bungee commands. */
 public class CommandContext implements StarboxCommandContext {
 
-  @NonNull private final CommandSender sender;
-  @NonNull private final String string;
-  @NonNull private final String[] strings;
-  @NonNull private final MessagesProvider messagesProvider;
-  @NonNull @Delegate private final ProvidersRegistry<CommandContext> registry;
+  @NonNull @Getter private final CommandSender sender;
+  @NonNull @Getter private final String string;
+  @NonNull @Getter private final String[] strings;
+  @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter @Delegate private final ProvidersRegistry<CommandContext> registry;
 
   /**
    * Create an instance.
@@ -36,36 +37,6 @@ public class CommandContext implements StarboxCommandContext {
     this.strings = strings;
     this.messagesProvider = messagesProvider;
     this.registry = registry;
-  }
-
-  @NonNull
-  @Override
-  public CommandSender getSender() {
-    return this.sender;
-  }
-
-  @NonNull
-  @Override
-  public String getString() {
-    return this.string;
-  }
-
-  @NonNull
-  @Override
-  public String[] getStrings() {
-    return this.strings;
-  }
-
-  @NonNull
-  @Override
-  public ProvidersRegistry<CommandContext> getRegistry() {
-    return this.registry;
-  }
-
-  @NonNull
-  @Override
-  public MessagesProvider getMessagesProvider() {
-    return this.messagesProvider;
   }
 
   @Override

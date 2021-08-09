@@ -43,7 +43,7 @@ public class AnnotatedCommand extends BungeeCommand
   @NonNull private final List<Argument<?>> arguments;
 
   /**
-   * Create the command
+   * Create the command.
    *
    * @param command the annotation that will be used to get the name and aliases of the command
    *     {@link Command#aliases()} whether to execute the command async {@link Command#async()} and
@@ -178,6 +178,7 @@ public class AnnotatedCommand extends BungeeCommand
   }
 
   @Override
+  @NonNull
   public Iterable<String> onTabComplete(CommandSender sender, String[] strings) {
     if (strings.length == 1) {
       List<String> children =
