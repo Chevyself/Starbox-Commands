@@ -84,7 +84,7 @@
         <dependency>
             <groupId>me.googas.starbox</groupId>
             <artifactId>core</artifactId>
-            <version>03cb6403a9</version>
+            <version>de71c92a6b</version>
         </dependency>
     </dependencies>
 
