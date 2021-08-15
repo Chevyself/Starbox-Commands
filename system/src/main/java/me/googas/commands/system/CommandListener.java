@@ -19,6 +19,7 @@ public class CommandListener extends Thread {
   @NonNull private final Scanner scanner = new Scanner(System.in);
   @NonNull private final CommandManager manager;
   @NonNull @Getter private final String prefix;
+  private boolean closed = false;
 
   /**
    * Create the listener.
@@ -31,10 +32,9 @@ public class CommandListener extends Thread {
     this.prefix = prefix;
   }
 
-  @SuppressWarnings("InfiniteLoopStatement")
   @Override
   public void run() {
-    while (true) {
+    while (!closed) {
       if (this.scanner.hasNextLine()) {
         String line = this.scanner.nextLine().trim();
         String[] split = line.split(" ");
@@ -62,5 +62,10 @@ public class CommandListener extends Thread {
         }
       }
     }
+  }
+
+  /** Stops the listener. */
+  public void finish() {
+    closed = true;
   }
 }

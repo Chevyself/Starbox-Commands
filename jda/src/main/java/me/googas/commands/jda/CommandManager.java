@@ -53,10 +53,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class CommandManager implements StarboxCommandManager<CommandContext, JdaCommand> {
 
   @NonNull @Getter private final List<JdaCommand> commands = new ArrayList<>();
+  @NonNull @Getter private final JDA jda;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final PermissionChecker permissionChecker;
-  @NonNull @Getter private final JDA jda;
   @NonNull @Getter private final ListenerOptions listenerOptions;
   @NonNull @Getter private final CommandListener listener;
 
@@ -160,5 +160,11 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   @Override
   public @NonNull CommandManager registerAll(@NonNull JdaCommand... commands) {
     return (CommandManager) StarboxCommandManager.super.registerAll(commands);
+  }
+
+  @Override
+  public void close() {
+    this.commands.clear();
+    jda.removeEventListener(listener);
   }
 }

@@ -138,4 +138,10 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   public @NonNull CommandManager registerAll(@NonNull SystemCommand... commands) {
     return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
+
+  @Override
+  public void close() {
+    commands.clear();
+    listener.finish();
+  }
 }

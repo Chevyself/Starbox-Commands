@@ -174,4 +174,10 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   public @NonNull CommandManager registerAll(@NonNull StarboxBukkitCommand... commands) {
     return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
+
+  @Override
+  public void close() {
+    this.commands.forEach(command -> command.unregister(CommandManager.commandMap));
+    this.commands.clear();
+  }
 }

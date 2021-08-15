@@ -133,4 +133,10 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
   public @NonNull CommandManager registerAll(@NonNull BungeeCommand... commands) {
     return (CommandManager) StarboxCommandManager.super.registerAll(commands);
   }
+
+  @Override
+  public void close() {
+    this.commands.forEach(manager::unregisterCommand);
+    this.commands.clear();
+  }
 }

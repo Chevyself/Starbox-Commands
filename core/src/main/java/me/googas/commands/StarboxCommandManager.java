@@ -132,4 +132,7 @@ public interface StarboxCommandManager<
    */
   @NonNull
   StarboxMessagesProvider<C> getMessagesProvider();
+
+  /** Closes the command manager. */
+  void close();
 }
