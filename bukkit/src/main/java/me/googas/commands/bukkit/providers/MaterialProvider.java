@@ -52,7 +52,7 @@ public class MaterialProvider implements BukkitArgumentProvider<Material> {
     for (Material value : Material.values()) {
       String name = value.toString().toLowerCase();
       if (prefix) name = "minecraft:" + name;
-      suggestions.add( name);
+      suggestions.add(name);
     }
     return suggestions;
   }

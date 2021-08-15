@@ -1,11 +1,10 @@
 package me.googas.commands.bukkit.messages;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.NonNull;
 import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
+import me.googas.starbox.builders.MapBuilder;
 import org.bukkit.plugin.Plugin;
 
 /** The default {@link MessagesProvider} for Bukkit. */
@@ -42,12 +41,12 @@ public class BukkitMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext context) {
-    Map<String, String> map = new HashMap<>();
-    map.put("name", name);
-    map.put("description", description);
-    map.put("position", String.valueOf(position));
     return BukkitUtils.format(
-        "&cMissing argument: &e%name% &c-> &e%description%&c, position: &e%position%", map);
+        "&cMissing argument: &e%name% &c-> &e%description%&c, position: &e%position%",
+        MapBuilder.of("name", name)
+            .put("description", description)
+            .put("position", String.valueOf(position))
+            .build());
   }
 
   @Override
@@ -87,18 +86,17 @@ public class BukkitMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String helpTopicFull(
       @NonNull String shortText, @NonNull String commands, @NonNull Plugin plugin) {
-    Map<String, String> map = new HashMap<>();
-    map.put("name", plugin.getName());
-    map.put(
-        "description",
-        plugin.getDescription().getDescription() == null
-            ? "None"
-            : plugin.getDescription().getDescription());
-    map.put("version", plugin.getDescription().getVersion());
-    map.put("commands", commands);
     return BukkitUtils.format(
         "&7Title: &e%name% \n &7Version: &e%version% \n &7Description: &e%description% \n &7Commands (use /help <command>): &e%commands%",
-        map);
+        MapBuilder.of("name", plugin.getName())
+            .put(
+                "description",
+                plugin.getDescription().getDescription() == null
+                    ? "None"
+                    : plugin.getDescription().getDescription())
+            .put("version", plugin.getDescription().getVersion())
+            .put("commands", commands)
+            .build());
   }
 
   @Override

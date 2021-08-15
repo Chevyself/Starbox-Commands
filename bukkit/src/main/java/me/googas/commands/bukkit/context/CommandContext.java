@@ -21,7 +21,7 @@ public class CommandContext implements StarboxCommandContext {
 
   /**
    * Create a Bukkit context.
-   *w
+   *
    * @param sender the sender of the bukkit command
    * @param strings the strings from the command execution
    * @param messagesProvider the messages provider used in this context
@@ -38,7 +38,6 @@ public class CommandContext implements StarboxCommandContext {
     this.messagesProvider = messagesProvider;
     this.registry = registry;
   }
-
 
   @Override
   public boolean hasFlag(@NonNull String flag) {
