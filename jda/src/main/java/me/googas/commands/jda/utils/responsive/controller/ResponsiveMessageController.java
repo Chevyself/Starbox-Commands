@@ -20,7 +20,8 @@ public interface ResponsiveMessageController {
   default void onMessageReactionAdd(MessageReactionAddEvent event) {
     User user = event.getUser();
     if (user != null && (!user.isBot() || user.isBot() && this.acceptBots())) {
-      this.getResponsiveMessage(event.isFromGuild() ? event.getGuild() : null, event.getMessageIdLong())
+      this.getResponsiveMessage(
+              event.isFromGuild() ? event.getGuild() : null, event.getMessageIdLong())
           .ifPresent(
               message -> {
                 AtomicBoolean removed = new AtomicBoolean();

@@ -48,7 +48,7 @@ public interface StarboxCommandContext {
   String getString();
 
   /**
-   * Get the joined strings of the command
+   * Get the joined strings of the command.
    *
    * @return the joined strings as an array
    */

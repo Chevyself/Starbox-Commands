@@ -3,6 +3,10 @@ Starbox-Commands [![Jitpack](https://jitpack.io/v/me.googas/starbox-commands.svg
 
 This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come. It includes some utilities to shorten the amount of lines in your project.
 
+JavaDoc
+--------
+Check latest JavaDoc in [Jitpack](https://jitpack.io/com/github/chevyself/starbox-commands/master-SNAPSHOT/javadoc/)
+
 Installing
 --------
 1. Add the repository to your maven project
