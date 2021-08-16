@@ -46,7 +46,7 @@ public interface ResponsiveMessageController {
    * @return the message if found else null
    */
   @NonNull
-  Optional<ResponsiveMessage> getResponsiveMessage(Guild guild, long messageId);
+  Optional<? extends ResponsiveMessage> getResponsiveMessage(Guild guild, long messageId);
 
   /**
    * Get the unicode or the name of the emote from a reaction event.
