@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 /** A factory for creating messages easily. */
+@Deprecated
 public class MessagesFactory {
 
   /** The builder for messages. */

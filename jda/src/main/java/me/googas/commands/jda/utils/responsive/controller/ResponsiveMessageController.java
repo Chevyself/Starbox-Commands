@@ -1,12 +1,12 @@
 package me.googas.commands.jda.utils.responsive.controller;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.NonNull;
-import me.googas.commands.jda.utils.responsive.ReactionResponse;
 import me.googas.commands.jda.utils.responsive.ResponsiveMessage;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 /** The controller to use the responsive messages. */
@@ -18,25 +18,22 @@ public interface ResponsiveMessageController {
    * @param event the event of a reaction being added to a message
    */
   default void onMessageReactionAdd(MessageReactionAddEvent event) {
-    if (event.getUser() != null
-        && (!event.getUser().isBot() || event.getUser().isBot() && this.acceptBots())) {
-      ResponsiveMessage responsiveMessage =
-          this.getResponsiveMessage(event.getGuild(), event.getMessageIdLong());
-      if (responsiveMessage != null) {
-        Set<ReactionResponse> reactions =
-            responsiveMessage.getReactions(
-                this.getIdentificationFromReaction(event.getReactionEmote()));
-        if (!reactions.isEmpty()) {
-          boolean removed = false;
-          for (ReactionResponse reaction : reactions) {
-            boolean remove = reaction.onReaction(event);
-            if (remove && !removed) {
-              event.getReaction().removeReaction(event.getUser()).queue();
-              removed = true;
-            }
-          }
-        }
-      }
+    User user = event.getUser();
+    if (user != null && (!user.isBot() || user.isBot() && this.acceptBots())) {
+      this.getResponsiveMessage(event.isFromGuild() ? event.getGuild() : null, event.getMessageIdLong())
+          .ifPresent(
+              message -> {
+                AtomicBoolean removed = new AtomicBoolean();
+                message
+                    .getReactions(this.getUnicode(event.getReactionEmote()))
+                    .forEach(
+                        reaction -> {
+                          if (reaction.onReaction(event) && !removed.get()) {
+                            event.getReaction().removeReaction(user).queue();
+                            removed.set(true);
+                          }
+                        });
+              });
     }
   }
 
@@ -47,14 +44,8 @@ public interface ResponsiveMessageController {
    * @param messageId the id to match
    * @return the message if found else null
    */
-  default ResponsiveMessage getResponsiveMessage(Guild guild, long messageId) {
-    for (ResponsiveMessage message : this.getResponsiveMessages(guild)) {
-      if (message != null && message.getId() == messageId) {
-        return message;
-      }
-    }
-    return null;
-  }
+  @NonNull
+  Optional<ResponsiveMessage> getResponsiveMessage(Guild guild, long messageId);
 
   /**
    * Get the unicode or the name of the emote from a reaction event.
@@ -63,7 +54,7 @@ public interface ResponsiveMessageController {
    * @return the unicode
    */
   @NonNull
-  default String getIdentificationFromReaction(MessageReaction.ReactionEmote emote) {
+  default String getUnicode(@NonNull MessageReaction.ReactionEmote emote) {
     if (emote.isEmote()) {
       return emote.getEmote().getName();
     } else {
@@ -77,9 +68,7 @@ public interface ResponsiveMessageController {
    * @param guild the guild where the message is from
    * @param message the message to remove
    */
-  default void removeMessage(Guild guild, @NonNull ResponsiveMessage message) {
-    this.getResponsiveMessages(guild).remove(message);
-  }
+  void removeMessage(Guild guild, @NonNull ResponsiveMessage message);
 
   /**
    * Whether or not bots can use this responsive message.
@@ -87,13 +76,4 @@ public interface ResponsiveMessageController {
    * @return true if they can
    */
   boolean acceptBots();
-
-  /**
-   * Get the responsive messages used in this controller.
-   *
-   * @param guild the guild that requires the messages
-   * @return the responsive messages
-   */
-  @NonNull
-  Collection<ResponsiveMessage> getResponsiveMessages(Guild guild);
 }

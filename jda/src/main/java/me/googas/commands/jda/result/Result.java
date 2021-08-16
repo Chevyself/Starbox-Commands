@@ -186,6 +186,11 @@ public class Result implements StarboxResult {
     return Optional.ofNullable(this.description);
   }
 
+  /**
+   * Get the discord message of the result.
+   *
+   * @return a {@link Optional} holding the nullable message
+   */
   @NonNull
   public Optional<Message> getDiscordMessage() {
     return Optional.ofNullable(this.message);
@@ -221,6 +226,18 @@ public class Result implements StarboxResult {
     @NonNull
     public ResultBuilder setMessage(@NonNull MessageBuilder message) {
       this.message = message;
+      return this;
+    }
+
+    /**
+     * Edit the message builder with a consumer.
+     *
+     * @param consumer the consumer to edit the message builder
+     * @return this same instance
+     */
+    @NonNull
+    public ResultBuilder withMessageBuilder(@NonNull Consumer<MessageBuilder> consumer) {
+      consumer.accept(this.message);
       return this;
     }
 

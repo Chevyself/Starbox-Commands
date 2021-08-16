@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
 /** Utils for sending messages in discord. */
+@Deprecated
 public class Chat {
 
   /**

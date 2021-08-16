@@ -1,5 +1,6 @@
 package me.googas.commands.jda.utils.responsive;
 
+import java.util.Optional;
 import lombok.NonNull;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
@@ -25,10 +26,22 @@ public interface ReactionResponse {
   default void onReactionRemoved(@NonNull MessageReactionRemoveEvent event) {}
 
   /**
-   * The unicode to match and run the action.
+   * Get the unicode to add in a message. This unicode does not have to match {@link
+   * #hasUnicode(String)} it is just used to add this reaction in a message, that is why it is
+   * optional.
    *
-   * @return the unicode. It can also be 'any' to accept any kind of emote
+   * @return a {@link Optional} instance holding the nullable string
    */
   @NonNull
-  String getUnicode();
+  default Optional<String> getUnicode() {
+    return Optional.empty();
+  }
+
+  /**
+   * Check if the unicode matches to run the action.
+   *
+   * @param unicode to unicode to match
+   * @return true if the unicode matches to run
+   */
+  boolean hasUnicode(@NonNull String unicode);
 }

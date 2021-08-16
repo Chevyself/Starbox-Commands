@@ -1,6 +1,9 @@
 package me.googas.commands.jda.utils.responsive;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -19,36 +22,44 @@ public class StarboxResponsiveMessage implements ResponsiveMessage {
    * @param id the id of the responsive message
    * @param reactions the reactions to add in the message
    */
-  public StarboxResponsiveMessage(long id, @NonNull Set<ReactionResponse> reactions) {
+  public StarboxResponsiveMessage(long id, @NonNull Collection<ReactionResponse> reactions) {
     this.id = id;
-    this.reactions = reactions;
+    this.reactions = new HashSet<>(reactions);
   }
 
   /**
-   * Create the responsive message. This constructor should be used in a message that was already
-   * sent
+   * Create the responsive message. This method should be used in a message that was already sent
    *
    * @param message the message to make the responsive message
    * @param reactions the reactions to use
+   * @return the new responsive message
    */
-  public StarboxResponsiveMessage(
-      @NonNull Message message, @NonNull Set<ReactionResponse> reactions) {
-    this(message.getIdLong(), reactions);
-    for (ReactionResponse reaction : this.reactions) {
-      if (!reaction.getUnicode().equalsIgnoreCase("any")) {
-        message.addReaction(reaction.getUnicode()).queue();
-      }
-    }
+  @NonNull
+  public static StarboxResponsiveMessage using(
+      @NonNull Message message, @NonNull Collection<ReactionResponse> reactions) {
+    StarboxResponsiveMessage responsiveMessage =
+        new StarboxResponsiveMessage(message.getIdLong(), reactions);
+    reactions.forEach(
+        reaction ->
+            reaction.getUnicode().ifPresent(unicode -> message.addReaction(unicode).queue()));
+    return responsiveMessage;
+  }
+
+  @Override
+  public @NonNull Set<ReactionResponse> getReactions(@NonNull String unicode) {
+    return this.reactions.stream()
+        .filter(reaction -> reaction.hasUnicode(unicode))
+        .collect(Collectors.toSet());
+  }
+
+  @Override
+  public @NonNull StarboxResponsiveMessage addReactionResponse(@NonNull ReactionResponse response) {
+    this.reactions.add(response);
+    return this;
   }
 
   @Override
   public long getId() {
     return this.id;
-  }
-
-  @NonNull
-  @Override
-  public Set<ReactionResponse> getReactions() {
-    return this.reactions;
   }
 }

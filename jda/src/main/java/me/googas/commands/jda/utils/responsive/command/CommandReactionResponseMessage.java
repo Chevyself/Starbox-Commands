@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 
 /** Represents a {@link ReactionResponse} that when reacted runs a command. */
+@Deprecated
 public interface CommandReactionResponseMessage extends ReactionResponse {
 
   /**
