@@ -103,7 +103,8 @@ public abstract class StarboxBukkitCommand extends Command
                 this.manager.getProvidersRegistry()));
     if (result != null) {
       if (sender instanceof Player) {
-        sender.spigot()
+        Player player = (Player) sender;
+        player.spigot()
             .sendMessage(result.getComponents().toArray(new BaseComponent[0]));
       } else {
         StringBuilder builder = new StringBuilder();
