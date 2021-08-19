@@ -13,6 +13,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
@@ -101,8 +102,13 @@ public abstract class StarboxBukkitCommand extends Command
                 this.manager.getMessagesProvider(),
                 this.manager.getProvidersRegistry()));
     if (result != null) {
-      for (BaseComponent component : result.getComponents()) {
-        sender.sendMessage(component.toLegacyText());
+      if (sender instanceof Player) {
+        sender.spigot()
+            .sendMessage(result.getComponents().toArray(new BaseComponent[0]));
+      } else {
+        StringBuilder builder = new StringBuilder();
+        result.getComponents().forEach(component -> builder.append(component.toLegacyText()));
+        sender.sendMessage(builder.toString());
       }
     }
   }
