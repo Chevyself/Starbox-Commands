@@ -55,13 +55,12 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create a result with text. A {@link TextComponent} will be created and the text will be
-   * formatted using {@link BukkitUtils#format(String)}
+   * Create a result with text. A {@link TextComponent} will be created using {@link BukkitUtils#getComponent(String)}
    *
    * @param text the text to send
    */
   public Result(@NonNull String text) {
-    this(new TextComponent(BukkitUtils.format(text)));
+    this(BukkitUtils.getComponent(text));
   }
 
   /**
@@ -71,6 +70,7 @@ public class Result implements StarboxResult {
    * @param text the text to format and send
    * @param map the placeholders
    */
+  @Deprecated
   public Result(@NonNull String text, @NonNull Map<String, String> map) {
     this(BukkitUtils.format(text, map));
   }
@@ -82,6 +82,7 @@ public class Result implements StarboxResult {
    * @param text the text to format and send
    * @param objects the placeholders
    */
+  @Deprecated
   public Result(@NonNull String text, Object... objects) {
     this(BukkitUtils.format(text, objects));
   }

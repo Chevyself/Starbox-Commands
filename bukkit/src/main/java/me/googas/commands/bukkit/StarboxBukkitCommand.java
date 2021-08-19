@@ -102,13 +102,14 @@ public abstract class StarboxBukkitCommand extends Command
                 this.manager.getMessagesProvider(),
                 this.manager.getProvidersRegistry()));
     if (result != null) {
+      List<BaseComponent> components = result.getComponents();
+      if (components.isEmpty()) return;
       if (sender instanceof Player) {
         Player player = (Player) sender;
-        player.spigot()
-            .sendMessage(result.getComponents().toArray(new BaseComponent[0]));
+        player.spigot().sendMessage(components.toArray(new BaseComponent[0]));
       } else {
         StringBuilder builder = new StringBuilder();
-        result.getComponents().forEach(component -> builder.append(component.toLegacyText()));
+        components.forEach(component -> builder.append(component.toLegacyText()));
         sender.sendMessage(builder.toString());
       }
     }
