@@ -13,7 +13,7 @@ import org.bukkit.help.HelpTopicFactory;
  * using {@link me.googas.commands.bukkit.CommandManager#register(StarboxBukkitCommand)} adds a
  * {@link StarboxCommandHelpTopic} to the {@link org.bukkit.help.HelpMap}
  */
-public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<AnnotatedCommand> {
+public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<StarboxBukkitCommand> {
 
   @NonNull private final MessagesProvider provider;
 
@@ -28,7 +28,7 @@ public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<Annotate
   }
 
   @Override
-  public @NonNull HelpTopic createTopic(@NonNull AnnotatedCommand annotatedCommand) {
-    return new StarboxCommandHelpTopic(annotatedCommand, null, this.provider);
+  public @NonNull HelpTopic createTopic(@NonNull StarboxBukkitCommand command) {
+    return new StarboxCommandHelpTopic(command, null, this.provider);
   }
 }
