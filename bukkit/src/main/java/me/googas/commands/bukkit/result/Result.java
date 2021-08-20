@@ -58,10 +58,11 @@ public class Result implements StarboxResult {
    * Create a result with text. A {@link TextComponent} will be created using {@link
    * BukkitUtils#getComponent(String)}
    *
-   * @param text the text to send
+   * @param json the json to send
    */
-  public Result(@NonNull String text) {
-    this(BukkitUtils.getComponent(text));
+  @Deprecated
+  public Result(@NonNull String json) {
+    this(BukkitUtils.getComponent(json));
   }
 
   /**
@@ -86,6 +87,18 @@ public class Result implements StarboxResult {
   @Deprecated
   public Result(@NonNull String text, Object... objects) {
     this(BukkitUtils.format(text, objects));
+  }
+
+  /**
+   * Get a result from text. this will get the component using {@link
+   * BukkitUtils#getComponent(String)} while formatting the string {@link
+   * BukkitUtils#format(String)}
+   *
+   * @param text to get the component from
+   * @return the result
+   */
+  public static Result of(@NonNull String text) {
+    return new Result(BukkitUtils.getComponent(BukkitUtils.format(text)));
   }
 
   @Override

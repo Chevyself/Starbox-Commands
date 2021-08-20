@@ -58,10 +58,11 @@ public class Result implements StarboxResult {
    * Create a result with text. A {@link TextComponent} will be created using {@link
    * BungeeUtils#getComponent(String)} (String)}
    *
-   * @param text the text to send
+   * @param json the json to send
    */
-  public Result(@NonNull String text) {
-    this(BungeeUtils.getComponent(text));
+  @Deprecated
+  public Result(@NonNull String json) {
+    this(BungeeUtils.getComponent(json));
   }
 
   /**
@@ -91,5 +92,17 @@ public class Result implements StarboxResult {
   @Override
   public @NonNull Optional<String> getMessage() {
     return Optional.ofNullable(ComponentSerializer.toString(this.components));
+  }
+
+  /**
+   * Get a result from text. this will get the component using {@link
+   * BungeeUtils#getComponent(String)} while formatting the string {@link
+   * BungeeUtils#format(String)}
+   *
+   * @param text to get the component from
+   * @return the result
+   */
+  public static Result of(@NonNull String text) {
+    return new Result(BungeeUtils.getComponent(BungeeUtils.format(text)));
   }
 }

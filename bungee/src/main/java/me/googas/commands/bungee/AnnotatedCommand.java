@@ -130,7 +130,7 @@ public class AnnotatedCommand extends BungeeCommand
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
       if (!sender.hasPermission(permission)) {
-        return new Result(this.manager.getMessagesProvider().notAllowed(context));
+        return Result.of(this.manager.getMessagesProvider().notAllowed(context));
       }
     }
     try {
@@ -141,17 +141,17 @@ public class AnnotatedCommand extends BungeeCommand
       return null;
     } catch (final IllegalAccessException e) {
       e.printStackTrace();
-      return new Result("&cIllegalAccessException, e");
+      return Result.of("&cIllegalAccessException, e");
     } catch (final InvocationTargetException e) {
       final String message = e.getMessage();
       if (message != null && !message.isEmpty()) {
-        return new Result(e.getMessage());
+        return Result.of(e.getMessage());
       } else {
         e.printStackTrace();
-        return new Result("&cInvocationTargetException, e");
+        return Result.of("&cInvocationTargetException, e");
       }
     } catch (MissingArgumentException | ArgumentProviderException e) {
-      return new Result(e.getMessage());
+      return Result.of(e.getMessage());
     }
   }
 

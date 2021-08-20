@@ -2,7 +2,6 @@ package me.googas.commands.bukkit.topic;
 
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
-import me.googas.commands.bukkit.AnnotatedCommand;
 import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import org.bukkit.help.HelpTopic;

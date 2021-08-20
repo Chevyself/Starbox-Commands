@@ -154,7 +154,7 @@ public class AnnotatedCommand extends StarboxBukkitCommand
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
       if (!sender.hasPermission(permission)) {
-        return new Result(this.manager.getMessagesProvider().notAllowed(context));
+        return Result.of(this.manager.getMessagesProvider().notAllowed(context));
       }
     }
     try {
@@ -166,17 +166,17 @@ public class AnnotatedCommand extends StarboxBukkitCommand
       }
     } catch (final IllegalAccessException e) {
       e.printStackTrace();
-      return new Result("&cIllegalAccessException, e");
+      return Result.of("&cIllegalAccessException, e");
     } catch (final InvocationTargetException e) {
       final String message = e.getMessage();
       if (message != null && !message.isEmpty()) {
-        return new Result("&c{0}");
+        return Result.of("&c{0}");
       } else {
         e.printStackTrace();
-        return new Result("&cInvocationTargetException, e");
+        return Result.of("&cInvocationTargetException, e");
       }
     } catch (MissingArgumentException | ArgumentProviderException e) {
-      return new Result(e.getMessage());
+      return Result.of(e.getMessage());
     }
   }
 
