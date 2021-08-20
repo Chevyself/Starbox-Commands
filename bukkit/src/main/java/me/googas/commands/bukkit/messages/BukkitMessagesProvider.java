@@ -42,7 +42,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
       int position,
       @NonNull CommandContext context) {
     return BukkitUtils.format(
-        "&cMissing argument: &e%name% &c-> &e%description%&c, position: &e%position%",
+        "&cMissing argument: &e%name% &c(%description%), position: &e%position%",
         MapBuilder.of("name", name)
             .put("description", description)
             .put("position", String.valueOf(position))
@@ -57,13 +57,13 @@ public class BukkitMessagesProvider implements MessagesProvider {
       int minSize,
       int missing,
       @NonNull CommandContext context) {
-    return BukkitUtils.format("&cYou are missing &e" + missing + " &cstrings in &e" + name);
+    return BukkitUtils.format("&cYou are missing &e" + missing + "&c strings in &e" + name);
   }
 
   @NonNull
   @Override
   public String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + "  &cisn't online");
+    return BukkitUtils.format("&e" + string + " &cis noy online");
   }
 
   @NonNull
@@ -101,7 +101,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String helpTopicCommand(@NonNull StarboxBukkitCommand command) {
-    return BukkitUtils.format("&7- &e" + command.getName());
+    return BukkitUtils.format("\n &7- &e" + command.getName());
   }
 
   @Override
