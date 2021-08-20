@@ -55,8 +55,8 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create a result with text. A {@link TextComponent} will be created
-   * using {@link BungeeUtils#getComponent(String)} (String)}
+   * Create a result with text. A {@link TextComponent} will be created using {@link
+   * BungeeUtils#getComponent(String)} (String)}
    *
    * @param text the text to send
    */

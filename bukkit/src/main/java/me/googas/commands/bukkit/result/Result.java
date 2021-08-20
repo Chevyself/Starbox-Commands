@@ -55,7 +55,8 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create a result with text. A {@link TextComponent} will be created using {@link BukkitUtils#getComponent(String)}
+   * Create a result with text. A {@link TextComponent} will be created using {@link
+   * BukkitUtils#getComponent(String)}
    *
    * @param text the text to send
    */

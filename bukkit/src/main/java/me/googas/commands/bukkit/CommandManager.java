@@ -15,6 +15,7 @@ import me.googas.commands.bukkit.messages.BukkitMessagesProvider;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.bukkit.topic.PluginHelpTopic;
+import me.googas.commands.bukkit.topic.StarboxCommandHelpTopicFactory;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.exceptions.CommandRegistrationException;
 import me.googas.commands.providers.registry.ProvidersRegistry;
@@ -95,11 +96,27 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   }
 
   /**
+   * Registers {@link StarboxCommandHelpTopicFactory} into the factory.
+   *
+   * @return this same instance
+   */
+  @NonNull
+  public CommandManager registerHelpFactory() {
+    CommandManager.helpMap.registerHelpTopicFactory(
+        StarboxBukkitCommand.class, new StarboxCommandHelpTopicFactory(this.messagesProvider));
+    return this;
+  }
+
+  /**
    * Registers {@link #plugin} inside the {@link HelpMap}. You can learn more about this in {@link
    * PluginHelpTopic} but basically this will make possible to do: "/help [plugin-name]"
+   *
+   * @return this same instance
    */
-  public void registerPlugin() {
+  @NonNull
+  public CommandManager registerPlugin() {
     CommandManager.helpMap.addTopic(new PluginHelpTopic(this.plugin, this, this.messagesProvider));
+    return this;
   }
 
   @NonNull
