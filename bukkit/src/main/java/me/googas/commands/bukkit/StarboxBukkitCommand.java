@@ -9,11 +9,10 @@ import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.result.Result;
-import net.md_5.bungee.api.chat.BaseComponent;
+import me.googas.commands.bukkit.utils.BukkitUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
@@ -101,18 +100,7 @@ public abstract class StarboxBukkitCommand extends Command
                 args,
                 this.manager.getMessagesProvider(),
                 this.manager.getProvidersRegistry()));
-    if (result != null) {
-      List<BaseComponent> components = result.getComponents();
-      if (components.isEmpty()) return;
-      if (sender instanceof Player) {
-        Player player = (Player) sender;
-        player.spigot().sendMessage(components.toArray(new BaseComponent[0]));
-      } else {
-        StringBuilder builder = new StringBuilder();
-        components.forEach(component -> builder.append(component.toLegacyText()));
-        sender.sendMessage(builder.toString());
-      }
-    }
+    if (result != null) BukkitUtils.send(sender, result.getComponents());
   }
 
   /**
