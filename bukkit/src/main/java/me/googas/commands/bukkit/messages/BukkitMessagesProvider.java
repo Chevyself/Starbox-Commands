@@ -111,7 +111,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String commandName(@NonNull StarboxBukkitCommand command, String parentName) {
-    return "/" + (parentName == null ? command.getName() : parentName + "." + command.getName());
+    return parentName == null ? command.getName() : parentName + "." + command.getName();
   }
 
   @Override

@@ -175,7 +175,8 @@ public abstract class BungeeCommand extends Command
 
   @Override
   public Iterable<String> onTabComplete(CommandSender sender, String[] strings) {
-    if (this.getPermission() != null && !sender.hasPermission(this.getPermission())) return new ArrayList<>();
+    if (this.getPermission() != null && !sender.hasPermission(this.getPermission()))
+      return new ArrayList<>();
     if (strings.length == 1) {
       return Strings.copyPartials(strings[strings.length - 1], this.getChildrenNames());
     } else if (strings.length >= 2) {
