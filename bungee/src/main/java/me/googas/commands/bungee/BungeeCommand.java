@@ -128,10 +128,8 @@ public abstract class BungeeCommand extends Command
                 args,
                 this.manager.getMessagesProvider(),
                 this.manager.getProvidersRegistry()));
-    if (result != null) {
-      for (BaseComponent component : result.getComponents()) {
-        sender.sendMessage(component);
-      }
+    if (result != null && !result.getComponents().isEmpty()) {
+      sender.sendMessage(result.getComponents().toArray(new BaseComponent[0]));
     }
   }
 

@@ -4,11 +4,8 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.starbox.JsonUtils;
 import me.googas.starbox.Strings;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -87,15 +84,17 @@ public class BukkitUtils {
    * @param components the array of components to be send
    */
   public static void send(@NonNull CommandSender sender, @NonNull BaseComponent... components) {
-    if (sender instanceof Player) {
-      Player player = (Player) sender;
-      player.spigot().sendMessage(components);
-    } else {
-      StringBuilder builder = new StringBuilder();
-      for (BaseComponent component : components) {
-        builder.append(component.toLegacyText());
+    if (components.length > 0) {
+      if (sender instanceof Player) {
+        Player player = (Player) sender;
+        player.spigot().sendMessage(components);
+      } else {
+        StringBuilder builder = new StringBuilder();
+        for (BaseComponent component : components) {
+          builder.append(component.toLegacyText());
+        }
+        sender.sendMessage(builder.toString());
       }
-      sender.sendMessage(builder.toString());
     }
   }
 
@@ -163,23 +162,6 @@ public class BukkitUtils {
       @NonNull String command,
       @NonNull Map<String, String> placeholders) {
     BukkitUtils.dispatch(sender, Strings.format(command, placeholders));
-  }
-
-  /**
-   * Parse the JSON string into an array of {@link BaseComponent}. This will check that the String
-   * is JSON with {@link JsonUtils#isJson(String)} if it is then it will use {@link
-   * ComponentSerializer#parse(String)} to get the array else it will return an array of {@link
-   * BaseComponent} with a single entry of {@link TextComponent}
-   *
-   * @param string the string to get the array from
-   * @return the parsed component
-   */
-  @NonNull
-  public static BaseComponent[] getComponent(@NonNull String string) {
-    if (JsonUtils.isJson(string)) {
-      return ComponentSerializer.parse(string);
-    }
-    return new BaseComponent[] {new TextComponent(string)};
   }
 
   /**

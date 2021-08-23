@@ -2,12 +2,8 @@ package me.googas.commands.bungee.utils;
 
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.starbox.JsonUtils;
 import me.googas.starbox.Strings;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
  * Static utilities for Bungee.
@@ -99,22 +95,5 @@ public class BungeeUtils {
   @NonNull
   public static String format(String message, Object... strings) {
     return ChatColor.translateAlternateColorCodes('&', Strings.format(message, strings));
-  }
-
-  /**
-   * Parse the JSON string into an array of {@link BaseComponent}. This will check that the String
-   * is JSON with {@link JsonUtils#isJson(String)} if it is then it will use {@link
-   * ComponentSerializer#parse(String)} to get the array else it will return an array of {@link
-   * BaseComponent} with a single entry of {@link TextComponent}
-   *
-   * @param string the string to get the array from
-   * @return the parsed component
-   */
-  @NonNull
-  public static BaseComponent[] getComponent(@NonNull String string) {
-    if (JsonUtils.isJson(string)) {
-      return ComponentSerializer.parse(string);
-    }
-    return new BaseComponent[] {new TextComponent(string)};
   }
 }

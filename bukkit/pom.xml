@@ -41,8 +41,17 @@
                                 </excludes>
                                 <includes>
                                     <include>me.googas.commands:core</include>
+                                    <include>me.googas.commands:bungee</include>
                                 </includes>
                             </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>me.googas.commands:bungee</artifact>
+                                    <includes>
+                                        <include>me/googas/commands/bungee/utils/**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -63,6 +72,12 @@
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
+      <dependency>
+        <artifactId>bungee</artifactId>
+        <groupId>me.googas.commands</groupId>
+        <scope>compile</scope>
+        <version>1.0.0</version>
+      </dependency>
     </dependencies>
 
 </project>

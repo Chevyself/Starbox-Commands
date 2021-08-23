@@ -3,15 +3,14 @@ package me.googas.commands.bungee.result;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.utils.BungeeUtils;
+import me.googas.commands.bungee.utils.Components;
 import me.googas.commands.result.StarboxResult;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
@@ -25,7 +24,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
  *
  * <p>Exceptions will show a simple {@link Result} message and the stack trace will be printed.
  *
- * <p>To parse {@link BaseComponent} from a String use {@link BungeeUtils#getComponent(String)} to
+ * <p>To parse {@link BaseComponent} from a String use {@link Components#getComponent(String)} to
  * know how to create a {@link BaseComponent} check <a
  * href="https://minecraft.tools/en/tellraw.php">minecraft-tools</a> or the <a
  * href="https://ci.md-5.net/job/BungeeCord/ws/chat/target/apidocs/overview-summary.html">bungee-api-chat</a>.
@@ -34,6 +33,9 @@ public class Result implements StarboxResult {
 
   /** The components that will be send after the execution. */
   @NonNull @Getter private final List<BaseComponent> components = new ArrayList<>();
+
+  /** Create an empty result. */
+  public Result() {}
 
   /**
    * Create the result with a single component.
@@ -46,47 +48,12 @@ public class Result implements StarboxResult {
 
   /**
    * Create the result with many components. Useful to use when {@link
-   * BungeeUtils#getComponent(String)} is used
+   * Components#getComponent(String)} is used
    *
    * @param components the components to send as result
    */
   public Result(@NonNull BaseComponent... components) {
     this.components.addAll(Arrays.asList(components));
-  }
-
-  /**
-   * Create a result with text. A {@link TextComponent} will be created using {@link
-   * BungeeUtils#getComponent(String)} (String)}
-   *
-   * @param json the json to send
-   */
-  @Deprecated
-  public Result(@NonNull String json) {
-    this(BungeeUtils.getComponent(json));
-  }
-
-  /**
-   * Create the result with a text. A {@link TextComponent} will be created and the text will be
-   * formatted using {@link BungeeUtils#format(String, Map)}
-   *
-   * @param text the text to format and send
-   * @param map the placeholders
-   */
-  @Deprecated
-  public Result(@NonNull String text, @NonNull Map<String, String> map) {
-    this(BungeeUtils.format(text, map));
-  }
-
-  /**
-   * Create the result with a text. A {@link TextComponent} wil be created and the text will be
-   * formatted using {@link BungeeUtils#format(String, Object...)}
-   *
-   * @param text the text to format and send
-   * @param objects the placeholders
-   */
-  @Deprecated
-  public Result(@NonNull String text, Object... objects) {
-    this(BungeeUtils.format(text, objects));
   }
 
   @Override
@@ -96,13 +63,12 @@ public class Result implements StarboxResult {
 
   /**
    * Get a result from text. this will get the component using {@link
-   * BungeeUtils#getComponent(String)} while formatting the string {@link
-   * BungeeUtils#format(String)}
+   * Components#getComponent(String)} while formatting the string {@link BungeeUtils#format(String)}
    *
    * @param text to get the component from
    * @return the result
    */
   public static Result of(@NonNull String text) {
-    return new Result(BungeeUtils.getComponent(BungeeUtils.format(text)));
+    return new Result(Components.getComponent(text));
   }
 }
