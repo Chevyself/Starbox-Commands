@@ -91,17 +91,11 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
    * Get the full text of a help topic for a parent command.
    *
    * @param command the parent command that is being built the help topic to
-   * @param shortText the short text of the command help topic
    * @param buildChildren the children commands of the parent
-   * @param buildArguments the arguments of the parent command
    * @return the full text of the help topic
    */
   @NonNull
-  String commandFullText(
-      @NonNull StarboxBukkitCommand command,
-      @NonNull String shortText,
-      @NonNull String buildChildren,
-      @NonNull String buildArguments);
+  String commandFullText(@NonNull StarboxBukkitCommand command, @NonNull String buildChildren);
 
   /**
    * A simple description for a child command for its parents help topic.

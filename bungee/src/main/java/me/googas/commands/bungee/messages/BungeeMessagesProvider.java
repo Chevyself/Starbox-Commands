@@ -9,27 +9,27 @@ public class BungeeMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid long!";
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid long", string);
   }
 
   @Override
   public @NonNull String invalidInteger(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid integer!";
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid integer", string);
   }
 
   @Override
   public @NonNull String invalidDouble(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid double!";
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid double", string);
   }
 
   @Override
   public @NonNull String invalidBoolean(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid boolean!";
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid boolean", string);
   }
 
   @Override
   public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not valid time!";
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", string);
   }
 
   @Override
@@ -38,8 +38,12 @@ public class BungeeMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext commandContext) {
-    return Strings.format(
-        "Missing argument: {0} -> {1}, position: {2}", name, description, position);
+    return "&e&o\u26A0 &c&oYou are missing the argument &4&o"
+        + name
+        + "&c&o at position &4&o"
+        + position
+        + "\n&7&o"
+        + description;
   }
 
   @Override
@@ -50,22 +54,27 @@ public class BungeeMessagesProvider implements MessagesProvider {
       int minSize,
       int missing,
       @NonNull CommandContext context) {
-    return "You are missing " + missing + " strings in " + name;
+    return "&e&o\u26A0 &c&oYou are missing at least &4&o"
+        + missing
+        + "&c&o strings of the argument &4&o"
+        + name
+        + "\n&7&o"
+        + description;
   }
 
   @NonNull
   @Override
-  public String notAllowed(CommandContext context) {
-    return "You are not allowed to use this command";
+  public String notAllowed(@NonNull CommandContext context) {
+    return "&e&o\u26A0 &c&oYou are not allowed to use this command";
   }
 
   @Override
   public @NonNull String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid player!";
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid player", string);
   }
 
   @Override
   public @NonNull String onlyPlayers(CommandContext context) {
-    return "Only players can use this command!";
+    return "&e&o\u26A0 &c&oConsole cannot use this command";
   }
 }

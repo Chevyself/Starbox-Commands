@@ -1,10 +1,11 @@
 package me.googas.commands.bukkit.messages;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.bukkit.utils.BukkitUtils;
-import me.googas.starbox.builders.MapBuilder;
+import me.googas.starbox.Strings;
 import org.bukkit.plugin.Plugin;
 
 /** The default {@link MessagesProvider} for Bukkit. */
@@ -12,27 +13,27 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + " &cis not a valid long");
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid long", string);
   }
 
   @Override
   public @NonNull String invalidInteger(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + " &cis not a valid integer");
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid integer", string);
   }
 
   @Override
   public @NonNull String invalidDouble(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + " &cis not a valid double");
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid double", string);
   }
 
   @Override
   public @NonNull String invalidBoolean(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + " &cis not a valid boolean");
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid boolean", string);
   }
 
   @Override
   public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + " &cis not valid time");
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", string);
   }
 
   @Override
@@ -41,12 +42,12 @@ public class BukkitMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext context) {
-    return BukkitUtils.format(
-        "&cMissing argument: &e%name% &c(%description%), position: &e%position%",
-        MapBuilder.of("name", name)
-            .put("description", description)
-            .put("position", String.valueOf(position))
-            .build());
+    return "&e&o\u26A0 &c&oYou are missing the argument &4&o"
+        + name
+        + "&c&o at position &4&o"
+        + position
+        + "\n&7&o"
+        + description;
   }
 
   @Override
@@ -57,25 +58,30 @@ public class BukkitMessagesProvider implements MessagesProvider {
       int minSize,
       int missing,
       @NonNull CommandContext context) {
-    return BukkitUtils.format("&cYou are missing &e" + missing + "&c strings in &e" + name);
+    return "&e&o\u26A0 &c&oYou are missing at least &4&o"
+        + missing
+        + "&c&o strings of the argument &4&o"
+        + name
+        + "\n&7&o"
+        + description;
   }
 
   @NonNull
   @Override
   public String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + " &cis noy online");
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid player", string);
   }
 
   @NonNull
   @Override
   public String playersOnly(@NonNull CommandContext context) {
-    return BukkitUtils.format("&cConsole cannot use this command");
+    return "&e&o\u26A0 &c&oConsole cannot use this command";
   }
 
   @NonNull
   @Override
   public String notAllowed(@NonNull CommandContext context) {
-    return BukkitUtils.format("&cYou are not allowed to use this command");
+    return "&e&o\u26A0 &c&oYou are not allowed to use this command";
   }
 
   @Override
@@ -86,22 +92,21 @@ public class BukkitMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String helpTopicFull(
       @NonNull String shortText, @NonNull String commands, @NonNull Plugin plugin) {
-    return BukkitUtils.format(
-        "&7Title: &e%name% \n &7Version: &e%version% \n &7Description: &e%description% \n &7Commands (use /help <command>): &e%commands%",
-        MapBuilder.of("name", plugin.getName())
-            .put(
-                "description",
-                plugin.getDescription().getDescription() == null
-                    ? "None"
-                    : plugin.getDescription().getDescription())
-            .put("version", plugin.getDescription().getVersion())
-            .put("commands", commands)
-            .build());
+    String description =
+        plugin.getDescription().getDescription() == null
+            ? "No description given"
+            : plugin.getDescription().getDescription();
+    return Strings.format(
+        "&6Version: &f{0} \n &6Description: &7{1} \n &7Commands (use /help <command>): \n {2}",
+        plugin.getDescription().getVersion(), description, commands);
   }
 
   @Override
   public @NonNull String helpTopicCommand(@NonNull StarboxBukkitCommand command) {
-    return BukkitUtils.format("\n &7- &e" + command.getName());
+    List<String> aliases = new ArrayList<>(command.getAliases());
+    aliases.add(command.getName());
+    return Strings.format(
+        "&6/{0}: &f{1}", Strings.buildUsageAliases(aliases), command.getDescription());
   }
 
   @Override
@@ -116,28 +121,36 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String commandFullText(
-      @NonNull StarboxBukkitCommand command,
-      @NonNull String shortText,
-      @NonNull String buildChildren,
-      @NonNull String buildArguments) {
-    String full =
-        shortText + "\n Permission: " + command.getPermission() + "\n Usage: " + buildArguments;
-    return buildChildren.isEmpty() ? full : full + "\n Children: " + buildChildren;
+      @NonNull StarboxBukkitCommand command, @NonNull String builtChildren) {
+    StringBuilder builder =
+        new StringBuilder()
+            .append("&6Description: &f")
+            .append(command.getDescription())
+            .append("\n&6Usage: &f")
+            .append(command.getUsage());
+    if (command.getPermission() != null) {
+      builder.append("\n&6Permission: &f").append(command.getPermission());
+    }
+    if (!command.getChildren().isEmpty()) {
+      builder.append("\n&6Children: &r").append(builtChildren);
+    }
+    return builder.toString();
   }
 
   @Override
   public @NonNull String childCommand(
       @NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent) {
-    return "\n - " + command.getName();
+    return Strings.format(
+        "&6/{0} {1}: &f{2}", parent.getName(), command.getName(), command.getDescription());
   }
 
   @Override
   public @NonNull String invalidMaterialEmpty(@NonNull CommandContext context) {
-    return BukkitUtils.format("&cThe name of materials cannot be empty!");
+    return "&e&o\u26A0 &c&oMaterial cannot be empty";
   }
 
   @Override
   public @NonNull String invalidMaterial(@NonNull String string, @NonNull CommandContext context) {
-    return BukkitUtils.format("&e" + string + " &cis not a valid material!");
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid material", string);
   }
 }

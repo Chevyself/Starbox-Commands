@@ -56,12 +56,14 @@ class StarboxCommandHelpTopic extends HelpTopic {
     this.amendedPermission = StarboxCommandHelpTopic.getAmendedPermission(command);
     this.name = provider.commandName(command, parent == null ? null : parent.getName());
     this.shortText = provider.commandShortText(command);
-    this.fullText =
-        provider.commandFullText(
-            command, this.shortText, this.buildChildren(command), command.getUsage());
+    this.fullText = provider.commandFullText(command, this.buildChildren(command));
+    /*
+    Commands don't really add their children commands to the help map so lets keep the code
+    maybe for the future
     for (StarboxBukkitCommand child : command.getChildren()) {
       StarboxCommandHelpTopic.helpMap.addTopic(new StarboxCommandHelpTopic(child, this, provider));
     }
+     */
   }
 
   /**
