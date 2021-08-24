@@ -98,7 +98,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
             ? "No description given"
             : plugin.getDescription().getDescription();
     return BukkitUtils.format(
-        "&6Version: &f{0} \n &6Description: &7{1} \n &7Commands (use /help <command>): \n {2}",
+        "&6Version: &f{0} \n &6Description: &7{1} \n &7Commands (use /help <command>): {2}",
         plugin.getDescription().getVersion(), description, commands);
   }
 
@@ -107,7 +107,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
     List<String> aliases = new ArrayList<>(command.getAliases());
     aliases.add(command.getName());
     return BukkitUtils.format(
-        "&6/{0}: &f{1}", Strings.buildUsageAliases(aliases), command.getDescription());
+        "\n&6/{0}: &f{1}", Strings.buildUsageAliases(aliases), command.getDescription());
   }
 
   @Override
@@ -117,7 +117,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String commandName(@NonNull StarboxBukkitCommand command, String parentName) {
-    return parentName == null ? command.getName() : parentName + "." + command.getName();
+    return "/" + (parentName == null ? command.getName() : parentName + "." + command.getName());
   }
 
   @Override
@@ -142,7 +142,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
   public @NonNull String childCommand(
       @NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent) {
     return BukkitUtils.format(
-        "&6/{0} {1}: &f{2}", parent.getName(), command.getName(), command.getDescription());
+        "\n&6/{0} {1}: &f{2}", parent.getName(), command.getName(), command.getDescription());
   }
 
   @Override
