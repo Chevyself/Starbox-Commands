@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.NonNull;
 import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
+import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.starbox.Strings;
 import org.bukkit.plugin.Plugin;
 
@@ -46,7 +47,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
         + name
         + "&c&o at position &4&o"
         + position
-        + "\n&7&o"
+        + "&c&o: &7&o"
         + description;
   }
 
@@ -62,7 +63,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
         + missing
         + "&c&o strings of the argument &4&o"
         + name
-        + "\n&7&o"
+        + "&c&o: &7&o"
         + description;
   }
 
@@ -96,7 +97,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
         plugin.getDescription().getDescription() == null
             ? "No description given"
             : plugin.getDescription().getDescription();
-    return Strings.format(
+    return BukkitUtils.format(
         "&6Version: &f{0} \n &6Description: &7{1} \n &7Commands (use /help <command>): \n {2}",
         plugin.getDescription().getVersion(), description, commands);
   }
@@ -105,7 +106,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
   public @NonNull String helpTopicCommand(@NonNull StarboxBukkitCommand command) {
     List<String> aliases = new ArrayList<>(command.getAliases());
     aliases.add(command.getName());
-    return Strings.format(
+    return BukkitUtils.format(
         "&6/{0}: &f{1}", Strings.buildUsageAliases(aliases), command.getDescription());
   }
 
@@ -134,13 +135,13 @@ public class BukkitMessagesProvider implements MessagesProvider {
     if (!command.getChildren().isEmpty()) {
       builder.append("\n&6Children: &r").append(builtChildren);
     }
-    return builder.toString();
+    return BukkitUtils.format(builder.toString());
   }
 
   @Override
   public @NonNull String childCommand(
       @NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent) {
-    return Strings.format(
+    return BukkitUtils.format(
         "&6/{0} {1}: &f{2}", parent.getName(), command.getName(), command.getDescription());
   }
 

@@ -37,12 +37,12 @@ public class BungeeMessagesProvider implements MessagesProvider {
       @NonNull String name,
       @NonNull String description,
       int position,
-      @NonNull CommandContext commandContext) {
+      @NonNull CommandContext context) {
     return "&e&o\u26A0 &c&oYou are missing the argument &4&o"
         + name
         + "&c&o at position &4&o"
         + position
-        + "\n&7&o"
+        + "&c&o: &7&o"
         + description;
   }
 
@@ -58,7 +58,7 @@ public class BungeeMessagesProvider implements MessagesProvider {
         + missing
         + "&c&o strings of the argument &4&o"
         + name
-        + "\n&7&o"
+        + "&c&o: &7&o"
         + description;
   }
 
