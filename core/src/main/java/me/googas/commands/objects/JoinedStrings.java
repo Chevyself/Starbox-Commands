@@ -14,6 +14,7 @@ import me.googas.starbox.Strings;
  * @see me.googas.commands.arguments.MultipleArgument
  * @see StarboxCommandContext
  */
+@Deprecated
 public class JoinedStrings {
 
   @NonNull @Getter private final String[] strings;

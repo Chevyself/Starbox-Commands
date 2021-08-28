@@ -12,7 +12,6 @@ import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.jda.utils.message.FakeMessage;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -65,7 +64,7 @@ public class CommandListener implements EventListener {
     Message response = this.getMessage(result, context);
     Consumer<Message> consumer = this.getConsumer(result, context);
     if (response != null) {
-      if (consumer != null && !(event.getMessage() instanceof FakeMessage)) {
+      if (consumer != null) {
         event
             .getChannel()
             .sendMessage(response)

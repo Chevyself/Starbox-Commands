@@ -28,17 +28,17 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>jcenter</id>
-            <name>jcenter-bintray</name>
-            <url>https://jcenter.bintray.com/ </url>
-        </repository>
-        <repository>
-            <id>dv8tion</id>
-            <name>m2-dv8tion</name>
-            <url>https://m2.dv8tion.net/releases</url>
-        </repository>
-    </repositories>
+        <repositories>
+            <repository>
+                <id>jcenter</id>
+                <name>jcenter-bintray</name>
+                <url>https://jcenter.bintray.com/ </url>
+            </repository>
+            <repository>
+                <id>dv8tion</id>
+                <name>m2-dv8tion</name>
+                <url>https://m2.dv8tion.net/releases</url>
+            </repository>
+        </repositories>
 
 </project>
