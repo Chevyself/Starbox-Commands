@@ -98,7 +98,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
             ? "No description given"
             : plugin.getDescription().getDescription();
     return BukkitUtils.format(
-        "&6Version: &f{0} \n &6Description: &7{1} \n &7Commands (use /help <command>): {2}",
+        "&6Version: &f{0} \n &6Description: &f{1} \n &7Commands (use /help <command>): {2}",
         plugin.getDescription().getVersion(), description, commands);
   }
 
