@@ -10,6 +10,7 @@ import me.googas.commands.jda.providers.type.JdaArgumentProvider;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
 /** Provides the {@link StarboxCommandManager} with a {@link Member}. */
@@ -31,15 +32,11 @@ public class MemberProvider
   @Override
   public Member fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
-    if (!(context instanceof GuildCommandContext)) {
-      throw new ArgumentProviderException(this.messagesProvider.guildOnly(context));
-    } else {
-      Guild guild = ((GuildCommandContext) context).getGuild();
-      Member member = guild.getMember(context.getRegistry().get(string, User.class, context));
-      if (member != null) return member;
-      throw new ArgumentProviderException(
-          context.getMessagesProvider().invalidUser(string, context));
-    }
+    TextChannel channel = context.getRegistry().get(TextChannel.class, context);
+    Guild guild = channel.getGuild();
+    Member member = guild.getMember(context.getRegistry().get(string, User.class, context));
+    if (member != null) return member;
+    throw new ArgumentProviderException(context.getMessagesProvider().invalidUser(string, context));
   }
 
   @Override

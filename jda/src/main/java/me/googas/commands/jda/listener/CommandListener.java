@@ -7,16 +7,20 @@ import lombok.NonNull;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.jda.ListenerOptions;
+import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
+import me.googas.commands.jda.context.SlashCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
 
 /** The main listener of command execution. */
@@ -79,13 +83,54 @@ public class CommandListener implements EventListener {
   }
 
   /**
+   * Execute a command when the event is received.
+   *
+   * @param event the event of a slash command being received
+   */
+  @SubscribeEvent
+  public void onSlashCommand(SlashCommandEvent event) {
+    event.deferReply().queue();
+    String name = event.getName();
+    String[] strings =
+        event.getOptions().stream().map(OptionMapping::getAsString).toArray(String[]::new);
+    // this.listenerOptions.preCommand(event, event.getName(), strings);
+    JdaCommand command = this.manager.getCommand(name);
+    SlashCommandContext context =
+        new SlashCommandContext(
+            strings,
+            event.getJDA(),
+            event.getChannel(),
+            event.getOptions(),
+            name,
+            event.getUser(),
+            this.messagesProvider,
+            this.manager.getProvidersRegistry());
+    Result result = this.getResult(command, name, context);
+    Message response = this.getMessage(result, context);
+    Consumer<Message> consumer = this.getConsumer(result, context);
+    if (response != null) {
+      if (consumer != null) {
+        event
+            .getHook()
+            .sendMessage(response)
+            .queue(consumer, fail -> this.listenerOptions.handle(fail, context));
+      } else {
+        event
+            .getHook()
+            .sendMessage(response)
+            .queue(null, fail -> this.listenerOptions.handle(fail, context));
+      }
+    }
+  }
+
+  /**
    * Get the action to do with the message sent from a result.
    *
    * @param result the result to get the action from
    * @param context the context of the command execution
    * @return the action from the result or null if it doesn't have any
    */
-  public Consumer<Message> getConsumer(Result result, @NonNull GenericCommandContext context) {
+  public Consumer<Message> getConsumer(Result result, @NonNull CommandContext context) {
     return this.listenerOptions.processConsumer(result, context);
   }
 
@@ -96,7 +141,7 @@ public class CommandListener implements EventListener {
    * @param context the context of the command execution
    * @return the message
    */
-  private Message getMessage(Result result, GenericCommandContext context) {
+  private Message getMessage(Result result, CommandContext context) {
     return this.listenerOptions.processResult(result, context);
   }
 
@@ -109,7 +154,7 @@ public class CommandListener implements EventListener {
    * @return the result of the command execution
    */
   private Result getResult(
-      JdaCommand command, @NonNull String commandName, GenericCommandContext context) {
+      JdaCommand command, @NonNull String commandName, CommandContext context) {
     if (command != null) {
       return command.execute(context);
     } else {
@@ -158,6 +203,8 @@ public class CommandListener implements EventListener {
   public void onEvent(@NonNull @NotNull final GenericEvent genericEvent) {
     if (genericEvent instanceof MessageReceivedEvent) {
       this.onMessageReceived((MessageReceivedEvent) genericEvent);
+    } else if (genericEvent instanceof SlashCommandEvent) {
+      this.onSlashCommand((SlashCommandEvent) genericEvent);
     }
   }
 }

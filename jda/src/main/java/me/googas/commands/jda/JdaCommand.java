@@ -14,6 +14,8 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 /**
  * This is the direct implementation of {@link StarboxCommand} for the "JDA" module extending this
@@ -161,5 +163,34 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       if (name.equalsIgnoreCase(alias)) return true;
     }
     return false;
+  }
+
+  /**
+   * Get the description of the command.
+   *
+   * @return the description
+   */
+  @NonNull
+  public String getDescription() {
+    return "No description given";
+  }
+
+  /**
+   * Get the data of the command.
+   *
+   * @return the command data
+   */
+  @NonNull
+  public CommandData getCommandData() {
+    CommandData commandData = new CommandData(this.getName(), this.getDescription());
+    this.getChildren().stream()
+        .map(JdaCommand::toSubcommandData)
+        .forEach(commandData::addSubcommands);
+    return commandData;
+  }
+
+  @NonNull
+  private SubcommandData toSubcommandData() {
+    return new SubcommandData(this.getName(), this.getDescription());
   }
 }

@@ -32,7 +32,7 @@ public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgument
   public static long getIdFromMention(@NonNull String mention) {
     StringBuilder builder = new StringBuilder();
     for (char c : mention.toCharArray()) {
-      if (!Character.isDigit(c)) builder.append(c);
+      if (Character.isDigit(c)) builder.append(c);
     }
     return Long.parseLong(builder.toString());
   }

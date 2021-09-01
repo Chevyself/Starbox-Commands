@@ -5,10 +5,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
+import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
@@ -23,7 +25,14 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 /**
  * This is the direct extension of {@link JdaCommand} for reflection commands. This is returned from
@@ -39,6 +48,7 @@ public class AnnotatedCommand extends JdaCommand
   @NonNull @Getter private final List<Argument<?>> arguments;
   @NonNull @Getter private final List<String> aliases;
   @NonNull @Getter private final List<JdaCommand> children = new ArrayList<>();
+  @NonNull @Getter private final String description;
 
   /**
    * Create the command.
@@ -64,6 +74,7 @@ public class AnnotatedCommand extends JdaCommand
     this.object = object;
     this.arguments = arguments;
     this.aliases = Arrays.asList(command.aliases());
+    this.description = command.description();
     if (command.permission() != Permission.UNKNOWN || !command.node().isEmpty()) {
       this.setPermission(new SimplePermission(command.node(), command.permission()));
     }
@@ -136,5 +147,42 @@ public class AnnotatedCommand extends JdaCommand
     } catch (ArgumentProviderException e) {
       return Result.forType(ResultType.ERROR).setDescription(e.getMessage()).build();
     }
+  }
+
+  private static OptionData toOptionData(@NonNull Argument<?> argument) {
+    if (argument instanceof SingleArgument) {
+      return new OptionData(
+          AnnotatedCommand.toOptionType(argument.getClazz()),
+          ((SingleArgument<?>) argument).getName(),
+          ((SingleArgument<?>) argument).getDescription(),
+          ((SingleArgument<?>) argument).isRequired());
+    }
+    return null;
+  }
+
+  @NonNull
+  private static OptionType toOptionType(@NonNull Class<?> clazz) {
+    if (clazz.isAssignableFrom(Number.class)) {
+      return OptionType.INTEGER;
+    } else if (clazz == boolean.class || clazz == Boolean.class) {
+      return OptionType.BOOLEAN;
+    } else if (clazz.isAssignableFrom(User.class) || clazz.isAssignableFrom(Member.class)) {
+      return OptionType.USER;
+    } else if (clazz.isAssignableFrom(MessageChannel.class)) {
+      return OptionType.CHANNEL;
+    } else if (clazz.isAssignableFrom(Role.class)) {
+      return OptionType.ROLE;
+    }
+    return OptionType.STRING;
+  }
+
+  @Override
+  public @NonNull CommandData getCommandData() {
+    CommandData data = super.getCommandData();
+    this.arguments.stream()
+        .map(AnnotatedCommand::toOptionData)
+        .filter(Objects::nonNull)
+        .forEach(data::addOptions);
+    return data;
   }
 }
