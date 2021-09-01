@@ -157,7 +157,11 @@ public class Result implements StarboxResult {
 
     @Override
     public @NonNull Result build() {
-      return new Result(type, this.messageSupplier == null ? null : this.messageSupplier.get(), description, success);
+      return new Result(
+          type,
+          this.messageSupplier == null ? null : this.messageSupplier.get(),
+          description,
+          success);
     }
   }
 }

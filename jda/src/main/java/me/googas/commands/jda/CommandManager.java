@@ -11,6 +11,7 @@ import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.permissions.EasyPermission;
@@ -24,7 +25,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 /**
  * The command that are registered inside this manager makes them work in the {@link #listener} this
  * means that the {@link CommandListener} will execute the command when the bot receives a message
- * {@link CommandListener#onMessageReceivedEvent(MessageReceivedEvent)}
+ * {@link CommandListener#onMessageReceived(MessageReceivedEvent)}
  *
  * <p>The easiest way to create commands is using reflection with the method {@link
  * #parseCommands(Object)} those parsed commands can be later registered in this instance using
@@ -64,7 +65,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    * Create an instance.
    *
    * @param providersRegistry the providers registry to provide the array of {@link Object} to
-   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link
+   *     GenericCommandContext}
    * @param messagesProvider the messages provider for important messages
    * @param permissionChecker to check the permissions of {@link net.dv8tion.jda.api.entities.User}
    *     upon command execution

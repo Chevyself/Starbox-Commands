@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
@@ -80,8 +80,8 @@ public class DefaultListenerOptions implements ListenerOptions {
    */
   @NonNull private Color error = new Color(0xff0202);
   /**
-   * Whether to handle {@link #handle(Throwable, CommandContext)} by sending the error to the {@link
-   * net.dv8tion.jda.api.entities.User} that execute the command
+   * Whether to handle {@link #handle(Throwable, GenericCommandContext)} by sending the error to the
+   * {@link net.dv8tion.jda.api.entities.User} that execute the command
    */
   private boolean sendErrors = false;
 
@@ -143,7 +143,7 @@ public class DefaultListenerOptions implements ListenerOptions {
   }
 
   @Override
-  public Message processResult(Result result, @NonNull CommandContext context) {
+  public Message processResult(Result result, @NonNull GenericCommandContext context) {
     if (result != null && !result.getDiscordMessage().isPresent()) {
       MessageBuilder builder = new MessageBuilder();
       MessagesProvider messagesProvider = context.getMessagesProvider();
@@ -180,7 +180,7 @@ public class DefaultListenerOptions implements ListenerOptions {
   }
 
   @Override
-  public Consumer<Message> processConsumer(Result result, @NonNull CommandContext context) {
+  public Consumer<Message> processConsumer(Result result, @NonNull GenericCommandContext context) {
     if (result != null) {
       if (result.getSuccess() != null) {
         return result.getSuccess();
@@ -194,12 +194,11 @@ public class DefaultListenerOptions implements ListenerOptions {
   }
 
   @Override
-  public void handle(@NonNull Throwable fail, @NonNull CommandContext context) {
+  public void handle(@NonNull Throwable fail, @NonNull GenericCommandContext context) {
     if (!this.isSendErrors()) return;
     fail.printStackTrace();
     context
-        .getMessage()
-        .getAuthor()
+        .getSender()
         .openPrivateChannel()
         .queue(
             channel -> {

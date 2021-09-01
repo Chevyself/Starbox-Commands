@@ -6,6 +6,8 @@ import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 
 /** Checks for the permissions of an user when executing a command. */
 public interface PermissionChecker {
@@ -26,13 +28,14 @@ public interface PermissionChecker {
   default Result checkPermission(@NonNull CommandContext context, EasyPermission perm) {
     if (perm == null) return null;
     Permission permission = perm.getPermission();
-    if (permission != Permission.UNKNOWN && context.getMessage().getMember() != null) {
-      if (!context.getMessage().getMember().hasPermission(permission)) {
+    Member member = context.getMessage().map(Message::getMember).orElse(null);
+    if (permission != Permission.UNKNOWN && member != null) {
+      if (!member.hasPermission(permission)) {
         return Result.forType(ResultType.PERMISSION)
             .setDescription(this.getMessagesProvider().notAllowed(context))
             .build();
       }
-    } else if (permission != Permission.UNKNOWN && context.getMessage().getMember() == null) {
+    } else if (permission != Permission.UNKNOWN) {
       return Result.forType(ResultType.ERROR)
           .setDescription(this.getMessagesProvider().guildOnly(context))
           .build();

@@ -7,7 +7,7 @@ import lombok.NonNull;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.jda.ListenerOptions;
-import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
@@ -48,7 +48,7 @@ public class CommandListener implements EventListener {
    * @param event the event of a message received
    */
   @SubscribeEvent
-  public void onMessageReceivedEvent(@NonNull MessageReceivedEvent event) {
+  public void onMessageReceived(@NonNull MessageReceivedEvent event) {
     String[] strings = event.getMessage().getContentRaw().split(" +");
     String commandName = strings[0];
     String prefix = listenerOptions.getPrefix(event.getGuild());
@@ -58,7 +58,7 @@ public class CommandListener implements EventListener {
     this.listenerOptions.preCommand(event, commandName, strings);
     commandName = commandName.substring(prefix.length());
     JdaCommand command = this.manager.getCommand(commandName);
-    CommandContext context =
+    GenericCommandContext context =
         this.getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = this.getResult(command, commandName, context);
     Message response = this.getMessage(result, context);
@@ -85,7 +85,7 @@ public class CommandListener implements EventListener {
    * @param context the context of the command execution
    * @return the action from the result or null if it doesn't have any
    */
-  public Consumer<Message> getConsumer(Result result, @NonNull CommandContext context) {
+  public Consumer<Message> getConsumer(Result result, @NonNull GenericCommandContext context) {
     return this.listenerOptions.processConsumer(result, context);
   }
 
@@ -96,7 +96,7 @@ public class CommandListener implements EventListener {
    * @param context the context of the command execution
    * @return the message
    */
-  private Message getMessage(Result result, CommandContext context) {
+  private Message getMessage(Result result, GenericCommandContext context) {
     return this.listenerOptions.processResult(result, context);
   }
 
@@ -109,7 +109,7 @@ public class CommandListener implements EventListener {
    * @return the result of the command execution
    */
   private Result getResult(
-      JdaCommand command, @NonNull String commandName, CommandContext context) {
+      JdaCommand command, @NonNull String commandName, GenericCommandContext context) {
     if (command != null) {
       return command.execute(context);
     } else {
@@ -128,34 +128,36 @@ public class CommandListener implements EventListener {
    * @return the context of the command
    */
   @NonNull
-  private CommandContext getCommandContext(
+  private GenericCommandContext getCommandContext(
       @NonNull MessageReceivedEvent event, @NonNull String[] strings, String commandName) {
     strings = Arrays.copyOfRange(strings, 1, strings.length);
     if (event.getMember() != null) {
       return new GuildCommandContext(
-          event.getMessage(),
+          manager.getJda(),
           event.getAuthor(),
           strings,
           event.getChannel(),
           this.messagesProvider,
           this.manager.getProvidersRegistry(),
-          commandName);
+          commandName,
+          event.getMessage());
     } else {
-      return new CommandContext(
-          event.getMessage(),
+      return new GenericCommandContext(
+          manager.getJda(),
           event.getAuthor(),
           strings,
           event.getChannel(),
           this.messagesProvider,
           this.manager.getProvidersRegistry(),
-          commandName);
+          commandName,
+          event.getMessage());
     }
   }
 
   @Override
   public void onEvent(@NonNull @NotNull final GenericEvent genericEvent) {
     if (genericEvent instanceof MessageReceivedEvent) {
-      this.onMessageReceivedEvent((MessageReceivedEvent) genericEvent);
+      this.onMessageReceived((MessageReceivedEvent) genericEvent);
     }
   }
 }

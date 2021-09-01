@@ -124,4 +124,9 @@ public class JdaMessagesProvider implements MessagesProvider {
   public String invalidTextChannel(String string, CommandContext context) {
     return string + " is not a valid text channel";
   }
+
+  @Override
+  public String noMessage(CommandContext context) {
+    return "This command must be executed from a message";
+  }
 }

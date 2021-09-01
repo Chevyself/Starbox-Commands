@@ -122,9 +122,18 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
    * The message sent when a string is not a valid role.
    *
    * @param string the string that is invalid
-   * @param context the context ofo the command
+   * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
   @NonNull
   String invalidTextChannel(String string, CommandContext context);
+
+  /**
+   * The message sent when a command was not executed from a {@link
+   * net.dv8tion.jda.api.entities.Message}
+   *
+   * @param context the context of the command
+   * @return the message to tell that the execution is wrong
+   */
+  String noMessage(@NonNull CommandContext context);
 }

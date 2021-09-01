@@ -26,11 +26,13 @@ public class RoleProvider implements JdaArgumentProvider<Role> {
   @Override
   public Role fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
-    for (Role role : context.getMessage().getMentionedRoles()) {
-      if (string.contains(role.getId())) {
-        return role;
-      }
+    Role role;
+    try {
+      role = context.getJda().getRoleById(UserProvider.getIdFromMention(string));
+    } catch (NumberFormatException ignored) {
+      role = null;
     }
+    if (role != null) return role;
     throw new ArgumentProviderException(this.messagesProvider.invalidRole(string, context));
   }
 
