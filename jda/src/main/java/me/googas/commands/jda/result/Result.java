@@ -64,103 +64,6 @@ public class Result implements StarboxResult {
   }
 
   /**
-   * Create an instance.
-   *
-   * @param type the type of the result depending on the command output
-   * @param message the discord message to send
-   * @param success the action to do after the message is sent
-   */
-  @Deprecated
-  public Result(@NonNull ResultType type, @NonNull Message message, Consumer<Message> success) {
-    this(type, message, null, success);
-  }
-
-  /**
-   * Create an instance.
-   *
-   * @param type the type of the result depending on the command output
-   * @param message the discord message to send
-   */
-  @Deprecated
-  public Result(@NonNull ResultType type, @NonNull Message message) {
-    this(type, message, null);
-  }
-
-  /**
-   * Create an instance.
-   *
-   * @param type the type of the result depending on the command output
-   * @param message the content of the message to send
-   * @param success the action to do after the message is sent
-   */
-  @Deprecated
-  public Result(@NonNull ResultType type, @NonNull String message, Consumer<Message> success) {
-    this(type, null, message, success);
-  }
-
-  /**
-   * Create an instance.
-   *
-   * @param type the type of the result depending on the command output
-   * @param message the content of the message to send
-   */
-  @Deprecated
-  public Result(@NonNull ResultType type, @NonNull String message) {
-    this(type, message, null);
-  }
-
-  /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
-   *
-   * @param message the discord message to send
-   * @param success the action to do after the message is sent
-   */
-  @Deprecated
-  public Result(@NonNull Message message, Consumer<Message> success) {
-    this(ResultType.GENERIC, message, success);
-  }
-
-  /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
-   *
-   * @param message the discord message to send
-   */
-  @Deprecated
-  public Result(@NonNull Message message) {
-    this(ResultType.GENERIC, message);
-  }
-
-  /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
-   *
-   * @param message the content of the message to send
-   * @param success the action to do after the message is sent
-   */
-  @Deprecated
-  public Result(@NonNull String message, Consumer<Message> success) {
-    this(ResultType.GENERIC, message, success);
-  }
-
-  /**
-   * Create an instance this will use the {@link ResultType} as {@link ResultType#GENERIC}.
-   *
-   * @param message the content of the message to send
-   */
-  @Deprecated
-  public Result(@NonNull String message) {
-    this(ResultType.GENERIC, message);
-  }
-
-  /**
-   * Create an empty instance which will not send anything to the {@link
-   * net.dv8tion.jda.api.entities.TextChannel} where the command was executed
-   */
-  @Deprecated
-  public Result() {
-    this(ResultType.GENERIC, null, null, null);
-  }
-
-  /**
    * Start a builder. This will start an empty builder with a type of {@link ResultType#GENERIC}
    *
    * @return the new builder
@@ -280,11 +183,16 @@ public class Result implements StarboxResult {
 
     @Override
     public @NonNull Result build() {
-      return new Result(
-          type,
-          this.messageSupplier == null ? this.message.build() : this.messageSupplier.get(),
-          description,
-          success);
+      Message message;
+      if (this.messageSupplier != null) {
+        message = this.messageSupplier.get();
+      } else {
+        if (this.message.getStringBuilder().length() == 0) {
+          this.message.setContent(this.description);
+        }
+        message = this.message.build();
+      }
+      return new Result(type, message, description, success);
     }
   }
 }
