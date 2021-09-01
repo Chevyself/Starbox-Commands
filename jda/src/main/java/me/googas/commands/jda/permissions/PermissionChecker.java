@@ -44,8 +44,8 @@ public interface PermissionChecker {
   }
 
   /**
-   * Get the messages provider in case that the {@link #checkPermission(CommandContext,
-   * Permit)} has to return a result with a message.
+   * Get the messages provider in case that the {@link #checkPermission(CommandContext, Permit)} has
+   * to return a result with a message.
    *
    * @return the messages provider
    */

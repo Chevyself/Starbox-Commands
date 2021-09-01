@@ -15,7 +15,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 /**
- * Represents the context of a command executed via {@link net.dv8tion.jda.api.events.interaction.SlashCommandEvent}.
+ * Represents the context of a command executed via {@link
+ * net.dv8tion.jda.api.events.interaction.SlashCommandEvent}.
  */
 public class SlashCommandContext implements CommandContext {
 
