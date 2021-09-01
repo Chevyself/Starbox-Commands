@@ -14,13 +14,12 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
-import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.jda.permissions.PermissionChecker;
+import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
@@ -106,11 +105,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   @Override
   public @NonNull CommandManager register(@NonNull JdaCommand command) {
     this.commands.add(command);
-    // this.jda.upsertCommand(command.getCommandData());
-    // Debug purposes:
-    for (Guild guild : this.jda.getGuilds()) {
-      guild.upsertCommand(command.getCommandData()).queue();
-    }
+    this.jda.upsertCommand(command.getCommandData());
     return this;
   }
 
