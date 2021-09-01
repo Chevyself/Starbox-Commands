@@ -1,5 +1,6 @@
 package me.googas.commands.jda.context;
 
+import java.util.Arrays;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -55,5 +56,18 @@ public class GuildCommandContext extends GenericCommandContext {
   @Override
   public String toString() {
     return "GuildCommandContext{" + "member=" + this.member + ", guild=" + this.guild + '}';
+  }
+
+  @Override
+  public @NonNull GuildCommandContext getChildren() {
+    return new GuildCommandContext(
+        this.jda,
+        this.sender,
+        Arrays.copyOfRange(strings, 1, strings.length),
+        this.channel,
+        this.messagesProvider,
+        this.registry,
+        this.commandName,
+        this.message);
   }
 }

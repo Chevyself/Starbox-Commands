@@ -46,4 +46,7 @@ public interface CommandContext extends StarboxCommandContext {
   @Override
   @NonNull
   MessagesProvider getMessagesProvider();
+
+  @NonNull
+  CommandContext getChildren();
 }

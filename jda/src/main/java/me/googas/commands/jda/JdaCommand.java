@@ -1,6 +1,5 @@
 package me.googas.commands.jda;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +9,6 @@ import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.context.GenericCommandContext;
-import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.permissions.EasyPermission;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
@@ -152,33 +149,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       Optional<JdaCommand> optionalCommand = this.getChildren(strings[0]);
       if (optionalCommand.isPresent()) {
         JdaCommand command = optionalCommand.get();
-        String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
-        GenericCommandContext childContext;
-        // TODO make context return its own child context
-        if (context instanceof GuildCommandContext) {
-          childContext =
-              new GuildCommandContext(
-                  context.getJda(),
-                  context.getSender(),
-                  copy,
-                  context.getChannel().orElseThrow(NullPointerException::new),
-                  context.getMessagesProvider(),
-                  context.getRegistry(),
-                  context.getCommandName(),
-                  context.getMessage().orElseThrow(NullPointerException::new));
-        } else {
-          childContext =
-              new GenericCommandContext(
-                  context.getJda(),
-                  context.getSender(),
-                  copy,
-                  context.getChannel().orElseThrow(NullPointerException::new),
-                  context.getMessagesProvider(),
-                  context.getRegistry(),
-                  command.getName(),
-                  context.getMessage().orElse(null));
-        }
-        return command.execute(childContext);
+        return command.execute(context.getChildren());
       }
     }
     return this.run(context);

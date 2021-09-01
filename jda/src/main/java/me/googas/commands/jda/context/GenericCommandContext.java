@@ -16,15 +16,14 @@ import net.dv8tion.jda.api.entities.User;
 /** This context is used for every command {@link User being the sender}. */
 public class GenericCommandContext implements CommandContext {
 
-  @NonNull @Getter private final JDA jda;
-  @NonNull private final User sender;
-  @NonNull private final MessageChannel channel;
-  @NonNull private final MessagesProvider messagesProvider;
-  @NonNull private final ProvidersRegistry<CommandContext> registry;
-  @Getter private final String commandName;
-  /** The message that executed the command. */
-  private final Message message;
-  @NonNull @Setter private String[] strings;
+  @NonNull @Getter protected final JDA jda;
+  @NonNull protected final User sender;
+  @NonNull protected final MessageChannel channel;
+  @NonNull protected final MessagesProvider messagesProvider;
+  @NonNull protected final ProvidersRegistry<CommandContext> registry;
+  @Getter protected final String commandName;
+  protected final Message message;
+  @NonNull @Setter protected String[] strings;
 
   /**
    * Create an instance.
@@ -96,6 +95,19 @@ public class GenericCommandContext implements CommandContext {
   @Override
   public MessagesProvider getMessagesProvider() {
     return this.messagesProvider;
+  }
+
+  @Override
+  public @NonNull GenericCommandContext getChildren() {
+    return new GenericCommandContext(
+        this.jda,
+        this.sender,
+        Arrays.copyOfRange(strings, 1, strings.length),
+        this.channel,
+        this.messagesProvider,
+        this.registry,
+        this.commandName,
+        this.message);
   }
 
   @Override
