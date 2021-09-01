@@ -8,7 +8,6 @@ import lombok.NonNull;
 import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.result.StarboxResult;
 import me.googas.starbox.builders.Builder;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Message;
 
 /**
@@ -103,7 +102,6 @@ public class Result implements StarboxResult {
   public static class ResultBuilder implements Builder<Result> {
 
     @NonNull private ResultType type = ResultType.GENERIC;
-    @Getter private MessageBuilder message = new MessageBuilder();
     private String description = null;
     private transient Consumer<Message> success = null;
     private transient Supplier<Message> messageSupplier = null;
@@ -121,39 +119,15 @@ public class Result implements StarboxResult {
     }
 
     /**
-     * Set the message builder of the result.
-     *
-     * @param message the new builder
-     * @return this same instance
-     */
-    @NonNull
-    public ResultBuilder setMessage(@NonNull MessageBuilder message) {
-      this.message = message;
-      return this;
-    }
-
-    /**
-     * Edit the message builder with a consumer.
-     *
-     * @param consumer the consumer to edit the message builder
-     * @return this same instance
-     */
-    @NonNull
-    public ResultBuilder withMessageBuilder(@NonNull Consumer<MessageBuilder> consumer) {
-      consumer.accept(this.message);
-      return this;
-    }
-
-    /**
      * Set the discord message supplier. If this supplier is not null it will override the message
      * builder
      *
-     * @param messageSupplier the message supplier
+     * @param supplier the message supplier
      * @return this same instance
      */
     @NonNull
-    public ResultBuilder setMessage(Supplier<Message> messageSupplier) {
-      this.messageSupplier = messageSupplier;
+    public ResultBuilder setMessage(Supplier<Message> supplier) {
+      this.messageSupplier = supplier;
       return this;
     }
 
@@ -183,16 +157,7 @@ public class Result implements StarboxResult {
 
     @Override
     public @NonNull Result build() {
-      Message message;
-      if (this.messageSupplier != null) {
-        message = this.messageSupplier.get();
-      } else {
-        if (this.message.getStringBuilder().length() == 0) {
-          this.message.setContent(this.description);
-        }
-        message = this.message.build();
-      }
-      return new Result(type, message, description, success);
+      return new Result(type, this.messageSupplier == null ? null : this.messageSupplier.get(), description, success);
     }
   }
 }
