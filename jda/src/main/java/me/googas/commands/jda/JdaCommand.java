@@ -9,7 +9,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.permissions.EasyPermission;
+import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.starbox.time.Time;
@@ -32,7 +32,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @NonNull protected final CommandManager manager;
   @NonNull @Getter private final Time cooldown;
   @NonNull @Getter private final Set<CooldownUser> cooldownUsers = new HashSet<>();
-  @Getter @Setter private EasyPermission permission;
+  @Getter @Setter private Permit permission;
   @Getter @Setter private boolean excluded;
 
   /**
@@ -42,7 +42,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    * @param permission the permission that the sender requires to execute the command {@link
    *     me.googas.commands.jda.permissions.PermissionChecker#checkPermission(CommandContext,
-   *     EasyPermission)}
+   *     Permit)}
    * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
    *     is {@link ResultType#GENERIC}
    * @param cooldown the time that users must wait until they can use the command again {@link
@@ -50,7 +50,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    */
   public JdaCommand(
       @NonNull CommandManager manager,
-      EasyPermission permission,
+      Permit permission,
       boolean excluded,
       @NonNull Time cooldown) {
     this.manager = manager;

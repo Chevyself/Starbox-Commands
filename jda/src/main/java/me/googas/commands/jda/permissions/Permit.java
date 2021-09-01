@@ -5,7 +5,7 @@ import me.googas.commands.jda.annotations.Command;
 import net.dv8tion.jda.api.Permission;
 
 /** This object represents a permission that a command may have. */
-public interface EasyPermission {
+public interface Permit {
 
   /**
    * The node of the permission which can be any string.

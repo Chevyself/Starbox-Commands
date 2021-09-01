@@ -14,7 +14,7 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
-import me.googas.commands.jda.permissions.EasyPermission;
+import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.jda.permissions.PermissionChecker;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
@@ -40,7 +40,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * implementation is {@link me.googas.commands.jda.messages.JdaMessagesProvider}, to check the
  * permissions of the {@link net.dv8tion.jda.api.entities.User} that execute the command you can
  * create an implementation of {@link PermissionChecker} or just use its default method {@link
- * PermissionChecker#checkPermission(CommandContext, EasyPermission)} which only checks for {@link
+ * PermissionChecker#checkPermission(CommandContext, Permit)} which only checks for {@link
  * net.dv8tion.jda.api.Permission}, the instance of {@link JDA} is required to parseAndRegister the
  * {@link CommandListener}, the {@link ListenerOptions} changes some of the logic inside {@link
  * CommandListener} and finally the prefix is the {@link String} that must contain the message at

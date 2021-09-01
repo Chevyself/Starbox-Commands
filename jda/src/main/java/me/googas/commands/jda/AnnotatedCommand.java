@@ -18,7 +18,7 @@ import me.googas.commands.exceptions.type.StarboxException;
 import me.googas.commands.exceptions.type.StarboxRuntimeException;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.permissions.SimplePermission;
+import me.googas.commands.jda.permissions.SimplePermit;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.StarboxMessagesProvider;
@@ -76,7 +76,7 @@ public class AnnotatedCommand extends JdaCommand
     this.aliases = Arrays.asList(command.aliases());
     this.description = command.description();
     if (command.permission() != Permission.UNKNOWN || !command.node().isEmpty()) {
-      this.setPermission(new SimplePermission(command.node(), command.permission()));
+      this.setPermission(new SimplePermit(command.node(), command.permission()));
     }
   }
 

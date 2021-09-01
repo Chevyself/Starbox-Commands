@@ -25,7 +25,7 @@ public interface PermissionChecker {
    *     {@link net.dv8tion.jda.api.entities.Member#hasPermission(Permission...)} a result will be
    *     given
    */
-  default Result checkPermission(@NonNull CommandContext context, EasyPermission perm) {
+  default Result checkPermission(@NonNull CommandContext context, Permit perm) {
     if (perm == null) return null;
     Permission permission = perm.getPermission();
     Member member = context.getMessage().map(Message::getMember).orElse(null);
@@ -45,7 +45,7 @@ public interface PermissionChecker {
 
   /**
    * Get the messages provider in case that the {@link #checkPermission(CommandContext,
-   * EasyPermission)} has to return a result with a message.
+   * Permit)} has to return a result with a message.
    *
    * @return the messages provider
    */
