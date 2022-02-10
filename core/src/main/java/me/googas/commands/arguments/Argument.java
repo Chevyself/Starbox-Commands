@@ -231,7 +231,7 @@ public interface Argument<O> {
           description,
           suggestions,
           parameter,
-          true,
+          required,
           position,
           multiple.min(),
           multiple.max());

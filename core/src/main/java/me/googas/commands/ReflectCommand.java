@@ -77,7 +77,8 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
         objects[i] = this.getRegistry().getObject(argument.getClazz(), context);
       } else if (argument instanceof MultipleArgument<?>) {
         String[] strings = context.getStringsFrom(((MultipleArgument<?>) argument).getPosition());
-        if (strings.length < ((MultipleArgument<?>) argument).getMinSize()) {
+        if (strings.length < ((MultipleArgument<?>) argument).getMinSize()
+            && ((MultipleArgument<?>) argument).isRequired()) {
           throw new MissingArgumentException(
               this.getMessagesProvider()
                   .missingStrings(

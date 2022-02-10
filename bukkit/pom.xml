@@ -63,7 +63,7 @@
         <dependency>
             <artifactId>spigot-api</artifactId>
             <groupId>org.spigotmc</groupId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
