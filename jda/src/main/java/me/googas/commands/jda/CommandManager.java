@@ -94,8 +94,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   }
 
   /**
-   * Get the command instance that matches the name and guild. This will loop through all the {@link #guildCommands} and
-   * {@link #commands} until one is {@link JdaCommand#hasAlias(String)} = true
+   * Get the command instance that matches the name and guild. This will loop through all the {@link
+   * #guildCommands} and {@link #commands} until one is {@link JdaCommand#hasAlias(String)} = true
    *
    * @param guild the guild to find the command
    * @param name the name to match the command
@@ -106,8 +106,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   }
 
   /**
-   * Get the command instance that matches the name. This will loop through all the {@link #commands}
-   * until one is {@link JdaCommand#hasAlias(String)} = true.
+   * Get the command instance that matches the name. This will loop through all the {@link
+   * #commands} until one is {@link JdaCommand#hasAlias(String)} = true.
    *
    * @param name the name to match the command
    * @return the instance of the command if found else null
@@ -117,8 +117,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   }
 
   /**
-   * Get the command instance that matches the name and guild. This will loop through all the {@link #guildCommands} and
-   * {@link #commands} until one is {@link JdaCommand#hasAlias(String)} = true
+   * Get the command instance that matches the name and guild. This will loop through all the {@link
+   * #guildCommands} and {@link #commands} until one is {@link JdaCommand#hasAlias(String)} = true
    *
    * @param guild the id of the guild to find the command
    * @param name the name to match the command
@@ -240,7 +240,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    * @param objects the objects to parse the commands
    * @return this same instanceK
    */
-  public @NonNull CommandManager parseAndRegisterAll(@NonNull Guild guild, @NonNull Object... objects) {
+  public @NonNull CommandManager parseAndRegisterAll(
+      @NonNull Guild guild, @NonNull Object... objects) {
     return this.registerAll(guild, this.parseCommands(objects));
   }
 
@@ -251,7 +252,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    * @param commands the collection to register
    * @return this same instance
    */
-  public @NonNull CommandManager registerAll(@NonNull Guild guild, @NonNull Collection<? extends JdaCommand> commands) {
+  public @NonNull CommandManager registerAll(
+      @NonNull Guild guild, @NonNull Collection<? extends JdaCommand> commands) {
     for (JdaCommand command : commands) {
       this.register(guild, command);
     }
@@ -265,7 +267,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    * @param commands the collection to register
    * @return this same instance
    */
-  public @NonNull CommandManager registerAll(@NonNull Guild guild, @NonNull JdaCommand... commands) {
+  public @NonNull CommandManager registerAll(
+      @NonNull Guild guild, @NonNull JdaCommand... commands) {
     return this.registerAll(guild, Arrays.asList(commands));
   }
 
