@@ -2,8 +2,11 @@ package me.googas.commands.jda;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommandManager;
@@ -20,6 +23,7 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
@@ -54,6 +58,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class CommandManager implements StarboxCommandManager<CommandContext, JdaCommand> {
 
   @NonNull @Getter private final List<JdaCommand> commands = new ArrayList<>();
+  @NonNull @Getter private final Map<Long, List<JdaCommand>> guildCommands = new HashMap<>();
   @NonNull @Getter private final JDA jda;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
@@ -64,7 +69,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   /**
    * Create an instance.
    *
-   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   * @param providersRegistry the providers' registry to provide the array of {@link Object} to
    *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link
    *     GenericCommandContext}
    * @param messagesProvider the messages provider for important messages
@@ -89,13 +94,45 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   }
 
   /**
-   * Get the command instance that matches the name. This will loop thru all the {@link #commands}
+   * Get the command instance that matches the name and guild. This will loop through all the {@link #guildCommands} and
+   * {@link #commands} until one is {@link JdaCommand#hasAlias(String)} = true
+   *
+   * @param guild the guild to find the command
+   * @param name the name to match the command
+   * @return the instance of the command if found else null
+   */
+  public JdaCommand getCommand(Guild guild, @NonNull String name) {
+    return this.getCommand(guild == null ? 0 : guild.getIdLong(), name);
+  }
+
+  /**
+   * Get the command instance that matches the name. This will loop through all the {@link #commands}
    * until one is {@link JdaCommand#hasAlias(String)} = true.
    *
    * @param name the name to match the command
    * @return the instance of the command if found else null
    */
   public JdaCommand getCommand(@NonNull String name) {
+    return this.getCommand(0L, name);
+  }
+
+  /**
+   * Get the command instance that matches the name and guild. This will loop through all the {@link #guildCommands} and
+   * {@link #commands} until one is {@link JdaCommand#hasAlias(String)} = true
+   *
+   * @param guild the id of the guild to find the command
+   * @param name the name to match the command
+   * @return the instance of the command if found else null
+   */
+  public JdaCommand getCommand(long guild, @NonNull String name) {
+    if (guild > 0) {
+      List<JdaCommand> commands = this.guildCommands.get(guild);
+      if (commands != null) {
+        for (JdaCommand command : commands) {
+          if (command.hasAlias(name)) return command;
+        }
+      }
+    }
     for (JdaCommand command : this.commands) {
       if (command.hasAlias(name)) return command;
     }
@@ -107,6 +144,26 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
     this.commands.add(command);
     this.jda.upsertCommand(command.getCommandData());
     return this;
+  }
+
+  /**
+   * Register a command inside this manager that will only run in an assigned guild.
+   *
+   * @param guild the guild that will be allowed to use the command
+   * @param command the command to register
+   * @return this same instance
+   */
+  public @NonNull CommandManager register(@NonNull Guild guild, @NonNull JdaCommand command) {
+    long id = guild.getIdLong();
+    this.getCommands(guild).add(command);
+    List<JdaCommand> commands = this.guildCommands.computeIfAbsent(id, key -> new ArrayList<>());
+    commands.add(command);
+    return this;
+  }
+
+  @NonNull
+  private List<JdaCommand> getCommands(@NonNull Guild guild) {
+    return this.guildCommands.computeIfAbsent(guild.getIdLong(), id -> new ArrayList<>());
   }
 
   @Override
@@ -163,6 +220,53 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   @Override
   public @NonNull CommandManager registerAll(@NonNull JdaCommand... commands) {
     return (CommandManager) StarboxCommandManager.super.registerAll(commands);
+  }
+
+  /**
+   * Parse and register and commands that will only run in an assigned guild.
+   *
+   * @param guild the guild that will be allowed to use the commands
+   * @param object the object to parse the commands
+   * @return this same instance
+   */
+  public @NonNull CommandManager parseAndRegister(@NonNull Guild guild, @NonNull Object object) {
+    return this.registerAll(guild, this.parseCommands(object));
+  }
+
+  /**
+   * Parse and register and commands that will only run in an assigned guild.
+   *
+   * @param guild the guild that will be allowed to use the commands
+   * @param objects the objects to parse the commands
+   * @return this same instanceK
+   */
+  public @NonNull CommandManager parseAndRegisterAll(@NonNull Guild guild, @NonNull Object... objects) {
+    return this.registerAll(guild, this.parseCommands(objects));
+  }
+
+  /**
+   * Register a collection of commands inside this manager that will only run in an assigned guild.
+   *
+   * @param guild the guild that will be allowed to use the commands
+   * @param commands the collection to register
+   * @return this same instance
+   */
+  public @NonNull CommandManager registerAll(@NonNull Guild guild, @NonNull Collection<? extends JdaCommand> commands) {
+    for (JdaCommand command : commands) {
+      this.register(guild, command);
+    }
+    return this;
+  }
+
+  /**
+   * Register a collection of commands inside this manager that will only run in an assigned guild.
+   *
+   * @param guild the guild that will be allowed to use the commands
+   * @param commands the collection to register
+   * @return this same instance
+   */
+  public @NonNull CommandManager registerAll(@NonNull Guild guild, @NonNull JdaCommand... commands) {
+    return this.registerAll(guild, Arrays.asList(commands));
   }
 
   @Override

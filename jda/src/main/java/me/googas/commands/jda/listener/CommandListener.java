@@ -61,7 +61,7 @@ public class CommandListener implements EventListener {
     }
     this.listenerOptions.preCommand(event, commandName, strings);
     commandName = commandName.substring(prefix.length());
-    JdaCommand command = this.manager.getCommand(commandName);
+    JdaCommand command = this.manager.getCommand(event.getGuild(), commandName);
     GenericCommandContext context =
         this.getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = this.getResult(command, commandName, context);
@@ -94,7 +94,7 @@ public class CommandListener implements EventListener {
     String[] strings =
         event.getOptions().stream().map(OptionMapping::getAsString).toArray(String[]::new);
     // this.listenerOptions.preCommand(event, event.getName(), strings);
-    JdaCommand command = this.manager.getCommand(name);
+    JdaCommand command = this.manager.getCommand(event.getGuild(), name);
     SlashCommandContext context =
         new SlashCommandContext(
             strings,
