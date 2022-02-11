@@ -156,8 +156,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   public @NonNull CommandManager register(@NonNull Guild guild, @NonNull JdaCommand command) {
     long id = guild.getIdLong();
     this.getCommands(guild).add(command);
-    List<JdaCommand> commands = this.guildCommands.computeIfAbsent(id, key -> new ArrayList<>());
-    commands.add(command);
+    guild.upsertCommand(command.getCommandData()).queue();
     return this;
   }
 
