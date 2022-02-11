@@ -12,11 +12,13 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /** This context is used for every command {@link User being the sender}. */
 public class GenericCommandContext implements CommandContext {
 
   @NonNull @Getter protected final JDA jda;
+  @NonNull @Getter protected final MessageReceivedEvent event;
   @NonNull protected final User sender;
   @NonNull protected final MessageChannel channel;
   @NonNull protected final MessagesProvider messagesProvider;
@@ -30,6 +32,7 @@ public class GenericCommandContext implements CommandContext {
    *
    * @param jda the jda instance in which the {@link me.googas.commands.jda.CommandManager} is
    *     registered
+   * @param event the event of the message that executes the command
    * @param sender the sender of the command
    * @param args the strings send in the command
    * @param channel the channel where the command was executed
@@ -40,6 +43,7 @@ public class GenericCommandContext implements CommandContext {
    */
   public GenericCommandContext(
       @NonNull JDA jda,
+      @NonNull MessageReceivedEvent event,
       @NonNull User sender,
       @NonNull String[] args,
       @NonNull MessageChannel channel,
@@ -48,6 +52,7 @@ public class GenericCommandContext implements CommandContext {
       String commandName,
       Message message) {
     this.jda = jda;
+    this.event = event;
     this.sender = sender;
     this.strings = args;
     this.channel = channel;
@@ -101,6 +106,7 @@ public class GenericCommandContext implements CommandContext {
   public @NonNull GenericCommandContext getChildren() {
     return new GenericCommandContext(
         this.jda,
+        event,
         this.sender,
         Arrays.copyOfRange(strings, 1, strings.length),
         this.channel,

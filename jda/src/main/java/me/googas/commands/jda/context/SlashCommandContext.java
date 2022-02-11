@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 /**
@@ -21,6 +22,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 public class SlashCommandContext implements CommandContext {
 
   @NonNull protected final ProvidersRegistry<CommandContext> registry;
+  @NonNull @Getter protected final SlashCommandEvent event;
   @NonNull protected final MessagesProvider messagesProvider;
   @NonNull @Getter private final String string;
   @NonNull @Getter private final String[] strings;
@@ -41,6 +43,7 @@ public class SlashCommandContext implements CommandContext {
    * @param sender the user that executed the command
    * @param messagesProvider the provider for messages
    * @param registry the registry for the objects
+   * @param event the event that executed the command
    */
   public SlashCommandContext(
       @NonNull String[] strings,
@@ -50,7 +53,8 @@ public class SlashCommandContext implements CommandContext {
       @NonNull String commandName,
       @NonNull User sender,
       @NonNull MessagesProvider messagesProvider,
-      @NonNull ProvidersRegistry<CommandContext> registry) {
+      @NonNull ProvidersRegistry<CommandContext> registry,
+      @NonNull SlashCommandEvent event) {
     this.string = Strings.fromArray(strings);
     this.strings = strings;
     this.jda = jda;
@@ -60,6 +64,7 @@ public class SlashCommandContext implements CommandContext {
     this.sender = sender;
     this.messagesProvider = messagesProvider;
     this.registry = registry;
+    this.event = event;
   }
 
   @Override
@@ -92,6 +97,7 @@ public class SlashCommandContext implements CommandContext {
         this.commandName,
         this.sender,
         this.messagesProvider,
-        this.registry);
+        this.registry,
+        event);
   }
 }

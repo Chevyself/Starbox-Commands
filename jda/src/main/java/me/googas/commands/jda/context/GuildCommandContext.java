@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
  * This context is used when the command is executed inside of a guild. The context is still a
@@ -29,6 +30,7 @@ public class GuildCommandContext extends GenericCommandContext {
    *
    * @param jda the jda instance in which the {@link me.googas.commands.jda.CommandManager} is
    *     registered
+   * @param event the event of the message that executes the command
    * @param message the message that executed the command
    * @param sender the sender of the command
    * @param args the strings representing the arguments of the command
@@ -39,6 +41,7 @@ public class GuildCommandContext extends GenericCommandContext {
    */
   public GuildCommandContext(
       @NonNull JDA jda,
+      @NonNull MessageReceivedEvent event,
       @NonNull User sender,
       @NonNull String[] args,
       @NonNull MessageChannel channel,
@@ -46,7 +49,7 @@ public class GuildCommandContext extends GenericCommandContext {
       ProvidersRegistry<CommandContext> registry,
       String commandName,
       @NonNull Message message) {
-    super(jda, sender, args, channel, messagesProvider, registry, commandName, message);
+    super(jda, event, sender, args, channel, messagesProvider, registry, commandName, message);
     this.member =
         Objects.requireNonNull(
             message.getMember(), "Guild command context must have a valid member");
@@ -62,6 +65,7 @@ public class GuildCommandContext extends GenericCommandContext {
   public @NonNull GuildCommandContext getChildren() {
     return new GuildCommandContext(
         this.jda,
+        this.event,
         this.sender,
         Arrays.copyOfRange(strings, 1, strings.length),
         this.channel,

@@ -104,7 +104,8 @@ public class CommandListener implements EventListener {
             name,
             event.getUser(),
             this.messagesProvider,
-            this.manager.getProvidersRegistry());
+            this.manager.getProvidersRegistry(),
+            event);
     Result result = this.getResult(command, name, context);
     Message response = this.getMessage(result, context);
     Consumer<Message> consumer = this.getConsumer(result, context);
@@ -179,6 +180,7 @@ public class CommandListener implements EventListener {
     if (event.getMember() != null) {
       return new GuildCommandContext(
           manager.getJda(),
+          event,
           event.getAuthor(),
           strings,
           event.getChannel(),
@@ -189,6 +191,7 @@ public class CommandListener implements EventListener {
     } else {
       return new GenericCommandContext(
           manager.getJda(),
+          event,
           event.getAuthor(),
           strings,
           event.getChannel(),
