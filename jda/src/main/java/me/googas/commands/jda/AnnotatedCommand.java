@@ -31,8 +31,8 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 /**
  * This is the direct extension of {@link JdaCommand} for reflection commands. This is returned from
@@ -177,8 +177,8 @@ public class AnnotatedCommand extends JdaCommand
   }
 
   @Override
-  public @NonNull CommandData getCommandData() {
-    CommandData data = super.getCommandData();
+  public @NonNull SlashCommandData getCommandData() {
+    SlashCommandData data = super.getCommandData();
     this.arguments.stream()
         .map(AnnotatedCommand::toOptionData)
         .filter(Objects::nonNull)

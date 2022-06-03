@@ -14,7 +14,8 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.starbox.time.Time;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 /**
@@ -181,8 +182,8 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    * @return the command data
    */
   @NonNull
-  public CommandData getCommandData() {
-    CommandData commandData = new CommandData(this.getName(), this.getDescription());
+  public SlashCommandData getCommandData() {
+    SlashCommandData commandData = Commands.slash(this.getName(), this.getDescription());
     this.getChildren().stream()
         .map(JdaCommand::toSubcommandData)
         .forEach(commandData::addSubcommands);

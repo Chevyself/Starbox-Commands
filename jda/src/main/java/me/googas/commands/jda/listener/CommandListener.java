@@ -16,7 +16,7 @@ import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.SubscribeEvent;
@@ -88,7 +88,7 @@ public class CommandListener implements EventListener {
    * @param event the event of a slash command being received
    */
   @SubscribeEvent
-  public void onSlashCommand(SlashCommandEvent event) {
+  public void onSlashCommand(SlashCommandInteractionEvent event) {
     event.deferReply().queue();
     String name = event.getName();
     String[] strings =
@@ -206,8 +206,8 @@ public class CommandListener implements EventListener {
   public void onEvent(@NonNull @NotNull final GenericEvent genericEvent) {
     if (genericEvent instanceof MessageReceivedEvent) {
       this.onMessageReceived((MessageReceivedEvent) genericEvent);
-    } else if (genericEvent instanceof SlashCommandEvent) {
-      this.onSlashCommand((SlashCommandEvent) genericEvent);
+    } else if (genericEvent instanceof SlashCommandInteractionEvent) {
+      this.onSlashCommand((SlashCommandInteractionEvent) genericEvent);
     }
   }
 }
