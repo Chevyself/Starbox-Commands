@@ -99,5 +99,12 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
       int missing,
       @NonNull T context);
 
+  /**
+   * Get the message sent when the user is still on cooldown.
+   *
+   * @param context the context of the command
+   * @param timeLeft the time left for the user in the getMillis
+   * @return the built string
+   */
   String cooldown(@NonNull T context, @NonNull Time timeLeft);
 }
