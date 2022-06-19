@@ -12,7 +12,6 @@ import me.googas.commands.providers.BooleanProvider;
 import me.googas.commands.providers.DoubleProvider;
 import me.googas.commands.providers.FloatProvider;
 import me.googas.commands.providers.IntegerProvider;
-import me.googas.commands.providers.JoinedStringsProvider;
 import me.googas.commands.providers.LongProvider;
 import me.googas.commands.providers.StringProvider;
 import me.googas.commands.providers.TimeProvider;
@@ -47,7 +46,6 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
         .addProvider(new DoubleProvider<>(messages))
         .addProvider(new FloatProvider<>(messages))
         .addProvider(new IntegerProvider<>(messages))
-        .addProvider(new JoinedStringsProvider<>())
         .addProvider(new LongProvider<>(messages))
         .addProvider(new StringProvider<>())
         .addProvider(new TimeProvider<>(messages));

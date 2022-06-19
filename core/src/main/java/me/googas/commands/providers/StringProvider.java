@@ -5,7 +5,7 @@ import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
 import me.googas.commands.providers.type.StarboxMultipleArgumentProvider;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 
 /**
  * Provides the {@link StarboxCommandManager} with {@link String}.
@@ -28,6 +28,6 @@ public class StringProvider<T extends StarboxCommandContext>
 
   @Override
   public @NonNull String fromStrings(@NonNull String[] strings, @NonNull T context) {
-    return Strings.fromArray(strings);
+    return Strings.join(strings);
   }
 }

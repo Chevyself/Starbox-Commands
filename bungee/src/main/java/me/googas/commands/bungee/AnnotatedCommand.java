@@ -22,7 +22,7 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 

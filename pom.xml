@@ -48,7 +48,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Javadoc -->
+            <!-- Javadoc  -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -65,6 +65,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Dependency to the Lombok annotations -->
         <dependency>
@@ -80,19 +87,6 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- Starbox core -->
-        <dependency>
-            <groupId>me.googas.starbox</groupId>
-            <artifactId>core</artifactId>
-            <version>de71c92a6b</version>
-        </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
 </project>

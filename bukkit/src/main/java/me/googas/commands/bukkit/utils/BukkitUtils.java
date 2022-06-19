@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -4,7 +4,7 @@ import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.result.Result;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Member;
 

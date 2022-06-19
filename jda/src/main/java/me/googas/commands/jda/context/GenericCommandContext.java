@@ -7,7 +7,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -81,7 +81,7 @@ public class GenericCommandContext implements CommandContext {
   @NonNull
   @Override
   public String getString() {
-    return Strings.fromArray(this.strings);
+    return Strings.join(this.strings);
   }
 
   @NonNull

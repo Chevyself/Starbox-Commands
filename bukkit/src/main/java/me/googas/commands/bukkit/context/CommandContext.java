@@ -7,7 +7,7 @@ import lombok.experimental.Delegate;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import org.bukkit.command.CommandSender;
 
 /** The context of a Bukkit command. */
@@ -33,7 +33,7 @@ public class CommandContext implements StarboxCommandContext {
       @NonNull MessagesProvider messagesProvider,
       @NonNull ProvidersRegistry<CommandContext> registry) {
     this.sender = sender;
-    this.string = Strings.fromArray(strings);
+    this.string = Strings.join(strings);
     this.strings = strings;
     this.messagesProvider = messagesProvider;
     this.registry = registry;

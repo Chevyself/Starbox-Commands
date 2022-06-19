@@ -6,7 +6,7 @@ import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
-import me.googas.starbox.time.Time;
+import me.googas.commands.time.Time;
 
 /**
  * Provides the {@link StarboxCommandManager} with a {@link Time}.

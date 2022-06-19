@@ -22,7 +22,7 @@ import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 

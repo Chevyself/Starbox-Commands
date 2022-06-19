@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.result.StarboxResult;
-import me.googas.starbox.builders.Builder;
 import net.dv8tion.jda.api.entities.Message;
 
 /**
@@ -99,7 +98,7 @@ public class Result implements StarboxResult {
   }
 
   /** Builder for results. This will help to create a result in a neater way */
-  public static class ResultBuilder implements Builder<Result> {
+  public static class ResultBuilder {
 
     @NonNull private ResultType type = ResultType.GENERIC;
     private String description = null;
@@ -155,7 +154,6 @@ public class Result implements StarboxResult {
       return this;
     }
 
-    @Override
     public @NonNull Result build() {
       return new Result(
           type,

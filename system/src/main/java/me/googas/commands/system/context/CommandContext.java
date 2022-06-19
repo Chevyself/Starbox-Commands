@@ -6,7 +6,7 @@ import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.MessagesProvider;
 import me.googas.commands.system.context.sender.CommandSender;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 
 /**
  * This context to execute {@link me.googas.commands.system.SystemCommand} that does not include
@@ -39,7 +39,7 @@ public class CommandContext implements StarboxCommandContext {
       @NonNull MessagesProvider messagesProvider) {
     this.sender = sender;
     this.strings = strings;
-    this.string = Strings.fromArray(strings);
+    this.string = Strings.join(strings);
     this.registry = registry;
     this.messagesProvider = messagesProvider;
   }

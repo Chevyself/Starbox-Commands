@@ -14,7 +14,7 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.system.context.sender.CommandSender;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 
 /**
  * This is the direct extension of {@link SystemCommand} for reflection commands this is returned

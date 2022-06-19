@@ -12,7 +12,7 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
-import me.googas.starbox.time.Time;
+import me.googas.commands.time.Time;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;

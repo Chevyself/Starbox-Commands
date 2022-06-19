@@ -1,11 +1,10 @@
 package me.googas.commands.bungee.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.starbox.JsonUtils;
-import me.googas.starbox.builders.MapBuilder;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -41,7 +40,7 @@ public class Components {
 
   /**
    * Parse the JSON string into an array of {@link BaseComponent}. This will check that the String
-   * is JSON with {@link JsonUtils#isJson(String)} if it is then it will use {@link
+   * is JSON with {@link #isJson(String)} if it is then it will use {@link
    * ComponentSerializer#parse(String)} to get the array else it will return an array of {@link
    * BaseComponent} with a single entry of {@link TextComponent}
    *
@@ -50,7 +49,7 @@ public class Components {
    */
   @NonNull
   public static BaseComponent[] getComponent(@NonNull String string) {
-    if (JsonUtils.isJson(string)) {
+    if (isJson(string)) {
       return ComponentSerializer.parse(string);
     } else {
       return Components.deserializePlain('&', string);
@@ -124,6 +123,18 @@ public class Components {
     return current;
   }
 
+  /**
+   * Checks if a string is json. This method will return true if the string starts with "[" or "{"
+   * and ends with "]" or "}"
+   *
+   * @param string the string to check
+   * @return true if the string is json
+   */
+  private static boolean isJson(@NonNull String string) {
+    return string.startsWith("{") && string.endsWith("}")
+        || string.startsWith("[") && string.endsWith("]");
+  }
+
   @NonNull
   private interface Modifier {
 
@@ -142,6 +153,30 @@ public class Components {
     @Override
     public void modify(@NonNull TextComponent component) {
       component.setColor(color);
+    }
+  }
+
+  private static class MapBuilder<K, V> {
+
+    @NonNull private final Map<K, V> map;
+
+    private MapBuilder(@NonNull Map<K, V> map) {
+      this.map = map;
+    }
+
+    private MapBuilder() {
+      this(new HashMap<>());
+    }
+
+    @NonNull
+    private MapBuilder<K, V> put(@NonNull K key, @NonNull V value) {
+      map.put(key, value);
+      return this;
+    }
+
+    @NonNull
+    private Map<K, V> build() {
+      return new HashMap<>(this.map);
     }
   }
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -55,7 +55,7 @@ public class SlashCommandContext implements CommandContext {
       @NonNull MessagesProvider messagesProvider,
       @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull SlashCommandInteractionEvent event) {
-    this.string = Strings.fromArray(strings);
+    this.string = Strings.join(strings);
     this.strings = strings;
     this.jda = jda;
     this.options = options;

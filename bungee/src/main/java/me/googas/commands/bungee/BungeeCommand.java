@@ -9,7 +9,7 @@ import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.result.Result;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;

@@ -84,7 +84,7 @@ public interface Argument<O> {
   }
 
   /**
-   * Parse the list {@link Argument} from an array of parameters and its annotations.
+   * Parse the list from an array of parameters and its annotations.
    *
    * <p>To parse each argument this will iterate thru the parameter class and its annotations
    * checking that {@link #isEmpty(Annotation[])} if this method results true it will return an
@@ -93,9 +93,9 @@ public interface Argument<O> {
    * MultipleArgument} the position will increase as much as {@link Multiple#min()} and {@link
    * Multiple#max()} requires.
    *
-   * @param parameters the array of parameters to parse to {@link Argument}
+   * @param parameters the array of parameters to parse to this
    * @param annotations the array of annotations for each parameter
-   * @return the list of parsed {@link Argument}
+   * @return the list of parsed items of this class
    */
   @NonNull
   static List<Argument<?>> parseArguments(
@@ -241,7 +241,7 @@ public interface Argument<O> {
   }
 
   /**
-   * Generates an usage message for the provided {@link List} of {@link Argument}
+   * Generates an usage message for the provided item of this class
    *
    * <p>A list of arguments may also be used to get the usage of a command. From <a
    * href="https://en.wikipedia.org/wiki/Usage_message">Wikipedia</a>

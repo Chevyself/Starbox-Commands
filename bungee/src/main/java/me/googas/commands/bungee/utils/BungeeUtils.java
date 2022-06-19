@@ -2,7 +2,7 @@ package me.googas.commands.bungee.utils;
 
 import java.util.Map;
 import lombok.NonNull;
-import me.googas.starbox.Strings;
+import me.googas.commands.util.Strings;
 import net.md_5.bungee.api.ChatColor;
 
 /**

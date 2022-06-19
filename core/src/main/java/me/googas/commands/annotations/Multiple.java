@@ -4,13 +4,11 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import me.googas.commands.objects.JoinedStrings;
 
 /**
  * Used for the representation of parameters that require multiple strings
  *
- * <p>An object that needs multiple stings can be something like an array. For example: The custom
- * object {@link JoinedStrings} which takes many strings to format a bigger {@link String}.
+ * <p>An object that needs multiple stings can be something like an array.
  *
  * <pre>
  * public void AMethod(@Multiple @Free(suggestions = "Hello world") String message) {

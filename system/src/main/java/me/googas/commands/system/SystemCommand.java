@@ -34,8 +34,8 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
    * arguments to successfully run the command
    *
    * @return the usage of the command in case it is a {@link ReflectSystemCommand} it will be
-   *     auto-generated using {@link me.googas.starbox.Strings#buildUsageAliases(String...)} and
-   *     {@link me.googas.commands.arguments.Argument#generateUsage(List)}
+   *     auto-generated using {@link me.googas.commands.util.Strings#buildUsageAliases(String...)}
+   *     and {@link me.googas.commands.arguments.Argument#generateUsage(List)}
    */
   @NonNull
   String getUsage();
