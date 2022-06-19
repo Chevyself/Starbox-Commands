@@ -2,6 +2,7 @@ package me.googas.commands.bungee.messages;
 
 import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.time.Time;
 import me.googas.commands.util.Strings;
 
 /** The default messages provider for bungee. */
@@ -60,6 +61,12 @@ public class BungeeMessagesProvider implements MessagesProvider {
         + name
         + "&c&o: &7&o"
         + description;
+  }
+
+  @Override
+  public String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+    // TODO when the cooldown is added to bungee
+    return null;
   }
 
   @NonNull

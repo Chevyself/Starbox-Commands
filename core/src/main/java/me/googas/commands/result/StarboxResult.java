@@ -26,4 +26,24 @@ public interface StarboxResult {
    */
   @NonNull
   Optional<String> getMessage();
+
+  /**
+   * Check whether this result should apply cooldown to the context.
+   *
+   * @return true if this result should apply cooldown
+   */
+  default boolean isApplyCooldown() {
+    return false;
+  }
+
+  /**
+   * Set whether this result should apply cooldown to the context.
+   *
+   * @param apply the new value
+   * @return this same result instance
+   */
+  @NonNull
+  default StarboxResult setApplyCooldown(boolean apply) {
+    return this;
+  }
 }

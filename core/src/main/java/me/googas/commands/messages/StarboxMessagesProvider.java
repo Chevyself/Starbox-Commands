@@ -3,6 +3,7 @@ package me.googas.commands.messages;
 import lombok.NonNull;
 import me.googas.commands.arguments.MultipleArgument;
 import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.time.Time;
 
 /**
  * Provides messages for different instances of the manager.
@@ -97,4 +98,6 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
       int minSize,
       int missing,
       @NonNull T context);
+
+  String cooldown(@NonNull T context, @NonNull Time timeLeft);
 }

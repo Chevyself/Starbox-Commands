@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.CooldownManager;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.context.StarboxCommandContext;
@@ -14,6 +15,8 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.system.context.sender.CommandSender;
+import me.googas.commands.time.Time;
+import me.googas.commands.time.annotations.TimeAmount;
 import me.googas.commands.util.Strings;
 
 /**
@@ -31,6 +34,7 @@ public class ReflectSystemCommand
   @NonNull @Getter private final CommandManager manager;
   @NonNull @Getter private final List<String> aliases;
   @NonNull @Getter private final List<SystemCommand> children;
+  private final CooldownManager<CommandContext> cooldown;
 
   /**
    * Create the command.
@@ -44,6 +48,7 @@ public class ReflectSystemCommand
    * @param aliases the aliases that match the command for its execution
    * @param children the list of children commands which can be used with this parent prefix. Learn
    *     more in {@link me.googas.commands.annotations.Parent}
+   * @param cooldown the amount of time that the sender has to wait to execute the command again
    */
   public ReflectSystemCommand(
       @NonNull Method method,
@@ -51,13 +56,16 @@ public class ReflectSystemCommand
       @NonNull List<Argument<?>> arguments,
       @NonNull CommandManager manager,
       @NonNull List<String> aliases,
-      @NonNull List<SystemCommand> children) {
+      @NonNull List<SystemCommand> children,
+      @NonNull TimeAmount cooldown) {
     this.method = method;
     this.object = object;
     this.arguments = arguments;
     this.manager = manager;
     this.aliases = aliases;
     this.children = children;
+    this.cooldown =
+        Time.of(cooldown).toMillis() > 0 ? new SystemCooldownManager(Time.of(cooldown)) : null;
   }
 
   @Override
@@ -68,9 +76,14 @@ public class ReflectSystemCommand
   @Override
   public Result run(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
+    if (this.cooldown != null && this.cooldown.hasCooldown(context)) {
+      return new Result(
+          manager.getMessagesProvider().cooldown(context, this.cooldown.getTimeLeft(context)));
+    }
     try {
       Object object = this.method.invoke(this.getObject(), this.getObjects(context));
       if (object instanceof Result) {
+        if (this.cooldown != null && ((Result) object).isApplyCooldown()) this.cooldown.refresh(context);
         return (Result) object;
       } else {
         return null;

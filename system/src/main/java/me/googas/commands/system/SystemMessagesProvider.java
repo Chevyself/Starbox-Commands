@@ -2,6 +2,7 @@ package me.googas.commands.system;
 
 import lombok.NonNull;
 import me.googas.commands.system.context.CommandContext;
+import me.googas.commands.time.Time;
 
 /** The default {@link MessagesProvider} for System commands. */
 public class SystemMessagesProvider implements MessagesProvider {
@@ -46,5 +47,10 @@ public class SystemMessagesProvider implements MessagesProvider {
       @NonNull CommandContext context) {
     return String.format(
         "Missing arguments of %s (%s) in %d missing: %d", name, description, position, missing);
+  }
+
+  @Override
+  public String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+    return "You are not allowed to run this command for another " + timeLeft;
   }
 }

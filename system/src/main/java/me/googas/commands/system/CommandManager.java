@@ -114,7 +114,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
         Argument.parseArguments(method),
         this,
         Arrays.asList(annotation.aliases()),
-        new ArrayList<>());
+        new ArrayList<>(),
+        annotation.cooldown());
   }
 
   @Override

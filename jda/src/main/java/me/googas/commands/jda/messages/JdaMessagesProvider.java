@@ -3,6 +3,7 @@ package me.googas.commands.jda.messages;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.ResultType;
+import me.googas.commands.time.Time;
 import me.googas.commands.util.Strings;
 
 /**
@@ -93,11 +94,18 @@ public class JdaMessagesProvider implements MessagesProvider {
   }
 
   @Override
+  public String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+    // TODO this already exists in JDA but its gotta be changed to this new one
+    return null;
+  }
+
+  @Override
   public @NonNull String thumbnailUrl(CommandContext context) {
     return "";
   }
 
   @Override
+  @Deprecated
   public @NonNull String cooldown(long timeLeft, CommandContext context) {
     return "You are on cooldown! please wait " + timeLeft + "ms";
   }
@@ -126,7 +134,7 @@ public class JdaMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public String noMessage(CommandContext context) {
+  public String noMessage(@NonNull CommandContext context) {
     return "This command must be executed from a message";
   }
 }

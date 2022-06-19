@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
+import me.googas.commands.time.annotations.TimeAmount;
 
 /**
  * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
@@ -25,4 +26,12 @@ public @interface Command {
    */
   @NonNull
   String[] aliases();
+
+  /**
+   * The amount of time until the command can be executed again.
+   *
+   * @return the time amount
+   */
+  @NonNull
+  TimeAmount cooldown() default @TimeAmount();
 }

@@ -6,6 +6,7 @@ import lombok.NonNull;
 import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
+import me.googas.commands.time.Time;
 import me.googas.commands.util.Strings;
 import org.bukkit.plugin.Plugin;
 
@@ -65,6 +66,12 @@ public class BukkitMessagesProvider implements MessagesProvider {
         + name
         + "&c&o: &7&o"
         + description;
+  }
+
+  @Override
+  public String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+    // TODO add when bukkit cooldown is also added
+    return null;
   }
 
   @NonNull
