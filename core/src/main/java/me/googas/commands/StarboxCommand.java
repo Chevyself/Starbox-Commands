@@ -78,4 +78,7 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    */
   @NonNull
   Collection<T> getChildren();
+
+  @NonNull
+  Optional<? extends StarboxCooldownManager<C>> getCooldownManager();
 }

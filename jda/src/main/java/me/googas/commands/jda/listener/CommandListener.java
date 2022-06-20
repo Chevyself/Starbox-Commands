@@ -55,13 +55,14 @@ public class CommandListener implements EventListener {
   public void onMessageReceived(@NonNull MessageReceivedEvent event) {
     String[] strings = event.getMessage().getContentRaw().split(" +");
     String commandName = strings[0];
-    String prefix = listenerOptions.getPrefix(event.getGuild());
+    String prefix = listenerOptions.getPrefix(event.isFromGuild() ? event.getGuild() : null);
     if (!commandName.startsWith(prefix)) {
       return;
     }
     this.listenerOptions.preCommand(event, commandName, strings);
     commandName = commandName.substring(prefix.length());
-    JdaCommand command = this.manager.getCommand(event.getGuild(), commandName);
+    JdaCommand command =
+        this.manager.getCommand(event.isFromGuild() ? event.getGuild() : null, commandName);
     GenericCommandContext context =
         this.getCommandContext(event, strings, command == null ? null : command.getName());
     Result result = this.getResult(command, commandName, context);

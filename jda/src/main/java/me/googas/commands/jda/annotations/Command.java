@@ -5,6 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
+import me.googas.commands.jda.cooldown.CooldownBehaviour;
 import me.googas.commands.time.annotations.TimeAmount;
 import net.dv8tion.jda.api.Permission;
 
@@ -37,7 +38,8 @@ public @interface Command {
   String description() default "No description provided";
 
   /**
-   * Get the permission as a string node. If this is left empty then it will use the {@link}
+   * Get the permission as a string node. If this is left empty then it will use the {@link
+   * #permission()}
    *
    * @return the string permission
    */
@@ -67,4 +69,6 @@ public @interface Command {
    * @return true if the result should be excluded
    */
   boolean excluded() default false;
+
+  CooldownBehaviour behaviour() default CooldownBehaviour.USER;
 }

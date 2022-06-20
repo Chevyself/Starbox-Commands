@@ -94,9 +94,9 @@ public class JdaMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
     // TODO this already exists in JDA but its gotta be changed to this new one
-    return null;
+    return "You are on cooldown! please wait " + timeLeft;
   }
 
   @Override

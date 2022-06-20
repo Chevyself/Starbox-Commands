@@ -20,7 +20,7 @@ public class Commands {
     return new Result(message == null || message.isEmpty() ? "No message was sent" : message);
   }
 
-  @Command(aliases = "hello", cooldown = @TimeAmount(string = "10s"))
+  @Command(aliases = "hello", cooldown = @TimeAmount(value = "10s"))
   public Result hello() {
     return new Result("World").setApplyCooldown(true);
   }

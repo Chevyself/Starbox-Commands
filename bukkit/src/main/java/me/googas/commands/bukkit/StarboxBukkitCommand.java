@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
+import me.googas.commands.StarboxCooldownManager;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.bukkit.utils.BukkitUtils;
@@ -170,4 +171,10 @@ public abstract class StarboxBukkitCommand extends Command
 
   @Override
   public abstract Result execute(@NonNull CommandContext context);
+
+  @Override
+  public @NonNull Optional<? extends StarboxCooldownManager<CommandContext>> getCooldownManager() {
+    // TODO
+    return Optional.empty();
+  }
 }

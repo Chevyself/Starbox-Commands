@@ -1,19 +1,20 @@
 package me.googas.commands.jda;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.StarboxCommand;
+import me.googas.commands.StarboxCooldownManager;
 import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.cooldown.CooldownBehaviour;
+import me.googas.commands.jda.cooldown.JdaCooldownManager;
+import me.googas.commands.jda.cooldown.UnsupportedContextException;
 import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.time.Time;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -31,10 +32,10 @@ import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCommand> {
 
   @NonNull protected final CommandManager manager;
-  @NonNull @Getter private final Time cooldown;
-  @NonNull @Getter private final Set<CooldownUser> cooldownUsers = new HashSet<>();
   @Getter @Setter private Permit permission;
   @Getter @Setter private boolean excluded;
+
+  protected final JdaCooldownManager cooldown;
 
   /**
    * Create the command.
@@ -46,18 +47,17 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    *     Permit)}
    * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
    *     is {@link ResultType#GENERIC}
-   * @param cooldown the time that users must wait until they can use the command again {@link
-   *     #checkCooldown(User, CommandContext)}
    */
   public JdaCommand(
       @NonNull CommandManager manager,
       Permit permission,
       boolean excluded,
+      @NonNull CooldownBehaviour behaviour,
       @NonNull Time cooldown) {
     this.manager = manager;
     this.permission = permission;
     this.excluded = excluded;
-    this.cooldown = cooldown;
+    this.cooldown = cooldown.toMillisRound() > 0 ? behaviour.create(cooldown) : null;
   }
 
   /**
@@ -67,51 +67,13 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
    *     is {@link ResultType#GENERIC}
-   * @param cooldown the time that users must wait until they can use the command again {@link
-   *     #checkCooldown(User, CommandContext)}
    */
-  public JdaCommand(@NonNull CommandManager manager, boolean excluded, @NonNull Time cooldown) {
-    this(manager, null, excluded, cooldown);
-  }
-
-  /**
-   * Check the cooldown of the sender. If there's still an instance of {@link CooldownUser} in
-   * {@link #cooldownUsers} a {@link Result} will be returned therefore the command will not be
-   * executed.
-   *
-   * @param sender the sender of the command to check
-   * @param context the context of the command
-   * @return a {@link ResultType#ERROR} if the sender is not allowed to use the command yet else
-   *     null
-   */
-  public Result checkCooldown(@NonNull User sender, CommandContext context) {
-    if (this.cooldown.toMillis() > 0) {
-      CooldownUser cooldownUser = this.getCooldownUser(sender);
-      // TODO make them ignore if the user has certain permission
-      if (cooldownUser != null && !cooldownUser.isExpired()) {
-        return Result.forType(ResultType.USAGE)
-            .setDescription(
-                this.manager
-                    .getMessagesProvider()
-                    .cooldown(cooldownUser.getTimeLeftMillis(), context))
-            .build();
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Get an instance of cooldown user. If the user is still in cooldown an instance of {@link
-   * CooldownUser} will be returned else null
-   *
-   * @param sender the sender to get the {@link CooldownUser} if it is on cooldown
-   * @return an instance if the sender is in cooldown
-   */
-  public CooldownUser getCooldownUser(@NonNull User sender) {
-    for (CooldownUser user : this.cooldownUsers) {
-      if (user.getId() == sender.getIdLong()) return user;
-    }
-    return null;
+  public JdaCommand(
+      @NonNull CommandManager manager,
+      boolean excluded,
+      @NonNull CooldownBehaviour behaviour,
+      @NonNull Time cooldown) {
+    this(manager, null, excluded, behaviour, cooldown);
   }
 
   /**
@@ -155,7 +117,32 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
         return command.execute(context.getChildren());
       }
     }
-    return this.run(context);
+    Result result =
+        this.manager.getPermissionChecker().checkPermission(context, this.getPermission());
+    if (result == null) {
+      try {
+        if (this.cooldown != null && this.cooldown.hasCooldown(context)) {
+          result =
+              Result.forType(ResultType.USAGE)
+                  .setDescription(
+                      this.manager
+                          .getMessagesProvider()
+                          .cooldown(context, this.cooldown.getTimeLeft(context)))
+                  .build();
+        } else {
+          result = this.run(context);
+        }
+        if (result.isApplyCooldown() && this.cooldown != null) {
+          this.cooldown.refresh(context);
+        }
+      } catch (UnsupportedContextException e) {
+        result =
+            Result.forType(ResultType.ERROR)
+                .setDescription(this.manager.getMessagesProvider().guildOnly(context))
+                .build();
+      }
+    }
+    return result;
   }
 
   @Override
@@ -193,5 +180,10 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @NonNull
   private SubcommandData toSubcommandData() {
     return new SubcommandData(this.getName(), this.getDescription());
+  }
+
+  @Override
+  public @NonNull Optional<? extends StarboxCooldownManager<CommandContext>> getCooldownManager() {
+    return Optional.ofNullable(this.cooldown);
   }
 }

@@ -16,7 +16,7 @@ public @interface TimeAmount {
    *
    * @return the value of the amount of time
    */
-  double value() default 0;
+  double amount() default 0;
 
   /**
    * Get the unit of the amount of time. This is used {@link Time#of(double, StarboxUnit)}
@@ -26,11 +26,11 @@ public @interface TimeAmount {
   Unit unit() default Unit.MILLIS;
 
   /**
-   * Get the {@link String} to forName the amount of time instead of using {@link #value()} and
+   * Get the {@link String} to forName the amount of time instead of using {@link #amount()} and
    * {@link #unit()}.
    *
    * @return the {@link String} that can be parsed using {@link Time#parse(String, boolean)}
    */
   @NonNull
-  String string() default "";
+  String value() default "";
 }

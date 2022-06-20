@@ -7,11 +7,11 @@ import me.googas.commands.time.Time;
 /**
  * Manages the cooldown of commands.
  *
- * Cooldown is basically the time that a sender has to wait until it can execute a command again.
+ * <p>Cooldown is basically the time that a sender has to wait until it can execute a command again.
  *
  * @param <C> the context that executes the command
  */
-public interface CooldownManager<C extends StarboxCommandContext> {
+public interface StarboxCooldownManager<C extends StarboxCommandContext> {
 
   /**
    * Check whether a context has cooldown.

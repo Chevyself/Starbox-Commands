@@ -45,6 +45,8 @@ public class Result implements StarboxResult {
   /** Which is the consumer of the {@link #message} after it is sent. */
   @Getter private final Consumer<Message> success;
 
+  @Getter private boolean applyCooldown;
+
   /**
    * Create an instance.
    *
@@ -97,6 +99,12 @@ public class Result implements StarboxResult {
     return Optional.ofNullable(this.message);
   }
 
+  @Override
+  public @NonNull Result setApplyCooldown(boolean apply) {
+    this.applyCooldown = apply;
+    return this;
+  }
+
   /** Builder for results. This will help to create a result in a neater way */
   public static class ResultBuilder {
 
@@ -104,6 +112,7 @@ public class Result implements StarboxResult {
     private String description = null;
     private transient Consumer<Message> success = null;
     private transient Supplier<Message> messageSupplier = null;
+    private boolean applyCooldown;
 
     /**
      * Set the type of the result.
@@ -154,12 +163,18 @@ public class Result implements StarboxResult {
       return this;
     }
 
+    public @NonNull ResultBuilder setApplyCooldown(boolean apply) {
+      this.applyCooldown = apply;
+      return this;
+    }
+
     public @NonNull Result build() {
       return new Result(
-          type,
-          this.messageSupplier == null ? null : this.messageSupplier.get(),
-          description,
-          success);
+              type,
+              this.messageSupplier == null ? null : this.messageSupplier.get(),
+              description,
+              success)
+          .setApplyCooldown(applyCooldown);
     }
   }
 }

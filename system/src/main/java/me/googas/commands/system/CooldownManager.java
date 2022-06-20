@@ -1,14 +1,12 @@
 package me.googas.commands.system;
 
 import lombok.NonNull;
-import me.googas.commands.CooldownManager;
+import me.googas.commands.StarboxCooldownManager;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.time.Time;
 
-/**
- * Implementation of {@link CommandManager} for system commands.
- */
-public class SystemCooldownManager implements CooldownManager<CommandContext> {
+/** Implementation of {@link CommandManager} for system commands. */
+public class CooldownManager implements StarboxCooldownManager<CommandContext> {
 
   private long millis;
   @NonNull private final Time time;
@@ -18,7 +16,7 @@ public class SystemCooldownManager implements CooldownManager<CommandContext> {
    *
    * @param time the amount of time that the sender has to wait to execute the command again
    */
-  public SystemCooldownManager(@NonNull Time time) {
+  public CooldownManager(@NonNull Time time) {
     this.time = time;
   }
 

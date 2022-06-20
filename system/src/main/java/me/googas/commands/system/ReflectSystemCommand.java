@@ -3,9 +3,9 @@ package me.googas.commands.system;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.CooldownManager;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.context.StarboxCommandContext;
@@ -34,7 +34,7 @@ public class ReflectSystemCommand
   @NonNull @Getter private final CommandManager manager;
   @NonNull @Getter private final List<String> aliases;
   @NonNull @Getter private final List<SystemCommand> children;
-  private final CooldownManager<CommandContext> cooldown;
+  private final CooldownManager cooldown;
 
   /**
    * Create the command.
@@ -65,7 +65,7 @@ public class ReflectSystemCommand
     this.aliases = aliases;
     this.children = children;
     this.cooldown =
-        Time.of(cooldown).toMillis() > 0 ? new SystemCooldownManager(Time.of(cooldown)) : null;
+        Time.of(cooldown).toMillis() > 0 ? new CooldownManager(Time.of(cooldown)) : null;
   }
 
   @Override
@@ -83,7 +83,8 @@ public class ReflectSystemCommand
     try {
       Object object = this.method.invoke(this.getObject(), this.getObjects(context));
       if (object instanceof Result) {
-        if (this.cooldown != null && ((Result) object).isApplyCooldown()) this.cooldown.refresh(context);
+        if (this.cooldown != null && ((Result) object).isApplyCooldown())
+          this.cooldown.refresh(context);
         return (Result) object;
       } else {
         return null;
@@ -127,5 +128,10 @@ public class ReflectSystemCommand
       if (name.equalsIgnoreCase(alias)) return true;
     }
     return false;
+  }
+
+  @Override
+  public @NonNull Optional<CooldownManager> getCooldownManager() {
+    return Optional.ofNullable(cooldown);
   }
 }

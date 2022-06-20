@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
+import me.googas.commands.StarboxCooldownManager;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.util.Strings;
@@ -169,6 +170,12 @@ public abstract class BungeeCommand extends Command
       if (name.equalsIgnoreCase(alias)) return true;
     }
     return false;
+  }
+
+  @Override
+  public @NonNull Optional<? extends StarboxCooldownManager<CommandContext>> getCooldownManager() {
+    // TODO
+    return Optional.empty();
   }
 
   @Override

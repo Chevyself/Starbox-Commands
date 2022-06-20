@@ -69,7 +69,7 @@ public class AnnotatedCommand extends JdaCommand
       @NonNull Method method,
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments) {
-    super(manager, command.excluded(), Time.of(command.cooldown()));
+    super(manager, command.excluded(), command.behaviour(), Time.of(command.cooldown()));
     this.method = method;
     this.object = object;
     this.arguments = arguments;
@@ -92,26 +92,11 @@ public class AnnotatedCommand extends JdaCommand
 
   @Override
   public Result run(@NonNull CommandContext context) {
-    Result result =
-        this.manager.getPermissionChecker().checkPermission(context, this.getPermission());
-    if (result != null) {
-      return result;
-    }
-    result = this.checkCooldown(context.getSender(), context);
-    if (result != null) {
-      return result;
-    }
     try {
       Object[] objects = this.getObjects(context);
       Object object = this.method.invoke(this.object, objects);
       if (object instanceof Result) {
-        result = (Result) object;
-        if (this.getCooldown().toMillis() > 0) {
-          this.getCooldownUsers()
-              .add(
-                  new CooldownUser(
-                      this.getCooldown().toMillisRound(), context.getSender().getIdLong()));
-        }
+        Result result = (Result) object;
         if (result.getSuccess() == null && this.isExcluded()) {
           Message discordMessage = result.getDiscordMessage().orElse(null);
           result =

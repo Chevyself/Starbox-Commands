@@ -106,5 +106,6 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
    * @param timeLeft the time left for the user in the getMillis
    * @return the built string
    */
+  @NonNull
   String cooldown(@NonNull T context, @NonNull Time timeLeft);
 }

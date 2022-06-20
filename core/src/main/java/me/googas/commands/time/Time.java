@@ -98,7 +98,7 @@ public class Time implements TemporalAmount {
 
   /**
    * Parse an instance using the annotation {@link TimeAmount}. If the annotation {@link
-   * TimeAmount#string()} is not empty it will be parsed using {@link #parse(String, boolean)} using
+   * TimeAmount#value()} is not empty it will be parsed using {@link #parse(String, boolean)} using
    * effective as true, if it is not empty then it will be parsed using {@link #of(double,
    * StarboxUnit)}
    *
@@ -107,10 +107,10 @@ public class Time implements TemporalAmount {
    */
   @NonNull
   public static Time of(@NonNull TimeAmount timeAmount) {
-    if (timeAmount.string().isEmpty()) {
-      return Time.of(timeAmount.value(), timeAmount.unit());
+    if (timeAmount.value().isEmpty()) {
+      return Time.of(timeAmount.amount(), timeAmount.unit());
     } else {
-      return Time.parse(timeAmount.string(), true);
+      return Time.parse(timeAmount.value(), true);
     }
   }
 
