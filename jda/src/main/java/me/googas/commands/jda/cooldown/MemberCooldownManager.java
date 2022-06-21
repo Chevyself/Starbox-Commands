@@ -6,6 +6,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
+import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.time.Time;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -15,8 +16,8 @@ public class MemberCooldownManager extends JdaCooldownManager {
 
   private final Set<GuildMap> guilds = new HashSet<>();
 
-  protected MemberCooldownManager(@NonNull Time time) {
-    super(time);
+  protected MemberCooldownManager(@NonNull Time time, Permit permission) {
+    super(time, permission);
   }
 
   @Override
@@ -54,7 +55,8 @@ public class MemberCooldownManager extends JdaCooldownManager {
     this.getGuildMap(context)
         .orElseGet(
             () -> {
-              GuildMap guildMap = new GuildMap(this.time, this.getGuildId(context));
+              GuildMap guildMap =
+                  new GuildMap(this.time, this.permission, this.getGuildId(context));
               this.guilds.add(guildMap);
               return guildMap;
             })
@@ -65,8 +67,8 @@ public class MemberCooldownManager extends JdaCooldownManager {
 
     @Getter private final long id;
 
-    protected GuildMap(@NonNull Time time, long id) {
-      super(time);
+    protected GuildMap(@NonNull Time time, Permit permission, long id) {
+      super(time, permission);
       this.id = id;
     }
   }

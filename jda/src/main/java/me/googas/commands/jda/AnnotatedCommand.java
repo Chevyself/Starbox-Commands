@@ -18,13 +18,12 @@ import me.googas.commands.exceptions.type.StarboxException;
 import me.googas.commands.exceptions.type.StarboxRuntimeException;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.permissions.SimplePermit;
+import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.time.Time;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -69,15 +68,18 @@ public class AnnotatedCommand extends JdaCommand
       @NonNull Method method,
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments) {
-    super(manager, command.excluded(), command.behaviour(), Time.of(command.cooldown()));
+    super(
+        manager,
+        command.excluded(),
+        command.behaviour(),
+        Time.of(command.cooldown()),
+        Permit.from(command.cooldownPerm()).orElse(null));
     this.method = method;
     this.object = object;
     this.arguments = arguments;
     this.aliases = Arrays.asList(command.aliases());
     this.description = command.description();
-    if (command.permission() != Permission.UNKNOWN || !command.node().isEmpty()) {
-      this.setPermission(new SimplePermit(command.node(), command.permission()));
-    }
+    Permit.from(command.permission()).ifPresent(this::setPermission);
   }
 
   @Override

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import net.dv8tion.jda.api.JDA;
@@ -40,6 +41,7 @@ public class GuildCommandContext extends GenericCommandContext {
    * @param commandName the name of the command that is being executed
    */
   public GuildCommandContext(
+      @NonNull CommandManager manager,
       @NonNull JDA jda,
       @NonNull MessageReceivedEvent event,
       @NonNull User sender,
@@ -49,7 +51,17 @@ public class GuildCommandContext extends GenericCommandContext {
       ProvidersRegistry<CommandContext> registry,
       String commandName,
       @NonNull Message message) {
-    super(jda, event, sender, args, channel, messagesProvider, registry, commandName, message);
+    super(
+        manager,
+        jda,
+        event,
+        sender,
+        args,
+        channel,
+        messagesProvider,
+        registry,
+        commandName,
+        message);
     this.member =
         Objects.requireNonNull(
             message.getMember(), "Guild command context must have a valid member");
@@ -64,6 +76,7 @@ public class GuildCommandContext extends GenericCommandContext {
   @Override
   public @NonNull GuildCommandContext getChildren() {
     return new GuildCommandContext(
+        this.manager,
         this.jda,
         this.event,
         this.sender,

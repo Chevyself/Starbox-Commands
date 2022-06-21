@@ -3,6 +3,7 @@ package me.googas.testing;
 import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.jda.annotations.Command;
+import me.googas.commands.jda.annotations.Perm;
 import me.googas.commands.jda.cooldown.CooldownBehaviour;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.time.annotations.TimeAmount;
@@ -33,7 +34,15 @@ public class TestCommands {
         .build();
   }
 
-  @Command(aliases = "foo", description = "Who is a foo", cooldown = @TimeAmount("10s"))
+  @Command(aliases = "lol", description = "The lol command", cooldown = @TimeAmount("10s"))
+  public Result lol() {
+    return Result.builder().setDescription("LOL!").setApplyCooldown(true).build();
+  }
+
+  @Command(
+      aliases = "foo",
+      description = "Who is a foo",
+      cooldown = @TimeAmount("10s"), cooldownPerm = @Perm)
   public Result foo(@Required(name = "foo", description = "The foo") Member member) {
     return Result.builder()
         .setMessage(() -> new MessageBuilder().setContent("The foo is ").append(member).build())

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.util.Strings;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
  */
 public class SlashCommandContext implements CommandContext {
 
+  @NonNull @Getter protected final CommandManager manager;
   @NonNull protected final ProvidersRegistry<CommandContext> registry;
   @NonNull @Getter protected final SlashCommandInteractionEvent event;
   @NonNull protected final MessagesProvider messagesProvider;
@@ -35,6 +37,7 @@ public class SlashCommandContext implements CommandContext {
   /**
    * Create the context.
    *
+   * @param manager
    * @param strings the strings representing the options of the command
    * @param jda the jda instance of the command manager
    * @param channel the channel where the command was executed
@@ -46,6 +49,7 @@ public class SlashCommandContext implements CommandContext {
    * @param event the event that executed the command
    */
   public SlashCommandContext(
+      @NonNull CommandManager manager,
       @NonNull String[] strings,
       @NonNull JDA jda,
       @NonNull MessageChannel channel,
@@ -55,6 +59,7 @@ public class SlashCommandContext implements CommandContext {
       @NonNull MessagesProvider messagesProvider,
       @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull SlashCommandInteractionEvent event) {
+    this.manager = manager;
     this.string = Strings.join(strings);
     this.strings = strings;
     this.jda = jda;
@@ -90,6 +95,7 @@ public class SlashCommandContext implements CommandContext {
   @Override
   public @NonNull SlashCommandContext getChildren() {
     return new SlashCommandContext(
+        manager,
         Arrays.copyOfRange(strings, 1, strings.length),
         this.jda,
         this.channel,

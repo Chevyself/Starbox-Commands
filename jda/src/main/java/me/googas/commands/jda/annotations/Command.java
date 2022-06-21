@@ -38,24 +38,6 @@ public @interface Command {
   String description() default "No description provided";
 
   /**
-   * Get the permission as a string node. If this is left empty then it will use the {@link
-   * #permission()}
-   *
-   * @return the string permission
-   */
-  @NonNull
-  String node() default "";
-
-  /**
-   * Get the permission as a discord permission. IF this is left in {@link Permission#UNKNOWN} and
-   * the permission node is empty then the command will not have permission
-   *
-   * @return the discord permission
-   */
-  @NonNull
-  Permission permission() default Permission.UNKNOWN;
-
-  /**
    * The amount of time until the command can be executed again.
    *
    * @return the time amount
@@ -71,4 +53,10 @@ public @interface Command {
   boolean excluded() default false;
 
   CooldownBehaviour behaviour() default CooldownBehaviour.USER;
+
+  @NonNull
+  Perm permission() default @Perm;
+
+  @NonNull
+  Perm cooldownPerm() default @Perm(value = Permission.ADMINISTRATOR, node = "*.cooldown");
 }

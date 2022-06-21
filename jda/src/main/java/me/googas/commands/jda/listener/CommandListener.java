@@ -98,6 +98,7 @@ public class CommandListener implements EventListener {
     JdaCommand command = this.manager.getCommand(event.getGuild(), name);
     SlashCommandContext context =
         new SlashCommandContext(
+            manager,
             strings,
             event.getJDA(),
             event.getChannel(),
@@ -180,6 +181,7 @@ public class CommandListener implements EventListener {
     strings = Arrays.copyOfRange(strings, 1, strings.length);
     if (event.getMember() != null) {
       return new GuildCommandContext(
+          this.manager,
           manager.getJda(),
           event,
           event.getAuthor(),
@@ -191,6 +193,7 @@ public class CommandListener implements EventListener {
           event.getMessage());
     } else {
       return new GenericCommandContext(
+          manager,
           manager.getJda(),
           event,
           event.getAuthor(),

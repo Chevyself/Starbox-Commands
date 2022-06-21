@@ -53,11 +53,13 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       Permit permission,
       boolean excluded,
       @NonNull CooldownBehaviour behaviour,
-      @NonNull Time cooldown) {
+      @NonNull Time cooldown,
+      Permit cooldownPermit) {
     this.manager = manager;
     this.permission = permission;
     this.excluded = excluded;
-    this.cooldown = cooldown.toMillisRound() > 0 ? behaviour.create(cooldown) : null;
+    this.cooldown =
+        cooldown.toMillisRound() > 0 ? behaviour.create(cooldown, cooldownPermit) : null;
   }
 
   /**
@@ -72,8 +74,9 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       @NonNull CommandManager manager,
       boolean excluded,
       @NonNull CooldownBehaviour behaviour,
-      @NonNull Time cooldown) {
-    this(manager, null, excluded, behaviour, cooldown);
+      @NonNull Time cooldown,
+      Permit cooldownPermit) {
+    this(manager, null, excluded, behaviour, cooldown, cooldownPermit);
   }
 
   /**
