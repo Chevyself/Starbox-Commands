@@ -10,7 +10,6 @@ import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.util.Strings;
 import net.md_5.bungee.api.CommandSender;
 
 /** The context for bungee commands. */
@@ -27,26 +26,28 @@ public class CommandContext implements StarboxCommandContext {
   /**
    * Create an instance.
    *
-   * @param command          the command for which this context was created
-   * @param sender           the sender of the command
-   * @param strings          the command line in separated strings
-   * @param string           the input strings joined
-   * @param registry         the registry used in the context
+   * @param command the command for which this context was created
+   * @param sender the sender of the command
+   * @param strings the command line in separated strings
+   * @param string the input strings joined
+   * @param registry the registry used in the context
    * @param messagesProvider the messages provider for this context
    * @param flags the flags in the input of the command
    */
   public CommandContext(
-      @NonNull BungeeCommand command, @NonNull CommandSender sender,
+      @NonNull BungeeCommand command,
+      @NonNull CommandSender sender,
       @NonNull String[] strings,
       @NonNull String string,
       @NonNull ProvidersRegistry<CommandContext> registry,
-      @NonNull MessagesProvider messagesProvider, @NonNull List<FlagArgument> flags) {
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull List<FlagArgument> flags) {
     this.command = command;
     this.sender = sender;
-    this.string = Strings.join(strings);
     this.strings = strings;
-    this.messagesProvider = messagesProvider;
+    this.string = string;
     this.registry = registry;
+    this.messagesProvider = messagesProvider;
     this.flags = flags;
   }
 

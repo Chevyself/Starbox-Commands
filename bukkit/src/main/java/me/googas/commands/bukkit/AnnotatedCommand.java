@@ -45,6 +45,7 @@ public class AnnotatedCommand extends StarboxBukkitCommand
   /**
    * Create the command.
    *
+   * @param manager the manager that parsed the command
    * @param name the name of the command
    * @param aliases other names that the command can be executed with
    * @param permission the permission required to run this command
@@ -61,7 +62,6 @@ public class AnnotatedCommand extends StarboxBukkitCommand
    *     #getObject()}
    * @param arguments the list of arguments that are used to {@link
    *     #getObjects(StarboxCommandContext)} and invoke the {@link #getMethod()}
-   * @param manager the manager that parsed the command
    * @param children the list of children commands which can be used with this parent prefix. Learn
    *     more in {@link me.googas.commands.annotations.Parent}
    */

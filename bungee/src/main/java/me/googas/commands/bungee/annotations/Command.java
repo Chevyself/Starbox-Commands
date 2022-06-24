@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
+import me.googas.commands.bungee.middleware.BungeeMiddleware;
+import me.googas.commands.flags.Flag;
 
 /**
  * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
@@ -39,4 +41,36 @@ public @interface Command {
    * @return whether to execute the command async
    */
   boolean async() default false;
+
+  /**
+   * Get the options/flags to apply in this command.
+   *
+   * @return the array of flags
+   */
+  @NonNull
+  Flag[] options() default {};
+
+  /**
+   * Get the middleware classes that should be included in the execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends BungeeMiddleware>[] include() default {};
+
+  /**
+   * Get the global middleware classes that should be excluded from the command execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends BungeeMiddleware>[] exclude() default {};
+
+  /**
+   * Get the cooldown that should be applied to this command.
+   *
+   * @return the annotation
+   */
+  @NonNull
+  Cooldown cooldown() default @Cooldown;
 }

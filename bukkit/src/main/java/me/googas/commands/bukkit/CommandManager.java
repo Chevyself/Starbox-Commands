@@ -174,7 +174,9 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
     return new AnnotatedCommand(
         this,
         command.aliases()[0],
-        command.aliases().length > 1 ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length)) : new ArrayList<>(),
+        command.aliases().length > 1
+            ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
+            : new ArrayList<>(),
         command.permission(),
         command.description(),
         "/"

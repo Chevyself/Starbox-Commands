@@ -31,7 +31,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
  */
 public class Result implements StarboxResult {
 
-  /** The components that will be send after the execution. */
+  /** The components that will be sent after the execution. */
   @NonNull @Getter private final List<BaseComponent> components = new ArrayList<>();
 
   /** Create an empty result. */

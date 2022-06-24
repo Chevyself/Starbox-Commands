@@ -7,9 +7,11 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
-import me.googas.commands.StarboxCooldownManager;
 import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.middleware.BungeeMiddleware;
 import me.googas.commands.bungee.result.Result;
+import me.googas.commands.flags.FlagArgument;
+import me.googas.commands.flags.Option;
 import me.googas.commands.util.Strings;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -31,15 +33,18 @@ import net.md_5.bungee.api.plugin.TabExecutor;
  * names of the children commands {@link #getChildren()} {@link #getChildrenNames()}
  *
  * <p>This also allows to use the command asynchronously check {@link #BungeeCommand(String, List,
- * CommandManager, boolean)} or {@link #BungeeCommand(String, String, List, CommandManager, boolean,
- * String...)}
+ * CommandManager, List, List, boolean, CooldownManager)} or {@link #BungeeCommand(String, String,
+ * List, CommandManager, List, List, boolean, CooldownManager, String...)}
  */
 public abstract class BungeeCommand extends Command
     implements StarboxCommand<CommandContext, BungeeCommand>, TabExecutor {
 
   @NonNull @Getter protected final CommandManager manager;
+  @NonNull @Getter protected final List<Option> options;
+  @NonNull @Getter protected final List<BungeeMiddleware> middlewares;
   @NonNull @Getter private final List<BungeeCommand> children;
   protected final boolean async;
+  private final CooldownManager cooldown;
 
   /**
    * Create the command.
@@ -49,19 +54,28 @@ public abstract class BungeeCommand extends Command
    *     more in {@link me.googas.commands.annotations.Parent}
    * @param manager where the command will be registered used to get the {@link
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param options the flags that apply in this command
+   * @param middlewares the middlewares to run before and after this command is executed
    * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
    *     about asynchronization check <a
    *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   * @param cooldown the manager that handles the cooldown in this command
    */
   public BungeeCommand(
       String name,
       @NonNull List<BungeeCommand> children,
       @NonNull CommandManager manager,
-      boolean async) {
+      @NonNull List<Option> options,
+      @NonNull List<BungeeMiddleware> middlewares,
+      boolean async,
+      CooldownManager cooldown) {
     super(name);
     this.children = children;
     this.manager = manager;
+    this.options = options;
+    this.middlewares = middlewares;
     this.async = async;
+    this.cooldown = cooldown;
   }
 
   /**
@@ -74,9 +88,12 @@ public abstract class BungeeCommand extends Command
    *     more in {@link me.googas.commands.annotations.Parent}
    * @param manager where the command will be registered used to get the {@link
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param options the flags that apply in this command
+   * @param middlewares the middlewares to run before and after this command is executed
    * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
    *     about asynchronization check <a
    *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   * @param cooldown the manager that handles the cooldown in this command
    * @param aliases the aliases which also allow to execute the command
    */
   public BungeeCommand(
@@ -84,12 +101,18 @@ public abstract class BungeeCommand extends Command
       String permission,
       @NonNull List<BungeeCommand> children,
       @NonNull CommandManager manager,
+      @NonNull List<Option> options,
+      @NonNull List<BungeeMiddleware> middlewares,
       boolean async,
+      CooldownManager cooldown,
       String... aliases) {
     super(name, permission, aliases);
     this.children = children;
     this.manager = manager;
+    this.options = options;
+    this.middlewares = middlewares;
     this.async = async;
+    this.cooldown = cooldown;
   }
 
   /**
@@ -122,13 +145,28 @@ public abstract class BungeeCommand extends Command
    * @param args the arguments used in the command execution
    */
   public void run(@NonNull CommandSender sender, @NonNull String[] args) {
+    FlagArgument.Parser parse = FlagArgument.parse(this.getOptions(), args);
+    CommandContext context =
+        new CommandContext(
+            this,
+            sender,
+            parse.getArgumentsArray(),
+            parse.getArgumentsString(),
+            this.manager.getProvidersRegistry(),
+            this.manager.getMessagesProvider(),
+            parse.getFlags());
     Result result =
-        this.execute(
-            new CommandContext(
-                sender,
-                args,
-                this.manager.getMessagesProvider(),
-                this.manager.getProvidersRegistry()));
+        this.getMiddlewares().stream()
+            .map(middleware -> middleware.next(context))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst()
+            .orElseGet(
+                () -> {
+                  Result execute = this.execute(context);
+                  this.getMiddlewares().forEach(middleware -> middleware.next(context, execute));
+                  return execute;
+                });
     if (result != null && !result.getComponents().isEmpty()) {
       sender.sendMessage(result.getComponents().toArray(new BaseComponent[0]));
     }
@@ -173,9 +211,8 @@ public abstract class BungeeCommand extends Command
   }
 
   @Override
-  public @NonNull Optional<? extends StarboxCooldownManager<CommandContext>> getCooldownManager() {
-    // TODO
-    return Optional.empty();
+  public @NonNull Optional<CooldownManager> getCooldownManager() {
+    return Optional.ofNullable(cooldown);
   }
 
   @Override

@@ -2,6 +2,7 @@ package me.googas.commands.bungee;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
@@ -13,7 +14,9 @@ import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.BungeeMessagesProvider;
 import me.googas.commands.bungee.messages.MessagesProvider;
+import me.googas.commands.bungee.middleware.BungeeMiddleware;
 import me.googas.commands.bungee.result.Result;
+import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -46,8 +49,10 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
 
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final PluginManager manager;
-  @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
+  @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final List<BungeeMiddleware> globalMiddlewares = new ArrayList<>();
+  @NonNull @Getter private final List<BungeeMiddleware> middlewares = new ArrayList<>();
   @NonNull @Getter private final List<BungeeCommand> commands = new ArrayList<>();
 
   /**
@@ -55,14 +60,14 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
    *
    * @param plugin the plugin that is related to the commands and other Bungee actions such as
    *     creating tasks with the {@link net.md_5.bungee.api.scheduler.TaskScheduler}
-   * @param messagesProvider the messages provider for important messages
    * @param providersRegistry the providers registry to provide the array of {@link Object} to
    *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
+   * @param messagesProvider the messages provider for important messages
    */
   public CommandManager(
       @NonNull Plugin plugin,
-      @NonNull MessagesProvider messagesProvider,
-      @NonNull ProvidersRegistry<CommandContext> providersRegistry) {
+      @NonNull ProvidersRegistry<CommandContext> providersRegistry,
+      @NonNull MessagesProvider messagesProvider) {
     this.plugin = plugin;
     this.manager = plugin.getProxy().getPluginManager();
     this.messagesProvider = messagesProvider;
@@ -108,8 +113,27 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
       throw new IllegalArgumentException(method + " must return void or " + Result.class);
     }
     Command command = method.getAnnotation(Command.class);
+    List<Argument<?>> arguments = Argument.parseArguments(method);
     return new AnnotatedCommand(
-        command, new ArrayList<>(), this, object, method, Argument.parseArguments(method));
+        this,
+        plugin,
+        command.aliases()[0],
+        command.permission().isEmpty() ? null : command.permission(),
+        Option.of(command.options()),
+        this.getMiddlewares(command),
+        command.async(),
+        CooldownManager.of(command.cooldown()).orElse(null),
+        method,
+        object,
+        arguments,
+        new ArrayList<>(),
+        Arrays.copyOfRange(command.aliases(), 1, command.aliases().length));
+  }
+
+  @NonNull
+  private List<BungeeMiddleware> getMiddlewares(@NonNull Command command) {
+    return StarboxCommandManager.getMiddlewares(
+        this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
 
   @Override
