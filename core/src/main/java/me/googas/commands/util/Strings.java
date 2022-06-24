@@ -18,13 +18,12 @@ public class Strings {
   /** A string only containing lowercase letters. */
   @NonNull public static final String LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
   /** A char array containing both uppercase and lowercase letters. */
-  @NonNull
   public static final char[] LETTERS =
       (Strings.UPPERCASE_LETTERS + Strings.LOWERCASE_LETTERS).toCharArray();
   /** A char array containing uppercase letters. */
-  @NonNull public static final char[] UPPERCASE = Strings.UPPERCASE_LETTERS.toCharArray();
+  public static final char[] UPPERCASE = Strings.UPPERCASE_LETTERS.toCharArray();
   /** A char array containing lowercase letters. */
-  @NonNull public static final char[] LOWERCASE = Strings.LOWERCASE_LETTERS.toCharArray();
+  public static final char[] LOWERCASE = Strings.LOWERCASE_LETTERS.toCharArray();
 
   /**
    * This method is made to save resources from {@link #format(String, Map)}, {@link #format(String,

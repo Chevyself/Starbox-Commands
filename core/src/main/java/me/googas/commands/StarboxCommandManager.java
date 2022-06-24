@@ -3,6 +3,8 @@ package me.googas.commands;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.messages.StarboxMessagesProvider;
@@ -135,4 +137,74 @@ public interface StarboxCommandManager<
 
   /** Closes the command manager. */
   void close();
+
+  /**
+   * Get the middlewares that should affect all commands.
+   *
+   * @return the global middlewares
+   */
+  @NonNull
+  Collection<? extends Middleware<C>> getGlobalMiddlewares();
+
+  /**
+   * Get other middlewares that may be included using the annotation.
+   *
+   * @return the middlewares
+   */
+  @NonNull
+  Collection<? extends Middleware<C>> getMiddlewares();
+
+  /**
+   * Get all the middlewares that apply.
+   *
+   * @param global the collection of global middlewares
+   * @param middlewares the middlewares which may be included
+   * @param include the classes of the middlewares to include
+   * @param exclude the classes of the middlewares to exclude
+   * @return the list of middlewares
+   * @param <M> the type of the middleware that can be added in this manager
+   */
+  @NonNull
+  static <M extends Middleware<?>> List<M> getMiddlewares(
+      @NonNull Collection<M> global,
+      @NonNull Collection<M> middlewares,
+      @NonNull Class<? extends M>[] include,
+      @NonNull Class<? extends M>[] exclude) {
+    List<M> list =
+        global.stream()
+            .filter(
+                middleware -> {
+                  for (Class<? extends M> clazz : exclude) {
+                    if (clazz.isAssignableFrom(middleware.getClass())) return false;
+                  }
+                  return true;
+                })
+            .collect(Collectors.toList());
+    list.addAll(StarboxCommandManager.getIncludeMiddlewares(middlewares, include));
+    return list;
+  }
+
+  /**
+   * Get all the middlewares that can be applied to a command outside of the global middlewares.
+   *
+   * @param middlewares the middlewares which may be included
+   * @param include the classes of the middlewares to include
+   * @return the list of middlewares
+   * @param <M> the type of the middleware that can be added in this manager
+   */
+  @NonNull
+  static <M extends Middleware<?>> Collection<M> getIncludeMiddlewares(
+      @NonNull Collection<M> middlewares, @NonNull Class<? extends M>[] include) {
+    return middlewares.stream()
+        .filter(
+            middleware -> {
+              for (Class<? extends M> clazz : include) {
+                if (clazz.isAssignableFrom(middleware.getClass())) {
+                  return true;
+                }
+              }
+              return false;
+            })
+        .collect(Collectors.toList());
+  }
 }

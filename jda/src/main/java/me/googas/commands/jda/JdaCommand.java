@@ -47,6 +47,9 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    *     Permit)}
    * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
    *     is {@link ResultType#GENERIC}
+   * @param behaviour how should cooldown behave
+   * @param cooldown the time that the command needs to cooldown
+   * @param cooldownPermit the permission which users may have to not have cooldown
    */
   public JdaCommand(
       @NonNull CommandManager manager,
@@ -69,6 +72,9 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
    *     is {@link ResultType#GENERIC}
+   * @param behaviour how should cooldown behave
+   * @param cooldown the time that the command needs to cooldown
+   * @param cooldownPermit the permission which users may have to not have cooldown
    */
   public JdaCommand(
       @NonNull CommandManager manager,
@@ -135,7 +141,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
         } else {
           result = this.run(context);
         }
-        if (result.isApplyCooldown() && this.cooldown != null) {
+        if (result.isCooldown() && this.cooldown != null) {
           this.cooldown.refresh(context);
         }
       } catch (UnsupportedContextException e) {

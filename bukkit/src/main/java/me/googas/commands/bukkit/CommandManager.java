@@ -2,6 +2,7 @@ package me.googas.commands.bukkit;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
@@ -13,13 +14,16 @@ import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.BukkitMessagesProvider;
 import me.googas.commands.bukkit.messages.MessagesProvider;
+import me.googas.commands.bukkit.middleware.BukkitMiddleware;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.bukkit.topic.PluginHelpTopic;
 import me.googas.commands.bukkit.topic.StarboxCommandHelpTopicFactory;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.exceptions.CommandRegistrationException;
+import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
+import me.googas.commands.util.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.help.HelpMap;
@@ -74,6 +78,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final List<BukkitMiddleware> globalMiddlewares;
+  @NonNull @Getter private final List<BukkitMiddleware> middlewares;
   @NonNull @Getter private final List<StarboxBukkitCommand> commands = new ArrayList<>();
 
   /**
@@ -93,6 +99,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
     this.plugin = plugin;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
+    this.globalMiddlewares = new ArrayList<>();
+    this.middlewares = new ArrayList<>();
   }
 
   /**
@@ -161,13 +169,32 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
     if (!method.isAnnotationPresent(Command.class))
       throw new IllegalArgumentException(method + " is not annotated with " + Command.class);
     Command command = method.getAnnotation(Command.class);
+    List<Argument<?>> arguments =
+        Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations());
     return new AnnotatedCommand(
-        command,
+        this,
+        command.aliases()[0],
+        command.aliases().length > 1 ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length)) : new ArrayList<>(),
+        command.permission(),
+        command.description(),
+        "/"
+            + Strings.buildUsageAliases(command.aliases())
+            + " "
+            + Argument.generateUsage(arguments),
+        Option.of(command.options()),
+        this.getMiddlewares(command),
+        command.async(),
+        CooldownManager.of(command.cooldown()).orElse(null),
         method,
         object,
-        Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations()),
-        this,
+        arguments,
         new ArrayList<>());
+  }
+
+  @NonNull
+  private List<BukkitMiddleware> getMiddlewares(@NonNull Command command) {
+    return StarboxCommandManager.getMiddlewares(
+        this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
 
   @Override

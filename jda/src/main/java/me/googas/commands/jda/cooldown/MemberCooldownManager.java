@@ -12,10 +12,24 @@ import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+/**
+ * Represents a Cooldown manager when the {@link CooldownBehaviour} is {@link
+ * CooldownBehaviour#MEMBER}. Each {@link GuildMap} is stored in a {@link Set} to get the id of the
+ * {@link net.dv8tion.jda.api.entities.Guild} the command must have been executed from a {@link
+ * TextChannel}
+ *
+ * @see #getGuildId(CommandContext)
+ */
 public class MemberCooldownManager extends JdaCooldownManager {
 
   private final Set<GuildMap> guilds = new HashSet<>();
 
+  /**
+   * Create the manager.
+   *
+   * @param time the time that the command needs to cooldown
+   * @param permission the permission which users may have to not require cooldown
+   */
   protected MemberCooldownManager(@NonNull Time time, Permit permission) {
     super(time, permission);
   }
@@ -30,6 +44,17 @@ public class MemberCooldownManager extends JdaCooldownManager {
     return guilds.stream().filter(map -> map.getId() == this.getGuildId(context)).findFirst();
   }
 
+  /**
+   * Get the id of the guild.
+   *
+   * <p>If the channel is present it will be obtained using {@link TextChannel#getGuild()}
+   *
+   * @param context the context where the command was executed
+   * @return the id
+   * @throws UnsupportedContextException if the parameter {@link CommandContext} does not have a
+   *     channel
+   * @see CommandContext#getChannel()
+   */
   private long getGuildId(@NonNull CommandContext context) {
     Optional<MessageChannel> optional = context.getChannel();
     return context
@@ -63,11 +88,12 @@ public class MemberCooldownManager extends JdaCooldownManager {
         .refresh(context);
   }
 
+  /** Represents the cooldown of a guild. */
   private static class GuildMap extends UserCooldownManager {
 
     @Getter private final long id;
 
-    protected GuildMap(@NonNull Time time, Permit permission, long id) {
+    private GuildMap(@NonNull Time time, Permit permission, long id) {
       super(time, permission);
       this.id = id;
     }

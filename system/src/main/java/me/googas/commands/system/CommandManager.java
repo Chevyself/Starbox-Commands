@@ -11,8 +11,11 @@ import lombok.NonNull;
 import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
+import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
+import me.googas.commands.system.middleware.SystemMiddleware;
+import me.googas.commands.time.Time;
 
 /**
  * This manager is used for registering commands inside the {@link #getCommands()}. Then it is
@@ -37,13 +40,15 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   @NonNull @Getter private final List<SystemCommand> commands = new ArrayList<>();
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final List<SystemMiddleware> globalMiddlewares;
+  @NonNull @Getter private final List<SystemMiddleware> middlewares;
   @NonNull @Getter private final CommandListener listener;
 
   /**
    * Create the command manager.
    *
    * @param prefix the prefix that will differentiate commands from other types of messages
-   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   * @param providersRegistry the providers' registry to provide the array of {@link Object} to
    *     invoke {@link ReflectSystemCommand} using reflection or to be used in {@link
    *     CommandContext}
    * @param messagesProvider the messages provider for messages of providers
@@ -55,6 +60,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
     this.listener = new CommandListener(this, prefix);
+    this.globalMiddlewares = new ArrayList<>();
+    this.middlewares = new ArrayList<>();
     this.listener.start();
   }
 
@@ -108,14 +115,23 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
     if (annotation == null)
       throw new IllegalArgumentException(
           method + " does not contain the annotation " + Command.class);
+    Time time = Time.of(annotation.cooldown());
     return new ReflectSystemCommand(
+        this,
+        Arrays.asList(annotation.aliases()),
+        Option.of(annotation.options()),
+        this.getMiddlewares(annotation),
         method,
         object,
         Argument.parseArguments(method),
-        this,
-        Arrays.asList(annotation.aliases()),
         new ArrayList<>(),
-        annotation.cooldown());
+        !time.isZero() ? new CooldownManager(time) : null);
+  }
+
+  @NonNull
+  private List<SystemMiddleware> getMiddlewares(@NonNull Command command) {
+    return StarboxCommandManager.getMiddlewares(
+        this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
 
   @Override

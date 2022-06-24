@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.system.context.sender.ConsoleCommandSender;
 
@@ -40,17 +41,22 @@ public class CommandListener extends Thread {
         String[] split = line.split(" ");
         String name = split[0];
         if (!name.startsWith(this.prefix)) continue;
-        Optional<SystemCommand> optionalCommand = this.manager.getCommand(name.substring(1));
+        Optional<SystemCommand> optionalCommand =
+            this.manager.getCommand(name.substring(this.prefix.length()));
         if (optionalCommand.isPresent()) {
+          SystemCommand command = optionalCommand.get();
+          FlagArgument.Parser parse =
+              FlagArgument.parse(command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
           Result result =
-              optionalCommand
-                  .get()
-                  .execute(
-                      new CommandContext(
-                          ConsoleCommandSender.INSTANCE,
-                          Arrays.copyOfRange(split, 1, split.length),
-                          this.manager.getProvidersRegistry(),
-                          this.manager.getMessagesProvider()));
+              command.execute(
+                  new CommandContext(
+                      command,
+                      ConsoleCommandSender.INSTANCE,
+                      parse.getArgumentsArray(),
+                      parse.getArgumentsString(),
+                      this.manager.getProvidersRegistry(),
+                      this.manager.getMessagesProvider(),
+                      parse.getFlags()));
           result
               .getMessage()
               .ifPresent(

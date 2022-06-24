@@ -1,11 +1,14 @@
 package me.googas.commands.system;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.system.context.CommandContext;
+import me.googas.commands.system.middleware.SystemMiddleware;
+import me.googas.commands.util.Strings;
 
 /**
  * This is the direct implementation of {@link StarboxCommand} for the "System" module extending
@@ -46,16 +49,38 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
     if (strings.length >= 1) {
       Optional<SystemCommand> optionalCommand = this.getChildren(strings[0]);
       if (optionalCommand.isPresent()) {
+        String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
         return optionalCommand
             .get()
             .execute(
                 new CommandContext(
+                    this,
                     context.getSender(),
-                    Arrays.copyOfRange(strings, 1, strings.length),
+                    copy,
+                    Strings.join(copy),
                     context.getRegistry(),
-                    context.getMessagesProvider()));
+                    context.getMessagesProvider(),
+                    context.getFlags()));
       }
     }
-    return this.run(context);
+    return this.getMiddlewares().stream()
+        .map(middleware -> middleware.next(context))
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .findFirst()
+        .orElseGet(
+            () -> {
+              Result result = this.run(context);
+              this.getMiddlewares().forEach(middleware -> middleware.next(context, result));
+              return result;
+            });
   }
+
+  @Override
+  @NonNull
+  Collection<SystemMiddleware> getMiddlewares();
+
+  @Override
+  @NonNull
+  Optional<CooldownManager> getCooldownManager();
 }

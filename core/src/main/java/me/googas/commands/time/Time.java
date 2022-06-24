@@ -322,4 +322,13 @@ public class Time implements TemporalAmount {
   public int hashCode() {
     return Objects.hash(value, unit);
   }
+
+  /**
+   * Check whether this instance is zero.
+   *
+   * @return true if the value of {@link #toMillis()} is zero
+   */
+  public boolean isZero() {
+    return this.toMillis() <= 0;
+  }
 }

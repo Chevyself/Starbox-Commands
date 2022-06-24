@@ -30,9 +30,6 @@ public class MainTest {
 
   public static void deleteCommands(@NonNull JDA jda) {
     jda.retrieveCommands()
-        .queue(
-            commands -> {
-              commands.forEach(command -> jda.deleteCommandById(command.getIdLong()));
-            });
+        .queue(commands -> commands.forEach(command -> jda.deleteCommandById(command.getIdLong())));
   }
 }

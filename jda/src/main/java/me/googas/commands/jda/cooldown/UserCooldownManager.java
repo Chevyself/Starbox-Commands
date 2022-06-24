@@ -21,7 +21,10 @@ public class UserCooldownManager extends JdaCooldownManager {
 
   @Override
   public boolean hasCooldown(@NonNull CommandContext context) {
-    boolean hasPermission = this.permission != null && context.getManager().getPermissionChecker().checkPermission(context, this.permission) == null;
+    boolean hasPermission =
+        this.permission != null
+            && context.getManager().getPermissionChecker().checkPermission(context, this.permission)
+                == null;
     return this.getMillis(context) > System.currentTimeMillis() && !hasPermission;
   }
 

@@ -11,12 +11,12 @@ import me.googas.commands.arguments.Argument;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
+import me.googas.commands.flags.Option;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.system.context.sender.CommandSender;
-import me.googas.commands.time.Time;
-import me.googas.commands.time.annotations.TimeAmount;
+import me.googas.commands.system.middleware.SystemMiddleware;
 import me.googas.commands.util.Strings;
 
 /**
@@ -28,44 +28,51 @@ import me.googas.commands.util.Strings;
 public class ReflectSystemCommand
     implements SystemCommand, ReflectCommand<CommandContext, SystemCommand> {
 
+  @NonNull @Getter private final CommandManager manager;
+  @NonNull @Getter private final List<String> aliases;
+  @NonNull @Getter private final List<Option> options;
+  @NonNull @Getter private final List<SystemMiddleware> middlewares;
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
-  @NonNull @Getter private final CommandManager manager;
-  @NonNull @Getter private final List<String> aliases;
   @NonNull @Getter private final List<SystemCommand> children;
   private final CooldownManager cooldown;
 
   /**
    * Create the command.
    *
+   * @param manager the manager that parsed the command
+   * @param aliases the aliases that match the command for its execution
+   * @param options the flags that apply in this command
+   * @param middlewares the middlewares to run before and after this command is executed
    * @param method the method to execute as the command see more in {@link #getMethod()}
    * @param object the instance of the object used to invoke the method see more in {@link
    *     #getObject()}
    * @param arguments the list of arguments that are used to {@link
    *     #getObjects(StarboxCommandContext)} and invoke the {@link #getMethod()}
-   * @param manager the manager that parsed the command
-   * @param aliases the aliases that match the command for its execution
    * @param children the list of children commands which can be used with this parent prefix. Learn
    *     more in {@link me.googas.commands.annotations.Parent}
-   * @param cooldown the amount of time that the sender has to wait to execute the command again
+   * @param cooldown the manager that handles the cooldown in this command
    */
   public ReflectSystemCommand(
+      @NonNull CommandManager manager,
+      @NonNull List<String> aliases,
+      @NonNull List<Option> options,
+      @NonNull List<SystemMiddleware> middlewares,
       @NonNull Method method,
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments,
-      @NonNull CommandManager manager,
-      @NonNull List<String> aliases,
       @NonNull List<SystemCommand> children,
-      @NonNull TimeAmount cooldown) {
+      CooldownManager cooldown) {
+    this.middlewares = middlewares;
     this.method = method;
     this.object = object;
     this.arguments = arguments;
     this.manager = manager;
     this.aliases = aliases;
     this.children = children;
-    this.cooldown =
-        Time.of(cooldown).toMillis() > 0 ? new CooldownManager(Time.of(cooldown)) : null;
+    this.options = options;
+    this.cooldown = cooldown;
   }
 
   @Override
@@ -76,15 +83,9 @@ public class ReflectSystemCommand
   @Override
   public Result run(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
-    if (this.cooldown != null && this.cooldown.hasCooldown(context)) {
-      return new Result(
-          manager.getMessagesProvider().cooldown(context, this.cooldown.getTimeLeft(context)));
-    }
     try {
       Object object = this.method.invoke(this.getObject(), this.getObjects(context));
       if (object instanceof Result) {
-        if (this.cooldown != null && ((Result) object).isApplyCooldown())
-          this.cooldown.refresh(context);
         return (Result) object;
       } else {
         return null;

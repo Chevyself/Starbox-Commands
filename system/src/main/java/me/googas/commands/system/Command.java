@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
+import me.googas.commands.flags.Flag;
+import me.googas.commands.system.middleware.SystemMiddleware;
 import me.googas.commands.time.annotations.TimeAmount;
 
 /**
@@ -28,10 +30,34 @@ public @interface Command {
   String[] aliases();
 
   /**
+   * Get the options/flags to apply in this command.
+   *
+   * @return the array of flags
+   */
+  @NonNull
+  Flag[] options() default {};
+
+  /**
    * The amount of time until the command can be executed again.
    *
    * @return the time amount
    */
   @NonNull
   TimeAmount cooldown() default @TimeAmount();
+
+  /**
+   * Get the middleware classes that should be included in the execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends SystemMiddleware>[] include() default {};
+
+  /**
+   * Get the global middleware classes that should be excluded from the command execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends SystemMiddleware>[] exclude() default {};
 }

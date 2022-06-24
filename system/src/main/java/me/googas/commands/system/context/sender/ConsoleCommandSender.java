@@ -3,8 +3,8 @@ package me.googas.commands.system.context.sender;
 import lombok.NonNull;
 
 /**
- * This is the only implementation of {@link CommandSender} to represent the command executor thru
- * console. To use the static instance is provided {@link #INSTANCE}
+ * This is the only implementation of {@link CommandSender} to represent the command executor
+ * through console. To use the static instance is provided {@link #INSTANCE}
  */
 public class ConsoleCommandSender implements CommandSender {
 

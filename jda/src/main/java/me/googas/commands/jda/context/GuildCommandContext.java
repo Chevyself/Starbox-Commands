@@ -29,6 +29,7 @@ public class GuildCommandContext extends GenericCommandContext {
   /**
    * Create an instance.
    *
+   * @param manager the manager where this context was created
    * @param jda the jda instance in which the {@link me.googas.commands.jda.CommandManager} is
    *     registered
    * @param event the event of the message that executes the command

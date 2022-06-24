@@ -7,10 +7,12 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.StarboxCommand;
-import me.googas.commands.StarboxCooldownManager;
 import me.googas.commands.bukkit.context.CommandContext;
+import me.googas.commands.bukkit.middleware.BukkitMiddleware;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.bukkit.utils.BukkitUtils;
+import me.googas.commands.flags.FlagArgument;
+import me.googas.commands.flags.Option;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -29,57 +31,81 @@ import org.bukkit.util.StringUtil;
  * #tabComplete(CommandSender, String, String[])} at the moment the only tab complete will only
  * return the names of the children commands {@link #getChildren()}
  *
- * <p>This also allows to use the command asynchronously check {@link #StarboxBukkitCommand(String,
- * String, String, List, boolean, CommandManager)} or {@link #StarboxBukkitCommand(String, boolean,
- * CommandManager)}
+ * <p>This also allows to use the command asynchronously check {@link
+ * #StarboxBukkitCommand(CommandManager, String, List, String, String, List, List, boolean,
+ * CooldownManager)} or {@link #StarboxBukkitCommand(CommandManager, String, List, List, boolean,
+ * CooldownManager)}
  */
 public abstract class StarboxBukkitCommand extends Command
     implements StarboxCommand<CommandContext, StarboxBukkitCommand> {
 
   @NonNull @Getter protected final CommandManager manager;
+  @NonNull @Getter protected final List<Option> options;
+  @NonNull @Getter protected final List<BukkitMiddleware> middlewares;
   protected final boolean async;
+  private final CooldownManager cooldown;
 
   /**
    * Create the command.
    *
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    * @param name the name of the command
+   * @param options the flags that apply in this command
+   * @param middlewares the middlewares to run before and after this command is executed
    * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
    *     about asynchronization check <a
    *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
-   * @param manager where the command will be registered used to get the {@link
-   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param cooldown the manager that handles the cooldown in this command
    */
   public StarboxBukkitCommand(
-      @NonNull String name, boolean async, @NonNull CommandManager manager) {
+      @NonNull CommandManager manager,
+      @NonNull String name,
+      @NonNull List<Option> options,
+      @NonNull List<BukkitMiddleware> middlewares,
+      boolean async,
+      CooldownManager cooldown) {
     super(name);
+    this.middlewares = middlewares;
     this.async = async;
     this.manager = manager;
+    this.options = options;
+    this.cooldown = cooldown;
   }
 
   /**
    * Create the command.
    *
+   * @param manager where the command will be registered used to get the {@link
+   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
    * @param name the name of the command
+   * @param aliases the aliases which also allow to execute the command
    * @param description a simple description of the command
    * @param usageMessage a message describing how the message should executed. You can learn more
    *     about usage messages in {@link me.googas.commands.arguments.Argument}
-   * @param aliases the aliases which also allow to execute the command
+   * @param options the flags that apply in this command
+   * @param middlewares the middlewares to run before and after this command is executed
    * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
    *     about asynchronization check <a
    *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
-   * @param manager where the command will be registered used to get the {@link
-   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
+   * @param cooldown the manager that handles the cooldown in this command
    */
   public StarboxBukkitCommand(
+      @NonNull CommandManager manager,
       @NonNull String name,
+      @NonNull List<String> aliases,
       @NonNull String description,
       @NonNull String usageMessage,
-      @NonNull List<String> aliases,
+      @NonNull List<Option> options,
+      @NonNull List<BukkitMiddleware> middlewares,
       boolean async,
-      @NonNull CommandManager manager) {
+      CooldownManager cooldown) {
     super(name, description, usageMessage, aliases);
+    this.middlewares = middlewares;
     this.async = async;
     this.manager = manager;
+    this.options = options;
+    this.cooldown = cooldown;
   }
 
   /**
@@ -94,13 +120,28 @@ public abstract class StarboxBukkitCommand extends Command
    * @param args the arguments used in the command execution
    */
   public void run(@NonNull CommandSender sender, @NonNull String[] args) {
+    FlagArgument.Parser parse = FlagArgument.parse(this.getOptions(), args);
+    CommandContext context =
+        new CommandContext(
+            this,
+            sender,
+            parse.getArgumentsArray(),
+            parse.getArgumentsString(),
+            this.manager.getProvidersRegistry(),
+            this.manager.getMessagesProvider(),
+            parse.getFlags());
     Result result =
-        this.execute(
-            new CommandContext(
-                sender,
-                args,
-                this.manager.getMessagesProvider(),
-                this.manager.getProvidersRegistry()));
+        this.getMiddlewares().stream()
+            .map(middleware -> middleware.next(context))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst()
+            .orElseGet(
+                () -> {
+                  Result execute = this.execute(context);
+                  this.getMiddlewares().forEach(middleware -> middleware.next(context, execute));
+                  return execute;
+                });
     if (result != null) BukkitUtils.send(sender, result.getComponents());
   }
 
@@ -173,8 +214,7 @@ public abstract class StarboxBukkitCommand extends Command
   public abstract Result execute(@NonNull CommandContext context);
 
   @Override
-  public @NonNull Optional<? extends StarboxCooldownManager<CommandContext>> getCooldownManager() {
-    // TODO
-    return Optional.empty();
+  public @NonNull Optional<CooldownManager> getCooldownManager() {
+    return Optional.ofNullable(cooldown);
   }
 }

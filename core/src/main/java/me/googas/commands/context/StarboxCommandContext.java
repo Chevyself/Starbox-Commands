@@ -1,7 +1,12 @@
 package me.googas.commands.context;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
 import lombok.NonNull;
+import me.googas.commands.StarboxCommand;
+import me.googas.commands.flags.FlagArgument;
+import me.googas.commands.flags.StarboxFlag;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
@@ -13,12 +18,57 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
 public interface StarboxCommandContext {
 
   /**
-   * Get if the command was executed using the given flag.
+   * Get all the flags that were used in this context.
    *
-   * @param flag the flag to check
-   * @return true if the command was executed with the given flag
+   * @return a collection of flags
    */
-  boolean hasFlag(@NonNull String flag);
+  Collection<FlagArgument> getFlags();
+
+  /**
+   * Get a flag with its alias. This will first attempt to get a {@link FlagArgument} if it is not
+   * present in this context it will try to get it from the command using {@link
+   * StarboxCommand#getOption(String)}. Flags will be matched using {@link
+   * StarboxFlag#hasAlias(String)}
+   *
+   * @param alias the alias to match
+   * @return an optional which may hold the flag
+   */
+  @NonNull
+  default Optional<? extends StarboxFlag> getFlag(@NonNull String alias) {
+    Optional<FlagArgument> optional =
+        this.getFlags().stream().filter(flag -> flag.hasAlias(alias)).findFirst();
+    return optional.isPresent() ? optional : this.getCommand().getOption(alias);
+  }
+
+  /**
+   * Get the value of a flag. This will get the flag using {@link #getFlag(String)}
+   *
+   * @param alias the alias of the flag to get
+   * @return an optional which may contain the value or not
+   */
+  @NonNull
+  default Optional<String> getFlagValue(@NonNull String alias) {
+    return this.getFlag(alias).flatMap(StarboxFlag::getValue);
+  }
+
+  /**
+   * Get the command that is going to be executed using this context.
+   *
+   * @return the command
+   * @param <C> the type of context that it accepts
+   * @param <T> the type of the command
+   */
+  <C extends StarboxCommandContext, T extends StarboxCommand<C, T>> T getCommand();
+
+  /**
+   * Get if the command was executed using the given alias.
+   *
+   * @param alias the alias to check
+   * @return true if the command was executed with the given alias
+   */
+  default boolean hasFlag(@NonNull String alias) {
+    return this.getFlag(alias).isPresent();
+  }
 
   /**
    * Get the joined strings from a certain position.

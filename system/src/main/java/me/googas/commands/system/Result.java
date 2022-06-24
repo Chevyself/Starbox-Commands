@@ -20,7 +20,7 @@ import me.googas.commands.system.context.CommandContext;
 public class Result implements StarboxResult {
 
   @NonNull private final String message;
-  @Getter private boolean applyCooldown;
+  @Getter private boolean cooldown;
 
   /**
    * Create a result with a message to print.
@@ -42,8 +42,8 @@ public class Result implements StarboxResult {
   }
 
   @Override
-  public @NonNull Result setApplyCooldown(boolean apply) {
-    this.applyCooldown = apply;
+  public @NonNull Result setCooldown(boolean apply) {
+    this.cooldown = apply;
     return this;
   }
 }

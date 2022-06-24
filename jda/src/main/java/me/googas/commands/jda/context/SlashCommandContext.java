@@ -37,7 +37,7 @@ public class SlashCommandContext implements CommandContext {
   /**
    * Create the context.
    *
-   * @param manager
+   * @param manager the manager that contains the executed command
    * @param strings the strings representing the options of the command
    * @param jda the jda instance of the command manager
    * @param channel the channel where the command was executed

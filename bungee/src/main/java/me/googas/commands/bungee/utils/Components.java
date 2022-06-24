@@ -49,7 +49,7 @@ public class Components {
    */
   @NonNull
   public static BaseComponent[] getComponent(@NonNull String string) {
-    if (isJson(string)) {
+    if (Components.isJson(string)) {
       return ComponentSerializer.parse(string);
     } else {
       return Components.deserializePlain('&', string);

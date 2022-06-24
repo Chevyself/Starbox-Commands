@@ -42,7 +42,8 @@ public class TestCommands {
   @Command(
       aliases = "foo",
       description = "Who is a foo",
-      cooldown = @TimeAmount("10s"), cooldownPerm = @Perm)
+      cooldown = @TimeAmount("10s"),
+      cooldownPerm = @Perm)
   public Result foo(@Required(name = "foo", description = "The foo") Member member) {
     return Result.builder()
         .setMessage(() -> new MessageBuilder().setContent("The foo is ").append(member).build())

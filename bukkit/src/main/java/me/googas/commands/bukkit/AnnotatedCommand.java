@@ -13,16 +13,18 @@ import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
+import me.googas.commands.bukkit.middleware.BukkitMiddleware;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.bukkit.providers.type.BukkitMultiArgumentProvider;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
+import me.googas.commands.flags.FlagArgument;
+import me.googas.commands.flags.Option;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
-import me.googas.commands.util.Strings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 
@@ -43,9 +45,17 @@ public class AnnotatedCommand extends StarboxBukkitCommand
   /**
    * Create the command.
    *
-   * @param command the annotation that will be used to get the name and aliases of the command
-   *     {@link Command#aliases()} the description {@link Command#description()} whether to execute
-   *     the command async {@link Command#async()} and the permission {@link Command#permission()}
+   * @param name the name of the command
+   * @param aliases other names that the command can be executed with
+   * @param permission the permission required to run this command
+   * @param description a short description of the command
+   * @param usageMessage a helpful message to know how the command is properly executed
+   * @param options the flags that apply in this command
+   * @param middlewares the middlewares to run before and after this command is executed
+   * @param async Whether the command should {{@link #execute(CommandContext)}} async. To know more
+   *     about asynchronization check <a
+   *     href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
+   * @param cooldown the manager that handles the cooldown in this command
    * @param method the method to execute as the command see more in {@link #getMethod()}
    * @param object the instance of the object used to invoke the method see more in {@link
    *     #getObject()}
@@ -56,32 +66,28 @@ public class AnnotatedCommand extends StarboxBukkitCommand
    *     more in {@link me.googas.commands.annotations.Parent}
    */
   public AnnotatedCommand(
-      @NonNull Command command,
+      @NonNull CommandManager manager,
+      @NonNull String name,
+      @NonNull List<String> aliases,
+      String permission,
+      @NonNull String description,
+      @NonNull String usageMessage,
+      @NonNull List<Option> options,
+      @NonNull List<BukkitMiddleware> middlewares,
+      boolean async,
+      CooldownManager cooldown,
       @NonNull Method method,
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments,
-      @NonNull CommandManager manager,
       @NonNull List<StarboxBukkitCommand> children) {
-    super(
-        command.aliases()[0],
-        command.description(),
-        "/"
-            + Strings.buildUsageAliases(command.aliases())
-            + " "
-            + Argument.generateUsage(arguments),
-        command.aliases().length > 1
-            ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
-            : new ArrayList<>(),
-        command.async(),
-        manager);
+    super(manager, name, aliases, description, usageMessage, options, middlewares, async, cooldown);
+    if (permission != null && !permission.isEmpty()) {
+      this.setPermission(permission);
+    }
     this.method = method;
     this.object = object;
     this.arguments = arguments;
     this.children = children;
-    final String permission = command.permission();
-    if (!permission.isEmpty()) {
-      this.setPermission(permission);
-    }
   }
 
   /**
@@ -93,12 +99,17 @@ public class AnnotatedCommand extends StarboxBukkitCommand
    */
   public @NonNull List<String> reflectTabComplete(
       @NonNull CommandSender sender, @NonNull String[] strings) {
+    FlagArgument.Parser parse = FlagArgument.parse(this.getOptions(), strings);
+    strings = parse.getArgumentsArray();
     CommandContext context =
         new CommandContext(
+            this,
             sender,
             strings,
+            parse.getArgumentsString(),
+            this.manager.getProvidersRegistry(),
             this.manager.getMessagesProvider(),
-            this.manager.getProvidersRegistry());
+            parse.getFlags());
     Optional<SingleArgument<?>> optionalArgument = this.getArgument(strings.length - 1);
     if (optionalArgument.isPresent()) {
       SingleArgument<?> argument = optionalArgument.get();
@@ -151,12 +162,6 @@ public class AnnotatedCommand extends StarboxBukkitCommand
   @Override
   public Result execute(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
-    final String permission = this.getPermission();
-    if (permission != null && !permission.isEmpty()) {
-      if (!sender.hasPermission(permission)) {
-        return Result.of(this.manager.getMessagesProvider().notAllowed(context));
-      }
-    }
     try {
       Object object = this.method.invoke(this.getObject(), this.getObjects(context));
       if (object instanceof Result) {

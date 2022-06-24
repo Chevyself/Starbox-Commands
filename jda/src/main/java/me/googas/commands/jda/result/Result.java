@@ -100,7 +100,7 @@ public class Result implements StarboxResult {
   }
 
   @Override
-  public @NonNull Result setApplyCooldown(boolean apply) {
+  public @NonNull Result setCooldown(boolean apply) {
     this.applyCooldown = apply;
     return this;
   }
@@ -174,7 +174,7 @@ public class Result implements StarboxResult {
               this.messageSupplier == null ? null : this.messageSupplier.get(),
               description,
               success)
-          .setApplyCooldown(applyCooldown);
+          .setCooldown(applyCooldown);
     }
   }
 }

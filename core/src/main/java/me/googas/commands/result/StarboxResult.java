@@ -32,7 +32,7 @@ public interface StarboxResult {
    *
    * @return true if this result should apply cooldown
    */
-  default boolean isApplyCooldown() {
+  default boolean isCooldown() {
     return false;
   }
 
@@ -43,7 +43,7 @@ public interface StarboxResult {
    * @return this same result instance
    */
   @NonNull
-  default StarboxResult setApplyCooldown(boolean apply) {
+  default StarboxResult setCooldown(boolean apply) {
     return this;
   }
 }

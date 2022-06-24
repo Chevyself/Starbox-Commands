@@ -69,9 +69,8 @@ public class BukkitMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    // TODO add when bukkit cooldown is also added
-    return null;
+  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+    return "&e&o\u26A0 &c&oYou will be allowed to run this command in &4&o" + timeLeft;
   }
 
   @NonNull

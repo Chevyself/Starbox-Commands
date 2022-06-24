@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.flags.Option;
 import me.googas.commands.result.StarboxResult;
 
 /**
@@ -79,6 +80,40 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   @NonNull
   Collection<T> getChildren();
 
+  /**
+   * Get the manager for the cooldown of this command.
+   *
+   * @return the manager
+   */
   @NonNull
   Optional<? extends StarboxCooldownManager<C>> getCooldownManager();
+
+  /**
+   * Get the Middlewares that will run before the command.
+   *
+   * @return the collection of middlewares
+   */
+  @NonNull
+  Collection<? extends Middleware<?>> getMiddlewares();
+
+  /**
+   * Get the options which this command may have.
+   *
+   * @see Option
+   * @return the collection of options
+   */
+  @NonNull
+  Collection<? extends Option> getOptions();
+
+  /**
+   * Get a specific option based on its alias. This will go through all the {@link Option} in {@link
+   * #getOptions()} filtering using {@link Option#hasAlias(String)} to find the first match.
+   *
+   * @param alias the alias to match
+   * @return an optional {@link Option}
+   */
+  @NonNull
+  default Optional<? extends Option> getOption(@NonNull String alias) {
+    return this.getOptions().stream().filter(option -> option.hasAlias(alias)).findFirst();
+  }
 }

@@ -4,7 +4,10 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import lombok.NonNull;
 import me.googas.commands.bukkit.AnnotatedCommand;
+import me.googas.commands.bukkit.middleware.BukkitMiddleware;
+import me.googas.commands.flags.Flag;
 
 /**
  * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
@@ -48,4 +51,36 @@ public @interface Command {
    * @return true if the command has to run the command asynchronously
    */
   boolean async() default false;
+
+  /**
+   * Get the options/flags to apply in this command.
+   *
+   * @return the array of flags
+   */
+  @NonNull
+  Flag[] options() default {};
+
+  /**
+   * Get the middleware classes that should be included in the execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends BukkitMiddleware>[] include() default {};
+
+  /**
+   * Get the global middleware classes that should be excluded from the command execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends BukkitMiddleware>[] exclude() default {};
+
+  /**
+   * Get the cooldown that should be applied to this command.
+   *
+   * @return the annotation
+   */
+  @NonNull
+  Cooldown cooldown() default @Cooldown;
 }

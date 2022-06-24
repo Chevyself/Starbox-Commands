@@ -52,11 +52,27 @@ public @interface Command {
    */
   boolean excluded() default false;
 
+  /**
+   * Get how should cooldown behave.
+   *
+   * @return how will the cooldown check if a user/member is allowed to use a command
+   */
+  @NonNull
   CooldownBehaviour behaviour() default CooldownBehaviour.USER;
 
+  /**
+   * Get the permission that the user/member needs to be allowed to use the command.
+   *
+   * @return the permission annotation
+   */
   @NonNull
   Perm permission() default @Perm;
 
+  /**
+   * Get the permission that the user/member needs to skip cooldown.
+   *
+   * @return the permission annotation
+   */
   @NonNull
   Perm cooldownPerm() default @Perm(value = Permission.ADMINISTRATOR, node = "*.cooldown");
 }

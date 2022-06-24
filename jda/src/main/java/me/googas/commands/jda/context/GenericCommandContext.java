@@ -32,7 +32,7 @@ public class GenericCommandContext implements CommandContext {
   /**
    * Create an instance.
    *
-   * @param manager
+   * @param manager the manager that contains the executed command
    * @param jda the jda instance in which the {@link CommandManager} is registered
    * @param event the event of the message that executes the command
    * @param sender the sender of the command
@@ -122,9 +122,9 @@ public class GenericCommandContext implements CommandContext {
   }
 
   @Override
-  public boolean hasFlag(@NonNull String flag) {
+  public boolean hasFlag(@NonNull String alias) {
     for (String string : this.strings) {
-      if (string.equalsIgnoreCase(flag)) {
+      if (string.equalsIgnoreCase(alias)) {
         return true;
       }
     }

@@ -50,7 +50,7 @@ public class SystemMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
     return "You are not allowed to run this command for another " + timeLeft;
   }
 }

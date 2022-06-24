@@ -111,7 +111,7 @@ public interface Argument<O> {
             Argument.parseArgument(parameters[i], annotations[i], position);
         arguments.add(i, argument);
         if (argument instanceof MultipleArgument) {
-          position = +((MultipleArgument<?>) argument).getMinSize();
+          position = ((MultipleArgument<?>) argument).getMinSize();
         } else {
           position++;
         }
