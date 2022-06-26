@@ -6,11 +6,11 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.flags.Option;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.cooldown.CooldownManager;
-import me.googas.commands.jda.middleware.JdaMiddleware;
 import me.googas.commands.jda.result.Result;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -32,7 +32,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @NonNull @Getter protected final String description;
   @NonNull @Getter protected final Map<String, String> map;
   @NonNull @Getter protected final List<Option> options;
-  @NonNull @Getter protected final List<JdaMiddleware> middlewares;
+  @NonNull @Getter protected final List<Middleware<CommandContext>> middlewares;
   @Deprecated @Getter @Setter private boolean excluded;
 
   protected final CooldownManager cooldown;
@@ -42,7 +42,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       @NonNull String description,
       @NonNull Map<String, String> map,
       @NonNull List<Option> options,
-      @NonNull List<JdaMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       CooldownManager cooldown) {
     this.manager = manager;
     this.description = description;
@@ -98,10 +98,15 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
         .filter(Optional::isPresent)
         .map(Optional::get)
         .findFirst()
+        .map(
+            starboxResult -> {
+              // Here maybe thrown an error because the wrong result was provided
+              return starboxResult instanceof Result ? (Result) starboxResult : null;
+            })
         .orElseGet(
             () -> {
               Result run = this.run(context);
-              this.middlewares.forEach(middleware -> middleware.next(context, run));
+              this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
               return run;
             });
   }

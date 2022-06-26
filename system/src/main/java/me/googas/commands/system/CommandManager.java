@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
-import me.googas.commands.system.middleware.SystemMiddleware;
 import me.googas.commands.time.Time;
 
 /**
@@ -40,8 +40,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   @NonNull @Getter private final List<SystemCommand> commands = new ArrayList<>();
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final List<SystemMiddleware> globalMiddlewares;
-  @NonNull @Getter private final List<SystemMiddleware> middlewares;
+  @NonNull @Getter private final List<Middleware<CommandContext>> globalMiddlewares;
+  @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
   @NonNull @Getter private final CommandListener listener;
 
   /**
@@ -129,7 +129,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   }
 
   @NonNull
-  private List<SystemMiddleware> getMiddlewares(@NonNull Command command) {
+  private List<Middleware<CommandContext>> getMiddlewares(@NonNull Command command) {
     return StarboxCommandManager.getMiddlewares(
         this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
@@ -160,5 +160,17 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   public void close() {
     commands.clear();
     listener.finish();
+  }
+
+  @Override
+  public @NonNull StarboxCommandManager<CommandContext, SystemCommand> addGlobalMiddleware(
+      @NonNull Middleware<CommandContext>... middlewares) {
+    return null;
+  }
+
+  @Override
+  public @NonNull StarboxCommandManager<CommandContext, SystemCommand> addMiddleware(
+      @NonNull Middleware<CommandContext>... middlewares) {
+    return null;
   }
 }

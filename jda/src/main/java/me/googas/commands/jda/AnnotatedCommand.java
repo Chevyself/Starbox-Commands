@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.SingleArgument;
@@ -20,7 +21,6 @@ import me.googas.commands.flags.Option;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.cooldown.CooldownManager;
-import me.googas.commands.jda.middleware.JdaMiddleware;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.StarboxMessagesProvider;
@@ -70,7 +70,7 @@ public class AnnotatedCommand extends JdaCommand
       @NonNull String description,
       @NonNull Map<String, String> map,
       @NonNull List<Option> options,
-      @NonNull List<JdaMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       CooldownManager cooldown,
       @NonNull List<String> aliases,
       @NonNull Method method,

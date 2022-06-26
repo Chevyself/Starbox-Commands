@@ -22,11 +22,12 @@ public class MainTest {
     MessagesProvider messages = new JdaMessagesProvider();
     CommandManager manager =
         new CommandManager(
-            new JdaProvidersRegistry(messages),
-            messages,
-            jda,
-            new GenericListenerOptions().setPrefix("-")).addMiddleware(new CooldownMiddleware(),
-            new PermissionMiddleware());
+                new JdaProvidersRegistry(messages),
+                messages,
+                jda,
+                new GenericListenerOptions().setPrefix("-"))
+            .addGlobalMiddleware(new CooldownMiddleware(), new PermissionMiddleware())
+            .parseAndRegister(new TestCommands());
   }
 
   public static void deleteCommands(@NonNull JDA jda) {

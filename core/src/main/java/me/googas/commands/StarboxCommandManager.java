@@ -165,7 +165,7 @@ public interface StarboxCommandManager<
    * @param <M> the type of the middleware that can be added in this manager
    */
   @NonNull
-  static <M extends Middleware<?>> List<M> getMiddlewares(
+  static <C extends StarboxCommandContext, M extends Middleware<C>> List<M> getMiddlewares(
       @NonNull Collection<M> global,
       @NonNull Collection<M> middlewares,
       @NonNull Class<? extends M>[] include,
@@ -208,6 +208,9 @@ public interface StarboxCommandManager<
         .collect(Collectors.toList());
   }
 
+  @NonNull
   StarboxCommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C>... middlewares);
+
+  @NonNull
   StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C>... middlewares);
 }

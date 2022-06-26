@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
@@ -20,7 +21,6 @@ import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.cooldown.CooldownManager;
 import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
-import me.googas.commands.jda.middleware.JdaMiddleware;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
@@ -63,8 +63,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   @NonNull @Getter private final JDA jda;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final List<JdaMiddleware> globalMiddlewares;
-  @NonNull @Getter private final List<JdaMiddleware> middlewares;
+  @NonNull @Getter private final List<Middleware<CommandContext>> globalMiddlewares;
+  @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
   @NonNull @Getter private final CommandListener listener;
   @NonNull @Getter private final ListenerOptions listenerOptions;
 
@@ -220,7 +220,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   }
 
   @NonNull
-  private List<JdaMiddleware> getMiddlewares(@NonNull Command command) {
+  private List<Middleware<CommandContext>> getMiddlewares(@NonNull Command command) {
     return StarboxCommandManager.getMiddlewares(
         this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
@@ -300,5 +300,18 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   public void close() {
     this.commands.clear();
     jda.removeEventListener(listener);
+  }
+
+  @Override
+  public @NonNull CommandManager addGlobalMiddleware(
+      @NonNull Middleware<CommandContext>... middlewares) {
+    this.getGlobalMiddlewares().addAll(Arrays.asList(middlewares));
+    return this;
+  }
+
+  @Override
+  public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext>... middlewares) {
+    this.getMiddlewares().addAll(Arrays.asList(middlewares));
+    return this;
   }
 }

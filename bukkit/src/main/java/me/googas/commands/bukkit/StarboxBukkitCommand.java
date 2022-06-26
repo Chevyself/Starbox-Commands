@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.bukkit.middleware.BukkitMiddleware;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.flags.FlagArgument;
@@ -41,7 +41,7 @@ public abstract class StarboxBukkitCommand extends Command
 
   @NonNull @Getter protected final CommandManager manager;
   @NonNull @Getter protected final List<Option> options;
-  @NonNull @Getter protected final List<BukkitMiddleware> middlewares;
+  @NonNull @Getter protected final List<Middleware<CommandContext>> middlewares;
   protected final boolean async;
   private final CooldownManager cooldown;
 
@@ -62,7 +62,7 @@ public abstract class StarboxBukkitCommand extends Command
       @NonNull CommandManager manager,
       @NonNull String name,
       @NonNull List<Option> options,
-      @NonNull List<BukkitMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       boolean async,
       CooldownManager cooldown) {
     super(name);
@@ -97,7 +97,7 @@ public abstract class StarboxBukkitCommand extends Command
       @NonNull String description,
       @NonNull String usageMessage,
       @NonNull List<Option> options,
-      @NonNull List<BukkitMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       boolean async,
       CooldownManager cooldown) {
     super(name, description, usageMessage, aliases);
@@ -136,11 +136,16 @@ public abstract class StarboxBukkitCommand extends Command
             .filter(Optional::isPresent)
             .map(Optional::get)
             .findFirst()
+            .map(
+                starboxResult -> {
+                  // Here maybe thrown an error because the wrong result was provided
+                  return starboxResult instanceof Result ? (Result) starboxResult : null;
+                })
             .orElseGet(
                 () -> {
-                  Result execute = this.execute(context);
-                  this.getMiddlewares().forEach(middleware -> middleware.next(context, execute));
-                  return execute;
+                  Result run = this.execute(context);
+                  this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
+                  return run;
                 });
     if (result != null) BukkitUtils.send(sender, result.getComponents());
   }

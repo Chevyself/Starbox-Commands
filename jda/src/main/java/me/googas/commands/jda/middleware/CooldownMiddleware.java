@@ -6,6 +6,7 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.cooldown.CooldownManager;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
+import me.googas.commands.result.StarboxResult;
 
 /** Middleware to check and apply cooldown to commands. */
 public class CooldownMiddleware implements JdaMiddleware {
@@ -23,5 +24,11 @@ public class CooldownMiddleware implements JdaMiddleware {
           }
           return null;
         });
+  }
+
+  @Override
+  public void next(@NonNull CommandContext context, StarboxResult result) {
+    Optional<CooldownManager> optional = context.getCommand().getCooldownManager();
+    if (result.isCooldown() && optional.isPresent()) optional.get().refresh(context);
   }
 }

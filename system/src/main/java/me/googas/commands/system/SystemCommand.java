@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.system.context.CommandContext;
-import me.googas.commands.system.middleware.SystemMiddleware;
 import me.googas.commands.util.Strings;
 
 /**
@@ -68,17 +68,22 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
         .filter(Optional::isPresent)
         .map(Optional::get)
         .findFirst()
+        .map(
+            starboxResult -> {
+              // Here maybe thrown an error because the wrong result was provided
+              return starboxResult instanceof Result ? (Result) starboxResult : null;
+            })
         .orElseGet(
             () -> {
-              Result result = this.run(context);
-              this.getMiddlewares().forEach(middleware -> middleware.next(context, result));
-              return result;
+              Result run = this.run(context);
+              this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
+              return run;
             });
   }
 
   @Override
   @NonNull
-  Collection<SystemMiddleware> getMiddlewares();
+  Collection<Middleware<CommandContext>> getMiddlewares();
 
   @Override
   @NonNull

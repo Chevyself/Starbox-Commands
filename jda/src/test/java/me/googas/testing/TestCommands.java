@@ -24,20 +24,20 @@ public class TestCommands {
         .setDescription(
             Strings.format(
                 "Hello {0}! Your favourite game is {1} and you are {2} years old", name, game, age))
-        .setApplyCooldown(true)
+        .setCooldown(true)
         .build();
   }
 
   @Command(aliases = "lol", description = "The lol command", cooldown = @TimeAmount("10s"))
   public Result lol() {
-    return Result.builder().setDescription("LOL!").setApplyCooldown(true).build();
+    return Result.builder().setDescription("LOL!").setCooldown(true).build();
   }
 
   @Command(aliases = "foo", description = "Who is a foo", cooldown = @TimeAmount("10s"))
   public Result foo(@Required(name = "foo", description = "The foo") Member member) {
     return Result.builder()
         .setMessage(() -> new MessageBuilder().setContent("The foo is ").append(member).build())
-        .setApplyCooldown(true)
+        .setCooldown(true)
         .build();
   }
 }

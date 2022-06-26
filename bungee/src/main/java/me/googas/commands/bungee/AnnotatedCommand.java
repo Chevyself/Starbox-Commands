@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
-import me.googas.commands.bungee.middleware.BungeeMiddleware;
 import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
 import me.googas.commands.bungee.providers.type.BungeeMultiArgumentProvider;
 import me.googas.commands.bungee.result.Result;
@@ -73,7 +73,7 @@ public class AnnotatedCommand extends BungeeCommand
       String name,
       String permission,
       @NonNull List<Option> options,
-      @NonNull List<BungeeMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       boolean async,
       CooldownManager cooldown,
       @NonNull Method method,

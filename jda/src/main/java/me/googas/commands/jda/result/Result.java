@@ -112,7 +112,7 @@ public class Result implements StarboxResult {
     private String description = null;
     private transient Consumer<Message> success = null;
     private transient Supplier<Message> messageSupplier = null;
-    private boolean applyCooldown;
+    private boolean cooldown;
 
     /**
      * Set the type of the result.
@@ -163,8 +163,8 @@ public class Result implements StarboxResult {
       return this;
     }
 
-    public @NonNull ResultBuilder setApplyCooldown(boolean apply) {
-      this.applyCooldown = apply;
+    public @NonNull ResultBuilder setCooldown(boolean apply) {
+      this.cooldown = apply;
       return this;
     }
 
@@ -174,7 +174,7 @@ public class Result implements StarboxResult {
               this.messageSupplier == null ? null : this.messageSupplier.get(),
               description,
               success)
-          .setCooldown(applyCooldown);
+          .setCooldown(cooldown);
     }
   }
 }

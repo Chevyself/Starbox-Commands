@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
@@ -14,7 +15,6 @@ import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.BungeeMessagesProvider;
 import me.googas.commands.bungee.messages.MessagesProvider;
-import me.googas.commands.bungee.middleware.BungeeMiddleware;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
@@ -51,8 +51,11 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
   @NonNull @Getter private final PluginManager manager;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final List<BungeeMiddleware> globalMiddlewares = new ArrayList<>();
-  @NonNull @Getter private final List<BungeeMiddleware> middlewares = new ArrayList<>();
+
+  @NonNull @Getter
+  private final List<Middleware<CommandContext>> globalMiddlewares = new ArrayList<>();
+
+  @NonNull @Getter private final List<Middleware<CommandContext>> middlewares = new ArrayList<>();
   @NonNull @Getter private final List<BungeeCommand> commands = new ArrayList<>();
 
   /**
@@ -131,7 +134,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
   }
 
   @NonNull
-  private List<BungeeMiddleware> getMiddlewares(@NonNull Command command) {
+  private List<Middleware<CommandContext>> getMiddlewares(@NonNull Command command) {
     return StarboxCommandManager.getMiddlewares(
         this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
@@ -162,5 +165,18 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
   public void close() {
     this.commands.forEach(manager::unregisterCommand);
     this.commands.clear();
+  }
+
+  @Override
+  public @NonNull CommandManager addGlobalMiddleware(
+      @NonNull Middleware<CommandContext>... middlewares) {
+    this.getGlobalMiddlewares().addAll(Arrays.asList(middlewares));
+    return this;
+  }
+
+  @Override
+  public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext>... middlewares) {
+    this.getMiddlewares().addAll(Arrays.asList(middlewares));
+    return this;
   }
 }

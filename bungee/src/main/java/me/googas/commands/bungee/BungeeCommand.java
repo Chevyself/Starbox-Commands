@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.bungee.context.CommandContext;
-import me.googas.commands.bungee.middleware.BungeeMiddleware;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.flags.Option;
@@ -41,7 +41,7 @@ public abstract class BungeeCommand extends Command
 
   @NonNull @Getter protected final CommandManager manager;
   @NonNull @Getter protected final List<Option> options;
-  @NonNull @Getter protected final List<BungeeMiddleware> middlewares;
+  @NonNull @Getter protected final List<Middleware<CommandContext>> middlewares;
   @NonNull @Getter private final List<BungeeCommand> children;
   protected final boolean async;
   private final CooldownManager cooldown;
@@ -66,7 +66,7 @@ public abstract class BungeeCommand extends Command
       @NonNull List<BungeeCommand> children,
       @NonNull CommandManager manager,
       @NonNull List<Option> options,
-      @NonNull List<BungeeMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       boolean async,
       CooldownManager cooldown) {
     super(name);
@@ -102,7 +102,7 @@ public abstract class BungeeCommand extends Command
       @NonNull List<BungeeCommand> children,
       @NonNull CommandManager manager,
       @NonNull List<Option> options,
-      @NonNull List<BungeeMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       boolean async,
       CooldownManager cooldown,
       String... aliases) {
@@ -161,11 +161,16 @@ public abstract class BungeeCommand extends Command
             .filter(Optional::isPresent)
             .map(Optional::get)
             .findFirst()
+            .map(
+                starboxResult -> {
+                  // Here maybe thrown an error because the wrong result was provided
+                  return starboxResult instanceof Result ? (Result) starboxResult : null;
+                })
             .orElseGet(
                 () -> {
-                  Result execute = this.execute(context);
-                  this.getMiddlewares().forEach(middleware -> middleware.next(context, execute));
-                  return execute;
+                  Result run = this.execute(context);
+                  this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
+                  return run;
                 });
     if (result != null && !result.getComponents().isEmpty()) {
       sender.sendMessage(result.getComponents().toArray(new BaseComponent[0]));

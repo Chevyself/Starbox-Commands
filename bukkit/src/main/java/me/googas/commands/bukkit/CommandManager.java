@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
@@ -14,7 +15,6 @@ import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.BukkitMessagesProvider;
 import me.googas.commands.bukkit.messages.MessagesProvider;
-import me.googas.commands.bukkit.middleware.BukkitMiddleware;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.bukkit.topic.PluginHelpTopic;
 import me.googas.commands.bukkit.topic.StarboxCommandHelpTopicFactory;
@@ -79,8 +79,8 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final List<BukkitMiddleware> globalMiddlewares;
-  @NonNull @Getter private final List<BukkitMiddleware> middlewares;
+  @NonNull @Getter private final List<Middleware<CommandContext>> globalMiddlewares;
+  @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
 
   /**
    * Create an instance.
@@ -194,7 +194,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   }
 
   @NonNull
-  private List<BukkitMiddleware> getMiddlewares(@NonNull Command command) {
+  private List<Middleware<CommandContext>> getMiddlewares(@NonNull Command command) {
     return StarboxCommandManager.getMiddlewares(
         this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
@@ -225,5 +225,18 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   public void close() {
     this.commands.forEach(command -> command.unregister(CommandManager.commandMap));
     this.commands.clear();
+  }
+
+  @Override
+  public @NonNull CommandManager addGlobalMiddleware(
+      @NonNull Middleware<CommandContext>... middlewares) {
+    this.getGlobalMiddlewares().addAll(Arrays.asList(middlewares));
+    return this;
+  }
+
+  @Override
+  public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext>... middlewares) {
+    this.getMiddlewares().addAll(Arrays.asList(middlewares));
+    return this;
   }
 }

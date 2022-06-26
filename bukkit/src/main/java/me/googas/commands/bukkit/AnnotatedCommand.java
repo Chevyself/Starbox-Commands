@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.bukkit.middleware.BukkitMiddleware;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.bukkit.providers.type.BukkitMultiArgumentProvider;
 import me.googas.commands.bukkit.result.Result;
@@ -73,7 +73,7 @@ public class AnnotatedCommand extends StarboxBukkitCommand
       @NonNull String description,
       @NonNull String usageMessage,
       @NonNull List<Option> options,
-      @NonNull List<BukkitMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       boolean async,
       CooldownManager cooldown,
       @NonNull Method method,

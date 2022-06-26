@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.ReflectCommand;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.context.StarboxCommandContext;
@@ -16,7 +17,6 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.system.context.sender.CommandSender;
-import me.googas.commands.system.middleware.SystemMiddleware;
 import me.googas.commands.util.Strings;
 
 /**
@@ -31,7 +31,7 @@ public class ReflectSystemCommand
   @NonNull @Getter private final CommandManager manager;
   @NonNull @Getter private final List<String> aliases;
   @NonNull @Getter private final List<Option> options;
-  @NonNull @Getter private final List<SystemMiddleware> middlewares;
+  @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
@@ -58,7 +58,7 @@ public class ReflectSystemCommand
       @NonNull CommandManager manager,
       @NonNull List<String> aliases,
       @NonNull List<Option> options,
-      @NonNull List<SystemMiddleware> middlewares,
+      @NonNull List<Middleware<CommandContext>> middlewares,
       @NonNull Method method,
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments,
