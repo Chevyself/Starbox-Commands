@@ -1,10 +1,13 @@
 package me.googas.commands.jda.context;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.jda.CommandManager;
+import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import net.dv8tion.jda.api.JDA;
@@ -29,39 +32,41 @@ public class GuildCommandContext extends GenericCommandContext {
   /**
    * Create an instance.
    *
-   * @param manager the manager where this context was created
-   * @param jda the jda instance in which the {@link me.googas.commands.jda.CommandManager} is
-   *     registered
-   * @param event the event of the message that executes the command
-   * @param message the message that executed the command
+   * @param jda the jda instance in which the {@link CommandManager} is registered
+   * @param command the command for which this context was created
    * @param sender the sender of the command
-   * @param args the strings representing the arguments of the command
-   * @param channel the channel where the command was execute
+   * @param string the input strings joined
+   * @param args the strings send in the command
+   * @param registry the registry of the command context
    * @param messagesProvider the messages provider for this context
-   * @param registry the registry of this context
-   * @param commandName the name of the command that is being executed
+   * @param flags the flags in the input of the command
+   * @param event the event of the message that executes the command
+   * @param channel the channel where the command was executed
+   * @param message the message where the command was executed
    */
   public GuildCommandContext(
-      @NonNull CommandManager manager,
       @NonNull JDA jda,
-      @NonNull MessageReceivedEvent event,
+      @NonNull JdaCommand command,
       @NonNull User sender,
+      @NonNull String string,
       @NonNull String[] args,
-      @NonNull MessageChannel channel,
+      @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull MessagesProvider messagesProvider,
-      ProvidersRegistry<CommandContext> registry,
-      String commandName,
+      @NonNull List<FlagArgument> flags,
+      @NonNull MessageReceivedEvent event,
+      @NonNull MessageChannel channel,
       @NonNull Message message) {
     super(
-        manager,
         jda,
-        event,
+        command,
         sender,
+        string,
         args,
-        channel,
-        messagesProvider,
         registry,
-        commandName,
+        messagesProvider,
+        flags,
+        event,
+        channel,
         message);
     this.member =
         Objects.requireNonNull(
@@ -77,15 +82,16 @@ public class GuildCommandContext extends GenericCommandContext {
   @Override
   public @NonNull GuildCommandContext getChildren() {
     return new GuildCommandContext(
-        this.manager,
         this.jda,
-        this.event,
+        this.command,
         this.sender,
+        this.string,
         Arrays.copyOfRange(strings, 1, strings.length),
-        this.channel,
-        this.messagesProvider,
         this.registry,
-        this.commandName,
+        this.messagesProvider,
+        this.flags,
+        this.event,
+        this.channel,
         this.message);
   }
 }

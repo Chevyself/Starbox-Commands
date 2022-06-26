@@ -28,8 +28,8 @@ public class CommandContext implements StarboxCommandContext {
    *
    * @param command the command for which this context was created
    * @param sender the sender of the bukkit command
-   * @param strings the strings from the command execution
    * @param string the input strings joined
+   * @param strings the strings from the command execution
    * @param registry the registry for the command context to use
    * @param messagesProvider the messages provider used in this context
    * @param flags the flags in the input of the command
@@ -37,8 +37,8 @@ public class CommandContext implements StarboxCommandContext {
   public CommandContext(
       @NonNull StarboxBukkitCommand command,
       @NonNull CommandSender sender,
-      @NonNull String[] strings,
       @NonNull String string,
+      @NonNull String[] strings,
       @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull MessagesProvider messagesProvider,
       @NonNull List<FlagArgument> flags) {
@@ -49,16 +49,6 @@ public class CommandContext implements StarboxCommandContext {
     this.messagesProvider = messagesProvider;
     this.registry = registry;
     this.flags = flags;
-  }
-
-  @Override
-  public boolean hasFlag(@NonNull String alias) {
-    for (String string : this.strings) {
-      if (string.equalsIgnoreCase(alias)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   @NonNull

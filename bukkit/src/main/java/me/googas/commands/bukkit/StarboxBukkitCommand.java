@@ -125,8 +125,8 @@ public abstract class StarboxBukkitCommand extends Command
         new CommandContext(
             this,
             sender,
-            parse.getArgumentsArray(),
             parse.getArgumentsString(),
+            parse.getArgumentsArray(),
             this.manager.getProvidersRegistry(),
             this.manager.getMessagesProvider(),
             parse.getFlags());

@@ -51,16 +51,6 @@ public class CommandContext implements StarboxCommandContext {
     this.flags = flags;
   }
 
-  @Override
-  public boolean hasFlag(@NonNull String alias) {
-    for (String string : this.strings) {
-      if (string.equalsIgnoreCase(alias)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   @NonNull
   @Override
   public String[] getStringsFrom(int position) {

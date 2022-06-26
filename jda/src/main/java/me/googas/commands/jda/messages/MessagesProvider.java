@@ -18,7 +18,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
    *     me.googas.commands.jda.CommandManager}
    */
   @NonNull
-  String commandNotFound(@NonNull String command, @NonNull CommandContext context);
+  String commandNotFound(@NonNull @Deprecated String command, @NonNull CommandContext context);
 
   /**
    * Get the footer for embeds.

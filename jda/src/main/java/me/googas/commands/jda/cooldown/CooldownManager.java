@@ -2,17 +2,26 @@ package me.googas.commands.jda.cooldown;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import lombok.NonNull;
+import me.googas.commands.StarboxCooldownManager;
+import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.permissions.Permit;
 import me.googas.commands.time.Time;
 
-public class UserCooldownManager extends JdaCooldownManager {
+public class CooldownManager implements StarboxCooldownManager<CommandContext> {
 
   @NonNull private final Map<Long, Long> map = new HashMap<>();
+  @NonNull private final Time time;
 
-  protected UserCooldownManager(@NonNull Time time, Permit permission) {
-    super(time, permission);
+  protected CooldownManager(@NonNull Time time) {
+    this.time = time;
+  }
+
+  @NonNull
+  public static Optional<CooldownManager> of(@NonNull Command annotation) {
+    Time time = Time.of(annotation.cooldown());
+    return Optional.ofNullable(time.isZero() ? null : new CooldownManager(time));
   }
 
   private long getMillis(@NonNull CommandContext context) {
@@ -21,11 +30,7 @@ public class UserCooldownManager extends JdaCooldownManager {
 
   @Override
   public boolean hasCooldown(@NonNull CommandContext context) {
-    boolean hasPermission =
-        this.permission != null
-            && context.getManager().getPermissionChecker().checkPermission(context, this.permission)
-                == null;
-    return this.getMillis(context) > System.currentTimeMillis() && !hasPermission;
+    return this.getMillis(context) > System.currentTimeMillis();
   }
 
   @Override

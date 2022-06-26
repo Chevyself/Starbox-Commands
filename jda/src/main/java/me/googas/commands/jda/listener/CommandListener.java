@@ -4,9 +4,11 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.jda.CommandManager;
 import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.jda.ListenerOptions;
+import me.googas.commands.jda.UnknownCommand;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
@@ -14,6 +16,7 @@ import me.googas.commands.jda.context.SlashCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -60,12 +63,11 @@ public class CommandListener implements EventListener {
       return;
     }
     this.listenerOptions.preCommand(event, commandName, strings);
-    commandName = commandName.substring(prefix.length());
+    String finalCommandName = commandName.substring(prefix.length());
     JdaCommand command =
-        this.manager.getCommand(event.isFromGuild() ? event.getGuild() : null, commandName);
-    GenericCommandContext context =
-        this.getCommandContext(event, strings, command == null ? null : command.getName());
-    Result result = this.getResult(command, commandName, context);
+        this.getCommand(event.isFromGuild() ? event.getGuild() : null, finalCommandName);
+    GenericCommandContext context = this.getCommandContext(event, strings, command);
+    Result result = this.getResult(command, finalCommandName, context);
     Message response = this.getMessage(result, context);
     Consumer<Message> consumer = this.getConsumer(result, context);
     if (response != null) {
@@ -94,21 +96,23 @@ public class CommandListener implements EventListener {
     String name = event.getName();
     String[] strings =
         event.getOptions().stream().map(OptionMapping::getAsString).toArray(String[]::new);
-    // this.listenerOptions.preCommand(event, event.getName(), strings);
-    JdaCommand command = this.manager.getCommand(event.getGuild(), name);
-    SlashCommandContext context =
+    this.listenerOptions.preCommand(event, event.getName(), strings);
+    JdaCommand command = this.getCommand(event.isFromGuild() ? event.getGuild() : null, name);
+    FlagArgument.Parser parse = FlagArgument.parse(command.getOptions(), false, strings);
+    CommandContext context =
         new SlashCommandContext(
-            manager,
-            strings,
             event.getJDA(),
-            event.getChannel(),
-            event.getOptions(),
-            name,
+            command,
             event.getUser(),
-            this.messagesProvider,
+            parse.getArgumentsString(),
+            parse.getArgumentsArray(),
             this.manager.getProvidersRegistry(),
-            event);
-    Result result = this.getResult(command, name, context);
+            this.messagesProvider,
+            parse.getFlags(),
+            event,
+            event.getOptions(),
+            event.getChannel());
+    Result result = this.getResult(command, command.getName(), context);
     Message response = this.getMessage(result, context);
     Consumer<Message> consumer = this.getConsumer(result, context);
     if (response != null) {
@@ -124,6 +128,12 @@ public class CommandListener implements EventListener {
             .queue(null, fail -> this.listenerOptions.handle(fail, context));
       }
     }
+  }
+
+  @NonNull
+  private JdaCommand getCommand(Guild guild, @NonNull String name) {
+    JdaCommand command = this.manager.getCommand(guild, name);
+    return command == null ? new UnknownCommand(this.manager, name) : command;
   }
 
   /**
@@ -157,8 +167,10 @@ public class CommandListener implements EventListener {
    * @return the result of the command execution
    */
   private Result getResult(
-      JdaCommand command, @NonNull String commandName, CommandContext context) {
-    if (command != null) {
+      @NonNull JdaCommand command,
+      @Deprecated @NonNull String commandName,
+      CommandContext context) {
+    if (!(command instanceof UnknownCommand)) {
       return command.execute(context);
     } else {
       return Result.forType(ResultType.ERROR)
@@ -177,31 +189,34 @@ public class CommandListener implements EventListener {
    */
   @NonNull
   private GenericCommandContext getCommandContext(
-      @NonNull MessageReceivedEvent event, @NonNull String[] strings, String commandName) {
+      @NonNull MessageReceivedEvent event, @NonNull String[] strings, @NonNull JdaCommand command) {
     strings = Arrays.copyOfRange(strings, 1, strings.length);
-    if (event.getMember() != null) {
+    FlagArgument.Parser parse = FlagArgument.parse(command.getOptions(), strings);
+    if (event.isFromGuild()) {
       return new GuildCommandContext(
-          this.manager,
           manager.getJda(),
-          event,
+          command,
           event.getAuthor(),
-          strings,
-          event.getChannel(),
-          this.messagesProvider,
+          parse.getArgumentsString(),
+          parse.getArgumentsArray(),
           this.manager.getProvidersRegistry(),
-          commandName,
+          this.messagesProvider,
+          parse.getFlags(),
+          event,
+          event.getChannel(),
           event.getMessage());
     } else {
       return new GenericCommandContext(
-          manager,
           manager.getJda(),
-          event,
+          command,
           event.getAuthor(),
-          strings,
-          event.getChannel(),
-          this.messagesProvider,
+          parse.getArgumentsString(),
+          parse.getArgumentsArray(),
           this.manager.getProvidersRegistry(),
-          commandName,
+          this.messagesProvider,
+          parse.getFlags(),
+          event,
+          event.getChannel(),
           event.getMessage());
     }
   }

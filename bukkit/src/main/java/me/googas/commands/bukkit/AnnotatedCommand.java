@@ -105,8 +105,8 @@ public class AnnotatedCommand extends StarboxBukkitCommand
         new CommandContext(
             this,
             sender,
-            strings,
             parse.getArgumentsString(),
+            strings,
             this.manager.getProvidersRegistry(),
             this.manager.getMessagesProvider(),
             parse.getFlags());

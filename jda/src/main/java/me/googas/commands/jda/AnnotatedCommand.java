@@ -3,8 +3,8 @@ package me.googas.commands.jda;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,14 +16,15 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.exceptions.type.StarboxException;
 import me.googas.commands.exceptions.type.StarboxRuntimeException;
+import me.googas.commands.flags.Option;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.permissions.Permit;
+import me.googas.commands.jda.cooldown.CooldownManager;
+import me.googas.commands.jda.middleware.JdaMiddleware;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.time.Time;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -42,20 +43,22 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 public class AnnotatedCommand extends JdaCommand
     implements ReflectCommand<CommandContext, JdaCommand> {
 
+  @NonNull @Getter private final List<JdaCommand> children = new ArrayList<>();
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
   @NonNull @Getter private final List<String> aliases;
-  @NonNull @Getter private final List<JdaCommand> children = new ArrayList<>();
-  @NonNull @Getter private final String description;
 
   /**
-   * Create the command.
+   * Create a command.
    *
    * @param manager the manager that parsed the command
-   * @param command the annotation that will be used to get the name and aliases of the command
-   *     {@link Command#aliases()} whether to exclude the command {@link Command#excluded()} the
-   *     cooldown {@link Command#cooldown()} and the permission {@link Command#permission()}
+   * @param description a short description of the command
+   * @param map a map that contains custom settings of the command
+   * @param options the flags that apply to this command
+   * @param middlewares the middlewares to run before and after this command is excuted
+   * @param cooldown the manager that handles the cooldown in this command
+   * @param aliases the names that the command can be executed with
    * @param method the method to execute as the command see more in {@link #getMethod()}
    * @param object the instance of the object used to invoke the method see more in {@link
    *     #getObject()}
@@ -64,22 +67,20 @@ public class AnnotatedCommand extends JdaCommand
    */
   public AnnotatedCommand(
       @NonNull CommandManager manager,
-      @NonNull Command command,
+      @NonNull String description,
+      @NonNull Map<String, String> map,
+      @NonNull List<Option> options,
+      @NonNull List<JdaMiddleware> middlewares,
+      CooldownManager cooldown,
+      @NonNull List<String> aliases,
       @NonNull Method method,
       @NonNull Object object,
       @NonNull List<Argument<?>> arguments) {
-    super(
-        manager,
-        command.excluded(),
-        command.behaviour(),
-        Time.of(command.cooldown()),
-        Permit.from(command.cooldownPerm()).orElse(null));
+    super(manager, description, map, options, middlewares, cooldown);
     this.method = method;
     this.object = object;
     this.arguments = arguments;
-    this.aliases = Arrays.asList(command.aliases());
-    this.description = command.description();
-    Permit.from(command.permission()).ifPresent(this::setPermission);
+    this.aliases = aliases;
   }
 
   @Override

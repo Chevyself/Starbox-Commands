@@ -5,9 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
-import me.googas.commands.jda.cooldown.CooldownBehaviour;
+import me.googas.commands.flags.Flag;
+import me.googas.commands.jda.middleware.JdaMiddleware;
 import me.googas.commands.time.annotations.TimeAmount;
-import net.dv8tion.jda.api.Permission;
 
 /**
  * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
@@ -46,33 +46,46 @@ public @interface Command {
   TimeAmount cooldown() default @TimeAmount();
 
   /**
+   * Get the options/flags to apply in this command.
+   *
+   * @return the array of flags
+   */
+  @NonNull
+  Flag[] options() default {};
+
+  /**
+   * Get the middleware classes that should be included in the execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends JdaMiddleware>[] include() default {};
+
+  /**
+   * Get the global middleware classes that should be excluded from the command execution.
+   *
+   * @return the array of classes
+   */
+  @NonNull
+  Class<? extends JdaMiddleware>[] exclude() default {};
+
+  /**
+   * A map of custom settings for the command.
+   *
+   * <p>This can be used to create your own {@link JdaMiddleware} and add the things you need to
+   * this annotation as it was the case with the {@link
+   * me.googas.commands.jda.middleware.PermissionMiddleware}
+   *
+   * @return the map as an array of entries
+   */
+  @NonNull
+  Entry[] map() default {};
+
+  /**
    * Whether to exclude the result of this command from being deleted when it is successful.
    *
    * @return true if the result should be excluded
    */
+  @Deprecated
   boolean excluded() default false;
-
-  /**
-   * Get how should cooldown behave.
-   *
-   * @return how will the cooldown check if a user/member is allowed to use a command
-   */
-  @NonNull
-  CooldownBehaviour behaviour() default CooldownBehaviour.USER;
-
-  /**
-   * Get the permission that the user/member needs to be allowed to use the command.
-   *
-   * @return the permission annotation
-   */
-  @NonNull
-  Perm permission() default @Perm;
-
-  /**
-   * Get the permission that the user/member needs to skip cooldown.
-   *
-   * @return the permission annotation
-   */
-  @NonNull
-  Perm cooldownPerm() default @Perm(value = Permission.ADMINISTRATOR, node = "*.cooldown");
 }

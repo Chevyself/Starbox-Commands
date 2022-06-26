@@ -75,12 +75,12 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
     }
   }
 
+  @NonNull @Getter private final List<StarboxBukkitCommand> commands = new ArrayList<>();
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final List<BukkitMiddleware> globalMiddlewares;
   @NonNull @Getter private final List<BukkitMiddleware> middlewares;
-  @NonNull @Getter private final List<StarboxBukkitCommand> commands = new ArrayList<>();
 
   /**
    * Create an instance.

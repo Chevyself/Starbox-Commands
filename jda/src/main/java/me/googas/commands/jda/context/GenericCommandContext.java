@@ -1,14 +1,15 @@
 package me.googas.commands.jda.context;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
+import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.jda.CommandManager;
+import me.googas.commands.jda.JdaCommand;
 import me.googas.commands.jda.messages.MessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.util.Strings;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -18,51 +19,55 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 /** This context is used for every command {@link User being the sender}. */
 public class GenericCommandContext implements CommandContext {
 
-  @NonNull @Getter protected final CommandManager manager;
   @NonNull @Getter protected final JDA jda;
+  @NonNull @Getter protected final JdaCommand command;
+  @NonNull @Getter protected final User sender;
+  @NonNull @Getter protected final String string;
+  @NonNull @Getter protected final String[] strings;
+  @NonNull @Getter protected final ProvidersRegistry<CommandContext> registry;
+  @NonNull @Getter protected final MessagesProvider messagesProvider;
+  @NonNull @Getter protected final List<FlagArgument> flags;
   @NonNull @Getter protected final MessageReceivedEvent event;
-  @NonNull protected final User sender;
   @NonNull protected final MessageChannel channel;
-  @NonNull protected final MessagesProvider messagesProvider;
-  @NonNull protected final ProvidersRegistry<CommandContext> registry;
-  @Getter protected final String commandName;
   protected final Message message;
-  @NonNull @Setter protected String[] strings;
 
   /**
    * Create an instance.
    *
-   * @param manager the manager that contains the executed command
    * @param jda the jda instance in which the {@link CommandManager} is registered
-   * @param event the event of the message that executes the command
+   * @param command the command for which this context was created
    * @param sender the sender of the command
+   * @param string the input strings joined
    * @param args the strings send in the command
-   * @param channel the channel where the command was executed
-   * @param messagesProvider the messages provider for this context
    * @param registry the registry of the command context
-   * @param commandName the name of the command that is being executed
+   * @param messagesProvider the messages' provider for this context
+   * @param flags the flags in the input of the command
+   * @param event the event of the message that executes the command
+   * @param channel the channel where the command was executed
    * @param message the message where the command was executed
    */
   public GenericCommandContext(
-      @NonNull CommandManager manager,
       @NonNull JDA jda,
-      @NonNull MessageReceivedEvent event,
+      @NonNull JdaCommand command,
       @NonNull User sender,
+      @NonNull String string,
       @NonNull String[] args,
-      @NonNull MessageChannel channel,
-      @NonNull MessagesProvider messagesProvider,
       @NonNull ProvidersRegistry<CommandContext> registry,
-      String commandName,
+      @NonNull MessagesProvider messagesProvider,
+      @NonNull List<FlagArgument> flags,
+      @NonNull MessageReceivedEvent event,
+      @NonNull MessageChannel channel,
       Message message) {
-    this.manager = manager;
     this.jda = jda;
-    this.event = event;
+    this.command = command;
     this.sender = sender;
+    this.string = string;
     this.strings = args;
-    this.channel = channel;
-    this.messagesProvider = messagesProvider;
     this.registry = registry;
-    this.commandName = commandName;
+    this.messagesProvider = messagesProvider;
+    this.flags = flags;
+    this.event = event;
+    this.channel = channel;
     this.message = message;
   }
 
@@ -76,48 +81,19 @@ public class GenericCommandContext implements CommandContext {
     return Optional.ofNullable(message);
   }
 
-  @NonNull
-  @Override
-  public User getSender() {
-    return this.sender;
-  }
-
-  @NonNull
-  @Override
-  public String getString() {
-    return Strings.join(this.strings);
-  }
-
-  @NonNull
-  @Override
-  public String[] getStrings() {
-    return this.strings;
-  }
-
-  @NonNull
-  @Override
-  public ProvidersRegistry<CommandContext> getRegistry() {
-    return this.registry;
-  }
-
-  @NonNull
-  @Override
-  public MessagesProvider getMessagesProvider() {
-    return this.messagesProvider;
-  }
-
   @Override
   public @NonNull GenericCommandContext getChildren() {
     return new GenericCommandContext(
-        manager,
         this.jda,
-        event,
+        command,
         this.sender,
+        string,
         Arrays.copyOfRange(strings, 1, strings.length),
-        this.channel,
-        this.messagesProvider,
         this.registry,
-        this.commandName,
+        this.messagesProvider,
+        flags,
+        event,
+        this.channel,
         this.message);
   }
 

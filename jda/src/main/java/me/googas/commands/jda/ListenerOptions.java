@@ -6,6 +6,7 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.Result;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
@@ -20,11 +21,22 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  *   <li>Embedding messages
  * </ul>
  *
- * The direct implementation for this class is {@link DefaultListenerOptions} which allows the
+ * The direct implementation for this class is {@link GenericListenerOptions} which allows the
  * customization described above but if you create an implementation of this class you might be able
  * to customize it even further
  */
 public interface ListenerOptions {
+
+  /**
+   * Called before the command is executed. This means before {@link
+   * JdaCommand#execute(CommandContext)}
+   *
+   * @param event the event that is causing a command to be executed
+   * @param name the alias of the {@link JdaCommand} that is going to be executed
+   * @param strings the arguments used to execute the command
+   */
+  void preCommand(
+      @NonNull SlashCommandInteractionEvent event, @NonNull String name, @NonNull String[] strings);
 
   /**
    * Called before the command is executed. This means before {@link
@@ -41,7 +53,7 @@ public interface ListenerOptions {
    * Process the result from the command execution, this means providing the {@link
    * me.googas.commands.jda.listener.CommandListener} with a message to send in the {@link
    * net.dv8tion.jda.api.entities.TextChannel} where the command was executed this can be used to
-   * create embeds if desired like the implementation {@link DefaultListenerOptions}
+   * create embeds if desired like the implementation {@link GenericListenerOptions}
    *
    * @param result the result of the command execution which might be null
    * @param context the context of the command execution
@@ -55,7 +67,7 @@ public interface ListenerOptions {
    * means providing the {@link me.googas.commands.jda.listener.CommandListener} with a result for
    * the message sent in the {@link net.dv8tion.jda.api.entities.TextChannel} this can be used to
    * delete the message after a few seconds if desired like the implementation {@link
-   * DefaultListenerOptions}
+   * GenericListenerOptions}
    *
    * @param result the result of the command execution which might be null
    * @param context the context of the command execution

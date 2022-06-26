@@ -12,13 +12,15 @@ import lombok.NonNull;
 import me.googas.commands.StarboxCommandManager;
 import me.googas.commands.annotations.Parent;
 import me.googas.commands.arguments.Argument;
+import me.googas.commands.flags.Option;
 import me.googas.commands.jda.annotations.Command;
+import me.googas.commands.jda.annotations.Entry;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GenericCommandContext;
+import me.googas.commands.jda.cooldown.CooldownManager;
 import me.googas.commands.jda.listener.CommandListener;
 import me.googas.commands.jda.messages.MessagesProvider;
-import me.googas.commands.jda.permissions.PermissionChecker;
-import me.googas.commands.jda.permissions.Permit;
+import me.googas.commands.jda.middleware.JdaMiddleware;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
@@ -38,14 +40,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * <p>To create a {@link CommandManager} instance you simply need a {@link ProvidersRegistry} you
  * can use {@link me.googas.commands.jda.providers.registry.JdaProvidersRegistry} which includes
  * some providers that are intended for JDA use you can even extend it to add more in the
- * constructor or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also ned
- * a {@link MessagesProvider} which is used to display error commands the commands the default
+ * constructor or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also
+ * need a {@link MessagesProvider} which is used to display error commands the default
  * implementation is {@link me.googas.commands.jda.messages.JdaMessagesProvider}, to check the
- * permissions of the {@link net.dv8tion.jda.api.entities.User} that execute the command you can
- * create an implementation of {@link PermissionChecker} or just use its default method {@link
- * PermissionChecker#checkPermission(CommandContext, Permit)} which only checks for {@link
- * net.dv8tion.jda.api.Permission}, the instance of {@link JDA} is required to parseAndRegister the
- * {@link CommandListener}, the {@link ListenerOptions} changes some of the logic inside {@link
+ * permissions of the {@link net.dv8tion.jda.api.entities.User} that execute the command you can use
+ * the {@link me.googas.commands.jda.middleware.PermissionMiddleware} which only checks for {@link
+ * net.dv8tion.jda.api.Permission}. The instance of {@link JDA} is required to #parseAndRegister.
+ * The {@link CommandListener}, the {@link ListenerOptions} changes some logic inside {@link
  * CommandListener} and finally the prefix is the {@link String} that must contain the message at
  * the start
  *
@@ -62,9 +63,10 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   @NonNull @Getter private final JDA jda;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
-  @NonNull @Getter private final PermissionChecker permissionChecker;
-  @NonNull @Getter private final ListenerOptions listenerOptions;
+  @NonNull @Getter private final List<JdaMiddleware> globalMiddlewares;
+  @NonNull @Getter private final List<JdaMiddleware> middlewares;
   @NonNull @Getter private final CommandListener listener;
+  @NonNull @Getter private final ListenerOptions listenerOptions;
 
   /**
    * Create an instance.
@@ -73,21 +75,19 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link
    *     GenericCommandContext}
    * @param messagesProvider the messages provider for important messages
-   * @param permissionChecker to check the permissions of {@link net.dv8tion.jda.api.entities.User}
-   *     upon command execution
    * @param jda the instance to parseAndRegister the {@link #listener} on
    * @param listenerOptions to change some of the login in the {@link #listener}
    */
   public CommandManager(
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
       @NonNull MessagesProvider messagesProvider,
-      @NonNull PermissionChecker permissionChecker,
       @NonNull JDA jda,
       @NonNull ListenerOptions listenerOptions) {
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
-    this.permissionChecker = permissionChecker;
     this.jda = jda;
+    this.globalMiddlewares = new ArrayList<>();
+    this.middlewares = new ArrayList<>();
     this.listenerOptions = listenerOptions;
     this.listener = new CommandListener(this, listenerOptions, messagesProvider);
     jda.addEventListener(this.listener);
@@ -196,8 +196,33 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
         && !method.getReturnType().equals(Void.TYPE)) {
       throw new IllegalArgumentException(method + " must return void or " + Result.class);
     }
+    Command annotation = method.getAnnotation(Command.class);
     return new AnnotatedCommand(
-        this, method.getAnnotation(Command.class), method, object, Argument.parseArguments(method));
+        this,
+        annotation.description(),
+        this.getMap(annotation),
+        Option.of(annotation.options()),
+        this.getMiddlewares(annotation),
+        CooldownManager.of(annotation).orElse(null),
+        Arrays.asList(annotation.aliases()),
+        method,
+        object,
+        Argument.parseArguments(method));
+  }
+
+  @NonNull
+  private Map<String, String> getMap(@NonNull Command annotation) {
+    Map<String, String> map = new HashMap<>();
+    for (Entry entry : annotation.map()) {
+      map.put(entry.key(), entry.value());
+    }
+    return map;
+  }
+
+  @NonNull
+  private List<JdaMiddleware> getMiddlewares(@NonNull Command command) {
+    return StarboxCommandManager.getMiddlewares(
+        this.getGlobalMiddlewares(), this.getMiddlewares(), command.include(), command.exclude());
   }
 
   @Override

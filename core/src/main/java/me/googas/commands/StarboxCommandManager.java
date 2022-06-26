@@ -207,4 +207,7 @@ public interface StarboxCommandManager<
             })
         .collect(Collectors.toList());
   }
+
+  StarboxCommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C>... middlewares);
+  StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C>... middlewares);
 }

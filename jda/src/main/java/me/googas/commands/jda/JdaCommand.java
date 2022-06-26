@@ -1,20 +1,17 @@
 package me.googas.commands.jda;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import me.googas.commands.StarboxCommand;
-import me.googas.commands.StarboxCooldownManager;
+import me.googas.commands.flags.Option;
 import me.googas.commands.jda.context.CommandContext;
-import me.googas.commands.jda.cooldown.CooldownBehaviour;
-import me.googas.commands.jda.cooldown.JdaCooldownManager;
-import me.googas.commands.jda.cooldown.UnsupportedContextException;
-import me.googas.commands.jda.permissions.Permit;
+import me.googas.commands.jda.cooldown.CooldownManager;
+import me.googas.commands.jda.middleware.JdaMiddleware;
 import me.googas.commands.jda.result.Result;
-import me.googas.commands.jda.result.ResultType;
-import me.googas.commands.time.Time;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -32,57 +29,27 @@ import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCommand> {
 
   @NonNull protected final CommandManager manager;
-  @Getter @Setter private Permit permission;
-  @Getter @Setter private boolean excluded;
+  @NonNull @Getter protected final String description;
+  @NonNull @Getter protected final Map<String, String> map;
+  @NonNull @Getter protected final List<Option> options;
+  @NonNull @Getter protected final List<JdaMiddleware> middlewares;
+  @Deprecated @Getter @Setter private boolean excluded;
 
-  protected final JdaCooldownManager cooldown;
+  protected final CooldownManager cooldown;
 
-  /**
-   * Create the command.
-   *
-   * @param manager where the command will be registered used to get the {@link
-   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
-   * @param permission the permission that the sender requires to execute the command {@link
-   *     me.googas.commands.jda.permissions.PermissionChecker#checkPermission(CommandContext,
-   *     Permit)}
-   * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
-   *     is {@link ResultType#GENERIC}
-   * @param behaviour how should cooldown behave
-   * @param cooldown the time that the command needs to cooldown
-   * @param cooldownPermit the permission which users may have to not have cooldown
-   */
   public JdaCommand(
       @NonNull CommandManager manager,
-      Permit permission,
-      boolean excluded,
-      @NonNull CooldownBehaviour behaviour,
-      @NonNull Time cooldown,
-      Permit cooldownPermit) {
+      @NonNull String description,
+      @NonNull Map<String, String> map,
+      @NonNull List<Option> options,
+      @NonNull List<JdaMiddleware> middlewares,
+      CooldownManager cooldown) {
     this.manager = manager;
-    this.permission = permission;
-    this.excluded = excluded;
-    this.cooldown =
-        cooldown.toMillisRound() > 0 ? behaviour.create(cooldown, cooldownPermit) : null;
-  }
-
-  /**
-   * Create the command.
-   *
-   * @param manager where the command will be registered used to get the {@link
-   *     CommandManager#getMessagesProvider()} and {@link CommandManager#getProvidersRegistry()}
-   * @param excluded whether to exclude the {@link Result} of the command from being deleted when it
-   *     is {@link ResultType#GENERIC}
-   * @param behaviour how should cooldown behave
-   * @param cooldown the time that the command needs to cooldown
-   * @param cooldownPermit the permission which users may have to not have cooldown
-   */
-  public JdaCommand(
-      @NonNull CommandManager manager,
-      boolean excluded,
-      @NonNull CooldownBehaviour behaviour,
-      @NonNull Time cooldown,
-      Permit cooldownPermit) {
-    this(manager, null, excluded, behaviour, cooldown, cooldownPermit);
+    this.description = description;
+    this.map = map;
+    this.options = options;
+    this.middlewares = middlewares;
+    this.cooldown = cooldown;
   }
 
   /**
@@ -118,7 +85,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
 
   @Override
   public Result execute(@NonNull CommandContext context) {
-    @NonNull String[] strings = context.getStrings();
+    String[] strings = context.getStrings();
     if (strings.length >= 1) {
       Optional<JdaCommand> optionalCommand = this.getChildren(strings[0]);
       if (optionalCommand.isPresent()) {
@@ -126,32 +93,17 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
         return command.execute(context.getChildren());
       }
     }
-    Result result =
-        this.manager.getPermissionChecker().checkPermission(context, this.getPermission());
-    if (result == null) {
-      try {
-        if (this.cooldown != null && this.cooldown.hasCooldown(context)) {
-          result =
-              Result.forType(ResultType.USAGE)
-                  .setDescription(
-                      this.manager
-                          .getMessagesProvider()
-                          .cooldown(context, this.cooldown.getTimeLeft(context)))
-                  .build();
-        } else {
-          result = this.run(context);
-        }
-        if (result.isCooldown() && this.cooldown != null) {
-          this.cooldown.refresh(context);
-        }
-      } catch (UnsupportedContextException e) {
-        result =
-            Result.forType(ResultType.ERROR)
-                .setDescription(this.manager.getMessagesProvider().guildOnly(context))
-                .build();
-      }
-    }
-    return result;
+    return this.getMiddlewares().stream()
+        .map(middleware -> middleware.next(context))
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .findFirst()
+        .orElseGet(
+            () -> {
+              Result run = this.run(context);
+              this.middlewares.forEach(middleware -> middleware.next(context, run));
+              return run;
+            });
   }
 
   @Override
@@ -160,16 +112,6 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       if (name.equalsIgnoreCase(alias)) return true;
     }
     return false;
-  }
-
-  /**
-   * Get the description of the command.
-   *
-   * @return the description
-   */
-  @NonNull
-  public String getDescription() {
-    return "No description given";
   }
 
   /**
@@ -192,7 +134,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   }
 
   @Override
-  public @NonNull Optional<? extends StarboxCooldownManager<CommandContext>> getCooldownManager() {
+  public @NonNull Optional<CooldownManager> getCooldownManager() {
     return Optional.ofNullable(this.cooldown);
   }
 }

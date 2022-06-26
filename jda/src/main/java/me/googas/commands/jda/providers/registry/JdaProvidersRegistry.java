@@ -30,6 +30,6 @@ public class JdaProvidersRegistry extends ProvidersRegistry<CommandContext> {
         .addProvider(new MessageProvider())
         .addProvider(new RoleProvider(messages))
         .addProvider(new TextChannelProvider(messages))
-        .addProvider(new UserProvider(messages));
+        .addProvider(new UserProvider());
   }
 }

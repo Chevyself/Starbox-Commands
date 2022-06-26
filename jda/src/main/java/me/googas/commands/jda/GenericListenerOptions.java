@@ -19,6 +19,7 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
@@ -45,7 +46,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * </ul>
  */
 @Data
-public class DefaultListenerOptions implements ListenerOptions {
+public class GenericListenerOptions implements ListenerOptions {
 
   @NonNull @Getter private String prefix = "-";
 
@@ -93,7 +94,7 @@ public class DefaultListenerOptions implements ListenerOptions {
    * @return this same instance
    */
   @NonNull
-  public DefaultListenerOptions setPrefix(String prefix) {
+  public GenericListenerOptions setPrefix(String prefix) {
     this.prefix = prefix;
     return this;
   }
@@ -133,6 +134,14 @@ public class DefaultListenerOptions implements ListenerOptions {
   public Consumer<Message> getSuccessDeleteConsumer() {
     return msg ->
         msg.delete().queueAfter(this.getToDeleteSuccess().toMillisRound(), TimeUnit.MILLISECONDS);
+  }
+
+  @Override
+  public void preCommand(
+      @NonNull SlashCommandInteractionEvent event,
+      @NonNull String name,
+      @NonNull String[] strings) {
+    // Empty. The slash command interaction will be deleted
   }
 
   @Override

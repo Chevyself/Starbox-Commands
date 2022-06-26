@@ -4,9 +4,11 @@ import java.util.Arrays;
 import javax.security.auth.login.LoginException;
 import lombok.NonNull;
 import me.googas.commands.jda.CommandManager;
-import me.googas.commands.jda.DefaultListenerOptions;
+import me.googas.commands.jda.GenericListenerOptions;
 import me.googas.commands.jda.messages.JdaMessagesProvider;
 import me.googas.commands.jda.messages.MessagesProvider;
+import me.googas.commands.jda.middleware.CooldownMiddleware;
+import me.googas.commands.jda.middleware.PermissionMiddleware;
 import me.googas.commands.jda.providers.registry.JdaProvidersRegistry;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -20,12 +22,11 @@ public class MainTest {
     MessagesProvider messages = new JdaMessagesProvider();
     CommandManager manager =
         new CommandManager(
-                new JdaProvidersRegistry(messages),
-                messages,
-                () -> messages,
-                jda,
-                new DefaultListenerOptions().setPrefix("-"))
-            .parseAndRegister(new TestCommands());
+            new JdaProvidersRegistry(messages),
+            messages,
+            jda,
+            new GenericListenerOptions().setPrefix("-")).addMiddleware(new CooldownMiddleware(),
+            new PermissionMiddleware());
   }
 
   public static void deleteCommands(@NonNull JDA jda) {
