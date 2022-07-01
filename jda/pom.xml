@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>jda</artifactId>
 
-    <artifactId>jda</artifactId>
+  <dependencies>
+    <dependency>
+      <artifactId>JDA</artifactId>
+      <groupId>net.dv8tion</groupId>
+      <version>5.0.0-alpha.12</version>
+    </dependency>
+    <dependency>
+      <artifactId>core</artifactId>
+      <groupId>me.googas.commands</groupId>
+      <scope>compile</scope>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>starbox-commands</artifactId>
+    <groupId>me.googas.commands</groupId>
     <version>1.0.0</version>
-
-    <parent>
-        <groupId>me.googas.commands</groupId>
-        <artifactId>starbox-commands</artifactId>
-        <version>1.0.0</version>
-    </parent>
+  </parent>
 
 
-    <dependencies>
-        <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.12</version>
-        </dependency>
-        <dependency>
-            <groupId>me.googas.commands</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <name>jcenter-bintray</name>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+    <repository>
+      <id>dv8tion</id>
+      <name>m2-dv8tion</name>
+      <url>https://m2.dv8tion.net/releases</url>
+    </repository>
+  </repositories>
 
-        <repositories>
-            <repository>
-                <id>jcenter</id>
-                <name>jcenter-bintray</name>
-                <url>https://jcenter.bintray.com/ </url>
-            </repository>
-            <repository>
-                <id>dv8tion</id>
-                <name>m2-dv8tion</name>
-                <url>https://m2.dv8tion.net/releases</url>
-            </repository>
-        </repositories>
+  <version>1.0.0</version>
 
 </project>

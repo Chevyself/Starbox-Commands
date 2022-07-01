@@ -19,6 +19,7 @@ import me.googas.commands.flags.Flag;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Command {
+
   /**
    * The aliases of the command.
    *

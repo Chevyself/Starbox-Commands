@@ -8,8 +8,8 @@ import me.googas.commands.time.Time;
 /** Implementation of {@link CommandManager} for system commands. */
 public class CooldownManager implements StarboxCooldownManager<CommandContext> {
 
-  private long millis;
   @NonNull private final Time time;
+  private long millis;
 
   /**
    * Create the manager.

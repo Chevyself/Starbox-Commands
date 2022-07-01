@@ -42,7 +42,9 @@ public enum ResultType {
    */
   @NonNull
   public String getTitle(MessagesProvider provider, CommandContext context) {
-    if (provider != null) return provider.getTitle(this, context);
+    if (provider != null) {
+      return provider.getTitle(this, context);
+    }
     return this.title;
   }
 

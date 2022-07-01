@@ -126,7 +126,9 @@ public class ReflectSystemCommand
   @Override
   public boolean hasAlias(@NonNull String alias) {
     for (String name : this.getAliases()) {
-      if (name.equalsIgnoreCase(alias)) return true;
+      if (name.equalsIgnoreCase(alias)) {
+        return true;
+      }
     }
     return false;
   }

@@ -166,8 +166,9 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
         && !method.getReturnType().equals(Void.TYPE)) {
       throw new IllegalArgumentException(method + " must return void or " + Result.class);
     }
-    if (!method.isAnnotationPresent(Command.class))
+    if (!method.isAnnotationPresent(Command.class)) {
       throw new IllegalArgumentException(method + " is not annotated with " + Command.class);
+    }
     Command command = method.getAnnotation(Command.class);
     List<Argument<?>> arguments =
         Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations());

@@ -58,7 +58,9 @@ public enum Unit implements StarboxUnit {
   public static Unit fromCharacter(char single) {
     single = Character.toUpperCase(single);
     for (Unit value : Unit.values()) {
-      if (value.getSingle() == single) return value;
+      if (value.getSingle() == single) {
+        return value;
+      }
     }
     throw new IllegalArgumentException(single + " does not match any Unit#getSingle()");
   }
@@ -80,11 +82,14 @@ public enum Unit implements StarboxUnit {
    */
   @NonNull
   public static Unit fromString(@NonNull String string) {
-    if (string.isEmpty()) throw new IllegalArgumentException("Received an empty string");
+    if (string.isEmpty()) {
+      throw new IllegalArgumentException("Received an empty string");
+    }
     string = string.toUpperCase();
     for (Unit value : Unit.values()) {
-      if (value.getSingle() == string.charAt(0) || value.name().equalsIgnoreCase(string))
+      if (value.getSingle() == string.charAt(0) || value.name().equalsIgnoreCase(string)) {
         return value;
+      }
     }
     throw new IllegalArgumentException(
         string + " does not match any Unit#getSingle() or Unit#name()");
@@ -108,7 +113,9 @@ public enum Unit implements StarboxUnit {
    */
   @NonNull
   public static Unit fromMillis(long millis) {
-    if (millis < 0) throw new IllegalArgumentException("millis must be higher than 0");
+    if (millis < 0) {
+      throw new IllegalArgumentException("millis must be higher than 0");
+    }
     Unit unit = Unit.MILLIS;
     for (Unit value : Unit.values()) {
       if (value.millis <= millis) {

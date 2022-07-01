@@ -33,9 +33,8 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @NonNull @Getter protected final Map<String, String> map;
   @NonNull @Getter protected final List<Option> options;
   @NonNull @Getter protected final List<Middleware<CommandContext>> middlewares;
-  @Deprecated @Getter @Setter private boolean excluded;
-
   protected final CooldownManager cooldown;
+  @Deprecated @Getter @Setter private boolean excluded;
 
   public JdaCommand(
       @NonNull CommandManager manager,
@@ -114,7 +113,9 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @Override
   public boolean hasAlias(@NonNull String alias) {
     for (String name : this.getAliases()) {
-      if (name.equalsIgnoreCase(alias)) return true;
+      if (name.equalsIgnoreCase(alias)) {
+        return true;
+      }
     }
     return false;
   }

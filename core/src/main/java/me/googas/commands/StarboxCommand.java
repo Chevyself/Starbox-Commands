@@ -62,9 +62,9 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   /**
    * Get a children command by an alias.
    *
-   * @see StarboxCommand#hasAlias(String)
    * @param alias the alias to match the command
    * @return a {@link Optional} instance wrapping the nullable children
+   * @see StarboxCommand#hasAlias(String)
    */
   @NonNull
   default Optional<T> getChildren(@NonNull String alias) {
@@ -99,8 +99,8 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   /**
    * Get the options which this command may have.
    *
-   * @see Option
    * @return the collection of options
+   * @see Option
    */
   @NonNull
   Collection<? extends Option> getOptions();

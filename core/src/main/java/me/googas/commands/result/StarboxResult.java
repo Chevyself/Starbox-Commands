@@ -15,7 +15,7 @@ import lombok.NonNull;
  * }
  * }</pre>
  *
- * This will be used to inform the command sender the output of the command
+ * <p>This will be used to inform the command sender the output of the command
  */
 public interface StarboxResult {
 

@@ -35,7 +35,9 @@ public class MemberProvider
     TextChannel channel = context.getRegistry().get(TextChannel.class, context);
     Guild guild = channel.getGuild();
     Member member = guild.getMember(context.getRegistry().get(string, User.class, context));
-    if (member != null) return member;
+    if (member != null) {
+      return member;
+    }
     throw new ArgumentProviderException(context.getMessagesProvider().invalidUser(string, context));
   }
 

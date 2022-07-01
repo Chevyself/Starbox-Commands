@@ -83,11 +83,15 @@ public class Components {
           if (modification instanceof ColorModifier) {
             reset = color != null && !color.equals(modification);
             color = (ColorModifier) modification;
-            if (!reset) color.modify(current);
+            if (!reset) {
+              color.modify(current);
+            }
           } else {
             reset = modifier != null && !modifier.equals(modification);
             modifier = modification;
-            if (!reset) modifier.modify(current);
+            if (!reset) {
+              modifier.modify(current);
+            }
           }
         } else if (c == 'r') {
           reset = true;
@@ -97,7 +101,9 @@ public class Components {
           content.append(modifierChar).append(c);
           continue;
         }
-        if (reset) current = Components.reset(components, current, content, color, modifier);
+        if (reset) {
+          current = Components.reset(components, current, content, color, modifier);
+        }
         continue;
       }
       content.append(c);
@@ -118,8 +124,12 @@ public class Components {
     components.add(current);
     content.setLength(0);
     current = new TextComponent();
-    if (color != null) color.modify(current);
-    if (modifier != null) modifier.modify(current);
+    if (color != null) {
+      color.modify(current);
+    }
+    if (modifier != null) {
+      modifier.modify(current);
+    }
     return current;
   }
 

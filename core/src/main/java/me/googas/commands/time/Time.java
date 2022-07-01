@@ -47,7 +47,9 @@ public class Time implements TemporalAmount {
    * @param unit the unit of the amount of time
    */
   private Time(double value, @NonNull StarboxUnit unit) {
-    if (value < 0) throw new IllegalArgumentException("value must be higher than 0");
+    if (value < 0) {
+      throw new IllegalArgumentException("value must be higher than 0");
+    }
     this.value = value;
     this.unit = unit;
   }
@@ -70,7 +72,9 @@ public class Time implements TemporalAmount {
    */
   @NonNull
   public static Time ofMillis(long millis, boolean effective) {
-    if (millis < 0) throw new IllegalArgumentException("millis must be higher than 0");
+    if (millis < 0) {
+      throw new IllegalArgumentException("millis must be higher than 0");
+    }
     if (effective) {
       Unit unit = Unit.fromMillis(millis);
       return new Time(unit.getDuration(millis), unit);
@@ -128,7 +132,7 @@ public class Time implements TemporalAmount {
    *   <li>'2.5d' = 2.5 DAYS
    * </ul>
    *
-   * You can also chain values:
+   * <p>You can also chain values:
    *
    * <ul>
    *   <li>'2s2s2s2s2s' = 10 SECONDS
@@ -136,15 +140,17 @@ public class Time implements TemporalAmount {
    *   <li>'2y6o2w' = 2.538 YEARS
    * </ul>
    *
-   * @see #ofMillis(long, boolean)
    * @param string the string to forName as time
    * @param effective whether to use an effective {@link StarboxUnit} and value
    * @return the parsed instance of time
    * @throws IllegalArgumentException if no unit is matched
+   * @see #ofMillis(long, boolean)
    */
   @NonNull
   public static Time parse(@NonNull String string, boolean effective) {
-    if (string.isEmpty()) throw new IllegalArgumentException("Received an empty string");
+    if (string.isEmpty()) {
+      throw new IllegalArgumentException("Received an empty string");
+    }
     long millis = 0;
     int state = 0;
     int last = 0;
@@ -203,8 +209,8 @@ public class Time implements TemporalAmount {
   /**
    * Same as {@link #toMillis()} but the result will be rounded using {@link Math#round(double)}.
    *
-   * @see Math#round(double)
    * @return the result from {@link #toMillis()} rounded
+   * @see Math#round(double)
    */
   public long toMillisRound() {
     return Math.round(this.toMillis());
@@ -232,10 +238,10 @@ public class Time implements TemporalAmount {
   /**
    * Format this time in the given formatter.
    *
-   * @see me.googas.commands.time.formatter.HhMmSsFormatter
-   * @see TimeFormatter#format(Time)
    * @param formatter the time formatter to format this time
    * @return the formatted {@link String}
+   * @see me.googas.commands.time.formatter.HhMmSsFormatter
+   * @see TimeFormatter#format(Time)
    */
   @NonNull
   public String format(@NonNull TimeFormatter formatter) {
@@ -293,7 +299,9 @@ public class Time implements TemporalAmount {
 
   @Override
   public String toString() {
-    if (this.value <= 0) return "0S";
+    if (this.value <= 0) {
+      return "0S";
+    }
     StarboxUnit current = this.unit;
     long millis = this.toMillisRound();
     StringBuilder builder = new StringBuilder();
@@ -302,7 +310,9 @@ public class Time implements TemporalAmount {
     for (Unit unit : list) {
       if (unit.getMillis() <= current.getMillis()) {
         long value = (long) unit.getDuration(millis);
-        if (value <= 0) continue;
+        if (value <= 0) {
+          continue;
+        }
         millis -= unit.getMillis(value);
         builder.append(value).append(Character.toLowerCase(unit.getSingle()));
       }
@@ -312,8 +322,12 @@ public class Time implements TemporalAmount {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || this.getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
     Time time = (Time) o;
     return Double.compare(time.value, value) == 0 && Objects.equals(unit, time.unit);
   }

@@ -147,7 +147,9 @@ public abstract class StarboxBukkitCommand extends Command
                   this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
                   return run;
                 });
-    if (result != null) BukkitUtils.send(sender, result.getComponents());
+    if (result != null) {
+      BukkitUtils.send(sender, result.getComponents());
+    }
   }
 
   /**
@@ -198,8 +200,9 @@ public abstract class StarboxBukkitCommand extends Command
   public @NonNull List<String> tabComplete(
       @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings)
       throws IllegalArgumentException {
-    if (this.getPermission() != null && !sender.hasPermission(this.getPermission()))
+    if (this.getPermission() != null && !sender.hasPermission(this.getPermission())) {
       return new ArrayList<>();
+    }
     if (strings.length == 1) {
       return StringUtil.copyPartialMatches(
           strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());

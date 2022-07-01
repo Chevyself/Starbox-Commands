@@ -113,9 +113,9 @@ public class GenericListenerOptions implements ListenerOptions {
    * net.dv8tion.jda.api.requests.restaction.AuditableRestAction#queueAfter(long, TimeUnit)} the
    * {@link #toDeleteErrors}
    *
+   * @return the consumer to delete errors
    * @see #deleteErrors
    * @see #toDeleteErrors
-   * @return the consumer to delete errors
    */
   public Consumer<Message> getErrorDeleteConsumer() {
     return msg ->
@@ -127,9 +127,9 @@ public class GenericListenerOptions implements ListenerOptions {
    * net.dv8tion.jda.api.requests.restaction.AuditableRestAction#queueAfter(long, TimeUnit)} the
    * {@link #toDeleteSuccess}
    *
+   * @return the consumer to delete success
    * @see #deleteSuccess
    * @see #toDeleteSuccess
-   * @return the consumer to delete success
    */
   public Consumer<Message> getSuccessDeleteConsumer() {
     return msg ->
@@ -205,7 +205,9 @@ public class GenericListenerOptions implements ListenerOptions {
 
   @Override
   public void handle(@NonNull Throwable fail, @NonNull CommandContext context) {
-    if (!this.isSendErrors()) return;
+    if (!this.isSendErrors()) {
+      return;
+    }
     fail.printStackTrace();
     context
         .getSender()

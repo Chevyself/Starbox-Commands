@@ -152,9 +152,13 @@ public class AnnotatedCommand extends StarboxBukkitCommand
 
   @Override
   public boolean hasAlias(@NonNull String alias) {
-    if (this.getName().equalsIgnoreCase(alias)) return true;
+    if (this.getName().equalsIgnoreCase(alias)) {
+      return true;
+    }
     for (String name : this.getAliases()) {
-      if (name.equalsIgnoreCase(alias)) return true;
+      if (name.equalsIgnoreCase(alias)) {
+        return true;
+      }
     }
     return false;
   }

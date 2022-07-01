@@ -45,7 +45,9 @@ public class ProxiedPlayerProvider
   public ProxiedPlayer fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
     ProxiedPlayer player = ProxyServer.getInstance().getPlayer(string);
-    if (player != null) return player;
+    if (player != null) {
+      return player;
+    }
     throw new ArgumentProviderException(this.messagesProvider.invalidPlayer(string, context));
   }
 

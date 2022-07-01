@@ -26,6 +26,8 @@ public class CooldownMiddleware implements BungeeMiddleware {
   @Override
   public void next(@NonNull CommandContext context, StarboxResult result) {
     Optional<CooldownManager> optional = context.getCommand().getCooldownManager();
-    if (optional.isPresent() && result.isCooldown()) optional.get().refresh(context);
+    if (optional.isPresent() && result.isCooldown()) {
+      optional.get().refresh(context);
+    }
   }
 }

@@ -112,9 +112,10 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   public @NonNull ReflectSystemCommand parseCommand(
       @NonNull Object object, @NonNull Method method) {
     Command annotation = method.getAnnotation(Command.class);
-    if (annotation == null)
+    if (annotation == null) {
       throw new IllegalArgumentException(
           method + " does not contain the annotation " + Command.class);
+    }
     Time time = Time.of(annotation.cooldown());
     return new ReflectSystemCommand(
         this,

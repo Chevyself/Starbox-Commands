@@ -29,6 +29,8 @@ public class CooldownMiddleware implements JdaMiddleware {
   @Override
   public void next(@NonNull CommandContext context, StarboxResult result) {
     Optional<CooldownManager> optional = context.getCommand().getCooldownManager();
-    if (result.isCooldown() && optional.isPresent()) optional.get().refresh(context);
+    if (result.isCooldown() && optional.isPresent()) {
+      optional.get().refresh(context);
+    }
   }
 }

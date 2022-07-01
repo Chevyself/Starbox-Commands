@@ -33,7 +33,7 @@ public class BungeeUtils {
    *   <li>'&amp;l&amp;6This is bold and gold text'
    * </ul>
    *
-   * Here's each code of color:
+   * <p>Here's each code of color:
    *
    * <ul>
    *   <li>'&amp;0' = Black

@@ -56,11 +56,6 @@ public class Result implements StarboxResult {
     this.components.addAll(Arrays.asList(components));
   }
 
-  @Override
-  public @NonNull Optional<String> getMessage() {
-    return Optional.ofNullable(ComponentSerializer.toString(this.components));
-  }
-
   /**
    * Get a result from text. this will get the component using {@link
    * Components#getComponent(String)} while formatting the string {@link BungeeUtils#format(String)}
@@ -70,5 +65,10 @@ public class Result implements StarboxResult {
    */
   public static Result of(@NonNull String text) {
     return new Result(Components.getComponent(text));
+  }
+
+  @Override
+  public @NonNull Optional<String> getMessage() {
+    return Optional.ofNullable(ComponentSerializer.toString(this.components));
   }
 }

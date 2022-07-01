@@ -32,7 +32,9 @@ public class TextChannelProvider
       throws ArgumentProviderException {
     TextChannel channel =
         context.getJda().getTextChannelById(UserProvider.getIdFromMention(string));
-    if (channel != null) return channel;
+    if (channel != null) {
+      return channel;
+    }
     throw new ArgumentProviderException(this.messagesProvider.invalidTextChannel(string, context));
   }
 

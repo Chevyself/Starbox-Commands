@@ -65,12 +65,12 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
   /**
    * Get the message to send when there's a missing an {@link me.googas.commands.arguments.Argument}
    *
-   * @see me.googas.commands.arguments.Argument
    * @param name the name of the argument
    * @param description the description of the argument
    * @param position the position of the argument
    * @param context the context of the command
    * @return the message to tell that the command execution is missing an argument
+   * @see me.googas.commands.arguments.Argument
    */
   @NonNull
   String missingArgument(
@@ -80,8 +80,6 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
    * Get the message sent when a {@link MultipleArgument} min size is bigger than the context
    * strings.
    *
-   * @see me.googas.commands.arguments.Argument
-   * @see MultipleArgument
    * @param name the name of the argument
    * @param description the description of the argument
    * @param position the position of the argument
@@ -89,6 +87,8 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
    * @param missing how many strings are missing
    * @param context the context of the command
    * @return the message to tell that the command execution is missing arguments
+   * @see me.googas.commands.arguments.Argument
+   * @see MultipleArgument
    */
   @NonNull
   String missingStrings(

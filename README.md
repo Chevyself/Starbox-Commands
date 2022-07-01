@@ -1,14 +1,17 @@
 Starbox-Commands [![Jitpack](https://jitpack.io/v/me.googas/starbox-commands.svg)](https://jitpack.io/#me.googas/starbox-commands)
 ===
 
-This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come. It includes some utilities to shorten the amount of lines in your project.
+This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come.
+It includes some utilities to shorten the amount of lines in your project.
 
 JavaDoc
 --------
-Check latest JavaDoc in [Jitpack](https://jitpack.io/com/github/chevyself/starbox-commands/master-SNAPSHOT/javadoc/)
+Check latest JavaDoc
+in [Jitpack](https://jitpack.io/com/github/chevyself/starbox-commands/master-SNAPSHOT/javadoc/)
 
 Installing
 --------
+
 1. Add the repository to your maven project
 
 ```xml
@@ -21,7 +24,7 @@ Installing
 ```
 
 2. Add the dependency
-   
+
 ### Bukkit
 
 ```xml
@@ -69,11 +72,14 @@ Usage
 
 ### Creating a command
 
-1. Every single commands requires the `@Command` annotation and in each project it has different properties.
-   
-2. The annotation must be in the method that you want to use as a command. The method must return `Void` or `Result` else
-when the command is being parsed the `CommandManager` will thrown an error. `Result` is also different in each module.
-   
+1. Every single commands requires the `@Command` annotation and in each project it has different
+   properties.
+
+2. The annotation must be in the method that you want to use as a command. The method must
+   return `Void` or `Result` else
+   when the command is being parsed the `CommandManager` will thrown an error. `Result` is also
+   different in each module.
+
 At the moment your method should look like this:
 
 ```java
@@ -85,7 +91,8 @@ public class Test {
 }
 ```
 
-4. Simple as that! Now you can add all the logic you want to the command, parse and register it  in the `CommandManager`
+4. Simple as that! Now you can add all the logic you want to the command, parse and register it in
+   the `CommandManager`
 
 5. You can also create parent commands which will make the execution as follows:
 
@@ -99,12 +106,16 @@ There are three types of arguments:
 
 #### Extra
 
-Extra arguments do not require any type of annotation and to register the provider it must extend `StarboxExtraArgumentProvider`
+Extra arguments do not require any type of annotation and to register the provider it must
+extend `StarboxExtraArgumentProvider`
 or just implement the interface given by the module:
 
-* Bukkit: [BukkitExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitExtraArgumentProvider.java)
-* Bungee: [BungeeExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeExtraArgumentProvider.java)
-* JDA: [JdaExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaExtraArgumentProvider.java)
+*
+Bukkit: [BukkitExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitExtraArgumentProvider.java)
+*
+Bungee: [BungeeExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeExtraArgumentProvider.java)
+*
+JDA: [JdaExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaExtraArgumentProvider.java)
 
 In general extra arguments is the context of the command, the input, the sender, and such.
 
@@ -119,14 +130,20 @@ public class Test {
 
 #### Required and Free
 
-Both arguments require an input from the user, and the provider must extend `Starbox` or just implement the interface given by the module: The provider will never
-return `null` as it may be needed as a required argument, and the `String` parameter is never null too.
+Both arguments require an input from the user, and the provider must extend `Starbox` or just
+implement the interface given by the module: The provider will never
+return `null` as it may be needed as a required argument, and the `String` parameter is never null
+too.
 
-* Bukkit: [BukkitArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitArgumentProvider.java)
-* Bungee: [BungeeArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeArgumentProvider.java)
-* JDA: [JdaArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaArgumentProvider.java)
+*
+Bukkit: [BukkitArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitArgumentProvider.java)
+*
+Bungee: [BungeeArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeArgumentProvider.java)
+*
+JDA: [JdaArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaArgumentProvider.java)
 
-It is easy to understand each annotation as a `NonNull` and `Nullable`. This may be used as arguments for a different
+It is easy to understand each annotation as a `NonNull` and `Nullable`. This may be used as
+arguments for a different
 output in the logic.
 
 ```java
@@ -140,12 +157,17 @@ public class Test {
 
 #### Multiple
 
-It is just as `@Required` or `@Free` but requires multiple strings, it requires any of the above annotation plus
-`@Multiple` and the provider must extend `StarboxMultipleArgumentProvider` or just implement the interface given by the module.
+It is just as `@Required` or `@Free` but requires multiple strings, it requires any of the above
+annotation plus
+`@Multiple` and the provider must extend `StarboxMultipleArgumentProvider` or just implement the
+interface given by the module.
 
-* Bukkit: [BukkitMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitMultiArgumentProvider.java)
-* Bungee: [BungeeMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeMultiArgumentProvider.java)
-* JDA: [JdaMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaMultiArgumentProvider.java)
+*
+Bukkit: [BukkitMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitMultiArgumentProvider.java)
+*
+Bungee: [BungeeMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeMultiArgumentProvider.java)
+*
+JDA: [JdaMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaMultiArgumentProvider.java)
 
 ```java
 public class Test {
@@ -167,8 +189,10 @@ CommandManager manager = new CommandManager(
         );
 ```
 
-2. You can either create a command extending the class in the module that implements `StarboxCommand` or using `CommandManager#parseCommand(Object)` which will get the commands using 
-reflection as shown in [creating a command](#creating-a-command)
+2. You can either create a command extending the class in the module that
+   implements `StarboxCommand` or using `CommandManager#parseCommand(Object)` which will get the
+   commands using
+   reflection as shown in [creating a command](#creating-a-command)
 
 ```java
 manager.register(manager.parseCommand(cmd));

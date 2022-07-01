@@ -51,7 +51,9 @@ public class MaterialProvider implements BukkitArgumentProvider<Material> {
     boolean prefix = string.startsWith("minecraft:");
     for (Material value : Material.values()) {
       String name = value.toString().toLowerCase();
-      if (prefix) name = "minecraft:" + name;
+      if (prefix) {
+        name = "minecraft:" + name;
+      }
       suggestions.add(name);
     }
     return suggestions;

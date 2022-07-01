@@ -129,12 +129,16 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
       List<JdaCommand> commands = this.guildCommands.get(guild);
       if (commands != null) {
         for (JdaCommand command : commands) {
-          if (command.hasAlias(name)) return command;
+          if (command.hasAlias(name)) {
+            return command;
+          }
         }
       }
     }
     for (JdaCommand command : this.commands) {
-      if (command.hasAlias(name)) return command;
+      if (command.hasAlias(name)) {
+        return command;
+      }
     }
     return null;
   }

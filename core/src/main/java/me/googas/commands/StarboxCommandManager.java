@@ -24,6 +24,62 @@ public interface StarboxCommandManager<
     C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
+   * Get all the middlewares that apply.
+   *
+   * @param global the collection of global middlewares
+   * @param middlewares the middlewares which may be included
+   * @param include the classes of the middlewares to include
+   * @param exclude the classes of the middlewares to exclude
+   * @param <M> the type of the middleware that can be added in this manager
+   * @return the list of middlewares
+   */
+  @NonNull
+  static <C extends StarboxCommandContext, M extends Middleware<C>> List<M> getMiddlewares(
+      @NonNull Collection<M> global,
+      @NonNull Collection<M> middlewares,
+      @NonNull Class<? extends M>[] include,
+      @NonNull Class<? extends M>[] exclude) {
+    List<M> list =
+        global.stream()
+            .filter(
+                middleware -> {
+                  for (Class<? extends M> clazz : exclude) {
+                    if (clazz.isAssignableFrom(middleware.getClass())) {
+                      return false;
+                    }
+                  }
+                  return true;
+                })
+            .collect(Collectors.toList());
+    list.addAll(StarboxCommandManager.getIncludeMiddlewares(middlewares, include));
+    return list;
+  }
+
+  /**
+   * Get all the middlewares that can be applied to a command outside of the global middlewares.
+   *
+   * @param middlewares the middlewares which may be included
+   * @param include the classes of the middlewares to include
+   * @param <M> the type of the middleware that can be added in this manager
+   * @return the list of middlewares
+   */
+  @NonNull
+  static <M extends Middleware<?>> Collection<M> getIncludeMiddlewares(
+      @NonNull Collection<M> middlewares, @NonNull Class<? extends M>[] include) {
+    return middlewares.stream()
+        .filter(
+            middleware -> {
+              for (Class<? extends M> clazz : include) {
+                if (clazz.isAssignableFrom(middleware.getClass())) {
+                  return true;
+                }
+              }
+              return false;
+            })
+        .collect(Collectors.toList());
+  }
+
+  /**
    * Register a new command into the manager. Any command that implements the type T can be
    * registered.
    *
@@ -100,9 +156,9 @@ public interface StarboxCommandManager<
   /**
    * Registers the collection of commands. This will call {@link #registerAll(Collection)}
    *
-   * @see #register(StarboxCommand)
    * @param commands the commands to be registered
    * @return this same command manager instance to allow chain method calls
+   * @see #register(StarboxCommand)
    */
   @SuppressWarnings("unchecked")
   @NonNull
@@ -153,60 +209,6 @@ public interface StarboxCommandManager<
    */
   @NonNull
   Collection<? extends Middleware<C>> getMiddlewares();
-
-  /**
-   * Get all the middlewares that apply.
-   *
-   * @param global the collection of global middlewares
-   * @param middlewares the middlewares which may be included
-   * @param include the classes of the middlewares to include
-   * @param exclude the classes of the middlewares to exclude
-   * @return the list of middlewares
-   * @param <M> the type of the middleware that can be added in this manager
-   */
-  @NonNull
-  static <C extends StarboxCommandContext, M extends Middleware<C>> List<M> getMiddlewares(
-      @NonNull Collection<M> global,
-      @NonNull Collection<M> middlewares,
-      @NonNull Class<? extends M>[] include,
-      @NonNull Class<? extends M>[] exclude) {
-    List<M> list =
-        global.stream()
-            .filter(
-                middleware -> {
-                  for (Class<? extends M> clazz : exclude) {
-                    if (clazz.isAssignableFrom(middleware.getClass())) return false;
-                  }
-                  return true;
-                })
-            .collect(Collectors.toList());
-    list.addAll(StarboxCommandManager.getIncludeMiddlewares(middlewares, include));
-    return list;
-  }
-
-  /**
-   * Get all the middlewares that can be applied to a command outside of the global middlewares.
-   *
-   * @param middlewares the middlewares which may be included
-   * @param include the classes of the middlewares to include
-   * @return the list of middlewares
-   * @param <M> the type of the middleware that can be added in this manager
-   */
-  @NonNull
-  static <M extends Middleware<?>> Collection<M> getIncludeMiddlewares(
-      @NonNull Collection<M> middlewares, @NonNull Class<? extends M>[] include) {
-    return middlewares.stream()
-        .filter(
-            middleware -> {
-              for (Class<? extends M> clazz : include) {
-                if (clazz.isAssignableFrom(middleware.getClass())) {
-                  return true;
-                }
-              }
-              return false;
-            })
-        .collect(Collectors.toList());
-  }
 
   @NonNull
   StarboxCommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C>... middlewares);

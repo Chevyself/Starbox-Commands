@@ -83,6 +83,33 @@ public class AnnotatedCommand extends JdaCommand
     this.aliases = aliases;
   }
 
+  private static OptionData toOptionData(@NonNull Argument<?> argument) {
+    if (argument instanceof SingleArgument) {
+      return new OptionData(
+          AnnotatedCommand.toOptionType(argument.getClazz()),
+          ((SingleArgument<?>) argument).getName(),
+          ((SingleArgument<?>) argument).getDescription(),
+          ((SingleArgument<?>) argument).isRequired());
+    }
+    return null;
+  }
+
+  @NonNull
+  private static OptionType toOptionType(@NonNull Class<?> clazz) {
+    if (clazz.isAssignableFrom(Number.class)) {
+      return OptionType.INTEGER;
+    } else if (clazz == boolean.class || clazz == Boolean.class) {
+      return OptionType.BOOLEAN;
+    } else if (clazz.isAssignableFrom(User.class) || clazz.isAssignableFrom(Member.class)) {
+      return OptionType.USER;
+    } else if (clazz.isAssignableFrom(MessageChannel.class)) {
+      return OptionType.CHANNEL;
+    } else if (clazz.isAssignableFrom(Role.class)) {
+      return OptionType.ROLE;
+    }
+    return OptionType.STRING;
+  }
+
   @Override
   public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
     return this.manager.getProvidersRegistry();
@@ -135,33 +162,6 @@ public class AnnotatedCommand extends JdaCommand
     } catch (ArgumentProviderException e) {
       return Result.forType(ResultType.ERROR).setDescription(e.getMessage()).build();
     }
-  }
-
-  private static OptionData toOptionData(@NonNull Argument<?> argument) {
-    if (argument instanceof SingleArgument) {
-      return new OptionData(
-          AnnotatedCommand.toOptionType(argument.getClazz()),
-          ((SingleArgument<?>) argument).getName(),
-          ((SingleArgument<?>) argument).getDescription(),
-          ((SingleArgument<?>) argument).isRequired());
-    }
-    return null;
-  }
-
-  @NonNull
-  private static OptionType toOptionType(@NonNull Class<?> clazz) {
-    if (clazz.isAssignableFrom(Number.class)) {
-      return OptionType.INTEGER;
-    } else if (clazz == boolean.class || clazz == Boolean.class) {
-      return OptionType.BOOLEAN;
-    } else if (clazz.isAssignableFrom(User.class) || clazz.isAssignableFrom(Member.class)) {
-      return OptionType.USER;
-    } else if (clazz.isAssignableFrom(MessageChannel.class)) {
-      return OptionType.CHANNEL;
-    } else if (clazz.isAssignableFrom(Role.class)) {
-      return OptionType.ROLE;
-    }
-    return OptionType.STRING;
   }
 
   @Override

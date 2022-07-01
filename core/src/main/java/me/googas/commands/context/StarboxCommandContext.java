@@ -54,9 +54,9 @@ public interface StarboxCommandContext {
   /**
    * Get the command that is going to be executed using this context.
    *
-   * @return the command
    * @param <C> the type of context that it accepts
    * @param <T> the type of the command
+   * @return the command
    */
   <C extends StarboxCommandContext, T extends StarboxCommand<C, T>> T getCommand();
 

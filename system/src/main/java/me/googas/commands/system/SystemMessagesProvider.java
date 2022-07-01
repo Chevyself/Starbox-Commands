@@ -6,6 +6,7 @@ import me.googas.commands.time.Time;
 
 /** The default {@link MessagesProvider} for System commands. */
 public class SystemMessagesProvider implements MessagesProvider {
+
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
     return String.format("%s is not a valid long!", string);

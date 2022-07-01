@@ -24,16 +24,16 @@ public @interface Command {
   /**
    * The aliases of the command.
    *
-   * @see AnnotatedCommand#getAliases()
    * @return the aliases of the command
+   * @see AnnotatedCommand#getAliases()
    */
   String[] aliases() default {};
 
   /**
    * Get a brief description of the command.
    *
-   * @see AnnotatedCommand
    * @return the description of the command
+   * @see AnnotatedCommand
    */
   String description() default "No description provided";
 

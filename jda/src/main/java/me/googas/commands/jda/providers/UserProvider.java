@@ -12,17 +12,19 @@ import net.dv8tion.jda.api.entities.User;
 /** Provides the {@link StarboxCommandManager} with a {@link User}. */
 public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgumentProvider<User> {
 
-  @Override
-  public @NonNull Class<User> getClazz() {
-    return User.class;
-  }
-
   public static long getIdFromMention(@NonNull String mention) {
     StringBuilder builder = new StringBuilder();
     for (char c : mention.toCharArray()) {
-      if (Character.isDigit(c)) builder.append(c);
+      if (Character.isDigit(c)) {
+        builder.append(c);
+      }
     }
     return Long.parseLong(builder.toString());
+  }
+
+  @Override
+  public @NonNull Class<User> getClazz() {
+    return User.class;
   }
 
   @Override
@@ -39,7 +41,9 @@ public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgument
       user = context.getJda().getUserById(UserProvider.getIdFromMention(string));
     } catch (NumberFormatException e) {
       List<User> usersByName = context.getJda().getUsersByName(string, true);
-      if (!usersByName.isEmpty()) user = usersByName.get(0);
+      if (!usersByName.isEmpty()) {
+        user = usersByName.get(0);
+      }
     }
     if (user != null) {
       return user;

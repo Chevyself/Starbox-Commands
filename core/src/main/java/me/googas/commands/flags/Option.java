@@ -38,7 +38,9 @@ public class Option implements StarboxFlag {
   public static Option create(
       @NonNull String description, String value, boolean valuable, @NonNull String... aliases) {
     List<String> list = new ArrayList<>();
-    if (aliases.length == 0) throw new IllegalArgumentException("Array of aliases cannot be empty");
+    if (aliases.length == 0) {
+      throw new IllegalArgumentException("Array of aliases cannot be empty");
+    }
     for (String alias : aliases) {
       if (alias.startsWith("-") || alias.startsWith("--")) {
         list.add(alias);

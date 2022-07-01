@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  *   <li>Embedding messages
  * </ul>
  *
- * The direct implementation for this class is {@link GenericListenerOptions} which allows the
+ * <p>The direct implementation for this class is {@link GenericListenerOptions} which allows the
  * customization described above but if you create an implementation of this class you might be able
  * to customize it even further
  */

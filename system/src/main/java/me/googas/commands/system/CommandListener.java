@@ -40,7 +40,9 @@ public class CommandListener extends Thread {
         String line = this.scanner.nextLine().trim();
         String[] split = line.split(" ");
         String name = split[0];
-        if (!name.startsWith(this.prefix)) continue;
+        if (!name.startsWith(this.prefix)) {
+          continue;
+        }
         Optional<SystemCommand> optionalCommand =
             this.manager.getCommand(name.substring(this.prefix.length()));
         if (optionalCommand.isPresent()) {
@@ -61,7 +63,9 @@ public class CommandListener extends Thread {
               .getMessage()
               .ifPresent(
                   message -> {
-                    if (!message.isEmpty()) System.out.println(message);
+                    if (!message.isEmpty()) {
+                      System.out.println(message);
+                    }
                   });
         } else {
           System.out.println("Command " + name + " could not be found");

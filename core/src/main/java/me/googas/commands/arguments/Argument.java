@@ -33,7 +33,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *       [argument 2] [argument 2] for easier understanding
  * </ul>
  *
- * To know how arguments are parsed you can check {@link #parseArguments(Method)} or {@link
+ * <p>To know how arguments are parsed you can check {@link #parseArguments(Method)} or {@link
  * #parseArguments(Class[], Annotation[][])} and to know how a single argument is parsed see {@link
  * #parseArgument(Class, Annotation[], int)}
  *
@@ -64,7 +64,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  * }
  * }</pre>
  *
- * To know how to create usage messages check: {@link #generateUsage(List)}
+ * <p>To know how to create usage messages check: {@link #generateUsage(List)}
  *
  * @param <O> the type of the class that the argument has to supply
  */
@@ -178,7 +178,9 @@ public interface Argument<O> {
    */
   static boolean isEmpty(@NonNull Annotation[] annotations) {
     for (Annotation annotation : annotations) {
-      if (annotation instanceof Required || annotation instanceof Free) return false;
+      if (annotation instanceof Required || annotation instanceof Free) {
+        return false;
+      }
     }
     return true;
   }
@@ -255,7 +257,7 @@ public interface Argument<O> {
    *       &lt;key&gt;=&lt;value&gt;] with the equals sign '=' separating the key and value
    * </ul>
    *
-   * Here's an example:
+   * <p>Here's an example:
    *
    * <p>Usage: command [-f] [--help | -H] [-c &lt;child_name&gt;] [-p &lt;number&gt;] &lt;arg1&gt;
    * &lt;arg2&gt; [arg3]
@@ -268,7 +270,9 @@ public interface Argument<O> {
   static String generateUsage(@NonNull List<Argument<?>> arguments) {
     StringBuilder builder = new StringBuilder();
     for (Argument<?> argument : arguments) {
-      if (!(argument instanceof SingleArgument)) continue;
+      if (!(argument instanceof SingleArgument)) {
+        continue;
+      }
       String name = ((SingleArgument<?>) argument).getName();
       if (((SingleArgument<?>) argument).isRequired()) {
         builder.append("<").append(name).append("> ");
@@ -284,8 +288,8 @@ public interface Argument<O> {
    *
    * <h1>IMPORTANT</h1>
    *
-   * The parameter mappings are a key {@link String} which represents name for a {@link Class} this
-   * means that:
+   * <p>The parameter mappings are a key {@link String} which represents name for a {@link Class}
+   * this means that:
    *
    * <ul>
    *   <li>String = java.lang.String
@@ -293,7 +297,7 @@ public interface Argument<O> {
    *   <li>JoinedStrings = me.googas.commands.objects.JoinedStrings
    * </ul>
    *
-   * Are possible mappings which may be used in the parse of a command
+   * <p>Are possible mappings which may be used in the parse of a command
    *
    * <p>If the {@link String} starts with a '@' it will be considered as a {@link
    * me.googas.commands.annotations.Multiple} annotation next (Ignoring the optional starting '@'):
@@ -374,7 +378,9 @@ public interface Argument<O> {
       try {
         String key = split[0];
         String value = mappings.get(key);
-        if (value == null) throw new IllegalArgumentException(key + " did not match any mapping");
+        if (value == null) {
+          throw new IllegalArgumentException(key + " did not match any mapping");
+        }
         Class<?> clazz = Class.forName(mappings.get(split[0]));
         String name = split[1];
         String description = split.length > 2 ? split[2].replace("-", " ") : "No description given";

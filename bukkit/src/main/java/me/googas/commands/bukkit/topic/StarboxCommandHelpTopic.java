@@ -41,7 +41,7 @@ class StarboxCommandHelpTopic extends HelpTopic {
    *       MessagesProvider#commandFullText(StarboxBukkitCommand, String, String, String)}
    * </ul>
    *
-   * For each children inside the command {@link StarboxCommand#getChildren()} another {@link
+   * <p>For each children inside the command {@link StarboxCommand#getChildren()} another {@link
    * StarboxCommandHelpTopic} will be created
    *
    * @param command the command to create the topic from

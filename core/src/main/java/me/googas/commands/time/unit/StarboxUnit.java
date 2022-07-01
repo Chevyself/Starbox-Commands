@@ -70,7 +70,7 @@ public interface StarboxUnit extends TemporalUnit {
    * System.out.println("Output 2000: " + value);
    * </pre>
    *
-   * This divides the parameter value with {@link #getMillis()}
+   * <p>This divides the parameter value with {@link #getMillis()}
    *
    * @param value the value to get the duration in millis from
    * @return the duration in millis

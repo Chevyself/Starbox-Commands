@@ -34,5 +34,5 @@ public interface Middleware<T extends StarboxCommandContext> {
    * @param context the context that ran the command
    * @param result result returned by the command
    */
-  default void next(@NonNull T context, StarboxResult result) {};
+  default void next(@NonNull T context, StarboxResult result) {}
 }

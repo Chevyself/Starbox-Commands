@@ -26,9 +26,9 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
    * Execute the command. This will run after {@link #execute(CommandContext)} does not find any
    * children to execute
    *
-   * @see Result
    * @param context the context to run the command
    * @return the result of the command execution if it has a message it will be printed
+   * @see Result
    */
   Result run(@NonNull CommandContext context);
 

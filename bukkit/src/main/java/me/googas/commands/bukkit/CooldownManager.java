@@ -31,6 +31,20 @@ public class CooldownManager implements StarboxCooldownManager<CommandContext> {
     this.time = time;
   }
 
+  /**
+   * Create a manager based on the annotation.
+   *
+   * @param cooldown the cooldown annotation
+   * @return if {@link Time#isZero()} an empty optional will be returned else a new manager will be
+   *     created
+   */
+  @NonNull
+  public static Optional<CooldownManager> of(@NonNull Cooldown cooldown) {
+    Time time = Time.of(cooldown.time());
+    return Optional.ofNullable(
+        time.isZero() ? null : new CooldownManager(cooldown.permission(), time));
+  }
+
   private long getMillis(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
     return sender instanceof Player ? map.getOrDefault(((Player) sender).getUniqueId(), 0L) : 0;
@@ -55,19 +69,5 @@ public class CooldownManager implements StarboxCooldownManager<CommandContext> {
     if (sender instanceof Player) {
       map.put(((Player) sender).getUniqueId(), System.currentTimeMillis() + time.toMillisRound());
     }
-  }
-
-  /**
-   * Create a manager based on the annotation.
-   *
-   * @param cooldown the cooldown annotation
-   * @return if {@link Time#isZero()} an empty optional will be returned else a new manager will be
-   *     created
-   */
-  @NonNull
-  public static Optional<CooldownManager> of(@NonNull Cooldown cooldown) {
-    Time time = Time.of(cooldown.time());
-    return Optional.ofNullable(
-        time.isZero() ? null : new CooldownManager(cooldown.permission(), time));
   }
 }

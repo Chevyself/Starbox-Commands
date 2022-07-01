@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>bungee</artifactId>
 
-    <artifactId>bungee</artifactId>
-    <description>Bungee utils and command framework</description>
+  <dependencies>
+    <dependency>
+      <artifactId>bungeecord-api</artifactId>
+      <groupId>net.md-5</groupId>
+      <scope>provided</scope>
+      <type>jar</type>
+      <version>1.16-R0.3</version>
+    </dependency>
+    <dependency>
+      <artifactId>bungeecord-chat</artifactId>
+      <groupId>net.md-5</groupId>
+      <scope>compile</scope>
+      <version>1.16-R0.3</version>
+    </dependency>
+    <dependency>
+      <artifactId>core</artifactId>
+      <groupId>me.googas.commands</groupId>
+      <scope>compile</scope>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+  <description>Bungee utils and command framework</description>
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>starbox-commands</artifactId>
+    <groupId>me.googas.commands</groupId>
     <version>1.0.0</version>
+  </parent>
 
-    <parent>
-        <groupId>me.googas.commands</groupId>
-        <artifactId>starbox-commands</artifactId>
-        <version>1.0.0</version>
-    </parent>
+  <repositories>
+    <repository>
+      <id>bungeecord-repo</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
 
-    <repositories>
-        <repository>
-            <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.3</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-chat</artifactId>
-            <version>1.16-R0.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.googas.commands</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+  <version>1.0.0</version>
 
 </project>

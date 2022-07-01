@@ -81,7 +81,9 @@ public class Strings {
    */
   @NonNull
   public static String format(String message, @NonNull Map<String, String> placeholders) {
-    if (message == null) return "Null";
+    if (message == null) {
+      return "Null";
+    }
     AtomicReference<String> atomicMessage = new AtomicReference<>(message);
     for (String placeholder : placeholders.keySet()) {
       String value = placeholders.get(placeholder);
@@ -133,7 +135,9 @@ public class Strings {
   public static List<String> copyPartials(@NonNull String toMatch, @NonNull List<String> list) {
     List<String> matching = new ArrayList<>();
     for (String string : list) {
-      if (string.toLowerCase().startsWith(toMatch.toLowerCase())) matching.add(string);
+      if (string.toLowerCase().startsWith(toMatch.toLowerCase())) {
+        matching.add(string);
+      }
     }
     return matching;
   }
@@ -151,8 +155,9 @@ public class Strings {
    */
   @NonNull
   public static String buildUsageAliases(@NonNull Collection<String> aliases) {
-    if (aliases.isEmpty())
+    if (aliases.isEmpty()) {
       throw new IllegalArgumentException("Aliases collection may not be empty!");
+    }
     StringBuilder builder = new StringBuilder();
     for (String alias : aliases) {
       builder.append(alias).append("|");
@@ -163,10 +168,10 @@ public class Strings {
   /**
    * Builds the aliases usage from an array of Strings.
    *
-   * @see #buildUsageAliases(Collection)
    * @param aliases the array of aliases for the string
    * @return the built string
    * @throws IllegalArgumentException if the array is empty
+   * @see #buildUsageAliases(Collection)
    */
   public static String buildUsageAliases(@NonNull String... aliases) {
     return Strings.buildUsageAliases(Arrays.asList(aliases));
@@ -187,7 +192,9 @@ public class Strings {
       string = string.substring(length);
       split.add(substring);
     }
-    if (!string.isEmpty()) split.add(string);
+    if (!string.isEmpty()) {
+      split.add(string);
+    }
     return split;
   }
 
@@ -206,18 +213,20 @@ public class Strings {
       shorter = temp;
     }
     float longerLength = longer.length();
-    if (longerLength == 0) return 1f;
+    if (longerLength == 0) {
+      return 1f;
+    }
     return (longerLength - Strings.editDistance(longer, shorter)) / longerLength;
   }
 
   /**
    * Get the similarity between two strings ignoring casing.
    *
-   * @see #similarity(String, String)
    * @param longer the first string
    * @param shorter the second string
    * @return the similarity between the two strings 0f being no similarity and 1f being that the two
    *     strings are the same
+   * @see #similarity(String, String)
    */
   public static float similarityIgnoreCase(@NonNull String longer, @NonNull String shorter) {
     return Strings.similarity(longer.toLowerCase(), shorter.toLowerCase());
@@ -240,9 +249,9 @@ public class Strings {
   /**
    * Make a pretty string from a {@link Collection}. If the collection is empty this will use '[]'
    *
-   * @see #pretty(Collection, String)
    * @param collection the collection to pretty
    * @return the pretty collection string
+   * @see #pretty(Collection, String)
    */
   @NonNull
   public static String pretty(@NonNull Collection<?> collection) {
@@ -266,9 +275,9 @@ public class Strings {
   /**
    * Make a pretty string from an array. If the collection is empty this will use '[]'
    *
-   * @see #pretty(String, Object...)
    * @param objects the array of object to pretty
    * @return the pretty array string
+   * @see #pretty(String, Object...)
    */
   @NonNull
   public static String pretty(@NonNull Object... objects) {
@@ -331,14 +340,17 @@ public class Strings {
         } else {
           if (j > 0) {
             int newValue = costs[j - 1];
-            if (longer.charAt(i - 1) != shorter.charAt(j - 1))
+            if (longer.charAt(i - 1) != shorter.charAt(j - 1)) {
               newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+            }
             costs[j - 1] = lastValue;
             lastValue = newValue;
           }
         }
       }
-      if (i > 0) costs[shorter.length()] = lastValue;
+      if (i > 0) {
+        costs[shorter.length()] = lastValue;
+      }
     }
     return costs[shorter.length()];
   }

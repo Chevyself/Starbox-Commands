@@ -6,6 +6,7 @@ import me.googas.commands.bungee.providers.type.BungeeExtraArgumentProvider;
 
 /** Provides the command context to commands. */
 public class CommandContextProvider implements BungeeExtraArgumentProvider<CommandContext> {
+
   @Override
   public @NonNull Class<CommandContext> getClazz() {
     return CommandContext.class;

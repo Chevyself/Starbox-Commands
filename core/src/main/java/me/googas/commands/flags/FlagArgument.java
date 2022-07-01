@@ -26,24 +26,14 @@ public class FlagArgument implements StarboxFlag {
     this.value = value;
   }
 
-  @NonNull
-  public Optional<String> getValue() {
-    return Optional.ofNullable(value);
-  }
-
-  @Override
-  public String toString() {
-    return "ArgumentFlag{" + "option=" + option + ", value='" + value + '\'' + '}';
-  }
-
   /**
    * Parse the flags from the command line.
    *
-   * @see Parser#parse
    * @param options the list of options to check the flags
    * @param build whether the parsing should build the arguments inside quotation marks
    * @param strings the command line as a single string
    * @return the parser that got the flags
+   * @see Parser#parse
    */
   @NonNull
   public static Parser parse(
@@ -54,11 +44,11 @@ public class FlagArgument implements StarboxFlag {
   /**
    * Parse the flags from the command line.
    *
-   * @see Parser#parse
    * @param options the list of options to check the flags
    * @param build whether the parsing should build the arguments inside quotation marks
    * @param strings the command line as an array of strings
    * @return the parser that got the flags
+   * @see Parser#parse
    */
   @NonNull
   public static Parser parse(
@@ -69,10 +59,10 @@ public class FlagArgument implements StarboxFlag {
   /**
    * Parse the flags from the command line.
    *
-   * @see Parser#parse
    * @param options the list of options to check the flags
    * @param strings the command line as a single string
    * @return the parser that got the flags
+   * @see Parser#parse
    */
   @NonNull
   public static Parser parse(
@@ -83,15 +73,25 @@ public class FlagArgument implements StarboxFlag {
   /**
    * Parse the flags from the command line.
    *
-   * @see Parser#parse(boolean)
    * @param options the list of options to check the flags
    * @param strings the command line as an array of strings
    * @return the parser that got the flags
+   * @see Parser#parse(boolean)
    */
   @NonNull
   public static Parser parse(
       @NonNull Collection<? extends Option> options, @NonNull String... strings) {
     return FlagArgument.parse(options, true, strings);
+  }
+
+  @NonNull
+  public Optional<String> getValue() {
+    return Optional.ofNullable(value);
+  }
+
+  @Override
+  public String toString() {
+    return "ArgumentFlag{" + "option=" + option + ", value='" + value + '\'' + '}';
   }
 
   @Override
@@ -162,7 +162,9 @@ public class FlagArgument implements StarboxFlag {
                 if (flagValue.isEmpty() || (build && this.isStart(argument))) {
                   toValue = option;
                   building = this.isStart(flagValue);
-                  if (!flagValue.isEmpty()) valueBuilder.append(flagValue.substring(1)).append(" ");
+                  if (!flagValue.isEmpty()) {
+                    valueBuilder.append(flagValue.substring(1)).append(" ");
+                  }
                 } else {
                   flags.add(new FlagArgument(option, flagValue));
                 }

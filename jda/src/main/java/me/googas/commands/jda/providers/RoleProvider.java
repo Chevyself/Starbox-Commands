@@ -32,7 +32,9 @@ public class RoleProvider implements JdaArgumentProvider<Role> {
     } catch (NumberFormatException ignored) {
       role = null;
     }
-    if (role != null) return role;
+    if (role != null) {
+      return role;
+    }
     throw new ArgumentProviderException(this.messagesProvider.invalidRole(string, context));
   }
 
