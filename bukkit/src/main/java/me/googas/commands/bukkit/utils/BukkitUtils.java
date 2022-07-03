@@ -81,7 +81,7 @@ public class BukkitUtils {
    * Send base components to a command sender.
    *
    * @param sender the component sender to send the components
-   * @param components the array of components to be send
+   * @param components the array of components to be sent
    */
   public static void send(@NonNull CommandSender sender, @NonNull BaseComponent... components) {
     if (components.length > 0) {

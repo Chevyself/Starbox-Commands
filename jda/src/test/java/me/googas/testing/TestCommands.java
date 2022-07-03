@@ -3,6 +3,7 @@ package me.googas.testing;
 import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.jda.annotations.Command;
+import me.googas.commands.jda.annotations.Entry;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.time.annotations.TimeAmount;
 import me.googas.commands.util.Strings;
@@ -11,7 +12,11 @@ import net.dv8tion.jda.api.entities.Member;
 
 public class TestCommands {
 
-  @Command(aliases = "test", description = "This is a test command", cooldown = @TimeAmount("10s"))
+  @Command(
+      aliases = "test",
+      description = "This is a test command",
+      cooldown = @TimeAmount("10s"),
+      map = {@Entry(key = "excluded", value = "true")})
   public Result test(
       @Required(name = "name", description = "Your name") String name,
       @Required(name = "game", description = "Your favourite game") String game,

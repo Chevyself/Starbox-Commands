@@ -10,7 +10,7 @@ import me.googas.commands.bukkit.providers.OfflinePlayerProvider;
 import me.googas.commands.bukkit.providers.PlayerProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 
-/** The providers registry for bukkit. */
+/** The providers' registry for bukkit. */
 public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
 
   /**

@@ -5,8 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
+import me.googas.commands.Middleware;
 import me.googas.commands.flags.Flag;
-import me.googas.commands.system.middleware.SystemMiddleware;
+import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.time.annotations.TimeAmount;
 
 /**
@@ -51,7 +52,7 @@ public @interface Command {
    * @return the array of classes
    */
   @NonNull
-  Class<? extends SystemMiddleware>[] include() default {};
+  Class<? extends Middleware<CommandContext>>[] include() default {};
 
   /**
    * Get the global middleware classes that should be excluded from the command execution.
@@ -59,5 +60,5 @@ public @interface Command {
    * @return the array of classes
    */
   @NonNull
-  Class<? extends SystemMiddleware>[] exclude() default {};
+  Class<? extends Middleware<CommandContext>>[] exclude() default {};
 }

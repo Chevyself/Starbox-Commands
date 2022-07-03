@@ -21,12 +21,13 @@ import me.googas.commands.flags.Option;
 import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.cooldown.CooldownManager;
+import me.googas.commands.jda.result.JdaResult;
+import me.googas.commands.jda.result.JdaResultBuilder;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
@@ -121,27 +122,19 @@ public class AnnotatedCommand extends JdaCommand
   }
 
   @Override
-  public Result run(@NonNull CommandContext context) {
+  public JdaResult run(@NonNull CommandContext context) {
     try {
       Object[] objects = this.getObjects(context);
       Object object = this.method.invoke(this.object, objects);
+      JdaResult result = null;
       if (object instanceof Result) {
-        Result result = (Result) object;
-        if (result.getSuccess() == null && this.isExcluded()) {
-          Message discordMessage = result.getDiscordMessage().orElse(null);
-          result =
-              Result.forType(result.getType())
-                  .setMessage(() -> discordMessage)
-                  .setDescription(result.getMessage().orElse(null))
-                  .next(message -> {})
-                  .build();
-        }
-        return result;
+        result = (Result) object;
+      } else if (object instanceof JdaResultBuilder) {
+        result = ((JdaResultBuilder) object).build();
       }
-      return null;
+      return result;
     } catch (final IllegalAccessException e) {
       e.printStackTrace();
-      // return new Result(ResultType.UNKNOWN, "IllegalAccessException, e");
       return Result.forType(ResultType.UNKNOWN).setDescription("IllegalAccessException, e").build();
     } catch (final InvocationTargetException e) {
       final String message = e.getTargetException().getMessage();

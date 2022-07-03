@@ -25,7 +25,7 @@ import net.dv8tion.jda.api.entities.Message;
  *   <li>{@link #success} which is the consumer of the {@link #message} after it is sent
  * </ul>
  */
-public class Result implements StarboxResult {
+public class Result implements JdaResult {
 
   /**
    * Which changes the output in the {@link me.googas.commands.jda.listener.CommandListener} depends
@@ -33,7 +33,7 @@ public class Result implements StarboxResult {
    */
   @NonNull @Getter private final ResultType type;
   /**
-   * The message that will be send to the {@link net.dv8tion.jda.api.entities.TextChannel} where the
+   * The message that will be sent to the {@link net.dv8tion.jda.api.entities.TextChannel} where the
    * command was executed
    */
   private final Message message;

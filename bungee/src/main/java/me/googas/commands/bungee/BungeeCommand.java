@@ -117,7 +117,7 @@ public abstract class BungeeCommand extends Command
 
   /**
    * Checks if the command should be running async if so it will create the task with {@link
-   * net.md_5.bungee.api.scheduler.TaskScheduler#runAsync(Plugin, Runnable)} this uses the {@link
+   * net.md_5.bungee.api.scheduler.TaskScheduler#runAsync(Plugin, Runnable)} these uses the {@link
    * CommandManager} plugin
    *
    * @param sender the executor of the command
@@ -137,7 +137,7 @@ public abstract class BungeeCommand extends Command
    * This method does the command execution after {@link #runCheckSync(CommandSender, String[])}
    * finishes checking whether to run async or not.
    *
-   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be send to the
+   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be sent to the
    * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(BaseComponent)}
    * and {@link Result} components
    *

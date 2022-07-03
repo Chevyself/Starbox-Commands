@@ -20,13 +20,12 @@ public class MainTest {
     JDA jda =
         JDABuilder.create(args[0], Arrays.asList(GatewayIntent.values())).build().awaitReady();
     MessagesProvider messages = new JdaMessagesProvider();
+    GenericListenerOptions options = new GenericListenerOptions();
+    options.setPrefix("-");
+    options.setDeleteSuccess(true);
     CommandManager manager =
-        new CommandManager(
-                new JdaProvidersRegistry(messages),
-                messages,
-                jda,
-                new GenericListenerOptions().setPrefix("-"))
-            .addGlobalMiddleware(new CooldownMiddleware(), new PermissionMiddleware())
+        new CommandManager(new JdaProvidersRegistry(messages), messages, jda, options)
+            .addGlobalMiddlewares(new CooldownMiddleware(), new PermissionMiddleware())
             .parseAndRegister(new TestCommands());
   }
 

@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.context.GenericCommandContext;
+import me.googas.commands.jda.context.SlashCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
+import me.googas.commands.jda.result.JdaResult;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import me.googas.commands.time.Time;
@@ -19,6 +21,7 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -152,7 +155,6 @@ public class GenericListenerOptions implements ListenerOptions {
     }
   }
 
-  @Override
   public Message processResult(Result result, @NonNull CommandContext context) {
     if (result != null && !result.getDiscordMessage().isPresent()) {
       MessageBuilder builder = new MessageBuilder();
@@ -189,7 +191,6 @@ public class GenericListenerOptions implements ListenerOptions {
     return null;
   }
 
-  @Override
   public Consumer<Message> processConsumer(Result result, @NonNull CommandContext context) {
     if (result != null) {
       if (result.getSuccess() != null) {
@@ -197,7 +198,9 @@ public class GenericListenerOptions implements ListenerOptions {
       } else if (this.isDeleteErrors() && result.getType().isError()) {
         return this.getErrorDeleteConsumer();
       } else if (this.isDeleteSuccess() && !result.getType().isError()) {
-        return this.getSuccessDeleteConsumer();
+        if (!context.getCommand().getMap().containsKey("excluded")) {
+          return this.getSuccessDeleteConsumer();
+        }
       }
     }
     return null;
@@ -226,5 +229,40 @@ public class GenericListenerOptions implements ListenerOptions {
   @Override
   public @NonNull String getPrefix(Guild guild) {
     return this.prefix;
+  }
+
+  @Override
+  public void handle(JdaResult jdaResult, @NonNull CommandContext context) {
+    if (!(jdaResult instanceof Result))
+      throw new IllegalArgumentException(
+          jdaResult + " is a result instance which cannot be handled by this options");
+    Result result = (Result) jdaResult;
+    Message response = this.processResult(result, context);
+    Consumer<Message> consumer = this.processConsumer(result, context);
+    Optional<MessageChannel> optionalChannel = context.getChannel();
+    if (context instanceof SlashCommandContext) {
+      SlashCommandInteractionEvent slashEvent = ((SlashCommandContext) context).getEvent();
+      if (response != null) {
+        if (consumer != null) {
+          slashEvent
+              .getHook()
+              .sendMessage(response)
+              .queue(consumer, fail -> this.handle(fail, context));
+        } else {
+          slashEvent
+              .getHook()
+              .sendMessage(response)
+              .queue(null, fail -> this.handle(fail, context));
+        }
+      }
+    } else {
+      if (!optionalChannel.isPresent() || response == null) return;
+      MessageChannel channel = optionalChannel.get();
+      if (consumer != null) {
+        channel.sendMessage(response).queue(consumer, fail -> this.handle(fail, context));
+      } else {
+        channel.sendMessage(response).queue(null, fail -> this.handle(fail, context));
+      }
+    }
   }
 }

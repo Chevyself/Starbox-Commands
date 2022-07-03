@@ -229,15 +229,30 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   }
 
   @Override
-  public @NonNull CommandManager addGlobalMiddleware(
+  public @NonNull CommandManager addGlobalMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
-    this.getGlobalMiddlewares().addAll(Arrays.asList(middlewares));
+    StarboxCommandManager.super.addGlobalMiddlewares(middlewares);
     return this;
   }
 
   @Override
-  public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext>... middlewares) {
-    this.getMiddlewares().addAll(Arrays.asList(middlewares));
+  public @NonNull CommandManager addMiddlewares(
+      @NonNull Middleware<CommandContext>... middlewares) {
+    StarboxCommandManager.super.addMiddlewares(middlewares);
+    return this;
+  }
+
+  @Override
+  public @NonNull CommandManager addGlobalMiddleware(
+      @NonNull Middleware<CommandContext> middleware) {
+    this.globalMiddlewares.add(middleware);
+    return this;
+  }
+
+  @Override
+  public @NonNull StarboxCommandManager<CommandContext, StarboxBukkitCommand> addMiddleware(
+      @NonNull Middleware<CommandContext> middleware) {
+    this.middlewares.add(middleware);
     return this;
   }
 }

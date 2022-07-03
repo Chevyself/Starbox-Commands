@@ -31,7 +31,7 @@ public class CommandContext implements StarboxCommandContext {
    * @param string the input strings joined
    * @param strings the strings from the command execution
    * @param registry the registry for the command context to use
-   * @param messagesProvider the messages provider used in this context
+   * @param messagesProvider the messages' provider used in this context
    * @param flags the flags in the input of the command
    */
   public CommandContext(

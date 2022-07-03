@@ -86,7 +86,7 @@ public interface Argument<O> {
   /**
    * Parse the list from an array of parameters and its annotations.
    *
-   * <p>To parse each argument this will iterate thru the parameter class and its annotations
+   * <p>To parse each argument this will iterate through the parameter class and its annotations
    * checking that {@link #isEmpty(Annotation[])} if this method results true it will return an
    * {@link ExtraArgument} else it will use the method {@link #parseArgument(Class, Annotation[],
    * int)} and the position will increase. If the argument resulting from this method is {@link
@@ -243,7 +243,7 @@ public interface Argument<O> {
   }
 
   /**
-   * Generates an usage message for the provided item of this class
+   * Generates a usage message for the provided item of this class
    *
    * <p>A list of arguments may also be used to get the usage of a command. From <a
    * href="https://en.wikipedia.org/wiki/Usage_message">Wikipedia</a>
@@ -324,7 +324,7 @@ public interface Argument<O> {
    * @throws IllegalArgumentException if the {@link String} does not start and end with either
    *     '&lt;&gt;' or '[]', or if the {@link String} does not contain ':' separating the {@link
    *     Class} and name (description is optional) and if the key for the {@link Class} mapping does
-   *     not map to anything (it is case sensitive)
+   *     not map to anything (it is case-sensitive)
    */
   @NonNull
   static Argument<?> parse(
@@ -348,7 +348,7 @@ public interface Argument<O> {
    * @throws IllegalArgumentException if the {@link String} does not start and end with either
    *     '&lt;&gt;' or '[]', or if the {@link String} does not contain ':' separating the {@link
    *     Class} and name (description is optional) and if the key for the {@link Class} mapping does
-   *     not map to anything (it is case sensitive)
+   *     not map to anything (it is case-sensitive)
    */
   @NonNull
   static Argument<?> parse(

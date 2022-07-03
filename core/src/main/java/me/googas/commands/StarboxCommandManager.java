@@ -211,8 +211,24 @@ public interface StarboxCommandManager<
   Collection<? extends Middleware<C>> getMiddlewares();
 
   @NonNull
-  StarboxCommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C>... middlewares);
+  StarboxCommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C> middleware);
 
   @NonNull
-  StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C>... middlewares);
+  StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C> middleware);
+
+  @NonNull
+  default StarboxCommandManager<C, T> addGlobalMiddlewares(@NonNull Middleware<C>... middlewares) {
+    for (Middleware<C> middleware : middlewares) {
+      this.addGlobalMiddleware(middleware);
+    }
+    return this;
+  }
+
+  @NonNull
+  default StarboxCommandManager<C, T> addMiddlewares(@NonNull Middleware<C>... middlewares) {
+    for (Middleware<C> middleware : middlewares) {
+      this.addMiddleware(middleware);
+    }
+    return this;
+  }
 }

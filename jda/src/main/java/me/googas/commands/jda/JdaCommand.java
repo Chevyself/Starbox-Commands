@@ -5,13 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.flags.Option;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.cooldown.CooldownManager;
-import me.googas.commands.jda.result.Result;
+import me.googas.commands.jda.result.JdaResult;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -34,7 +33,6 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @NonNull @Getter protected final List<Option> options;
   @NonNull @Getter protected final List<Middleware<CommandContext>> middlewares;
   protected final CooldownManager cooldown;
-  @Deprecated @Getter @Setter private boolean excluded;
 
   public JdaCommand(
       @NonNull CommandManager manager,
@@ -80,10 +78,10 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
    * @param context the context to execute this command
    * @return the result of the command execution
    */
-  abstract Result run(@NonNull CommandContext context);
+  abstract JdaResult run(@NonNull CommandContext context);
 
   @Override
-  public Result execute(@NonNull CommandContext context) {
+  public JdaResult execute(@NonNull CommandContext context) {
     String[] strings = context.getStrings();
     if (strings.length >= 1) {
       Optional<JdaCommand> optionalCommand = this.getChildren(strings[0]);
@@ -100,11 +98,11 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
         .map(
             starboxResult -> {
               // Here maybe thrown an error because the wrong result was provided
-              return starboxResult instanceof Result ? (Result) starboxResult : null;
+              return starboxResult instanceof JdaResult ? (JdaResult) starboxResult : null;
             })
         .orElseGet(
             () -> {
-              Result run = this.run(context);
+              JdaResult run = this.run(context);
               this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
               return run;
             });

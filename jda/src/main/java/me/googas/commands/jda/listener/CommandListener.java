@@ -1,7 +1,6 @@
 package me.googas.commands.jda.listener;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.flags.FlagArgument;
@@ -14,10 +13,10 @@ import me.googas.commands.jda.context.GenericCommandContext;
 import me.googas.commands.jda.context.GuildCommandContext;
 import me.googas.commands.jda.context.SlashCommandContext;
 import me.googas.commands.jda.messages.MessagesProvider;
+import me.googas.commands.jda.result.JdaResult;
 import me.googas.commands.jda.result.Result;
 import me.googas.commands.jda.result.ResultType;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -57,32 +56,16 @@ public class CommandListener implements EventListener {
   @SubscribeEvent
   public void onMessageReceived(@NonNull MessageReceivedEvent event) {
     String[] strings = event.getMessage().getContentRaw().split(" +");
-    String commandName = strings[0];
     String prefix = listenerOptions.getPrefix(event.isFromGuild() ? event.getGuild() : null);
-    if (!commandName.startsWith(prefix)) {
+    if (strings.length < 1 || !strings[0].startsWith(prefix)) {
       return;
     }
-    this.listenerOptions.preCommand(event, commandName, strings);
-    String finalCommandName = commandName.substring(prefix.length());
-    JdaCommand command =
-        this.getCommand(event.isFromGuild() ? event.getGuild() : null, finalCommandName);
+    String name = strings[0].substring(prefix.length());
+    this.listenerOptions.preCommand(event, name, strings);
+    JdaCommand command = this.getCommand(event.isFromGuild() ? event.getGuild() : null, name);
     GenericCommandContext context = this.getCommandContext(event, strings, command);
-    Result result = this.getResult(command, finalCommandName, context);
-    Message response = this.getMessage(result, context);
-    Consumer<Message> consumer = this.getConsumer(result, context);
-    if (response != null) {
-      if (consumer != null) {
-        event
-            .getChannel()
-            .sendMessage(response)
-            .queue(consumer, fail -> this.listenerOptions.handle(fail, context));
-      } else {
-        event
-            .getChannel()
-            .sendMessage(response)
-            .queue(null, fail -> this.listenerOptions.handle(fail, context));
-      }
-    }
+    JdaResult result = this.getResult(command, name, context);
+    this.listenerOptions.handle(result, context);
   }
 
   /**
@@ -112,50 +95,14 @@ public class CommandListener implements EventListener {
             event,
             event.getOptions(),
             event.getChannel());
-    Result result = this.getResult(command, command.getName(), context);
-    Message response = this.getMessage(result, context);
-    Consumer<Message> consumer = this.getConsumer(result, context);
-    if (response != null) {
-      if (consumer != null) {
-        event
-            .getHook()
-            .sendMessage(response)
-            .queue(consumer, fail -> this.listenerOptions.handle(fail, context));
-      } else {
-        event
-            .getHook()
-            .sendMessage(response)
-            .queue(null, fail -> this.listenerOptions.handle(fail, context));
-      }
-    }
+    JdaResult result = this.getResult(command, command.getName(), context);
+    this.listenerOptions.handle(result, context);
   }
 
   @NonNull
   private JdaCommand getCommand(Guild guild, @NonNull String name) {
     JdaCommand command = this.manager.getCommand(guild, name);
     return command == null ? new UnknownCommand(this.manager, name) : command;
-  }
-
-  /**
-   * Get the action to do with the message sent from a result.
-   *
-   * @param result the result to get the action from
-   * @param context the context of the command execution
-   * @return the action from the result or null if it doesn't have any
-   */
-  public Consumer<Message> getConsumer(Result result, @NonNull CommandContext context) {
-    return this.listenerOptions.processConsumer(result, context);
-  }
-
-  /**
-   * Get the message that will be send from a result.
-   *
-   * @param result the result to get the message from
-   * @param context the context of the command execution
-   * @return the message
-   */
-  private Message getMessage(Result result, CommandContext context) {
-    return this.listenerOptions.processResult(result, context);
   }
 
   /**
@@ -166,7 +113,7 @@ public class CommandListener implements EventListener {
    * @param context the context of the command
    * @return the result of the command execution
    */
-  private Result getResult(
+  private JdaResult getResult(
       @NonNull JdaCommand command,
       @Deprecated @NonNull String commandName,
       CommandContext context) {

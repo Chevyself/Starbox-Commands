@@ -164,14 +164,29 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   }
 
   @Override
-  public @NonNull StarboxCommandManager<CommandContext, SystemCommand> addGlobalMiddleware(
+  public @NonNull CommandManager addGlobalMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
-    return null;
+    StarboxCommandManager.super.addGlobalMiddlewares(middlewares);
+    return this;
   }
 
   @Override
-  public @NonNull StarboxCommandManager<CommandContext, SystemCommand> addMiddleware(
+  public @NonNull CommandManager addMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
-    return null;
+    StarboxCommandManager.super.addMiddlewares(middlewares);
+    return this;
+  }
+
+  @Override
+  public @NonNull CommandManager addGlobalMiddleware(
+      @NonNull Middleware<CommandContext> middleware) {
+    this.globalMiddlewares.add(middleware);
+    return this;
+  }
+
+  @Override
+  public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext> middleware) {
+    this.middlewares.add(middleware);
+    return this;
   }
 }
