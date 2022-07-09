@@ -226,7 +226,6 @@ public interface StarboxCommandManager<
    * @param middleware the middleware to add
    * @return this same instance
    */
-
   @NonNull
   StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C> middleware);
 

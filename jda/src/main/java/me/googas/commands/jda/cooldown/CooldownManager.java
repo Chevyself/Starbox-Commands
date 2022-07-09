@@ -9,9 +9,7 @@ import me.googas.commands.jda.annotations.Command;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.time.Time;
 
-/**
- * This is an implementation of {@link CooldownManager} for the JDA module.
- */
+/** This is an implementation of {@link CooldownManager} for the JDA module. */
 public class CooldownManager implements StarboxCooldownManager<CommandContext> {
 
   @NonNull private final Map<Long, Long> map = new HashMap<>();
@@ -27,8 +25,8 @@ public class CooldownManager implements StarboxCooldownManager<CommandContext> {
   }
 
   /**
-   * Returns the manager object based on the annotation. If the annotation has a valid time (this means that it is not {@link Time#isZero()}) a {@link Optional} will
-   * be wrapping the manager.
+   * Returns the manager object based on the annotation. If the annotation has a valid time (this
+   * means that it is not {@link Time#isZero()}) a {@link Optional} will be wrapping the manager.
    *
    * @param annotation the annotation to provide the time for the manager
    * @return a {@link Optional} which might be wrapping the manager

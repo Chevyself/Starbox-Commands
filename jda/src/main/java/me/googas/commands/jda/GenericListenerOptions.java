@@ -191,7 +191,7 @@ public class GenericListenerOptions implements ListenerOptions {
     return null;
   }
 
-  private  Consumer<Message> processConsumer(Result result, @NonNull CommandContext context) {
+  private Consumer<Message> processConsumer(Result result, @NonNull CommandContext context) {
     if (result != null) {
       if (result.getSuccess() != null) {
         return result.getSuccess();

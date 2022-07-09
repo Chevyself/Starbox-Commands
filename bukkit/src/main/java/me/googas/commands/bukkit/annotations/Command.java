@@ -13,7 +13,7 @@ import me.googas.commands.flags.Flag;
 /**
  * This makes that when a {@link java.lang.reflect.Method}
  *
- * When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
+ * <p>When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
  * me.googas.commands.bukkit.CommandManager#parseCommands(Object)} it tells it that the {@link
  * java.lang.reflect.Method} must create a {@link me.googas.commands.bukkit.AnnotatedCommand}
  *

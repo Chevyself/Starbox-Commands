@@ -12,8 +12,7 @@ import me.googas.commands.context.StarboxCommandContext;
  * This marks a parameter as required. It can be thought in a way as {@link NonNull}
  *
  * @see Argument
- *
- * <pre>
+ *     <pre>
  * public void AMethod(@Required String name, @Free(suggestions = "20") int age) {
  *     // A required argument is name
  *     // An optional argument is age
@@ -41,10 +40,10 @@ public @interface Required {
   String description() default "No description provided";
 
   /**
-   * Returns an {@link java.lang.reflect.Array} of strings which represents the suggestions of the argument.
+   * Returns an {@link java.lang.reflect.Array} of strings which represents the suggestions of the
+   * argument.
    *
    * @see me.googas.commands.arguments.SingleArgument#getSuggestions(StarboxCommandContext)
-   *
    * @return the array of suggestions
    */
   @NonNull

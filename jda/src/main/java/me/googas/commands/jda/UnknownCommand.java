@@ -9,9 +9,7 @@ import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.Result;
 
-/**
- * This represents a command which wasn't found in {@link CommandManager}.
- */
+/** This represents a command which wasn't found in {@link CommandManager}. */
 public class UnknownCommand extends JdaCommand {
 
   @NonNull private final String name;

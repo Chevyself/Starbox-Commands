@@ -35,8 +35,8 @@ import net.md_5.bungee.api.plugin.PluginManager;
  * me.googas.commands.bungee.providers.registry.BungeeProvidersRegistry} which includes some
  * providers that are intended for Bungee use you can even extend it to add more in the constructor
  * or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also need a {@link
- * MessagesProvider} which is used to display error commands the default implementation
- * is {@link BungeeMessagesProvider}.
+ * MessagesProvider} which is used to display error commands the default implementation is {@link
+ * BungeeMessagesProvider}.
  *
  * <pre>{@code
  * CommandManager manager =
