@@ -65,7 +65,7 @@ public class BungeeMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", string);
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", timeLeft.toString());
   }
 
   @NonNull
