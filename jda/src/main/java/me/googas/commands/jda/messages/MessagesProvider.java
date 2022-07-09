@@ -51,7 +51,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String response(@NonNull String title, @NonNull String message, CommandContext context);
 
   /**
-   * Get the message for when an user is not allowed to use a command.
+   * Get the message for when a user is not allowed to use a command.
    *
    * @param context the context of the command
    * @return the message when the sender does not have a permission

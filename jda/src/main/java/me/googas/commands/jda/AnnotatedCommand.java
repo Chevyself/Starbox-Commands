@@ -57,7 +57,7 @@ public class AnnotatedCommand extends JdaCommand
    * @param description a short description of the command
    * @param map a map that contains custom settings of the command
    * @param options the flags that apply to this command
-   * @param middlewares the middlewares to run before and after this command is excuted
+   * @param middlewares the middlewares to run before and after this command is executed
    * @param cooldown the manager that handles the cooldown in this command
    * @param aliases the names that the command can be executed with
    * @param method the method to execute as the command see more in {@link #getMethod()}

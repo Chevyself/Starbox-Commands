@@ -14,7 +14,7 @@ import lombok.NonNull;
  *
  * <p>[prefix][command] [argument 1] [argument 2] [argument 2] [argument 2]
  *
- * <p>One example could be an array of roles to give an user in Discord
+ * <p>One example could be an array of roles to give a user in Discord
  *
  * @param <O> the type of the class that the argument has to supply
  */

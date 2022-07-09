@@ -12,6 +12,17 @@ import net.dv8tion.jda.api.entities.User;
 /** Provides the {@link StarboxCommandManager} with a {@link User}. */
 public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgumentProvider<User> {
 
+  /**
+   * Returns the id from a user's mention. This will separate characters that are digits to get the id of the {@link User}
+   *
+   * @see User#getAsMention()
+   * @see User#getIdLong()
+   * @see Long#parseLong(String)
+   *
+   * @param mention the user's mention
+   * @return the id of the user
+   * @throws NumberFormatException if the digits do not match a valid {@link Long}
+   */
   public static long getIdFromMention(@NonNull String mention) {
     StringBuilder builder = new StringBuilder();
     for (char c : mention.toCharArray()) {

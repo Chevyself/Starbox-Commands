@@ -11,7 +11,7 @@ public interface Mappable {
   /**
    * Get the name of the object.
    *
-   * @return the name of the object as an string
+   * @return the name of the object as a string
    */
   @NonNull
   String getName();
@@ -19,7 +19,7 @@ public interface Mappable {
   /**
    * Get the description of the object.
    *
-   * @return the description of the object as an string
+   * @return the description of the object as a string
    */
   @NonNull
   String getDescription();

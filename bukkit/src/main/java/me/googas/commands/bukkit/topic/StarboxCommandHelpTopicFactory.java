@@ -19,7 +19,7 @@ public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<StarboxB
   /**
    * Create the factory.
    *
-   * @param provider the messages provider to format the help topics see {@link
+   * @param provider the messages' provider to format the help topics see {@link
    *     StarboxCommandHelpTopic}
    */
   public StarboxCommandHelpTopicFactory(@NonNull MessagesProvider provider) {

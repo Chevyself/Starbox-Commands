@@ -34,8 +34,8 @@ import net.md_5.bungee.api.plugin.PluginManager;
  * related to the commands, a {@link ProvidersRegistry} you can use {@link
  * me.googas.commands.bungee.providers.registry.BungeeProvidersRegistry} which includes some
  * providers that are intended for Bungee use you can even extend it to add more in the constructor
- * or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also ned a {@link
- * MessagesProvider} which is used to display error commands the commands the default implementation
+ * or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also need a {@link
+ * MessagesProvider} which is used to display error commands the default implementation
  * is {@link BungeeMessagesProvider}.
  *
  * <pre>{@code
@@ -63,7 +63,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
    *
    * @param plugin the plugin that is related to the commands and other Bungee actions such as
    *     creating tasks with the {@link net.md_5.bungee.api.scheduler.TaskScheduler}
-   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   * @param providersRegistry the providers' registry to provide the array of {@link Object} to
    *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
    * @param messagesProvider the messages provider for important messages
    */
@@ -167,15 +167,17 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
     this.commands.clear();
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addGlobalMiddlewares(
+  public final @NonNull CommandManager addGlobalMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addGlobalMiddlewares(middlewares);
     return this;
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addMiddlewares(
+  public final @NonNull CommandManager addMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addMiddlewares(middlewares);
     return this;

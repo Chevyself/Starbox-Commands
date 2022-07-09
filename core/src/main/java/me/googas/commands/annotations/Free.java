@@ -6,11 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
+import me.googas.commands.context.StarboxCommandContext;
 
 /**
- * This marks a parameter as optional. It can be think in a way as a Nullable.
+ * This marks a parameter as optional. It can be thought in a way as a "Nullable".
  *
- * <p>You can check more about this annotation in {@link Argument}
+ * @see Argument
  *
  * <pre>
  * public void AMethod(@Required String name, @Free(suggestions = "20") int age) {
@@ -19,7 +20,7 @@ import me.googas.commands.arguments.Argument;
  * }
  * </pre>
  *
- * <p>The Easy Commands project uses Lombok which does not have a nullable annotation, you can use
+ * <p>The Starbox commands uses Lombok which does not have a nullable annotation, you can use
  * this annotation to tell your IDE that something is nullable in case you don't use another
  * annotation dependency.
  */
@@ -28,27 +29,31 @@ import me.googas.commands.arguments.Argument;
 public @interface Free {
 
   /**
-   * Get the name of the argument.
+   * Returns the name of the argument.
    *
-   * @return The name of the argument as a string
+   * @return the name of the argument
    */
   @NonNull
   String name() default "No name provided";
 
   /**
-   * Get the description of the argument.
+   * Returns the description of the argument.
    *
-   * @return The description of the argument as a string
+   * @return the description of the argument
    */
   @NonNull
   String description() default "No description provided";
 
   /**
-   * Get an array of suggestions that the user can input to execute the command correctly.
+   * Returns an {@link java.lang.reflect.Array} of strings which represents the suggestions of the argument.
+   * The default value of the optional argument will be the first entry of the {@link java.lang.reflect.Array}, the
+   * other will be suggestions which can be sent to the user in case the command is executed incorrectly.
    *
-   * @return The default value of the optional argument will be the first entry of the array the
-   *     other will be suggestions which can be send to the user in case the command is executed
-   *     incorrectly
+   * <b>Please note that certain arguments such as primitives must have a default value or else a {@link NullPointerException} might be thrown</b>
+   *
+   * @see me.googas.commands.arguments.SingleArgument#getSuggestions(StarboxCommandContext)
+   *
+   * @return the array of suggestions
    */
   @NonNull
   String[] suggestions() default {};

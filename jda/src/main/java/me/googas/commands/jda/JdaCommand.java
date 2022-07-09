@@ -34,6 +34,16 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
   @NonNull @Getter protected final List<Middleware<CommandContext>> middlewares;
   protected final CooldownManager cooldown;
 
+  /**
+   * Construct the command.
+   *
+   * @param manager the manager in which the command is going to be registered
+   * @param description a short description of the command
+   * @param map the map which contains details of the command
+   * @param options the list of options for the command execution
+   * @param middlewares the list of middlewares to execute before/after the command
+   * @param cooldown the cooldown manager of the command
+   */
   public JdaCommand(
       @NonNull CommandManager manager,
       @NonNull String description,

@@ -16,7 +16,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 /**
  * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
  * me.googas.commands.bungee.BungeeCommand}. This includes a {@link List} of {@link BaseComponent}
- * which will be send to the {@link net.md_5.bungee.api.CommandSender} upon the command execution.
+ * which will be sent to the {@link net.md_5.bungee.api.CommandSender} upon the command execution.
  *
  * <p>If the {@link Result} from {@link
  * me.googas.commands.bungee.BungeeCommand#execute(CommandContext)} is null or empty no message will

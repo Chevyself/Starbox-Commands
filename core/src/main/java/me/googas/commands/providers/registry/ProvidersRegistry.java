@@ -39,7 +39,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   /**
    * Create the registry with the default providers.
    *
-   * @param messages the messages provider for the messages sent in the default providers
+   * @param messages the messages' provider for the messages sent in the default providers
    */
   public ProvidersRegistry(@NonNull StarboxMessagesProvider<T> messages) {
     this.addProvider(new BooleanProvider<>(messages))
@@ -55,7 +55,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   public ProvidersRegistry() {}
 
   /**
-   * Registers a provider in the providers registry.
+   * Registers a provider in the providers' registry.
    *
    * @param provider the provider to register
    * @return this same instance of registry
@@ -67,7 +67,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   }
 
   /**
-   * Registers many providers in the providers registry.
+   * Registers many providers in the providers' registry.
    *
    * @param providers the providers to register
    * @return this same instance of registry
@@ -82,7 +82,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   }
 
   /**
-   * Registers many providers in the providers registry.
+   * Registers many providers in the providers' registry.
    *
    * @param providers the providers to register
    * @return this same instance of registry

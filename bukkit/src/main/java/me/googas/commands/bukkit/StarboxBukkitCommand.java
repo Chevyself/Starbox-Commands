@@ -81,7 +81,7 @@ public abstract class StarboxBukkitCommand extends Command
    * @param name the name of the command
    * @param aliases the aliases which also allow to execute the command
    * @param description a simple description of the command
-   * @param usageMessage a message describing how the message should executed. You can learn more
+   * @param usageMessage a message describing how the message should execute. You can learn more
    *     about usage messages in {@link me.googas.commands.arguments.Argument}
    * @param options the flags that apply in this command
    * @param middlewares the middlewares to run before and after this command is executed
@@ -112,7 +112,7 @@ public abstract class StarboxBukkitCommand extends Command
    * This method does the command execution after {@link #runCheckSync(CommandSender, String[])}
    * finishes checking whether to run async or not.
    *
-   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be send to the
+   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be sent to the
    * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(String)} and
    * {@link Result} components
    *
@@ -154,7 +154,7 @@ public abstract class StarboxBukkitCommand extends Command
 
   /**
    * Checks if the command should be running async if so it will create the task with {@link
-   * org.bukkit.scheduler.BukkitScheduler#runTaskAsynchronously(Plugin, Runnable)} this uses the
+   * org.bukkit.scheduler.BukkitScheduler#runTaskAsynchronously(Plugin, Runnable)}. This uses the
    * {@link CommandManager} plugin
    *
    * @param sender the executor of the command

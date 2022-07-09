@@ -41,7 +41,7 @@ import org.bukkit.plugin.Plugin;
  * related to the commands, a {@link ProvidersRegistry} you can use {@link
  * me.googas.commands.bukkit.providers.registry.BukkitProvidersRegistry} which includes some
  * providers that are intended for Bukkit use you can even extend it to add more in the constructor
- * or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also ned a {@link
+ * or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you also need a {@link
  * MessagesProvider} which is mostly used to display error commands or create the {@link
  * org.bukkit.help.HelpTopic} for the commands registered in this manager to be added inside the
  * built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}:
@@ -63,7 +63,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   @NonNull private static final HelpMap helpMap = Bukkit.getServer().getHelpMap();
   /**
    * This is the {@link CommandMap} which contains all the registered commands. It is obtained using
-   * reflection thru the method {@link BukkitUtils#getCommandMap()}
+   * reflection through the method {@link BukkitUtils#getCommandMap()}
    */
   @NonNull private static final CommandMap commandMap;
 
@@ -87,9 +87,9 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
    *
    * @param plugin the plugin that is related to the commands and other Bukkit actions such as
    *     creating tasks with the {@link org.bukkit.scheduler.BukkitScheduler}
-   * @param providersRegistry the providers registry to provide the array of {@link Object} to
+   * @param providersRegistry the providers' registry to provide the array of {@link Object} to
    *     invoke {@link AnnotatedCommand} using reflection or to be used in {@link CommandContext}
-   * @param messagesProvider the messages provider for important messages and {@link
+   * @param messagesProvider the messages' provider for important messages and {@link
    *     org.bukkit.help.HelpTopic} of commands and the "plugin"
    */
   public CommandManager(
@@ -228,15 +228,17 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
     this.commands.clear();
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addGlobalMiddlewares(
+  public final @NonNull CommandManager addGlobalMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addGlobalMiddlewares(middlewares);
     return this;
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addMiddlewares(
+  public final @NonNull CommandManager addMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addMiddlewares(middlewares);
     return this;

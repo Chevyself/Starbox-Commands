@@ -8,7 +8,7 @@ import lombok.NonNull;
  * An enumeration implementing {@link StarboxUnit} as a standard for {@link
  * me.googas.commands.time.Time}
  *
- * <p>All this units provide a way to manipulate time from milliseconds to years.
+ * <p>All these units provide a way to manipulate time from milliseconds to years.
  *
  * <p>There's concepts like {@link java.time.temporal.ChronoUnit#FOREVER} or {@link
  * java.time.temporal.ChronoUnit#ERAS}

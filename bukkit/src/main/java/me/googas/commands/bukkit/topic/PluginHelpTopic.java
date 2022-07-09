@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 /**
  * Plugin {@link HelpTopic} is basically the messages that appear in the command '/help
- * &lt;plugin_name&gt;'. This helps creating a {@link HelpTopic} for {@link
+ * &lt;plugin_name&gt;'. This helps to create a {@link HelpTopic} for {@link
  * org.bukkit.plugin.java.JavaPlugin} that uses {@link CommandManager} to parseAndRegister commands
  */
 public class PluginHelpTopic extends HelpTopic {
@@ -20,11 +20,11 @@ public class PluginHelpTopic extends HelpTopic {
   @NonNull @Getter private final MessagesProvider provider;
 
   /**
-   * Create the an instance of the help topic.
+   * Create the instance of the help topic.
    *
    * @param plugin the plugin that is using the framework
    * @param manager the command manager that the plugin uses
-   * @param provider the messages provider to format the messages see {@link
+   * @param provider the messages' provider to format the messages see {@link
    *     MessagesProvider#helpTopicShort(Plugin)}, {@link MessagesProvider#helpTopicFull(String,
    *     String, Plugin)}
    */

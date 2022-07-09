@@ -155,7 +155,7 @@ public class GenericListenerOptions implements ListenerOptions {
     }
   }
 
-  public Message processResult(Result result, @NonNull CommandContext context) {
+  private Message processResult(Result result, @NonNull CommandContext context) {
     if (result != null && !result.getDiscordMessage().isPresent()) {
       MessageBuilder builder = new MessageBuilder();
       MessagesProvider messagesProvider = context.getMessagesProvider();
@@ -191,7 +191,7 @@ public class GenericListenerOptions implements ListenerOptions {
     return null;
   }
 
-  public Consumer<Message> processConsumer(Result result, @NonNull CommandContext context) {
+  private  Consumer<Message> processConsumer(Result result, @NonNull CommandContext context) {
     if (result != null) {
       if (result.getSuccess() != null) {
         return result.getSuccess();

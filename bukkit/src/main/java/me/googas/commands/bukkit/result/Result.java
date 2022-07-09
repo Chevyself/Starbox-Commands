@@ -17,7 +17,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
  * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
- * StarboxBukkitCommand}. This includes a {@link List} of {@link BaseComponent} which will be send
+ * StarboxBukkitCommand}. This includes a {@link List} of {@link BaseComponent} which will be sent
  * to the {@link org.bukkit.command.CommandSender} upon the command execution.
  *
  * <p>If the {@link Result} from {@link StarboxBukkitCommand#execute(CommandContext)} is null or

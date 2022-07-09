@@ -163,15 +163,17 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
     listener.finish();
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addGlobalMiddlewares(
+  public final @NonNull CommandManager addGlobalMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addGlobalMiddlewares(middlewares);
     return this;
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addMiddlewares(
+  public final @NonNull CommandManager addMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addMiddlewares(middlewares);
     return this;

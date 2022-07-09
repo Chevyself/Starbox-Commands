@@ -65,8 +65,7 @@ public class BungeeMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    // TODO when the cooldown is added to bungee
-    return null;
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", string);
   }
 
   @NonNull

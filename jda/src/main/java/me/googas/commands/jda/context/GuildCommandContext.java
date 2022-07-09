@@ -19,7 +19,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
- * This context is used when the command is executed inside of a guild. The context is still a
+ * This context is used when the command is executed inside a guild. The context is still a
  * {@link User} but you can also get the {@link Member}
  */
 public class GuildCommandContext extends GenericCommandContext {
@@ -38,7 +38,7 @@ public class GuildCommandContext extends GenericCommandContext {
    * @param string the input strings joined
    * @param args the strings send in the command
    * @param registry the registry of the command context
-   * @param messagesProvider the messages provider for this context
+   * @param messagesProvider the messages' provider for this context
    * @param flags the flags in the input of the command
    * @param event the event of the message that executes the command
    * @param channel the channel where the command was executed

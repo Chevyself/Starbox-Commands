@@ -6,7 +6,7 @@ import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.providers.type.JdaExtraArgumentProvider;
 import net.dv8tion.jda.api.entities.Message;
 
-/** Provides the command with the message in which it was execute. */
+/** Provides the command with the message in which it was executed. */
 public class MessageProvider implements JdaExtraArgumentProvider<Message> {
 
   @NonNull

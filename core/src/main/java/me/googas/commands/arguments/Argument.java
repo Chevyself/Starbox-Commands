@@ -284,7 +284,7 @@ public interface Argument<O> {
   }
 
   /**
-   * Parses a {@link Argument} from a {@link String}. It must be formatted as follows:
+   * Parses from a {@link String}. It must be formatted as follows:
    *
    * <h1>IMPORTANT</h1>
    *
@@ -317,7 +317,7 @@ public interface Argument<O> {
    *
    * @param mappings the map of {@link Class} mappings
    * @param string the string to parse
-   * @param suggestions the suggestions that can be given to input the {@link Argument} check {@link
+   * @param suggestions the suggestions that can be given to input to check {@link
    *     SingleArgument#getSuggestions(StarboxCommandContext)}
    * @param position the position in which the argument must be input
    * @return the parsed argument
@@ -340,7 +340,7 @@ public interface Argument<O> {
    *
    * @param mappings the map of {@link Class} mappings
    * @param string the string to parse
-   * @param suggestions the suggestions that can be given to input the {@link Argument} check {@link
+   * @param suggestions the suggestions that can be given to input the argument check {@link
    *     SingleArgument#getSuggestions(StarboxCommandContext)}
    * @param multiple whether it is a multiple strings parameter
    * @param position the position in which the argument must be input

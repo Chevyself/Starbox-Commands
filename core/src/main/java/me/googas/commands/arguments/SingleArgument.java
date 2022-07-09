@@ -16,7 +16,7 @@ import me.googas.commands.objects.Mappable;
  *
  * <p>[prefix][command] [argument 1] [argument 2] [argument 2] [argument 2]
  *
- * <p>The best example is the name or the age for an user that is being created
+ * <p>The best example is the name or the age for a user that is being created
  *
  * @param <O> the type of the class that the argument has to supply
  */

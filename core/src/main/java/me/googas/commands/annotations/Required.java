@@ -6,11 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
+import me.googas.commands.context.StarboxCommandContext;
 
 /**
- * This marks a parameter as required. It can be think in a way as {@link NonNull}
+ * This marks a parameter as required. It can be thought in a way as {@link NonNull}
  *
- * <p>You can check more about this annotation in {@link Argument}
+ * @see Argument
  *
  * <pre>
  * public void AMethod(@Required String name, @Free(suggestions = "20") int age) {
@@ -24,7 +25,7 @@ import me.googas.commands.arguments.Argument;
 public @interface Required {
 
   /**
-   * Get the name of the argument.
+   * Returns the name of the argument.
    *
    * @return the name of the argument
    */
@@ -32,17 +33,19 @@ public @interface Required {
   String name() default "No name provided";
 
   /**
-   * Get the description of the argument.
+   * Returns the description of the argument.
    *
-   * @return The description of the argument
+   * @return the description of the argument
    */
   @NonNull
   String description() default "No description provided";
 
   /**
-   * Get the suggestions of the argument.
+   * Returns an {@link java.lang.reflect.Array} of strings which represents the suggestions of the argument.
    *
-   * @return the default value of the optional argument
+   * @see me.googas.commands.arguments.SingleArgument#getSuggestions(StarboxCommandContext)
+   *
+   * @return the array of suggestions
    */
   @NonNull
   String[] suggestions() default {};

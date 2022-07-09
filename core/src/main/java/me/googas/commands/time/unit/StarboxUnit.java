@@ -6,10 +6,10 @@ import lombok.NonNull;
 import me.googas.commands.time.Time;
 
 /**
- * An unit of time such as seconds, minutes, days or years
+ * A unit of time such as seconds, minutes, days or years
  *
  * <p>The direct implementation to use in {@link Time} is {@link me.googas.commands.time.unit.Unit}
- * but classes implementing this interface should represent an unit that is used to measure time.
+ * but classes implementing this interface should represent a unit that is used to measure time.
  */
 public interface StarboxUnit extends TemporalUnit {
 

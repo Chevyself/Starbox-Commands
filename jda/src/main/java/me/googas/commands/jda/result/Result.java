@@ -69,8 +69,8 @@ public class Result implements JdaResult {
    * @return the new builder
    */
   @NonNull
-  public static ResultBuilder builder() {
-    return new ResultBuilder();
+  public static Result.Builder builder() {
+    return new Builder();
   }
 
   /**
@@ -80,8 +80,8 @@ public class Result implements JdaResult {
    * @return the new builder
    */
   @NonNull
-  public static ResultBuilder forType(@NonNull ResultType type) {
-    return new ResultBuilder().setType(type);
+  public static Result.Builder forType(@NonNull ResultType type) {
+    return new Builder().setType(type);
   }
 
   @Override
@@ -106,7 +106,7 @@ public class Result implements JdaResult {
   }
 
   /** Builder for results. This will help to create a result in a neater way */
-  public static class ResultBuilder {
+  public static class Builder implements JdaResultBuilder {
 
     @NonNull private ResultType type = ResultType.GENERIC;
     private String description = null;
@@ -121,7 +121,7 @@ public class Result implements JdaResult {
      * @return this same instance
      */
     @NonNull
-    private ResultBuilder setType(@NonNull ResultType type) {
+    private Result.Builder setType(@NonNull ResultType type) {
       this.type = type;
       return this;
     }
@@ -134,7 +134,7 @@ public class Result implements JdaResult {
      * @return this same instance
      */
     @NonNull
-    public ResultBuilder setMessage(Supplier<Message> supplier) {
+    public Result.Builder setMessage(Supplier<Message> supplier) {
       this.messageSupplier = supplier;
       return this;
     }
@@ -146,7 +146,7 @@ public class Result implements JdaResult {
      * @return this same instance
      */
     @NonNull
-    public ResultBuilder setDescription(String description) {
+    public Result.Builder setDescription(String description) {
       this.description = description;
       return this;
     }
@@ -158,16 +158,23 @@ public class Result implements JdaResult {
      * @return this same instance
      */
     @NonNull
-    public ResultBuilder next(Consumer<Message> success) {
+    public Result.Builder next(Consumer<Message> success) {
       this.success = success;
       return this;
     }
 
-    public @NonNull ResultBuilder setCooldown(boolean apply) {
+    /**
+     * Set whether cooldown should apply.
+     *
+     * @param apply the new value
+     * @return this same instance
+     */
+    public @NonNull Result.Builder setCooldown(boolean apply) {
       this.cooldown = apply;
       return this;
     }
 
+    @Override
     public @NonNull Result build() {
       return new Result(
               type,

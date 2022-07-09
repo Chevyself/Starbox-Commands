@@ -32,6 +32,7 @@ public interface StarboxCommandManager<
    * @param exclude the classes of the middlewares to exclude
    * @param <M> the type of the middleware that can be added in this manager
    * @return the list of middlewares
+   * @param <C> the type of context that uses this manager
    */
   @NonNull
   static <C extends StarboxCommandContext, M extends Middleware<C>> List<M> getMiddlewares(
@@ -56,7 +57,7 @@ public interface StarboxCommandManager<
   }
 
   /**
-   * Get all the middlewares that can be applied to a command outside of the global middlewares.
+   * Get all the middlewares that can be applied to a command outside the global middlewares.
    *
    * @param middlewares the middlewares which may be included
    * @param include the classes of the middlewares to include
@@ -176,7 +177,7 @@ public interface StarboxCommandManager<
   Collection<T> getCommands();
 
   /**
-   * Get the providers registry that this manager may use for {@link StarboxCommandContext}.
+   * Get the providers' registry that this manager may use for {@link StarboxCommandContext}.
    *
    * @return the providers registry
    */
@@ -184,7 +185,7 @@ public interface StarboxCommandManager<
   ProvidersRegistry<C> getProvidersRegistry();
 
   /**
-   * Get the messages provider that this manager may use for {@link StarboxCommand} messages.
+   * Get the messages' provider that this manager may use for {@link StarboxCommand} messages.
    *
    * @return the messages provider
    */
@@ -210,12 +211,31 @@ public interface StarboxCommandManager<
   @NonNull
   Collection<? extends Middleware<C>> getMiddlewares();
 
+  /**
+   * Add a global {@link Middleware} to this manager.
+   *
+   * @param middleware the global middleware to add
+   * @return this same instance
+   */
   @NonNull
   StarboxCommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C> middleware);
+
+  /**
+   * Add a {@link Middleware} to this manager.
+   *
+   * @param middleware the middleware to add
+   * @return this same instance
+   */
 
   @NonNull
   StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C> middleware);
 
+  /**
+   * Add many global {@link Middleware} to this manager.
+   *
+   * @param middlewares the array of global middlewares to add
+   * @return this same instance
+   */
   @NonNull
   default StarboxCommandManager<C, T> addGlobalMiddlewares(@NonNull Middleware<C>... middlewares) {
     for (Middleware<C> middleware : middlewares) {
@@ -224,6 +244,12 @@ public interface StarboxCommandManager<
     return this;
   }
 
+  /**
+   * Add many {@link Middleware} to this manager.
+   *
+   * @param middlewares the array of middlewares to add
+   * @return this same instance
+   */
   @NonNull
   default StarboxCommandManager<C, T> addMiddlewares(@NonNull Middleware<C>... middlewares) {
     for (Middleware<C> middleware : middlewares) {

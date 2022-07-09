@@ -15,7 +15,7 @@ import org.bukkit.help.HelpTopic;
 
 /**
  * Command {@link HelpTopic} is basically the messages that appear in the command '/help
- * <command_name>'. This helps creating a {@link HelpTopic} for {@link StarboxCommandHelpTopic}
+ * <command_name>'. This helps to create a {@link HelpTopic} for {@link StarboxCommandHelpTopic}
  *
  * <p>To know how this is formatted check {@link MessagesProvider} and also the constructor {@link
  * #StarboxCommandHelpTopic(StarboxBukkitCommand, StarboxCommandHelpTopic, MessagesProvider)} has
@@ -46,7 +46,7 @@ class StarboxCommandHelpTopic extends HelpTopic {
    *
    * @param command the command to create the topic from
    * @param parent the parent if the command has one
-   * @param provider the messages provider to format messages for the help topic
+   * @param provider the messages' provider to format messages for the help topic
    */
   StarboxCommandHelpTopic(
       @NonNull StarboxBukkitCommand command,

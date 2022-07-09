@@ -18,7 +18,7 @@ import me.googas.commands.providers.type.StarboxArgumentProvider;
 import me.googas.commands.result.StarboxResult;
 
 /**
- * A reflect command is a command that is parsed using Java reflection. That's why this includes
+ * A reflection command is a command that is parsed using Java reflection. That's why this includes
  * methods as {@link #getMethod} or {@link #getObject}
  *
  * @param <C> the type of context that is required to run the command
@@ -35,7 +35,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    * @param context the context of the command execution
    * @return a {@link Optional} instance wrapping the nullable argument. It will try to get the
    *     string in the argument position. If the string in the context is null and the argument is
-   *     not required and it does not have any suggestions it will return null else it will return
+   *     not required, and it does not have any suggestions it will return null else it will return
    *     the first suggestion. If the string in the context is not null then it will return that one
    */
   @NonNull
@@ -63,7 +63,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    * @return the objects to use as parameters in the {@link #getMethod()}
    * @throws ArgumentProviderException if the argument could not be provided, see {@link
    *     ArgumentProviderException}
-   * @throws MissingArgumentException if the command is missing an argument. Also it will try to
+   * @throws MissingArgumentException if the command is missing an argument. Also, it will try to
    *     return the result as a help message to get a correct input from the user, see {@link
    *     MissingArgumentException}
    */
@@ -177,7 +177,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
   ProvidersRegistry<C> getRegistry();
 
   /**
-   * Get the messages provider for the command. Needed to send helpful messages to help the user
+   * Get the messages' provider for the command. Needed to send helpful messages to help the user
    * execute the command correctly
    *
    * @return the messages provider

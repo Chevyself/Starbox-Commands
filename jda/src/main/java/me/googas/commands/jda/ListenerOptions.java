@@ -68,5 +68,11 @@ public interface ListenerOptions {
   @NonNull
   String getPrefix(Guild guild);
 
+  /**
+   * Handle the result from a command execution.
+   *
+   * @param result the result to handle
+   * @param context the context which executed the command
+   */
   void handle(JdaResult result, @NonNull CommandContext context);
 }

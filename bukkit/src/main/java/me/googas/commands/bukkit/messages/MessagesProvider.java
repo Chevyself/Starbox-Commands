@@ -91,7 +91,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
    * Get the full text of a help topic for a parent command.
    *
    * @param command the parent command that is being built the help topic to
-   * @param buildChildren the children commands of the parent
+   * @param buildChildren the children command of the parent
    * @return the full text of the help topic
    */
   @NonNull
@@ -108,7 +108,7 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String childCommand(@NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent);
 
   /**
-   * The message to tell the users that materials have a name and it cannot be empty.
+   * The message to tell the users that materials have a name, and it cannot be empty.
    *
    * @param context the context of the command
    * @return the message to tell the user

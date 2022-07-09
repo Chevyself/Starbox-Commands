@@ -27,7 +27,7 @@ public class Strings {
 
   /**
    * This method is made to save resources from {@link #format(String, Map)}, {@link #format(String,
-   * Object...)} to not go in a loop. In case that the message is null it will just give an string
+   * Object...)} to not go in a loop. In case that the message is null it will just give a string
    * with the characters "Null"
    *
    * @param message the message to format
@@ -143,7 +143,7 @@ public class Strings {
   }
 
   /**
-   * Builds the aliases usage from a collection of Strings.
+   * Builds the aliases' usage from a collection of Strings.
    *
    * <p>If the collection looks like: ["hello", "world", "foo"]
    *
@@ -166,7 +166,7 @@ public class Strings {
   }
 
   /**
-   * Builds the aliases usage from an array of Strings.
+   * Builds the aliases' usage from an array of Strings.
    *
    * @param aliases the array of aliases for the string
    * @return the built string

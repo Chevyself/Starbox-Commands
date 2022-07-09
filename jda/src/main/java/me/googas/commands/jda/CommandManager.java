@@ -76,7 +76,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    *     GenericCommandContext}
    * @param messagesProvider the messages provider for important messages
    * @param jda the instance to parseAndRegister the {@link #listener} on
-   * @param listenerOptions to change some of the login in the {@link #listener}
+   * @param listenerOptions to change some login in the {@link #listener}
    */
   public CommandManager(
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
@@ -306,15 +306,17 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
     jda.removeEventListener(listener);
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addGlobalMiddlewares(
+  public final @NonNull CommandManager addGlobalMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addGlobalMiddlewares(middlewares);
     return this;
   }
 
+  @SafeVarargs
   @Override
-  public @NonNull CommandManager addMiddlewares(
+  public final @NonNull CommandManager addMiddlewares(
       @NonNull Middleware<CommandContext>... middlewares) {
     StarboxCommandManager.super.addMiddlewares(middlewares);
     return this;

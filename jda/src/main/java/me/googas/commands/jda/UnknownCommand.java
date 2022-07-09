@@ -9,10 +9,19 @@ import lombok.NonNull;
 import me.googas.commands.jda.context.CommandContext;
 import me.googas.commands.jda.result.Result;
 
+/**
+ * This represents a command which wasn't found in {@link CommandManager}.
+ */
 public class UnknownCommand extends JdaCommand {
 
   @NonNull private final String name;
 
+  /**
+   * Construct the command.
+   *
+   * @param manager the manager in which the command wasn't found
+   * @param name the name of the command that was being looked for
+   */
   public UnknownCommand(@NonNull CommandManager manager, @NonNull String name) {
     super(
         manager,

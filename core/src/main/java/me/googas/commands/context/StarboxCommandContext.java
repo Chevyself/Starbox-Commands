@@ -74,7 +74,7 @@ public interface StarboxCommandContext {
    * Get the joined strings from a certain position.
    *
    * @param position the position to get the string from
-   * @return an array of strings empty if none
+   * @return an array of strings, empty if none
    */
   @NonNull
   default String[] getStringsFrom(int position) {
@@ -114,9 +114,9 @@ public interface StarboxCommandContext {
   ProvidersRegistry<? extends StarboxCommandContext> getRegistry();
 
   /**
-   * Get the messages provider used in this context.
+   * Get the messages' provider used in this context.
    *
-   * @return the messages provider used in this context
+   * @return the messages' provider used in this context
    */
   @NonNull
   StarboxMessagesProvider<? extends StarboxCommandContext> getMessagesProvider();
