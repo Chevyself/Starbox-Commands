@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>me.googas.commands</groupId>
+    <artifactId>starbox-commands</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>system</artifactId>
+  <version>1.0.0</version>
 
   <dependencies>
     <dependency>
-      <artifactId>core</artifactId>
       <groupId>me.googas.commands</groupId>
-      <version>1.0.0</version>
+      <artifactId>core</artifactId>
+      <version>${core.version}</version>
     </dependency>
   </dependencies>
 
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>starbox-commands</artifactId>
-    <groupId>me.googas.commands</groupId>
-    <version>1.0.0</version>
-  </parent>
-
-  <version>1.0.0</version>
-
+  <properties>
+    <core.version>1.0.0</core.version>
+  </properties>
 </project>

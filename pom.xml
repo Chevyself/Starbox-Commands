@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>me.googas.commands</groupId>
   <artifactId>starbox-commands</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
 
   <build>
     <plugins>
-      <!-- Use Java 8 -->
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>8</source>
-          <target>8</target>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.8.1</version>
-      </plugin>
       <!-- Format to google -->
       <plugin>
+        <groupId>com.coveo</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
+        <version>${fmt-maven-plugin.version}</version>
         <executions>
           <execution>
             <goals>
@@ -26,12 +22,22 @@
             </goals>
           </execution>
         </executions>
-        <groupId>com.coveo</groupId>
-        <version>2.9</version>
+      </plugin>
+      <!-- Use Java 8 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
       </plugin>
       <!-- Javadoc  -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
         <executions>
           <execution>
             <goals>
@@ -40,30 +46,27 @@
             <phase>package</phase>
           </execution>
         </executions>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.2.0</version>
       </plugin>
     </plugins>
   </build>
+
   <dependencies>
-    <!-- Dependency to the Lombok annotations -->
-    <dependency>
-      <artifactId>lombok</artifactId>
-      <groupId>org.projectlombok</groupId>
-      <scope>compile</scope>
-      <version>1.18.16</version>
-    </dependency>
     <!-- JUnit for tests -->
     <dependency>
-      <artifactId>junit</artifactId>
       <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
       <scope>test</scope>
-      <version>4.13.1</version>
+    </dependency>
+    <!-- Dependency to the Lombok annotations -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <description>An easy to use command framework for Bukkit, Bungee or JDA (Discord)</description>
-  <groupId>me.googas.commands</groupId>
-  <modelVersion>4.0.0</modelVersion>
 
   <modules>
     <module>bukkit</module>
@@ -73,9 +76,12 @@
     <module>system</module>
   </modules>
 
-  <packaging>pom</packaging>
-
   <properties>
+    <fmt-maven-plugin.version>2.9</fmt-maven-plugin.version>
+    <junit.version>4.13.1</junit.version>
+    <lombok.version>1.18.24</lombok.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -86,7 +92,4 @@
       <url>https://jitpack.io</url>
     </repository>
   </repositories>
-
-  <version>1.0.0</version>
-
 </project>

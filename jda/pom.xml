@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>me.googas.commands</groupId>
+    <artifactId>starbox-commands</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>jda</artifactId>
+  <version>1.0.0</version>
 
   <dependencies>
     <dependency>
-      <artifactId>JDA</artifactId>
-      <groupId>net.dv8tion</groupId>
-      <version>5.0.0-alpha.12</version>
+      <groupId>me.googas.commands</groupId>
+      <artifactId>core</artifactId>
+      <version>${core.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
-      <artifactId>core</artifactId>
-      <groupId>me.googas.commands</groupId>
-      <scope>compile</scope>
-      <version>1.0.0</version>
+      <groupId>net.dv8tion</groupId>
+      <artifactId>JDA</artifactId>
+      <version>${JDA.version}</version>
     </dependency>
   </dependencies>
-  <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <artifactId>starbox-commands</artifactId>
-    <groupId>me.googas.commands</groupId>
-    <version>1.0.0</version>
-  </parent>
-
 
   <repositories>
     <repository>
@@ -39,6 +39,8 @@
     </repository>
   </repositories>
 
-  <version>1.0.0</version>
-
+  <properties>
+    <JDA.version>5.0.0-alpha.12</JDA.version>
+    <core.version>1.0.0</core.version>
+  </properties>
 </project>

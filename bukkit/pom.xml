@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>me.googas.commands</groupId>
+    <artifactId>starbox-commands</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>bukkit</artifactId>
+  <version>1.0.0</version>
 
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
+        <version>${maven-shade-plugin.version}</version>
         <executions>
           <execution>
             <configuration>
@@ -36,40 +46,31 @@
             <phase>package</phase>
           </execution>
         </executions>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.2.1</version>
       </plugin>
     </plugins>
   </build>
+
   <dependencies>
     <dependency>
-      <artifactId>spigot-api</artifactId>
-      <groupId>org.spigotmc</groupId>
-      <scope>provided</scope>
-      <version>1.18.1-R0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <artifactId>core</artifactId>
       <groupId>me.googas.commands</groupId>
-      <scope>compile</scope>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
       <artifactId>bungee</artifactId>
-      <groupId>me.googas.commands</groupId>
+      <version>${bungee.version}</version>
       <scope>compile</scope>
-      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>me.googas.commands</groupId>
+      <artifactId>core</artifactId>
+      <version>${core.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>${spigot-api.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <description>Bukkit utils and command framework</description>
-
-  <modelVersion>4.0.0</modelVersion>
-
-  <parent>
-    <artifactId>starbox-commands</artifactId>
-    <groupId>me.googas.commands</groupId>
-    <version>1.0.0</version>
-  </parent>
 
   <repositories>
     <repository>
@@ -78,6 +79,10 @@
     </repository>
   </repositories>
 
-  <version>1.0.0</version>
-
+  <properties>
+    <bungee.version>1.0.0</bungee.version>
+    <core.version>1.0.0</core.version>
+    <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+    <spigot-api.version>1.18.1-R0.1-SNAPSHOT</spigot-api.version>
+  </properties>
 </project>
