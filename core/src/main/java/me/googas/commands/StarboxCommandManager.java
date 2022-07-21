@@ -235,6 +235,7 @@ public interface StarboxCommandManager<
    * @param middlewares the array of global middlewares to add
    * @return this same instance
    */
+  @SuppressWarnings("unchecked")
   @NonNull
   default StarboxCommandManager<C, T> addGlobalMiddlewares(@NonNull Middleware<C>... middlewares) {
     for (Middleware<C> middleware : middlewares) {
@@ -249,6 +250,7 @@ public interface StarboxCommandManager<
    * @param middlewares the array of middlewares to add
    * @return this same instance
    */
+  @SuppressWarnings("unchecked")
   @NonNull
   default StarboxCommandManager<C, T> addMiddlewares(@NonNull Middleware<C>... middlewares) {
     for (Middleware<C> middleware : middlewares) {
