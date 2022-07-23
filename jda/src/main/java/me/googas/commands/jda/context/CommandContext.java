@@ -30,8 +30,6 @@ public interface CommandContext extends StarboxCommandContext {
    * Get the channel where the command was executed. This could be null when the command is executed
    * from console.
    *
-   * <p>TODO create ConsoleContext
-   *
    * @return the optional channel
    */
   @NonNull
@@ -40,8 +38,6 @@ public interface CommandContext extends StarboxCommandContext {
   /**
    * Get the message which ran the command. This could be null when the command is executed from
    * console.
-   *
-   * <p>TODO create ConsoleContext
    *
    * @return the optional message
    */

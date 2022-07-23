@@ -95,19 +95,12 @@ public class JdaMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    // TODO this already exists in JDA but its gotta be changed to this new one
     return "You are on cooldown! please wait " + timeLeft;
   }
 
   @Override
   public @NonNull String thumbnailUrl(CommandContext context) {
     return "";
-  }
-
-  @Override
-  @Deprecated
-  public @NonNull String cooldown(long timeLeft, CommandContext context) {
-    return "You are on cooldown! please wait " + timeLeft + "ms";
   }
 
   @Override

@@ -11,16 +11,12 @@ import me.googas.commands.result.StarboxResult;
  * This class represents a Command which may be executed by an user depending on the implementations
  * it may change.
  *
- * <p>// TODO add command types
- *
  * <p>This allows to have children commands which will be recognized using the first parameter of
  * the command as follows:
  *
  * <p>[prefix][parent] [children].
  *
  * <p>This is to give many outputs using a single command
- *
- * <p>// TODO examples
  *
  * @param <C> the context that is required to run the command
  * @param <T> the type of commands that are allowed as children commands
@@ -39,8 +35,6 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    * Check if the command can the command be recognized by the given alias. This is used because
    * commands have names and aliases, instead of asking for the name and aliases of the command just
    * check if the command has the alias
-   *
-   * <p>TODO example
    *
    * @param alias the alias to check
    * @return true if this command has the given alias

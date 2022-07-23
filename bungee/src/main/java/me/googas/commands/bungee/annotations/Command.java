@@ -38,7 +38,8 @@ public @interface Command {
   String permission() default "";
 
   /**
-   * TODO documentation.
+   * Whether the command should be executed async. To know more about Asynchronization check <a
+   * href="https://bukkit.fandom.com/wiki/Scheduler_Programming">Bukkit wiki</a>
    *
    * @return whether to execute the command async
    */

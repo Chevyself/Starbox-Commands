@@ -137,10 +137,8 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
   }
 
   /**
-   * Get the method to run a command. This is annotated with the respective @Command annotation and
+   * Get the method to run a command. This is annotated with the respective @Command annotation, and
    * it is required to call the command
-   *
-   * <p>// TODO add example
    *
    * @return the method to execute a command
    */
@@ -151,8 +149,6 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    * Get the instance of a class that contains a command. It is required to call the {@link
    * Method#invoke(Object, Object...)} because non static methods cannot be called without it,
    * static methods have no problem
-   *
-   * <p>// TODO add example
    *
    * @return the class instance of a command method
    */

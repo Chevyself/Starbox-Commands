@@ -13,9 +13,7 @@ import me.googas.commands.providers.registry.ProvidersRegistry;
 /**
  * This represents the object where {@link StarboxCommand} are registered and queried for execution.
  * The implementation for this variates from module to module. This contains the principal methods
- * which are intended for its use
- *
- * <p>// TODO example using one of the command managers implementations
+ * which are intended for its implementation
  *
  * @param <C> the type of command context that is used to run the commands
  * @param <T> the type of command that this instance manages
@@ -119,8 +117,6 @@ public interface StarboxCommandManager<
    * Parse the {@link ReflectCommand} from the provided object. This depends on each implementation
    * of the command manager.
    *
-   * <p>// TODO example from one of the implementations
-   *
    * @param object the object to get the commands from
    * @return the collection of parsed commands.
    */
@@ -130,8 +126,6 @@ public interface StarboxCommandManager<
   /**
    * Parse a reflective command using the method where it will be executed and the method instance
    * that must be used to execute the method.
-   *
-   * <p>// TODO add example using a module
    *
    * @param object the object instance required for the command execution
    * @param method the method used to execute the command

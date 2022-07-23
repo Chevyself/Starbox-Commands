@@ -79,16 +79,6 @@ public interface MessagesProvider extends StarboxMessagesProvider<CommandContext
   String thumbnailUrl(CommandContext context);
 
   /**
-   * Get the message sent when the user is still on cooldown.
-   *
-   * @param timeLeft the time left for the user in the getMillis
-   * @param context the context of the command
-   * @return the built string
-   */
-  @NonNull
-  String cooldown(long timeLeft, CommandContext context);
-
-  /**
    * The message sent when a string is not a valid user.
    *
    * @param string the string that is not valid
