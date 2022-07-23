@@ -10,7 +10,7 @@ import lombok.Setter;
 import me.googas.commands.bukkit.StarboxBukkitCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.utils.BukkitUtils;
-import me.googas.commands.bungee.utils.Components;
+import me.googas.commands.bukkit.utils.Components;
 import me.googas.commands.result.StarboxResult;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;

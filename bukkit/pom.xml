@@ -12,51 +12,7 @@
   <artifactId>bukkit</artifactId>
   <version>1.0.0</version>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>${maven-shade-plugin.version}</version>
-        <executions>
-          <execution>
-            <configuration>
-              <artifactSet>
-                <excludes>
-                  <exclude>META-INF/**</exclude>
-                </excludes>
-                <includes>
-                  <include>me.googas.commands:core</include>
-                  <include>me.googas.commands:bungee</include>
-                </includes>
-              </artifactSet>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <filters>
-                <filter>
-                  <artifact>me.googas.commands:bungee</artifact>
-                  <includes>
-                    <include>me/googas/commands/bungee/utils/**</include>
-                  </includes>
-                </filter>
-              </filters>
-            </configuration>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
-    <dependency>
-      <groupId>me.googas.commands</groupId>
-      <artifactId>bungee</artifactId>
-      <version>${bungee.version}</version>
-      <scope>compile</scope>
-    </dependency>
     <dependency>
       <groupId>me.googas.commands</groupId>
       <artifactId>core</artifactId>
