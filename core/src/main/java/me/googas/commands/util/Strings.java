@@ -329,14 +329,14 @@ public class Strings {
   }
 
   /**
-   * Groups an iteration of strings. Grouping means that it will check for quotation marks, the strings that
-   * are inside those will be grouped as their own. From an array as:
+   * Groups an iteration of strings. Grouping means that it will check for quotation marks, the
+   * strings that are inside those will be grouped as their own. From an array as:
    *
-   * ["Hi!", "\"How", "is", "it", "going?\"", "Good"]
+   * <p>["Hi!", "\"How", "is", "it", "going?\"", "Good"]
    *
-   * The groups will be:
+   * <p>The groups will be:
    *
-   * ["Hi!", "How is it going?", "Good"]
+   * <p>["Hi!", "How is it going?", "Good"]
    *
    * @param strings the strings to group
    * @return the list of grouped strings
