@@ -59,14 +59,16 @@ public class CommandListener extends Thread {
                       this.manager.getProvidersRegistry(),
                       this.manager.getMessagesProvider(),
                       parse.getFlags()));
-          result
-              .getMessage()
-              .ifPresent(
-                  message -> {
-                    if (!message.isEmpty()) {
-                      System.out.println(message);
-                    }
-                  });
+          if (result != null) {
+            result
+                .getMessage()
+                .ifPresent(
+                    message -> {
+                      if (!message.isEmpty()) {
+                        System.out.println(message);
+                      }
+                    });
+          }
         } else {
           System.out.println("Command " + name + " could not be found");
         }
