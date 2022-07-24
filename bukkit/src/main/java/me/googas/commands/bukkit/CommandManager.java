@@ -15,6 +15,9 @@ import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.BukkitMessagesProvider;
 import me.googas.commands.bukkit.messages.MessagesProvider;
+import me.googas.commands.bukkit.middleware.CooldownMiddleware;
+import me.googas.commands.bukkit.middleware.PermissionMiddleware;
+import me.googas.commands.bukkit.middleware.ResultHandlingMiddleware;
 import me.googas.commands.bukkit.result.BukkitResult;
 import me.googas.commands.bukkit.topic.PluginHelpTopic;
 import me.googas.commands.bukkit.topic.StarboxCommandHelpTopicFactory;
@@ -192,6 +195,26 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
         object,
         arguments,
         new ArrayList<>());
+  }
+
+  /**
+   * Adds the default middlewares.
+   *
+   * <p>The default middlewares are:
+   *
+   * <ul>
+   *   <li>{@link CooldownMiddleware}
+   *   <li>{@link PermissionMiddleware}
+   *   <li>{@link ResultHandlingMiddleware}
+   * </ul>
+   *
+   * @return this same instance
+   */
+  @NonNull
+  public CommandManager addDefaultMiddlewares() {
+    this.addGlobalMiddlewares(
+        new CooldownMiddleware(), new PermissionMiddleware(), new ResultHandlingMiddleware());
+    return this;
   }
 
   @NonNull
