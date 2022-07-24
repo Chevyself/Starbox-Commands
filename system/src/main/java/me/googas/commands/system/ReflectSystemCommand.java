@@ -76,17 +76,17 @@ public class ReflectSystemCommand
   }
 
   @Override
-  public Result execute(@NonNull CommandContext context) {
+  public SystemResult execute(@NonNull CommandContext context) {
     return SystemCommand.super.execute(context);
   }
 
   @Override
-  public Result run(@NonNull CommandContext context) {
+  public SystemResult run(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
     try {
       Object object = this.method.invoke(this.getObject(), this.getObjects(context));
-      if (object instanceof Result) {
-        return (Result) object;
+      if (object instanceof SystemResult) {
+        return (SystemResult) object;
       } else {
         return null;
       }

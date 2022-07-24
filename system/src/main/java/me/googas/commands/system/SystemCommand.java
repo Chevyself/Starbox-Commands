@@ -28,9 +28,9 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
    *
    * @param context the context to run the command
    * @return the result of the command execution if it has a message it will be printed
-   * @see Result
+   * @see SystemResult
    */
-  Result run(@NonNull CommandContext context);
+  SystemResult run(@NonNull CommandContext context);
 
   /**
    * Get how the {@link me.googas.commands.system.context.sender.CommandSender} may input the
@@ -44,7 +44,7 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
   String getUsage();
 
   @Override
-  default Result execute(@NonNull CommandContext context) {
+  default SystemResult execute(@NonNull CommandContext context) {
     @NonNull String[] strings = context.getStrings();
     if (strings.length >= 1) {
       Optional<SystemCommand> optionalCommand = this.getChildren(strings[0]);
@@ -71,11 +71,11 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
         .map(
             starboxResult -> {
               // Here maybe thrown an error because the wrong result was provided
-              return starboxResult instanceof Result ? (Result) starboxResult : null;
+              return starboxResult instanceof SystemResult ? (SystemResult) starboxResult : null;
             })
         .orElseGet(
             () -> {
-              Result run = this.run(context);
+              SystemResult run = this.run(context);
               this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
               return run;
             });

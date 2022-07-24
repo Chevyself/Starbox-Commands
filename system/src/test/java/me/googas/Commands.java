@@ -7,6 +7,7 @@ import me.googas.commands.arguments.ArgumentBehaviour;
 import me.googas.commands.flags.Flag;
 import me.googas.commands.system.Command;
 import me.googas.commands.system.Result;
+import me.googas.commands.system.SystemResult;
 import me.googas.commands.system.context.CommandContext;
 import me.googas.commands.time.annotations.TimeAmount;
 
@@ -16,7 +17,7 @@ public class Commands {
   @Command(
       aliases = "a",
       options = {@Flag(aliases = "message", value = "Hello world!")})
-  public Result a(
+  public SystemResult a(
       CommandContext context,
       @Required(name = "b", behaviour = ArgumentBehaviour.MULTIPLE) String b,
       @Required(name = "c", behaviour = ArgumentBehaviour.MULTIPLE) String c,
@@ -39,7 +40,7 @@ public class Commands {
   }
 
   @Command(aliases = "message")
-  public Result message(@Free @Multiple String message) {
+  public SystemResult message(@Free @Multiple String message) {
     return new Result(message == null || message.isEmpty() ? "No message was sent" : message);
   }
 
@@ -47,7 +48,7 @@ public class Commands {
       aliases = "hello",
       cooldown = @TimeAmount(value = "10s"),
       options = @Flag(aliases = "message", value = "World!"))
-  public Result hello(CommandContext context) {
+  public SystemResult hello(CommandContext context) {
     return new Result(context.getFlagValue("message").orElse("IDK :(")).setCooldown(true);
   }
 

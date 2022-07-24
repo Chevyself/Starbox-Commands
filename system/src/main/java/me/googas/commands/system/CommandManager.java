@@ -15,6 +15,8 @@ import me.googas.commands.arguments.Argument;
 import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.system.context.CommandContext;
+import me.googas.commands.system.middleware.CooldownMiddleware;
+import me.googas.commands.system.middleware.ResultHandlingMiddleware;
 import me.googas.commands.time.Time;
 
 /**
@@ -127,6 +129,24 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
         Argument.parseArguments(method),
         new ArrayList<>(),
         !time.isZero() ? new CooldownManager(time) : null);
+  }
+
+  /**
+   * Adds the default middlewares.
+   *
+   * <p>The default middlewares are:
+   *
+   * <ul>
+   *   <li>{@link CooldownMiddleware}
+   *   <li>{@link ResultHandlingMiddleware}
+   * </ul>
+   *
+   * @return this same instance
+   */
+  @NonNull
+  public CommandManager addDefaultMiddlewares() {
+    this.addGlobalMiddlewares(new CooldownMiddleware(), new ResultHandlingMiddleware());
+    return this;
   }
 
   @NonNull

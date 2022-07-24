@@ -13,7 +13,7 @@ import me.googas.commands.system.context.sender.ConsoleCommandSender;
  * This object is a {@link Thread} with a {@link Scanner} which waits for {@link System#in}. This
  * checks that the line starts with the prefix if it does then it will check that the name matches a
  * {@link SystemCommand} in {@link CommandManager#getCommand(String)} if it does it will execute the
- * command and the {@link Result} if it is not empty will be printed in the console
+ * command and the {@link SystemResult} if it is not empty will be printed in the console
  */
 public class CommandListener extends Thread {
 
@@ -49,7 +49,7 @@ public class CommandListener extends Thread {
           SystemCommand command = optionalCommand.get();
           FlagArgument.Parser parse =
               FlagArgument.parse(command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
-          Result result =
+          SystemResult result =
               command.execute(
                   new CommandContext(
                       command,
@@ -59,6 +59,7 @@ public class CommandListener extends Thread {
                       this.manager.getProvidersRegistry(),
                       this.manager.getMessagesProvider(),
                       parse.getFlags()));
+          /*
           if (result != null) {
             result
                 .getMessage()
@@ -68,7 +69,9 @@ public class CommandListener extends Thread {
                         System.out.println(message);
                       }
                     });
+
           }
+          */
         } else {
           System.out.println("Command " + name + " could not be found");
         }

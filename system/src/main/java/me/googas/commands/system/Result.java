@@ -3,22 +3,15 @@ package me.googas.commands.system;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
-import me.googas.commands.result.StarboxResult;
-import me.googas.commands.system.context.CommandContext;
 
 /**
- * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
- * me.googas.commands.system.SystemCommand}. This includes a single {@link String} which will be
- * printed for the sender.
+ * This is the implementation for {@link SystemResult}. This includes a single {@link String} which
+ * will be printed for the sender.
  *
- * <p>If the {@link Result} from {@link
- * me.googas.commands.system.SystemCommand#execute(CommandContext)} is null or empty no message will
- * be shown to the sender.
- *
- * <p>Exceptions will show a simple {@link Result} message and the stack trace will be printed.
+ * <p>Exceptions will show a simple {@link SystemResult} message and the stack trace will be
+ * printed.
  */
-public class Result implements StarboxResult {
-
+public class Result implements SystemResult {
   @NonNull private final String message;
   @Getter private boolean cooldown;
 
@@ -42,7 +35,7 @@ public class Result implements StarboxResult {
   }
 
   @Override
-  public @NonNull Result setCooldown(boolean apply) {
+  public @NonNull SystemResult setCooldown(boolean apply) {
     this.cooldown = apply;
     return this;
   }

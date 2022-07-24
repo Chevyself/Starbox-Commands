@@ -5,13 +5,14 @@ import lombok.NonNull;
 import me.googas.commands.result.StarboxResult;
 import me.googas.commands.system.CooldownManager;
 import me.googas.commands.system.Result;
+import me.googas.commands.system.SystemResult;
 import me.googas.commands.system.context.CommandContext;
 
 /** Middleware to apply cooldown to commands. */
 public class CooldownMiddleware implements SystemMiddleware {
 
   @Override
-  public @NonNull Optional<Result> next(@NonNull CommandContext context) {
+  public @NonNull Optional<SystemResult> next(@NonNull CommandContext context) {
     Optional<CooldownManager> optional = context.getCommand().getCooldownManager();
     return optional.map(
         cooldown -> {
