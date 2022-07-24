@@ -5,7 +5,7 @@ import lombok.NonNull;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
 
-/** It's a provider made for bukkit commands. */
+/** An extension for providers made for bukkit commands. */
 public interface BukkitArgumentProvider<O> extends StarboxArgumentProvider<O, CommandContext> {
 
   /**

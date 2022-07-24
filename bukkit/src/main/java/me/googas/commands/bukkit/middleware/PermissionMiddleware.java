@@ -6,7 +6,10 @@ import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.result.BukkitResult;
 import me.googas.commands.bukkit.result.Result;
 
-/** Permission middleware. This checks the permission of the sender before executing a command */
+/**
+ * This checks the permission of the sender before executing a command. Checked using {@link
+ * org.bukkit.command.CommandSender#hasPermission(String)}
+ */
 public class PermissionMiddleware implements BukkitMiddleware {
 
   @Override

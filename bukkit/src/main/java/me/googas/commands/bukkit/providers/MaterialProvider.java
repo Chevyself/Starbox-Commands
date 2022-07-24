@@ -3,22 +3,18 @@ package me.googas.commands.bukkit.providers;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.commands.bukkit.CommandManager;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.MessagesProvider;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import org.bukkit.Material;
 
-/** Provides commands with materials. */
+/** Provides the {@link CommandManager} with the object {@link Material}. */
 public class MaterialProvider implements BukkitArgumentProvider<Material> {
 
   @NonNull private final MessagesProvider messagesProvider;
 
-  /**
-   * Create an instance.
-   *
-   * @param messagesProvider the provider of the message in case the material is not found
-   */
   public MaterialProvider(@NonNull MessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }

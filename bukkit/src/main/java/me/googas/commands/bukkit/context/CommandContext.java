@@ -27,7 +27,7 @@ public class CommandContext implements StarboxCommandContext {
    * Create a Bukkit context.
    *
    * @param command the command for which this context was created
-   * @param sender the sender of the bukkit command
+   * @param sender the sender that executed the command
    * @param string the input strings joined
    * @param strings the strings from the command execution
    * @param registry the registry for the command context to use

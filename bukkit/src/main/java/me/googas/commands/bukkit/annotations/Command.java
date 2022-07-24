@@ -11,7 +11,7 @@ import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.flags.Flag;
 
 /**
- * This makes that when a {@link java.lang.reflect.Method}
+ * This marks a {@link java.lang.reflect.Method} as a {@link AnnotatedCommand}.
  *
  * <p>When you include this annotation into a {@link java.lang.reflect.Method} and invoke {@link
  * me.googas.commands.bukkit.CommandManager#parseCommands(Object)} it tells it that the {@link
@@ -25,7 +25,7 @@ import me.googas.commands.flags.Flag;
 public @interface Command {
 
   /**
-   * The aliases of the command.
+   * Get the aliases of the command.
    *
    * @return the aliases of the command
    * @see AnnotatedCommand#getAliases()
@@ -44,6 +44,7 @@ public @interface Command {
    * Get the permission node of the command.
    *
    * @return the permission node of the command
+   * @see me.googas.commands.bukkit.middleware.PermissionMiddleware
    */
   String permission() default "";
 

@@ -6,7 +6,7 @@ import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.providers.type.BukkitExtraArgumentProvider;
 import org.bukkit.command.CommandSender;
 
-/** Provides the {@link CommandManager} with the object of {@link CommandSender}. */
+/** Provides the {@link CommandManager} with the object {@link CommandSender}. */
 public class CommandSenderArgumentProvider implements BukkitExtraArgumentProvider<CommandSender> {
 
   @Override

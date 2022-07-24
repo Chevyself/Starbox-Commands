@@ -3,6 +3,7 @@ package me.googas.commands.bukkit.providers;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
+import me.googas.commands.bukkit.CommandManager;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.exceptions.ArgumentProviderException;
@@ -10,10 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-/**
- * Provides the command with an offline player. It queries the players that have played in the
- * server
- */
+/** Provides the {@link CommandManager} with the object {@link OfflinePlayer}. */
 public class OfflinePlayerProvider implements BukkitArgumentProvider<OfflinePlayer> {
 
   @Override

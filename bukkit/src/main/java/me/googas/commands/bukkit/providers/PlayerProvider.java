@@ -12,7 +12,7 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/** Provides the {@link CommandManager} with the object of {@link Player}. */
+/** Provides the {@link CommandManager} with the object {@link Player}. */
 public class PlayerProvider
     implements BukkitArgumentProvider<Player>, BukkitExtraArgumentProvider<Player> {
 
