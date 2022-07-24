@@ -9,7 +9,7 @@ import lombok.NonNull;
 import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.bukkit.context.CommandContext;
-import me.googas.commands.bukkit.result.Result;
+import me.googas.commands.bukkit.result.BukkitResult;
 import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.flags.Option;
@@ -112,9 +112,9 @@ public abstract class StarboxBukkitCommand extends Command
    * This method does the command execution after {@link #runCheckSync(CommandSender, String[])}
    * finishes checking whether to run async or not.
    *
-   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be sent to the
+   * <p>This calls {@link #execute(CommandContext)} and the {@link BukkitResult} will be sent to the
    * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(String)} and
-   * {@link Result} components
+   * {@link BukkitResult} components
    *
    * @param sender the executor of the command
    * @param args the arguments used in the command execution
@@ -130,7 +130,7 @@ public abstract class StarboxBukkitCommand extends Command
             this.manager.getProvidersRegistry(),
             this.manager.getMessagesProvider(),
             parse.getFlags());
-    Result result =
+    BukkitResult result =
         this.getMiddlewares().stream()
             .map(middleware -> middleware.next(context))
             .filter(Optional::isPresent)
@@ -139,11 +139,13 @@ public abstract class StarboxBukkitCommand extends Command
             .map(
                 starboxResult -> {
                   // Here maybe thrown an error because the wrong result was provided
-                  return starboxResult instanceof Result ? (Result) starboxResult : null;
+                  return starboxResult instanceof BukkitResult
+                      ? (BukkitResult) starboxResult
+                      : null;
                 })
             .orElseGet(
                 () -> {
-                  Result run = this.execute(context);
+                  BukkitResult run = this.execute(context);
                   this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
                   return run;
                 });
@@ -219,7 +221,7 @@ public abstract class StarboxBukkitCommand extends Command
   }
 
   @Override
-  public abstract Result execute(@NonNull CommandContext context);
+  public abstract BukkitResult execute(@NonNull CommandContext context);
 
   @Override
   public @NonNull Optional<CooldownManager> getCooldownManager() {

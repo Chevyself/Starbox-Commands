@@ -15,7 +15,7 @@ import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.messages.BukkitMessagesProvider;
 import me.googas.commands.bukkit.messages.MessagesProvider;
-import me.googas.commands.bukkit.result.Result;
+import me.googas.commands.bukkit.result.BukkitResult;
 import me.googas.commands.bukkit.topic.PluginHelpTopic;
 import me.googas.commands.bukkit.topic.StarboxCommandHelpTopicFactory;
 import me.googas.commands.bukkit.utils.BukkitUtils;
@@ -162,9 +162,9 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
 
   @Override
   public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
-    if (!Result.class.isAssignableFrom(method.getReturnType())
+    if (!BukkitResult.class.isAssignableFrom(method.getReturnType())
         && !method.getReturnType().equals(Void.TYPE)) {
-      throw new IllegalArgumentException(method + " must return void or " + Result.class);
+      throw new IllegalArgumentException(method + " must return void or " + BukkitResult.class);
     }
     if (!method.isAnnotationPresent(Command.class)) {
       throw new IllegalArgumentException(method + " is not annotated with " + Command.class);

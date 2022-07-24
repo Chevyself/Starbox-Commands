@@ -16,6 +16,7 @@ import me.googas.commands.bukkit.annotations.Command;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.providers.type.BukkitArgumentProvider;
 import me.googas.commands.bukkit.providers.type.BukkitMultiArgumentProvider;
+import me.googas.commands.bukkit.result.BukkitResult;
 import me.googas.commands.bukkit.result.Result;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
@@ -164,12 +165,12 @@ public class AnnotatedCommand extends StarboxBukkitCommand
   }
 
   @Override
-  public Result execute(@NonNull CommandContext context) {
+  public BukkitResult execute(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
     try {
       Object object = this.method.invoke(this.getObject(), this.getObjects(context));
-      if (object instanceof Result) {
-        return (Result) object;
+      if (object instanceof BukkitResult) {
+        return (BukkitResult) object;
       } else {
         return null;
       }
