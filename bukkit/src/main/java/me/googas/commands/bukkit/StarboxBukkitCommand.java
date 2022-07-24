@@ -10,7 +10,6 @@ import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.bukkit.context.CommandContext;
 import me.googas.commands.bukkit.result.BukkitResult;
-import me.googas.commands.bukkit.utils.BukkitUtils;
 import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.flags.Option;
 import org.bukkit.Bukkit;
@@ -149,9 +148,6 @@ public abstract class StarboxBukkitCommand extends Command
                   this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
                   return run;
                 });
-    if (result != null) {
-      BukkitUtils.send(sender, result.getComponents());
-    }
   }
 
   /**
