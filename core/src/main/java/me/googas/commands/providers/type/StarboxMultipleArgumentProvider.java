@@ -11,6 +11,7 @@ import me.googas.commands.exceptions.ArgumentProviderException;
  * @param <O> the type of object to provide
  * @param <T> the type of context that this requires to provide the object
  */
+@Deprecated
 public interface StarboxMultipleArgumentProvider<O, T extends StarboxCommandContext>
     extends StarboxContextualProvider<O, T> {
 

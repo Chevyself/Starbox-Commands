@@ -159,14 +159,14 @@ public class FlagArgument implements StarboxFlag {
               if (argument.contains(Parser.separator)) {
                 String[] split = argument.split(Parser.separator);
                 String flagValue = split.length < 2 ? "" : split[1];
-                if (flagValue.isEmpty() || (build && this.isStart(argument))) {
+                if (flagValue.isEmpty() || (build && this.isStart(flagValue))) {
                   toValue = option;
                   building = this.isStart(flagValue);
                   if (!flagValue.isEmpty()) {
                     valueBuilder.append(flagValue.substring(1)).append(" ");
                   }
                 } else {
-                  flags.add(new FlagArgument(option, flagValue));
+                  flags.add(new FlagArgument(option, Strings.removeQuotations(flagValue)));
                 }
               } else {
                 toValue = option;
@@ -216,7 +216,7 @@ public class FlagArgument implements StarboxFlag {
     }
 
     private boolean isStart(@NonNull String string) {
-      return string.startsWith("\"") && !string.endsWith("\"");
+      return string.startsWith("\"") && (string.length() > 1 || string.endsWith("\""));
     }
 
     @NonNull

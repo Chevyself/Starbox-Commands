@@ -2,11 +2,16 @@ package me.googas.commands.arguments;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
 import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.exceptions.ArgumentProviderException;
+import me.googas.commands.exceptions.MissingArgumentException;
+import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.objects.Mappable;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /**
  * This argument just like a {@link SingleArgument} but it has many places in a command which means
@@ -25,6 +30,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
   @NonNull @Getter private final String name;
   @NonNull @Getter private final String description;
   @NonNull private final List<String> suggestions;
+  @NonNull @Getter private final ArgumentBehaviour behaviour;
   @NonNull @Getter private final Class<O> clazz;
   @Getter private final boolean required;
   @Getter private final int position;
@@ -35,6 +41,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
    * @param name the name of the argument
    * @param description the description of the argument
    * @param suggestions the suggestions of the argument
+   * @param behaviour
    * @param clazz the class of the argument
    * @param required is the argument required by the command
    * @param position the position of the argument in the command
@@ -43,6 +50,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
       @NonNull String name,
       @NonNull String description,
       @NonNull List<String> suggestions,
+      @NonNull ArgumentBehaviour behaviour,
       @NonNull Class<O> clazz,
       boolean required,
       int position) {
@@ -50,6 +58,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
     this.description = description;
     this.suggestions = suggestions;
     this.clazz = clazz;
+    this.behaviour = behaviour;
     this.required = required;
     this.position = position;
   }
@@ -97,5 +106,41 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
   @Override
   public int hashCode() {
     return Objects.hash(name, description, suggestions, clazz, required, position);
+  }
+
+  @Override
+  public <T extends StarboxCommandContext> Object process(
+      @NonNull ProvidersRegistry<T> registry,
+      @NonNull StarboxMessagesProvider<T> messages,
+      @NonNull T context)
+      throws ArgumentProviderException, MissingArgumentException {
+    Object object;
+    Optional<String> optional = this.getStringArgument(context);
+    if (!optional.isPresent() && this.isRequired()) {
+      throw new MissingArgumentException(
+          messages.missingArgument(
+              this.getName(), this.getDescription(), this.getPosition(), context));
+    } else if (!optional.isPresent() && !this.isRequired()) {
+      object = null;
+    } else if (!optional.isPresent()) {
+      object = null;
+    } else {
+      object = registry.fromString(optional.get(), this.getClazz(), context);
+    }
+    return object;
+  }
+
+  @NonNull
+  private Optional<String> getStringArgument(@NonNull StarboxCommandContext context) {
+    String[] strings = context.getStrings();
+    String string = null;
+    if (strings.length - 1 < this.getPosition()) {
+      if (!this.isRequired() & this.getSuggestions(context).size() > 0) {
+        string = this.getSuggestions(context).get(0);
+      }
+    } else {
+      string = strings[this.getPosition()];
+    }
+    return Optional.ofNullable(string);
   }
 }

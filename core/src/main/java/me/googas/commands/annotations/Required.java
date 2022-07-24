@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
+import me.googas.commands.arguments.ArgumentBehaviour;
 import me.googas.commands.context.StarboxCommandContext;
 
 /**
@@ -48,4 +49,11 @@ public @interface Required {
    */
   @NonNull
   String[] suggestions() default {};
+
+  /**
+   * Returns the behaviour of the argument.
+   *
+   * @return the behaviour
+   */
+  ArgumentBehaviour behaviour() default ArgumentBehaviour.NORMAL;
 }

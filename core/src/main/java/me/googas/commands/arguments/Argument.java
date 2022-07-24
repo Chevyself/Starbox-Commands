@@ -11,7 +11,11 @@ import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Multiple;
 import me.googas.commands.annotations.Required;
 import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.CommandRegistrationException;
+import me.googas.commands.exceptions.MissingArgumentException;
+import me.googas.commands.messages.StarboxMessagesProvider;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /**
  * An argument can change the output of a command and this type is used for commands that are parsed
@@ -25,21 +29,16 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *       #isEmpty(Annotation[])} if this method returns true it will be considered as an {@link
  *       ExtraArgument}
  *   <li>{@link SingleArgument} this argument expects an user input unless it is annotated with
- *       {@link Free}. It has a place inside the command usage: [prefix][command] [argument]
- *       [argument] [argument]
- *   <li>{@link MultipleArgument} just like a {@link SingleArgument} but it has many places in a
- *       command which means that multiple inputs are allowed: [prefix][command] [argument 1]
- *       [argument 1] [argument 1] [argument 2] or [prefix][command] [argument 1] [argument 2]
- *       [argument 2] [argument 2] for easier understanding
- * </ul>
+ *       {@link Free}. It has a place inside the command usage: [prefix][command] [argument]...
+ *       <p>This kind of argument has three different behaviours
  *
- * <p>To know how arguments are parsed you can check {@link #parseArguments(Method)} or {@link
- * #parseArguments(Class[], Annotation[][])} and to know how a single argument is parsed see {@link
- * #parseArgument(Class, Annotation[], int)}
- *
- * <p>Here's an example:
- *
- * <pre>{@code
+ * @see ArgumentBehaviour
+ *     </ul>
+ *     <p>To know how arguments are parsed you can check {@link #parseArguments(Method)} or {@link
+ *     #parseArguments(Class[], Annotation[][])} and to know how a single argument is parsed see
+ *     {@link #parseArgument(Class, Annotation[], int)}
+ *     <p>Here's an example:
+ *     <pre>{@code
  *  public class ArgumentsSample {
  *
  *     public static void main(String[] args) throws NoSuchMethodException {
@@ -63,9 +62,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
  *     }
  * }
  * }</pre>
- *
- * <p>To know how to create usage messages check: {@link #generateUsage(List)}
- *
+ *     <p>To know how to create usage messages check: {@link #generateUsage(List)}
  * @param <O> the type of the class that the argument has to supply
  */
 public interface Argument<O> {
@@ -84,16 +81,14 @@ public interface Argument<O> {
   }
 
   /**
-   * Parse the list from an array of parameters and its annotations.
+   * Parse the list of arguments from an array of parameters and its annotations.
    *
    * <p>To parse each argument this will iterate through the parameter class and its annotations
    * checking that {@link #isEmpty(Annotation[])} if this method results true it will return an
    * {@link ExtraArgument} else it will use the method {@link #parseArgument(Class, Annotation[],
-   * int)} and the position will increase. If the argument resulting from this method is {@link
-   * MultipleArgument} the position will increase as much as {@link Multiple#min()} and {@link
-   * Multiple#max()} requires.
+   * int)} and the position will increase for each {@link SingleArgument}.
    *
-   * @param parameters the array of parameters to parse to this
+   * @param parameters the array of parameters
    * @param annotations the array of annotations for each parameter
    * @return the list of parsed items of this class
    */
@@ -110,11 +105,7 @@ public interface Argument<O> {
         SingleArgument<?> argument =
             Argument.parseArgument(parameters[i], annotations[i], position);
         arguments.add(i, argument);
-        if (argument instanceof MultipleArgument) {
-          position = ((MultipleArgument<?>) argument).getMinSize();
-        } else {
-          position++;
-        }
+        position++;
       }
     }
     return arguments;
@@ -126,18 +117,13 @@ public interface Argument<O> {
    * <p>This requires that the argument has any of the two annotations: {@link Required} or {@link
    * Free} if that is not the case then an exception will be thrown.
    *
-   * <p>The annotation {@link Multiple} is obtained using {@link #getMultiple(Annotation[])}
-   *
-   * <p>A simple iteration will be done in order to get any of the two annotations first then in
-   * {@link #getArgument(Class, int, Multiple, boolean, String, String, List)} the boolean
-   * represents whether the argument is required
+   * <p>A simple iteration will be done in order to get any of the two annotations
    *
    * @param parameter the class of the parameter
    * @param annotations the annotations of the parameter
    * @param position the position of the parameter given by the {@link #parseArguments(Class[],
    *     Annotation[][])}
-   * @return the final parsed argument it could be {@link SingleArgument} or {@link
-   *     MultipleArgument}
+   * @return the final parsed argument as a {@link SingleArgument}
    * @throws CommandRegistrationException if the parameter does not contain an annotation such as
    *     {@link Required} or {@link Free}
    */
@@ -147,17 +133,26 @@ public interface Argument<O> {
     Multiple multiple = Argument.getMultiple(annotations);
     for (Annotation annotation : annotations) {
       if (annotation instanceof Required) {
-        String name = ((Required) annotation).name();
-        String description = ((Required) annotation).description();
-        List<String> suggestions = Arrays.asList(((Required) annotation).suggestions());
+        Required required = (Required) annotation;
+        String name = required.name();
+        String description = required.description();
+        List<String> suggestions = Arrays.asList(required.suggestions());
         return Argument.getArgument(
-            parameter, position, multiple, true, name, description, suggestions);
+            parameter,
+            position,
+            multiple,
+            true,
+            name,
+            description,
+            suggestions,
+            required.behaviour());
       } else if (annotation instanceof Free) {
-        String name = ((Free) annotation).name();
-        String description = ((Free) annotation).description();
-        List<String> suggestions = Arrays.asList(((Free) annotation).suggestions());
+        Free free = (Free) annotation;
+        String name = free.name();
+        String description = free.description();
+        List<String> suggestions = Arrays.asList(free.suggestions());
         return Argument.getArgument(
-            parameter, position, multiple, false, name, description, suggestions);
+            parameter, position, multiple, false, name, description, suggestions, free.behaviour());
       }
     }
     throw new CommandRegistrationException(
@@ -171,7 +166,7 @@ public interface Argument<O> {
 
   /**
    * Checks if the annotations array does not contain either the {@link Required} or {@link Free}
-   * annotations. Loops around the array and check if it is either one.
+   * annotations. Loops the array and checks if it has either one.
    *
    * @param annotations the array of annotations to check
    * @return true if the array does not contain either of both annotations
@@ -190,6 +185,7 @@ public interface Argument<O> {
    *
    * @param annotations the array of annotations
    * @return the annotation if the array contains it else null
+   * @deprecated This annotation has been replaced by {@link ArgumentBehaviour#CONTINUOUS}
    */
   static Multiple getMultiple(@NonNull Annotation[] annotations) {
     for (Annotation annotation : annotations) {
@@ -202,21 +198,20 @@ public interface Argument<O> {
 
   /**
    * This gets the final instance of the argument. Called by {@link #parseArgument(Class,
-   * Annotation[], int)} basically this gives either {@link MultipleArgument} or {@link
-   * SingleArgument} it is check in the {@link #parseArgument(Class, Annotation[], int)} method if
-   * the parameter contains the annotation {@link Multiple}
+   * Annotation[], int)}
    *
    * @param parameter the class of the parameter
    * @param position the position of the argument
    * @param multiple the annotation required to get an {@link MultipleArgument} if it is null it
-   *     will be a {@link SingleArgument}
+   *     will be a {@link SingleArgument}. This annotation has been replaced by {@link
+   *     ArgumentBehaviour#CONTINUOUS}, remove this parameter in future versions
    * @param required whether the argument is required (if it has the annotation {@link Required} it
    *     is required)
    * @param name the name of the argument
    * @param description the description of the argument
    * @param suggestions the suggestions for the argument
-   * @return the argument instance if multiple is true it will be a {@link MultipleArgument} else
-   *     just a {@link SingleArgument}
+   * @param behaviour the behaviour of the argument
+   * @return the argument instance
    */
   @NonNull
   static SingleArgument<?> getArgument(
@@ -226,19 +221,21 @@ public interface Argument<O> {
       boolean required,
       @NonNull String name,
       @NonNull String description,
-      @NonNull List<String> suggestions) {
+      @NonNull List<String> suggestions,
+      @NonNull ArgumentBehaviour behaviour) {
     if (multiple != null) {
-      return new MultipleArgument<>(
+      return Argument.getArgument(
+          parameter,
+          position,
+          null,
+          required,
           name,
           description,
           suggestions,
-          parameter,
-          required,
-          position,
-          multiple.min(),
-          multiple.max());
+          ArgumentBehaviour.CONTINUOUS);
     } else {
-      return new SingleArgument<>(name, description, suggestions, parameter, required, position);
+      return new SingleArgument<>(
+          name, description, suggestions, behaviour, parameter, required, position);
     }
   }
 
@@ -332,7 +329,7 @@ public interface Argument<O> {
       @NonNull String string,
       @NonNull List<String> suggestions,
       int position) {
-    return Argument.parse(mappings, string, suggestions, false, position);
+    return Argument.parse(mappings, string, suggestions, ArgumentBehaviour.NORMAL, false, position);
   }
 
   /**
@@ -342,7 +339,9 @@ public interface Argument<O> {
    * @param string the string to parse
    * @param suggestions the suggestions that can be given to input the argument check {@link
    *     SingleArgument#getSuggestions(StarboxCommandContext)}
-   * @param multiple whether it is a multiple strings parameter
+   * @param behaviour the behaviour of the argument
+   * @param multiple whether it is a multiple strings parameter. This is deprecated and will be
+   *     removed in future versions
    * @param position the position in which the argument must be input
    * @return the parsed argument
    * @throws IllegalArgumentException if the {@link String} does not start and end with either
@@ -355,10 +354,20 @@ public interface Argument<O> {
       @NonNull Map<String, String> mappings,
       @NonNull String string,
       @NonNull List<String> suggestions,
+      @NonNull ArgumentBehaviour behaviour,
       boolean multiple,
       int position) {
     if (string.startsWith("@")) {
-      return Argument.parse(mappings, string.substring(1), suggestions, true, position);
+      return Argument.parse(
+          mappings,
+          string.substring(1),
+          suggestions,
+          ArgumentBehaviour.CONTINUOUS,
+          false,
+          position);
+    } else if (string.startsWith("*")) {
+      return Argument.parse(
+          mappings, string.substring(1), suggestions, ArgumentBehaviour.MULTIPLE, false, position);
     } else {
       boolean required;
       if (string.startsWith("<") && string.endsWith(">")) {
@@ -388,7 +397,8 @@ public interface Argument<O> {
           return new MultipleArgument<>(
               name, description, suggestions, clazz, required, position, 1, -1);
         } else {
-          return new SingleArgument<>(name, description, suggestions, clazz, required, position);
+          return new SingleArgument<>(
+              name, description, suggestions, behaviour, clazz, required, position);
         }
       } catch (ClassNotFoundException e) {
         throw new IllegalArgumentException(
@@ -429,4 +439,22 @@ public interface Argument<O> {
    */
   @NonNull
   Class<O> getClazz();
+
+  /**
+   * This has not been fully implemented it is still experimental.
+   *
+   * @param registry the registry to get the object of the argument
+   * @param messages the messages for the exceptions in case anything goes wrong
+   * @param context the context where the argument must be processed
+   * @return the processed object queried from this argument
+   * @param <T> the type of the context that is processing the argument
+   * @throws ArgumentProviderException if the object of the argument cannot be provided
+   * @throws MissingArgumentException if the argument is required and there's no input
+   */
+  @Deprecated
+  <T extends StarboxCommandContext> Object process(
+      @NonNull ProvidersRegistry<T> registry,
+      @NonNull StarboxMessagesProvider<T> messages,
+      @NonNull T context)
+      throws ArgumentProviderException, MissingArgumentException;
 }

@@ -211,6 +211,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
    */
   @SuppressWarnings("unchecked")
   @NonNull
+  @Deprecated
   public Object fromStrings(@NonNull String[] strings, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
     for (StarboxContextualProvider<?, T> provider : this.getProviders(clazz)) {
@@ -270,6 +271,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
    *     the object for some reason, see {@link StarboxMultipleArgumentProvider}
    */
   @NonNull
+  @Deprecated
   public <O> O get(@NonNull String[] strings, @NonNull Class<O> clazz, @NonNull T context)
       throws ArgumentProviderException {
     return clazz.cast(this.fromStrings(strings, clazz, context));

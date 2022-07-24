@@ -7,7 +7,6 @@ import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
 import me.googas.commands.arguments.ExtraArgument;
-import me.googas.commands.arguments.MultipleArgument;
 import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
@@ -16,6 +15,8 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
 import me.googas.commands.result.StarboxResult;
+import me.googas.commands.util.JoinedString;
+import me.googas.commands.util.Strings;
 
 /**
  * A reflection command is a command that is parsed using Java reflection. That's why this includes
@@ -55,9 +56,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
 
   /**
    * Get the objects that should be used in the parameters to invoke {@link #getMethod()}. For each
-   * {@link StarboxCommandContext#getStrings()} it will try to get one object, unless the argument
-   * in the position of the string is a {@link MultipleArgument}. Check the {@link #getRegistry()}
-   * to get which classes can be provided as an object.
+   * {@link StarboxCommandContext#getStrings()} it will try to get one object.
    *
    * @param context the context to get the parameters {@link StarboxCommandContext#getStrings()}
    * @return the objects to use as parameters in the {@link #getMethod()}
@@ -71,33 +70,38 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
   default Object[] getObjects(C context)
       throws MissingArgumentException, ArgumentProviderException {
     Object[] objects = new Object[this.getArguments().size()];
+    int lastIndex = 0;
     for (int i = 0; i < this.getArguments().size(); i++) {
       Argument<?> argument = this.getArguments().get(i);
       if (argument instanceof ExtraArgument<?>) {
         objects[i] = this.getRegistry().getObject(argument.getClazz(), context);
-      } else if (argument instanceof MultipleArgument<?>) {
-        String[] strings = context.getStringsFrom(((MultipleArgument<?>) argument).getPosition());
-        if (strings.length < ((MultipleArgument<?>) argument).getMinSize()
-            && ((MultipleArgument<?>) argument).isRequired()) {
-          throw new MissingArgumentException(
-              this.getMessagesProvider()
-                  .missingStrings(
-                      ((MultipleArgument<?>) argument).getName(),
-                      ((MultipleArgument<?>) argument).getDescription(),
-                      ((MultipleArgument<?>) argument).getPosition(),
-                      ((MultipleArgument<?>) argument).getMinSize(),
-                      ((MultipleArgument<?>) argument).getMinSize() - strings.length,
-                      context));
-        }
-        if (((MultipleArgument<?>) argument).getMaxSize() != -1
-            && ((MultipleArgument<?>) argument).getMaxSize() < strings.length) {
-          i = ((MultipleArgument<?>) argument).getMaxSize();
-        }
-        objects[i] = this.getRegistry().fromStrings(strings, argument.getClazz(), context);
       } else if (argument instanceof SingleArgument<?>) {
-        Optional<String> optional =
-            ReflectCommand.getArgument((SingleArgument<?>) argument, context);
-        if (!optional.isPresent() && ((SingleArgument<?>) argument).isRequired()) {
+        SingleArgument<?> singleArgument = (SingleArgument<?>) argument;
+        String[] strings = context.getStrings();
+        String string = null;
+        if (strings.length - 1 < singleArgument.getPosition() + lastIndex) {
+          if (!singleArgument.isRequired() & singleArgument.getSuggestions(context).size() > 0) {
+            string = singleArgument.getSuggestions(context).get(0);
+          }
+        } else {
+          switch (singleArgument.getBehaviour()) {
+            case CONTINUOUS:
+              string =
+                  Strings.join(context.getStringsFrom(singleArgument.getPosition() + lastIndex));
+              break;
+            case MULTIPLE:
+              JoinedString joined =
+                  Strings.group(context.getStringsFrom(singleArgument.getPosition() + lastIndex))
+                      .get(0);
+              string = joined.getString();
+              lastIndex += joined.getSize();
+              break;
+            case NORMAL:
+            default:
+              string = strings[singleArgument.getPosition() + lastIndex];
+          }
+        }
+        if (string == null && ((SingleArgument<?>) argument).isRequired()) {
           throw new MissingArgumentException(
               this.getMessagesProvider()
                   .missingArgument(
@@ -105,12 +109,12 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
                       ((SingleArgument<?>) argument).getDescription(),
                       ((SingleArgument<?>) argument).getPosition(),
                       context));
-        } else if (!optional.isPresent() && !((SingleArgument<?>) argument).isRequired()) {
+        } else if (string == null && !((SingleArgument<?>) argument).isRequired()) {
           objects[i] = null;
-        } else if (!optional.isPresent()) {
+        } else if (string == null) {
           objects[i] = null;
         } else {
-          objects[i] = this.getRegistry().fromString(optional.get(), argument.getClazz(), context);
+          objects[i] = this.getRegistry().fromString(string, argument.getClazz(), context);
         }
       }
     }
@@ -126,6 +130,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    */
   @NonNull
   default Optional<SingleArgument<?>> getArgument(int position) {
+
     SingleArgument<?> singleArgument = null;
     for (Argument<?> argument : this.getArguments()) {
       if (argument instanceof SingleArgument

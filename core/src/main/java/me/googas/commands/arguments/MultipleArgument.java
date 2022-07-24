@@ -5,6 +5,11 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.exceptions.ArgumentProviderException;
+import me.googas.commands.exceptions.MissingArgumentException;
+import me.googas.commands.messages.StarboxMessagesProvider;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /**
  * This argument is just like a {@link SingleArgument} but it has many places in a command which
@@ -18,6 +23,7 @@ import lombok.NonNull;
  *
  * @param <O> the type of the class that the argument has to supply
  */
+@Deprecated
 public class MultipleArgument<O> extends SingleArgument<O> {
 
   @Getter private final int minSize;
@@ -44,7 +50,7 @@ public class MultipleArgument<O> extends SingleArgument<O> {
       int position,
       int minSize,
       int maxSize) {
-    super(name, description, suggestions, clazz, required, position);
+    super(name, description, suggestions, ArgumentBehaviour.MULTIPLE, clazz, required, position);
     this.minSize = minSize;
     this.maxSize = maxSize;
   }
@@ -67,6 +73,26 @@ public class MultipleArgument<O> extends SingleArgument<O> {
     }
     MultipleArgument<?> that = (MultipleArgument<?>) o;
     return minSize == that.minSize && maxSize == that.maxSize;
+  }
+
+  @Override
+  public <T extends StarboxCommandContext> Object process(
+      @NonNull ProvidersRegistry<T> registry,
+      @NonNull StarboxMessagesProvider<T> messages,
+      @NonNull T context)
+      throws ArgumentProviderException, MissingArgumentException {
+    String[] strings = context.getStringsFrom(this.getPosition());
+    if (strings.length < this.getMinSize() && this.isRequired()) {
+      throw new MissingArgumentException(
+          messages.missingStrings(
+              this.getName(),
+              this.getDescription(),
+              this.getPosition(),
+              this.getMinSize(),
+              this.getMinSize() - strings.length,
+              context));
+    }
+    return registry.fromStrings(strings, this.getClazz(), context);
   }
 
   @Override

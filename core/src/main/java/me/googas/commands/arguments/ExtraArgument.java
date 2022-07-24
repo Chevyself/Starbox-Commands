@@ -5,6 +5,10 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.context.StarboxCommandContext;
+import me.googas.commands.exceptions.ArgumentProviderException;
+import me.googas.commands.messages.StarboxMessagesProvider;
+import me.googas.commands.providers.registry.ProvidersRegistry;
 
 /**
  * This argument is not exactly given by the user but by the context of the command execution, that
@@ -52,5 +56,14 @@ public class ExtraArgument<O> implements Argument<O> {
   @Override
   public int hashCode() {
     return Objects.hash(clazz);
+  }
+
+  @Override
+  public <T extends StarboxCommandContext> Object process(
+      @NonNull ProvidersRegistry<T> registry,
+      @NonNull StarboxMessagesProvider<T> messages,
+      @NonNull T context)
+      throws ArgumentProviderException {
+    return registry.getObject(this.getClazz(), context);
   }
 }

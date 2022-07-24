@@ -328,6 +328,80 @@ public class Strings {
     return new String(bytes, charset);
   }
 
+  /**
+   * Groups an iteration of strings. Grouping means that it will check for quotation marks, the strings that
+   * are inside those will be grouped as their own. From an array as:
+   *
+   * ["Hi!", "\"How", "is", "it", "going?\"", "Good"]
+   *
+   * The groups will be:
+   *
+   * ["Hi!", "How is it going?", "Good"]
+   *
+   * @param strings the strings to group
+   * @return the list of grouped strings
+   */
+  @NonNull
+  public static List<JoinedString> group(@NonNull Iterable<String> strings) {
+    List<JoinedString> group = new ArrayList<>();
+    boolean building = false;
+    StringBuilder builder = new StringBuilder();
+    int index = 0;
+    for (String string : strings) {
+      String toAppend = null;
+      if (!building && string.startsWith("\"") && (string.length() > 1 || string.endsWith("\""))) {
+        building = true;
+        builder.append(string).append(" ");
+      } else if (building && string.endsWith("\"")) {
+        building = false;
+        builder.append(string);
+        index++;
+        toAppend = builder.toString();
+        builder.setLength(0);
+      } else if (building) {
+        builder.append(string).append(" ");
+        index++;
+      } else {
+        toAppend = string;
+      }
+      if (toAppend != null) {
+        group.add(new JoinedString(Strings.removeQuotations(toAppend), index));
+        index = 0;
+      }
+    }
+    if (building) {
+      group.add(new JoinedString(builder.toString(), index));
+    }
+    return group;
+  }
+
+  /**
+   * Groups an array of strings.
+   *
+   * @see #group(Iterable)
+   * @param strings the strings to group
+   * @return the list of grouped strings
+   */
+  @NonNull
+  public static List<JoinedString> group(@NonNull String... strings) {
+    return Strings.group(Arrays.asList(strings));
+  }
+
+  /**
+   * Removes the starting and ending quotation marks from a string.
+   *
+   * <p>From: "Hello how are you" To: Hello how are you
+   *
+   * @param string the string to remove the quotation marks
+   * @return the string
+   */
+  @NonNull
+  public static String removeQuotations(@NonNull String string) {
+    return (string.length() > 1 && string.startsWith("\"") && string.endsWith("\""))
+        ? string.substring(1, string.length() - 1)
+        : string;
+  }
+
   private static int editDistance(String longer, String shorter) {
     longer = longer.toLowerCase();
     shorter = shorter.toLowerCase();
