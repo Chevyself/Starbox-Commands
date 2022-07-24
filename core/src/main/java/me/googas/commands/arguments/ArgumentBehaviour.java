@@ -35,7 +35,8 @@ public enum ArgumentBehaviour {
    * <p>Example: -numbers [number]... [another number] Usage: -numbers 1 2 3 4 5 6 7 8 9
    *
    * <ul>
-   *   number: 1 2 3 4 5 6 7 8 9 another number: 2
+   *   <li>number: 1 2 3 4 5 6 7 8 9
+   *   <li>another number: 2
    * </ul>
    *
    * This can be more useful at the end of the command
