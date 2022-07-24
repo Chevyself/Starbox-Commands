@@ -13,29 +13,36 @@ import org.bukkit.plugin.Plugin;
 /** The default {@link MessagesProvider} for Bukkit. */
 public class BukkitMessagesProvider implements MessagesProvider {
 
+  @NonNull public static final String ERROR_PREFIX = "&e&o\u26A0 &r";
+
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid long", string);
+    return Strings.format(
+        BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not a valid long", string);
   }
 
   @Override
   public @NonNull String invalidInteger(@NonNull String string, @NonNull CommandContext context) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid integer", string);
+    return Strings.format(
+        BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not a valid integer", string);
   }
 
   @Override
   public @NonNull String invalidDouble(@NonNull String string, @NonNull CommandContext context) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid double", string);
+    return Strings.format(
+        BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not a valid double", string);
   }
 
   @Override
   public @NonNull String invalidBoolean(@NonNull String string, @NonNull CommandContext context) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid boolean", string);
+    return Strings.format(
+        BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not a valid boolean", string);
   }
 
   @Override
   public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", string);
+    return Strings.format(
+        BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not valid time", string);
   }
 
   @Override
@@ -44,7 +51,8 @@ public class BukkitMessagesProvider implements MessagesProvider {
       @NonNull String description,
       int position,
       @NonNull CommandContext context) {
-    return "&e&o\u26A0 &c&oYou are missing the argument &4&o"
+    return BukkitMessagesProvider.ERROR_PREFIX
+        + "&c&oYou are missing the argument &4&o"
         + name
         + "&c&o at position &4&o"
         + position
@@ -60,7 +68,8 @@ public class BukkitMessagesProvider implements MessagesProvider {
       int minSize,
       int missing,
       @NonNull CommandContext context) {
-    return "&e&o\u26A0 &c&oYou are missing at least &4&o"
+    return BukkitMessagesProvider.ERROR_PREFIX
+        + "&c&oYou are missing at least &4&o"
         + missing
         + "&c&o strings of the argument &4&o"
         + name
@@ -70,25 +79,28 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    return "&e&o\u26A0 &c&oYou will be allowed to run this command in &4&o" + timeLeft;
+    return BukkitMessagesProvider.ERROR_PREFIX
+        + "&c&oYou will be allowed to run this command in &4&o"
+        + timeLeft;
   }
 
   @NonNull
   @Override
   public String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid player", string);
+    return Strings.format(
+        BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not a valid player", string);
   }
 
   @NonNull
   @Override
   public String playersOnly(@NonNull CommandContext context) {
-    return "&e&o\u26A0 &c&oConsole cannot use this command";
+    return BukkitMessagesProvider.ERROR_PREFIX + "&c&oConsole cannot use this command";
   }
 
   @NonNull
   @Override
   public String notAllowed(@NonNull CommandContext context) {
-    return "&e&o\u26A0 &c&oYou are not allowed to use this command";
+    return BukkitMessagesProvider.ERROR_PREFIX + "&c&oYou are not allowed to use this command";
   }
 
   @Override
@@ -153,11 +165,12 @@ public class BukkitMessagesProvider implements MessagesProvider {
 
   @Override
   public @NonNull String invalidMaterialEmpty(@NonNull CommandContext context) {
-    return "&e&o\u26A0 &c&oMaterial cannot be empty";
+    return BukkitMessagesProvider.ERROR_PREFIX + "&c&oMaterial cannot be empty";
   }
 
   @Override
   public @NonNull String invalidMaterial(@NonNull String string, @NonNull CommandContext context) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not a valid material", string);
+    return Strings.format(
+        BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not a valid material", string);
   }
 }
