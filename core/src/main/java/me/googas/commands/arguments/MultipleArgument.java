@@ -10,6 +10,7 @@ import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.util.Pair;
 
 /**
  * This argument is just like a {@link SingleArgument} but it has many places in a command which
@@ -76,10 +77,11 @@ public class MultipleArgument<O> extends SingleArgument<O> {
   }
 
   @Override
-  public <T extends StarboxCommandContext> Object process(
+  public <T extends StarboxCommandContext> Pair<Object, Integer> process(
       @NonNull ProvidersRegistry<T> registry,
       @NonNull StarboxMessagesProvider<T> messages,
-      @NonNull T context)
+      @NonNull T context,
+      int lastIndex)
       throws ArgumentProviderException, MissingArgumentException {
     String[] strings = context.getStringsFrom(this.getPosition());
     if (strings.length < this.getMinSize() && this.isRequired()) {
@@ -92,7 +94,7 @@ public class MultipleArgument<O> extends SingleArgument<O> {
               this.getMinSize() - strings.length,
               context));
     }
-    return registry.fromStrings(strings, this.getClazz(), context);
+    return new Pair<>(registry.fromStrings(strings, this.getClazz(), context), 0);
   }
 
   @Override

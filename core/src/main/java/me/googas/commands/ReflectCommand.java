@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.arguments.Argument;
-import me.googas.commands.arguments.ExtraArgument;
 import me.googas.commands.arguments.SingleArgument;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
@@ -15,8 +14,7 @@ import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxArgumentProvider;
 import me.googas.commands.result.StarboxResult;
-import me.googas.commands.util.JoinedString;
-import me.googas.commands.util.Strings;
+import me.googas.commands.util.Pair;
 
 /**
  * A reflection command is a command that is parsed using Java reflection. That's why this includes
@@ -32,26 +30,25 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    * Get the string that will be used to get the object to pass to the command method as a parameter
    * (Check {@link StarboxArgumentProvider}).
    *
-   * @param argument the argument requested in the position
+   * @param argument the argument that requires the object
    * @param context the context of the command execution
-   * @return a {@link Optional} instance wrapping the nullable argument. It will try to get the
-   *     string in the argument position. If the string in the context is null and the argument is
-   *     not required, and it does not have any suggestions it will return null else it will return
-   *     the first suggestion. If the string in the context is not null then it will return that one
+   * @param lastIndex where do arguments originate
+   * @return the obtained string and the amount to increase the last index
    */
   @NonNull
-  static Optional<String> getArgument(
-      @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext context) {
+  static Pair<String, Integer> getArgument(
+      @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext context, int lastIndex) {
     String[] strings = context.getStrings();
     String string = null;
-    if (strings.length - 1 < argument.getPosition()) {
+    int increase = 0;
+    if (strings.length - 1 < argument.getPosition() + lastIndex) {
       if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
         string = argument.getSuggestions(context).get(0);
       }
     } else {
-      string = strings[argument.getPosition()];
+      return argument.getBehaviour().getStringProcessor().getString(argument, context, lastIndex);
     }
-    return Optional.ofNullable(string);
+    return new Pair<>(string, increase);
   }
 
   /**
@@ -72,51 +69,12 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
     Object[] objects = new Object[this.getArguments().size()];
     int lastIndex = 0;
     for (int i = 0; i < this.getArguments().size(); i++) {
-      Argument<?> argument = this.getArguments().get(i);
-      if (argument instanceof ExtraArgument<?>) {
-        objects[i] = this.getRegistry().getObject(argument.getClazz(), context);
-      } else if (argument instanceof SingleArgument<?>) {
-        SingleArgument<?> singleArgument = (SingleArgument<?>) argument;
-        String[] strings = context.getStrings();
-        String string = null;
-        if (strings.length - 1 < singleArgument.getPosition() + lastIndex) {
-          if (!singleArgument.isRequired() & singleArgument.getSuggestions(context).size() > 0) {
-            string = singleArgument.getSuggestions(context).get(0);
-          }
-        } else {
-          switch (singleArgument.getBehaviour()) {
-            case CONTINUOUS:
-              string =
-                  Strings.join(context.getStringsFrom(singleArgument.getPosition() + lastIndex));
-              break;
-            case MULTIPLE:
-              JoinedString joined =
-                  Strings.group(context.getStringsFrom(singleArgument.getPosition() + lastIndex))
-                      .get(0);
-              string = joined.getString();
-              lastIndex += joined.getSize();
-              break;
-            case NORMAL:
-            default:
-              string = strings[singleArgument.getPosition() + lastIndex];
-          }
-        }
-        if (string == null && ((SingleArgument<?>) argument).isRequired()) {
-          throw new MissingArgumentException(
-              this.getMessagesProvider()
-                  .missingArgument(
-                      ((SingleArgument<?>) argument).getName(),
-                      ((SingleArgument<?>) argument).getDescription(),
-                      ((SingleArgument<?>) argument).getPosition(),
-                      context));
-        } else if (string == null && !((SingleArgument<?>) argument).isRequired()) {
-          objects[i] = null;
-        } else if (string == null) {
-          objects[i] = null;
-        } else {
-          objects[i] = this.getRegistry().fromString(string, argument.getClazz(), context);
-        }
-      }
+      Pair<Object, Integer> pair =
+          this.getArguments()
+              .get(i)
+              .process(this.getRegistry(), this.getMessagesProvider(), context, lastIndex);
+      objects[i] = pair.getA();
+      lastIndex += pair.getB();
     }
     return objects;
   }
@@ -130,7 +88,6 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    */
   @NonNull
   default Optional<SingleArgument<?>> getArgument(int position) {
-
     SingleArgument<?> singleArgument = null;
     for (Argument<?> argument : this.getArguments()) {
       if (argument instanceof SingleArgument

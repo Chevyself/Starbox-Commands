@@ -9,6 +9,7 @@ import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.util.Pair;
 
 /**
  * This argument is not exactly given by the user but by the context of the command execution, that
@@ -59,11 +60,12 @@ public class ExtraArgument<O> implements Argument<O> {
   }
 
   @Override
-  public <T extends StarboxCommandContext> Object process(
+  public <T extends StarboxCommandContext> Pair<Object, Integer> process(
       @NonNull ProvidersRegistry<T> registry,
       @NonNull StarboxMessagesProvider<T> messages,
-      @NonNull T context)
+      @NonNull T context,
+      int lastIndex)
       throws ArgumentProviderException {
-    return registry.getObject(this.getClazz(), context);
+    return new Pair<>(registry.getObject(this.getClazz(), context), 0);
   }
 }

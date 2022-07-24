@@ -16,6 +16,7 @@ import me.googas.commands.exceptions.CommandRegistrationException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.util.Pair;
 
 /**
  * An argument can change the output of a command and this type is used for commands that are parsed
@@ -441,20 +442,21 @@ public interface Argument<O> {
   Class<O> getClazz();
 
   /**
-   * This has not been fully implemented it is still experimental.
+   * Process the object that must be returned by this argument in the command execution.
    *
+   * @param <T> the type of the context that is processing the argument
    * @param registry the registry to get the object of the argument
    * @param messages the messages for the exceptions in case anything goes wrong
    * @param context the context where the argument must be processed
+   * @param lastIndex the last index of the command execution
    * @return the processed object queried from this argument
-   * @param <T> the type of the context that is processing the argument
    * @throws ArgumentProviderException if the object of the argument cannot be provided
    * @throws MissingArgumentException if the argument is required and there's no input
    */
-  @Deprecated
-  <T extends StarboxCommandContext> Object process(
+  <T extends StarboxCommandContext> Pair<Object, Integer> process(
       @NonNull ProvidersRegistry<T> registry,
       @NonNull StarboxMessagesProvider<T> messages,
-      @NonNull T context)
+      @NonNull T context,
+      int lastIndex)
       throws ArgumentProviderException, MissingArgumentException;
 }

@@ -6,12 +6,14 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
+import me.googas.commands.ReflectCommand;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
 import me.googas.commands.exceptions.MissingArgumentException;
 import me.googas.commands.messages.StarboxMessagesProvider;
 import me.googas.commands.objects.Mappable;
 import me.googas.commands.providers.registry.ProvidersRegistry;
+import me.googas.commands.util.Pair;
 
 /**
  * This argument just like a {@link SingleArgument} but it has many places in a command which means
@@ -41,7 +43,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
    * @param name the name of the argument
    * @param description the description of the argument
    * @param suggestions the suggestions of the argument
-   * @param behaviour
+   * @param behaviour the behaviour of the argument
    * @param clazz the class of the argument
    * @param required is the argument required by the command
    * @param position the position of the argument in the command
@@ -109,25 +111,27 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
   }
 
   @Override
-  public <T extends StarboxCommandContext> Object process(
+  public <T extends StarboxCommandContext> Pair<Object, Integer> process(
       @NonNull ProvidersRegistry<T> registry,
       @NonNull StarboxMessagesProvider<T> messages,
-      @NonNull T context)
+      @NonNull T context,
+      int lastIndex)
       throws ArgumentProviderException, MissingArgumentException {
     Object object;
-    Optional<String> optional = this.getStringArgument(context);
-    if (!optional.isPresent() && this.isRequired()) {
-      throw new MissingArgumentException(
-          messages.missingArgument(
-              this.getName(), this.getDescription(), this.getPosition(), context));
-    } else if (!optional.isPresent() && !this.isRequired()) {
-      object = null;
-    } else if (!optional.isPresent()) {
-      object = null;
+    Pair<String, Integer> argumentString = ReflectCommand.getArgument(this, context, lastIndex);
+    String string = argumentString.getA();
+    if (string == null) {
+      if (this.isRequired()) {
+        throw new MissingArgumentException(
+            messages.missingArgument(
+                this.getName(), this.getDescription(), this.getPosition(), context));
+      } else {
+        object = null;
+      }
     } else {
-      object = registry.fromString(optional.get(), this.getClazz(), context);
+      object = registry.fromString(string, this.getClazz(), context);
     }
-    return object;
+    return new Pair<>(object, argumentString.getB());
   }
 
   @NonNull
