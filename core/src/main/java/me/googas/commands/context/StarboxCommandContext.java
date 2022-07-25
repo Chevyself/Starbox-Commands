@@ -67,7 +67,7 @@ public interface StarboxCommandContext {
    * @return true if the command was executed with the given alias
    */
   default boolean hasFlag(@NonNull String alias) {
-    return this.getFlag(alias).isPresent();
+    return this.getFlags().stream().anyMatch(flag -> flag.hasAlias(alias));
   }
 
   /**

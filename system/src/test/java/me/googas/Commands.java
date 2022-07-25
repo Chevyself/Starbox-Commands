@@ -1,5 +1,6 @@
 package me.googas;
 
+import java.util.Locale;
 import me.googas.commands.annotations.Free;
 import me.googas.commands.annotations.Multiple;
 import me.googas.commands.annotations.Required;
@@ -39,9 +40,20 @@ public class Commands {
             + extra);
   }
 
-  @Command(aliases = "message")
-  public SystemResult message(@Free @Multiple String message) {
-    return new Result(message == null || message.isEmpty() ? "No message was sent" : message);
+  @Command(
+      aliases = "message",
+      options = {
+        @Flag(
+            aliases = {
+              "capitalize",
+              "c",
+            },
+            value = "false",
+            valuable = false)
+      })
+  public SystemResult message(CommandContext context, @Free @Multiple String message) {
+    String string = message == null || message.isEmpty() ? "No message was sent" : message;
+    return new Result(context.hasFlag("capitalize") ? string.toUpperCase(Locale.ROOT) : string);
   }
 
   @Command(
