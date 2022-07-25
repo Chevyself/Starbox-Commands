@@ -9,7 +9,7 @@ import lombok.NonNull;
 import me.googas.commands.Middleware;
 import me.googas.commands.StarboxCommand;
 import me.googas.commands.bungee.context.CommandContext;
-import me.googas.commands.bungee.result.Result;
+import me.googas.commands.bungee.result.BungeeResult;
 import me.googas.commands.flags.FlagArgument;
 import me.googas.commands.flags.Option;
 import me.googas.commands.util.Strings;
@@ -137,9 +137,9 @@ public abstract class BungeeCommand extends Command
    * This method does the command execution after {@link #runCheckSync(CommandSender, String[])}
    * finishes checking whether to run async or not.
    *
-   * <p>This calls {@link #execute(CommandContext)} and the {@link Result} will be sent to the
+   * <p>This calls {@link #execute(CommandContext)} and the {@link BungeeResult} will be sent to the
    * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(BaseComponent)}
-   * and {@link Result} components
+   * and {@link BungeeResult} components
    *
    * @param sender the executor of the command
    * @param args the arguments used in the command execution
@@ -155,7 +155,7 @@ public abstract class BungeeCommand extends Command
             this.manager.getProvidersRegistry(),
             this.manager.getMessagesProvider(),
             parse.getFlags());
-    Result result =
+    BungeeResult result =
         this.getMiddlewares().stream()
             .map(middleware -> middleware.next(context))
             .filter(Optional::isPresent)
@@ -164,11 +164,13 @@ public abstract class BungeeCommand extends Command
             .map(
                 starboxResult -> {
                   // Here maybe thrown an error because the wrong result was provided
-                  return starboxResult instanceof Result ? (Result) starboxResult : null;
+                  return starboxResult instanceof BungeeResult
+                      ? (BungeeResult) starboxResult
+                      : null;
                 })
             .orElseGet(
                 () -> {
-                  Result run = this.execute(context);
+                  BungeeResult run = this.execute(context);
                   this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
                   return run;
                 });
@@ -204,7 +206,7 @@ public abstract class BungeeCommand extends Command
   }
 
   @Override
-  public abstract Result execute(@NonNull CommandContext context);
+  public abstract BungeeResult execute(@NonNull CommandContext context);
 
   @Override
   public boolean hasAlias(@NonNull String alias) {

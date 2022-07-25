@@ -15,7 +15,7 @@ import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.BungeeMessagesProvider;
 import me.googas.commands.bungee.messages.MessagesProvider;
-import me.googas.commands.bungee.result.Result;
+import me.googas.commands.bungee.result.BungeeResult;
 import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
 import me.googas.commands.providers.type.StarboxContextualProvider;
@@ -111,9 +111,9 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
 
   @Override
   public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
-    if (!Result.class.isAssignableFrom(method.getReturnType())
+    if (!BungeeResult.class.isAssignableFrom(method.getReturnType())
         && !method.getReturnType().equals(Void.TYPE)) {
-      throw new IllegalArgumentException(method + " must return void or " + Result.class);
+      throw new IllegalArgumentException(method + " must return void or " + BungeeResult.class);
     }
     Command command = method.getAnnotation(Command.class);
     List<Argument<?>> arguments = Argument.parseArguments(method);

@@ -9,27 +9,25 @@ import lombok.NonNull;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.utils.BungeeUtils;
 import me.googas.commands.bungee.utils.Components;
-import me.googas.commands.result.StarboxResult;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
- * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
- * me.googas.commands.bungee.BungeeCommand}. This includes a {@link List} of {@link BaseComponent}
- * which will be sent to the {@link net.md_5.bungee.api.CommandSender} upon the command execution.
+ * This is the implementation for {@link BungeeResult}.
  *
- * <p>If the {@link Result} from {@link
+ * <p>This includes a {@link List} of {@link BaseComponent} which will be sent to the {@link
+ * net.md_5.bungee.api.CommandSender} upon the command execution.
+ *
+ * <p>If the {@link BungeeResult} from {@link
  * me.googas.commands.bungee.BungeeCommand#execute(CommandContext)} is null or empty no message will
  * be shown to the sender.
- *
- * <p>Exceptions will show a simple {@link Result} message and the stack trace will be printed.
  *
  * <p>To parse {@link BaseComponent} from a String use {@link Components#getComponent(String)} to
  * know how to create a {@link BaseComponent} check <a
  * href="https://minecraft.tools/en/tellraw.php">minecraft-tools</a> or the <a
  * href="https://ci.md-5.net/job/BungeeCord/ws/chat/target/apidocs/overview-summary.html">bungee-api-chat</a>.
  */
-public class Result implements StarboxResult {
+public class Result implements BungeeResult {
 
   /** The components that will be sent after the execution. */
   @NonNull @Getter private final List<BaseComponent> components = new ArrayList<>();

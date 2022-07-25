@@ -4,6 +4,7 @@ import java.util.Optional;
 import lombok.NonNull;
 import me.googas.commands.bungee.CooldownManager;
 import me.googas.commands.bungee.context.CommandContext;
+import me.googas.commands.bungee.result.BungeeResult;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.result.StarboxResult;
 
@@ -11,7 +12,7 @@ import me.googas.commands.result.StarboxResult;
 public class CooldownMiddleware implements BungeeMiddleware {
 
   @Override
-  public @NonNull Optional<Result> next(@NonNull CommandContext context) {
+  public @NonNull Optional<BungeeResult> next(@NonNull CommandContext context) {
     Optional<CooldownManager> optional = context.getCommand().getCooldownManager();
     return optional.map(
         cooldown -> {

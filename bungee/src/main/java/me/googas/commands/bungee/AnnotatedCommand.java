@@ -17,6 +17,7 @@ import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.MessagesProvider;
 import me.googas.commands.bungee.providers.type.BungeeArgumentProvider;
 import me.googas.commands.bungee.providers.type.BungeeMultiArgumentProvider;
+import me.googas.commands.bungee.result.BungeeResult;
 import me.googas.commands.bungee.result.Result;
 import me.googas.commands.context.StarboxCommandContext;
 import me.googas.commands.exceptions.ArgumentProviderException;
@@ -141,7 +142,7 @@ public class AnnotatedCommand extends BungeeCommand
   }
 
   @Override
-  public Result execute(@NonNull CommandContext context) {
+  public BungeeResult execute(@NonNull CommandContext context) {
     CommandSender sender = context.getSender();
     final String permission = this.getPermission();
     if (permission != null && !permission.isEmpty()) {
@@ -151,8 +152,8 @@ public class AnnotatedCommand extends BungeeCommand
     }
     try {
       Object invoke = this.method.invoke(this.object, this.getObjects(context));
-      if (invoke instanceof Result) {
-        return (Result) invoke;
+      if (invoke instanceof BungeeResult) {
+        return (BungeeResult) invoke;
       }
       return null;
     } catch (final IllegalAccessException e) {
