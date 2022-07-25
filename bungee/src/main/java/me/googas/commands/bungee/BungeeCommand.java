@@ -174,9 +174,6 @@ public abstract class BungeeCommand extends Command
                   this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
                   return run;
                 });
-    if (result != null && !result.getComponents().isEmpty()) {
-      sender.sendMessage(result.getComponents().toArray(new BaseComponent[0]));
-    }
   }
 
   /**

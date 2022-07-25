@@ -15,6 +15,9 @@ import me.googas.commands.bungee.annotations.Command;
 import me.googas.commands.bungee.context.CommandContext;
 import me.googas.commands.bungee.messages.BungeeMessagesProvider;
 import me.googas.commands.bungee.messages.MessagesProvider;
+import me.googas.commands.bungee.middleware.CooldownMiddleware;
+import me.googas.commands.bungee.middleware.PermissionMiddleware;
+import me.googas.commands.bungee.middleware.ResultHandlingMiddleware;
 import me.googas.commands.bungee.result.BungeeResult;
 import me.googas.commands.flags.Option;
 import me.googas.commands.providers.registry.ProvidersRegistry;
@@ -107,6 +110,26 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
       }
     }
     return commands;
+  }
+
+  /**
+   * Adds the default middlewares.
+   *
+   * <p>The default middlewares are:
+   *
+   * <ul>
+   *   <li>{@link CooldownMiddleware}
+   *   <li>{@link PermissionMiddleware}
+   *   <li>{@link ResultHandlingMiddleware}
+   * </ul>
+   *
+   * @return this same instance
+   */
+  @NonNull
+  public CommandManager addDefaultMiddlewares() {
+    this.addGlobalMiddlewares(
+        new CooldownMiddleware(), new PermissionMiddleware(), new ResultHandlingMiddleware());
+    return this;
   }
 
   @Override
