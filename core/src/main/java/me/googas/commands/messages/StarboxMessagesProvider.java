@@ -91,6 +91,7 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
    * @see MultipleArgument
    */
   @NonNull
+  @Deprecated
   String missingStrings(
       @NonNull String name,
       @NonNull String description,
