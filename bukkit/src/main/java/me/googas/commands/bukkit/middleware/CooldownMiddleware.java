@@ -13,8 +13,7 @@ public class CooldownMiddleware implements BukkitMiddleware {
 
   @Override
   public @NonNull Optional<BukkitResult> next(@NonNull CommandContext context) {
-    Optional<CooldownManager> optional = context.getCommand().getCooldownManager();
-    return optional.map(
+    return context.getCommand().getCooldownManager().map(
         cooldown -> {
           if (cooldown.hasCooldown(context)) {
             return Result.of(
