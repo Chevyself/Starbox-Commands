@@ -402,6 +402,13 @@ public class Strings {
         : string;
   }
 
+  /**
+   * Check if a string starts with quotation marks.
+   *
+   * @param string the string to check
+   * @return true if the string starts with quotation marks and does not end with those. This ignores if the
+   * string has only one character: "\""
+   */
   public static boolean isStart(@NonNull String string) {
     return string.startsWith("\"") && (!string.endsWith("\"") || string.length() == 1);
   }
