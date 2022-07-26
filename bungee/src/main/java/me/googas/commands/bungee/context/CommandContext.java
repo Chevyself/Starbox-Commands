@@ -1,6 +1,5 @@
 package me.googas.commands.bungee.context;
 
-import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
@@ -49,11 +48,5 @@ public class CommandContext implements StarboxCommandContext {
     this.registry = registry;
     this.messagesProvider = messagesProvider;
     this.flags = flags;
-  }
-
-  @NonNull
-  @Override
-  public String[] getStringsFrom(int position) {
-    return Arrays.copyOfRange(this.strings, position, this.strings.length);
   }
 }
