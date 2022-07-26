@@ -98,16 +98,6 @@ public class GenericCommandContext implements CommandContext {
   }
 
   @Override
-  public boolean hasFlag(@NonNull String alias) {
-    for (String string : this.strings) {
-      if (string.equalsIgnoreCase(alias)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
   public String toString() {
     return "CommandContext{"
         + "message="
