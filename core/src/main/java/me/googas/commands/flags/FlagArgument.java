@@ -150,7 +150,9 @@ public class FlagArgument implements StarboxFlag {
     @NonNull
     private Parser parse(boolean build) {
       List<String> argumentsCopy = new ArrayList<>(arguments);
-      for (String argument : argumentsCopy) {
+      int left = 0;
+      for (int i = 0; i < argumentsCopy.size(); i++) {
+        String argument = argumentsCopy.get(i);
         if (toValue == null || (!building && this.isFlag(argument))) {
           Optional<? extends Option> optional = this.getOption(argument);
           if (optional.isPresent()) {
@@ -159,9 +161,9 @@ public class FlagArgument implements StarboxFlag {
               if (argument.contains(Parser.separator)) {
                 String[] split = argument.split(Parser.separator);
                 String flagValue = split.length < 2 ? "" : split[1];
-                if (flagValue.isEmpty() || (build && this.isStart(flagValue))) {
+                if (flagValue.isEmpty() || (build && Strings.isStart(flagValue))) {
                   toValue = option;
-                  building = this.isStart(flagValue);
+                  building = Strings.isStart(flagValue);
                   if (!flagValue.isEmpty()) {
                     valueBuilder.append(flagValue.substring(1)).append(" ");
                   }
@@ -174,7 +176,8 @@ public class FlagArgument implements StarboxFlag {
             } else {
               flags.add(new FlagArgument(option, null));
             }
-            arguments.remove(argument);
+            arguments.remove(i - left);
+            left++;
           }
         } else if (toValue != null) {
           String flagValue = null;
@@ -188,18 +191,19 @@ public class FlagArgument implements StarboxFlag {
               valueBuilder.append(argument).append(" ");
             }
           } else {
-            if (build && this.isStart(argument)) {
+            if (build && Strings.isStart(argument)) {
               building = true;
               valueBuilder.append(argument.substring(1)).append(" ");
             } else {
-              flagValue = argument;
+              flagValue = Strings.removeQuotations(argument);
             }
           }
           if (flagValue != null) {
             flags.add(new FlagArgument(toValue, flagValue));
             toValue = null;
           }
-          arguments.remove(argument);
+          arguments.remove(i - left);
+          left++;
         }
       }
       return this;
@@ -213,10 +217,6 @@ public class FlagArgument implements StarboxFlag {
     @NonNull
     public String[] getArgumentsArray() {
       return this.arguments.toArray(new String[0]);
-    }
-
-    private boolean isStart(@NonNull String string) {
-      return string.startsWith("\"") && (string.length() > 1 || string.endsWith("\""));
     }
 
     @NonNull

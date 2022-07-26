@@ -349,7 +349,7 @@ public class Strings {
     int index = 0;
     for (String string : strings) {
       String toAppend = null;
-      if (!building && string.startsWith("\"") && (string.length() > 1 || string.endsWith("\""))) {
+      if (!building && Strings.isStart(string)) {
         building = true;
         builder.append(string).append(" ");
       } else if (building && string.endsWith("\"")) {
@@ -400,6 +400,10 @@ public class Strings {
     return (string.length() > 1 && string.startsWith("\"") && string.endsWith("\""))
         ? string.substring(1, string.length() - 1)
         : string;
+  }
+
+  public static boolean isStart(@NonNull String string) {
+    return string.startsWith("\"") && (!string.endsWith("\"") || string.length() == 1);
   }
 
   private static int editDistance(String longer, String shorter) {
