@@ -26,7 +26,7 @@ import me.googas.commands.time.unit.Unit;
  * <p>It does not allow negative values and trying to initialize it with negatives will throw a
  * {@link IllegalArgumentException}
  */
-public class Time implements TemporalAmount {
+public final class Time implements TemporalAmount {
 
   /** A constant for a duration of 0 milliseconds. */
   @NonNull public static final Time ZERO = new Time(0, Unit.MILLIS);

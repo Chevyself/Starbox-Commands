@@ -10,7 +10,7 @@ import lombok.NonNull;
 import me.googas.commands.util.Strings;
 
 /** Represents a flag which has been introduced in a command line. */
-public class FlagArgument implements StarboxFlag {
+public final class FlagArgument implements StarboxFlag {
 
   @NonNull @Getter private final Option option;
   private final String value;
@@ -105,7 +105,7 @@ public class FlagArgument implements StarboxFlag {
   }
 
   /** This object contains the parsed elements from the command line. */
-  public static class Parser {
+  public static final class Parser {
 
     @NonNull private static final String separator = "=";
     @NonNull @Getter private final List<String> arguments;

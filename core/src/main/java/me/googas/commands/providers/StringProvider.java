@@ -12,7 +12,7 @@ import me.googas.commands.util.Strings;
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public class StringProvider<T extends StarboxCommandContext>
+public final class StringProvider<T extends StarboxCommandContext>
     implements StarboxArgumentProvider<String, T>, StarboxMultipleArgumentProvider<String, T> {
 
   @Override

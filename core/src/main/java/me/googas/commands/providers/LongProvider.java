@@ -12,7 +12,7 @@ import me.googas.commands.providers.type.StarboxArgumentProvider;
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public class LongProvider<T extends StarboxCommandContext>
+public final class LongProvider<T extends StarboxCommandContext>
     implements StarboxArgumentProvider<Long, T> {
 
   private final StarboxMessagesProvider<T> messagesProvider;

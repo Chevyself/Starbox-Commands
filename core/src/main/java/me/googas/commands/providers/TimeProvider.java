@@ -13,7 +13,7 @@ import me.googas.commands.time.Time;
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public class TimeProvider<T extends StarboxCommandContext>
+public final class TimeProvider<T extends StarboxCommandContext>
     implements StarboxArgumentProvider<Time, T> {
 
   private final StarboxMessagesProvider<T> messagesProvider;

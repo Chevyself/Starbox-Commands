@@ -22,7 +22,7 @@ import me.googas.commands.util.Pair;
  *
  * @param <O> the type of the class that the argument has to supply
  */
-public class ExtraArgument<O> implements Argument<O> {
+public final class ExtraArgument<O> implements Argument<O> {
 
   @NonNull @Getter private final Class<O> clazz;
 

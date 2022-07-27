@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import lombok.NonNull;
 
 /** Static utilities for {@link String}. */
-public class Strings {
+public final class Strings {
 
   /** A string only containing uppercase letters. */
   @NonNull public static final String UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
