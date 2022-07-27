@@ -142,12 +142,8 @@ public abstract class StarboxBukkitCommand extends Command
                       ? (BukkitResult) starboxResult
                       : null;
                 })
-            .orElseGet(
-                () -> {
-                  BukkitResult run = this.execute(context);
-                  this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
-                  return run;
-                });
+            .orElseGet(() -> this.execute(context));
+    this.getMiddlewares().forEach(middleware -> middleware.next(context, result));
   }
 
   /**

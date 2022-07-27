@@ -63,22 +63,22 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
                     context.getFlags()));
       }
     }
-    return this.getMiddlewares().stream()
-        .map(middleware -> middleware.next(context))
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .findFirst()
-        .map(
-            starboxResult -> {
-              // Here maybe thrown an error because the wrong result was provided
-              return starboxResult instanceof SystemResult ? (SystemResult) starboxResult : null;
-            })
-        .orElseGet(
-            () -> {
-              SystemResult run = this.run(context);
-              this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
-              return run;
-            });
+    SystemResult result =
+        this.getMiddlewares().stream()
+            .map(middleware -> middleware.next(context))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst()
+            .map(
+                starboxResult -> {
+                  // Here maybe thrown an error because the wrong result was provided
+                  return starboxResult instanceof SystemResult
+                      ? (SystemResult) starboxResult
+                      : null;
+                })
+            .orElseGet(() -> this.run(context));
+    this.getMiddlewares().forEach(middleware -> middleware.next(context, result));
+    return result;
   }
 
   @Override

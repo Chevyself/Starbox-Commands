@@ -168,12 +168,8 @@ public abstract class BungeeCommand extends Command
                       ? (BungeeResult) starboxResult
                       : null;
                 })
-            .orElseGet(
-                () -> {
-                  BungeeResult run = this.execute(context);
-                  this.getMiddlewares().forEach(middleware -> middleware.next(context, run));
-                  return run;
-                });
+            .orElseGet(() -> this.execute(context));
+    this.getMiddlewares().forEach(middleware -> middleware.next(context, result));
   }
 
   /**
