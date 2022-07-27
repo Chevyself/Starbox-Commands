@@ -12,6 +12,35 @@
   <artifactId>bukkit</artifactId>
   <version>1.0.0</version>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${maven-shade-plugin.version}</version>
+        <executions>
+          <execution>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>META-INF/**</exclude>
+                </excludes>
+                <includes>
+                  <include>me.googas.commands:core</include>
+                </includes>
+              </artifactSet>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+            </configuration>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>me.googas.commands</groupId>
@@ -36,7 +65,6 @@
   </repositories>
 
   <properties>
-    <bungee.version>1.0.0</bungee.version>
     <core.version>1.0.0</core.version>
     <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
     <spigot-api.version>1.18.1-R0.1-SNAPSHOT</spigot-api.version>
