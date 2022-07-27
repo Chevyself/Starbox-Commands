@@ -17,7 +17,7 @@
       <groupId>me.googas.commands</groupId>
       <artifactId>core</artifactId>
       <version>${core.version}</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.md-5</groupId>
@@ -30,7 +30,7 @@
       <groupId>net.md-5</groupId>
       <artifactId>bungeecord-chat</artifactId>
       <version>${bungeecord-chat.version}</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <description>Bungee utils and command framework</description>

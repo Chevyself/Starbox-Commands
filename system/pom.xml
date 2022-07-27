@@ -17,6 +17,7 @@
       <groupId>me.googas.commands</groupId>
       <artifactId>core</artifactId>
       <version>${core.version}</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 
