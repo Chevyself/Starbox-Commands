@@ -16,8 +16,8 @@
     <dependency>
       <groupId>me.googas.commands</groupId>
       <artifactId>core</artifactId>
-      <version>${core.version}</version>
-      <scope>provided</scope>
+      <version>1.0.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>net.dv8tion</groupId>
@@ -41,6 +41,5 @@
 
   <properties>
     <JDA.version>5.0.0-alpha.12</JDA.version>
-    <core.version>1.0.0</core.version>
   </properties>
 </project>

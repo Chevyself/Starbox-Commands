@@ -16,12 +16,8 @@
     <dependency>
       <groupId>me.googas.commands</groupId>
       <artifactId>core</artifactId>
-      <version>${core.version}</version>
-      <scope>provided</scope>
+      <version>1.0.0</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
-
-  <properties>
-    <core.version>1.0.0</core.version>
-  </properties>
 </project>

@@ -16,8 +16,8 @@
     <dependency>
       <groupId>me.googas.commands</groupId>
       <artifactId>core</artifactId>
-      <version>${core.version}</version>
-      <scope>provided</scope>
+      <version>1.0.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>net.md-5</groupId>
@@ -45,6 +45,5 @@
   <properties>
     <bungeecord-api.version>1.16-R0.3</bungeecord-api.version>
     <bungeecord-chat.version>1.16-R0.3</bungeecord-chat.version>
-    <core.version>1.0.0</core.version>
   </properties>
 </project>

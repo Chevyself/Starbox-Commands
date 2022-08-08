@@ -16,8 +16,8 @@
     <dependency>
       <groupId>me.googas.commands</groupId>
       <artifactId>core</artifactId>
-      <version>${core.version}</version>
-      <scope>provided</scope>
+      <version>1.0.0</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.spigotmc</groupId>
@@ -36,7 +36,6 @@
   </repositories>
 
   <properties>
-    <core.version>1.0.0</core.version>
     <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
     <spigot-api.version>1.18.1-R0.1-SNAPSHOT</spigot-api.version>
   </properties>
