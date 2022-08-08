@@ -31,6 +31,7 @@ public class Components {
           .put('c', new ColorModifier(ChatColor.RED))
           .put('d', new ColorModifier(ChatColor.LIGHT_PURPLE))
           .put('e', new ColorModifier(ChatColor.YELLOW))
+          .put('f', new ColorModifier(ChatColor.WHITE))
           .put('k', component -> component.setObfuscated(true))
           .put('l', component -> component.setBold(true))
           .put('m', component -> component.setStrikethrough(true))
@@ -81,13 +82,13 @@ public class Components {
         boolean reset;
         if (modification != null) {
           if (modification instanceof ColorModifier) {
-            reset = color != null && !color.equals(modification);
+            reset = color == null || !color.equals(modification);
             color = (ColorModifier) modification;
             if (!reset) {
               color.modify(current);
             }
           } else {
-            reset = modifier != null && !modifier.equals(modification);
+            reset = modifier == null || !modifier.equals(modification);
             modifier = modification;
             if (!reset) {
               modifier.modify(current);
