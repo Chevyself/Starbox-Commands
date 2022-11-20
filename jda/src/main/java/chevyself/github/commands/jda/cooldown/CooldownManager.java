@@ -3,7 +3,8 @@ package chevyself.github.commands.jda.cooldown;
 import chevyself.github.commands.StarboxCooldownManager;
 import chevyself.github.commands.jda.annotations.Command;
 import chevyself.github.commands.jda.context.CommandContext;
-import chevyself.github.commands.time.Time;
+import chevyself.github.commands.time.TimeUtil;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -13,28 +14,29 @@ import lombok.NonNull;
 public class CooldownManager implements StarboxCooldownManager<CommandContext> {
 
   @NonNull private final Map<Long, Long> map = new HashMap<>();
-  @NonNull private final Time time;
+  @NonNull private final Duration duration;
 
   /**
    * Constructs the manager with the specific time to cooldown.
    *
-   * @param time the time that the command needs to cooldown
+   * @param duration the time that the command needs to cooldown
    */
-  protected CooldownManager(@NonNull Time time) {
-    this.time = time;
+  protected CooldownManager(@NonNull Duration duration) {
+    this.duration = duration;
   }
 
   /**
    * Returns the manager object based on the annotation. If the annotation has a valid time (this
-   * means that it is not {@link Time#isZero()}) a {@link Optional} will be wrapping the manager.
+   * means that it is not {@link Duration#isZero()}) a {@link Optional} will be wrapping the
+   * manager.
    *
    * @param annotation the annotation to provide the time for the manager
    * @return a {@link Optional} which might be wrapping the manager
    */
   @NonNull
   public static Optional<CooldownManager> of(@NonNull Command annotation) {
-    Time time = Time.of(annotation.cooldown());
-    return Optional.ofNullable(time.isZero() ? null : new CooldownManager(time));
+    Duration duration = TimeUtil.durationOf(annotation.cooldown());
+    return Optional.ofNullable(duration.isZero() ? null : new CooldownManager(duration));
   }
 
   private long getMillis(@NonNull CommandContext context) {
@@ -47,13 +49,13 @@ public class CooldownManager implements StarboxCooldownManager<CommandContext> {
   }
 
   @Override
-  public @NonNull Time getTimeLeft(@NonNull CommandContext context) {
+  public Duration getTimeLeft(@NonNull CommandContext context) {
     long millis = this.getMillis(context) - System.currentTimeMillis();
-    return Time.ofMillis(millis < 0 ? 0 : millis, true);
+    return Duration.ofMillis(millis < 0 ? 0 : millis);
   }
 
   @Override
   public void refresh(@NonNull CommandContext context) {
-    map.put(context.getSender().getIdLong(), System.currentTimeMillis() + time.toMillisRound());
+    map.put(context.getSender().getIdLong(), System.currentTimeMillis() + duration.toMillis());
   }
 }

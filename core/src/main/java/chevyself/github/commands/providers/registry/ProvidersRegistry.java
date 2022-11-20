@@ -10,11 +10,11 @@ import chevyself.github.commands.exceptions.ArgumentProviderException;
 import chevyself.github.commands.messages.StarboxMessagesProvider;
 import chevyself.github.commands.providers.BooleanProvider;
 import chevyself.github.commands.providers.DoubleProvider;
+import chevyself.github.commands.providers.DurationProvider;
 import chevyself.github.commands.providers.FloatProvider;
 import chevyself.github.commands.providers.IntegerProvider;
 import chevyself.github.commands.providers.LongProvider;
 import chevyself.github.commands.providers.StringProvider;
-import chevyself.github.commands.providers.TimeProvider;
 import chevyself.github.commands.providers.type.StarboxArgumentProvider;
 import chevyself.github.commands.providers.type.StarboxContextualProvider;
 import chevyself.github.commands.providers.type.StarboxExtraArgumentProvider;
@@ -28,7 +28,7 @@ import lombok.NonNull;
 
 /**
  * This registry contains the {@link StarboxArgumentProvider} that gives {@link ReflectCommand} the
- * parameters to be executed with the help of its {@link Argument} to learn more bout the registry
+ * parameters to be executed with the help of its {@link Argument}. To learn more bout the registry
  * you can check the {@link ReflectCommand#getObjects(StarboxCommandContext)}
  *
  * <p>To add new providers use {@link #addProvider(StarboxContextualProvider)} and to get an object
@@ -52,7 +52,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
         .addProvider(new IntegerProvider<>(messages))
         .addProvider(new LongProvider<>(messages))
         .addProvider(new StringProvider<>())
-        .addProvider(new TimeProvider<>(messages));
+        .addProvider(new DurationProvider<>(messages));
   }
 
   /** Creates the registry with no providers. */

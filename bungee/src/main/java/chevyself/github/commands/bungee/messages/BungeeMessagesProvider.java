@@ -1,8 +1,9 @@
 package chevyself.github.commands.bungee.messages;
 
 import chevyself.github.commands.bungee.context.CommandContext;
-import chevyself.github.commands.time.Time;
+import chevyself.github.commands.time.TimeUtil;
 import chevyself.github.commands.util.Strings;
+import java.time.Duration;
 import lombok.NonNull;
 
 /** The default messages provider for bungee. */
@@ -29,7 +30,7 @@ public class BungeeMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
+  public @NonNull String invalidDuration(@NonNull String string, @NonNull CommandContext context) {
     return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", string);
   }
 
@@ -64,8 +65,8 @@ public class BungeeMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", timeLeft.toString());
+  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
+    return Strings.format("&e&o\u26A0 &4&o{0} &c&ois not valid time", TimeUtil.toString(timeLeft));
   }
 
   @NonNull

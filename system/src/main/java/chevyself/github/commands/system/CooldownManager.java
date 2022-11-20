@@ -2,22 +2,22 @@ package chevyself.github.commands.system;
 
 import chevyself.github.commands.StarboxCooldownManager;
 import chevyself.github.commands.system.context.CommandContext;
-import chevyself.github.commands.time.Time;
+import java.time.Duration;
 import lombok.NonNull;
 
 /** Implementation of {@link CommandManager} for system commands. */
 public class CooldownManager implements StarboxCooldownManager<CommandContext> {
 
-  @NonNull private final Time time;
+  @NonNull private final Duration duration;
   private long millis;
 
   /**
    * Create the manager.
    *
-   * @param time the amount of time that the sender has to wait to execute the command again
+   * @param duration the amount of time that the sender has to wait to execute the command again
    */
-  public CooldownManager(@NonNull Time time) {
-    this.time = time;
+  public CooldownManager(@NonNull Duration duration) {
+    this.duration = duration;
   }
 
   @Override
@@ -26,12 +26,12 @@ public class CooldownManager implements StarboxCooldownManager<CommandContext> {
   }
 
   @Override
-  public @NonNull Time getTimeLeft(@NonNull CommandContext context) {
-    return Time.ofMillis(millis - System.currentTimeMillis(), true);
+  public Duration getTimeLeft(@NonNull CommandContext context) {
+    return Duration.ofMillis(millis - System.currentTimeMillis());
   }
 
   @Override
   public void refresh(@NonNull CommandContext context) {
-    this.millis = (System.currentTimeMillis() + time.toMillisRound());
+    this.millis = (System.currentTimeMillis() + duration.toMillis());
   }
 }

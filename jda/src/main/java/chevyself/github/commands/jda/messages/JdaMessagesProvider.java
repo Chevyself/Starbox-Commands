@@ -2,8 +2,9 @@ package chevyself.github.commands.jda.messages;
 
 import chevyself.github.commands.jda.context.CommandContext;
 import chevyself.github.commands.jda.result.ResultType;
-import chevyself.github.commands.time.Time;
+import chevyself.github.commands.time.TimeUtil;
 import chevyself.github.commands.util.Strings;
+import java.time.Duration;
 import lombok.NonNull;
 
 /**
@@ -37,7 +38,7 @@ public class JdaMessagesProvider implements MessagesProvider {
 
   @NonNull
   @Override
-  public String invalidTime(@NonNull String string, @NonNull CommandContext context) {
+  public String invalidDuration(@NonNull String string, @NonNull CommandContext context) {
     return string + " is not valid time";
   }
 
@@ -94,8 +95,8 @@ public class JdaMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    return "You are on cooldown! please wait " + timeLeft;
+  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
+    return "You are on cooldown! please wait " + TimeUtil.toString(timeLeft);
   }
 
   @Override

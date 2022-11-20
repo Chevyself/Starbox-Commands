@@ -7,9 +7,9 @@ import chevyself.github.commands.jda.messages.MessagesProvider;
 import chevyself.github.commands.jda.result.JdaResult;
 import chevyself.github.commands.jda.result.Result;
 import chevyself.github.commands.jda.result.ResultType;
-import chevyself.github.commands.time.Time;
-import chevyself.github.commands.time.unit.Unit;
 import java.awt.*;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -34,11 +34,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  *       net.dv8tion.jda.api.entities.MessageEmbed}
  *   <li>{@link #deleteErrors} whether the message of the {@link Result} when it is a {@link
  *       ResultType#isError()} should be deleted in
- *   <li>{@link #toDeleteErrors} the {@link Time} to delete the message when it is a {@link
+ *   <li>{@link #toDeleteErrors} the {@link Duration} to delete the message when it is a {@link
  *       ResultType#isError()}
  *   <li>{@link #deleteSuccess} whether the message of the {@link Result} when it is not a {@link
  *       ResultType#isError()} should be deleted in
- *   <li>{@link #toDeleteSuccess} the {@link Time} to delete the message when it is not a {@link
+ *   <li>{@link #toDeleteSuccess} the {@link Duration} to delete the message when it is not a {@link
  *       ResultType#isError()}
  *   <li>{@link #success} the {@link Color} of the {@link net.dv8tion.jda.api.entities.MessageEmbed}
  *       when the {@link ResultType} is not {@link ResultType#isError()}
@@ -60,18 +60,18 @@ public class GenericListenerOptions implements ListenerOptions {
   private boolean embedMessages = true;
   /**
    * Whether the message of the {@link Result} when it is a {@link ResultType#isError()} should be
-   * deleted in
+   * deleted in.
    */
   private boolean deleteErrors = true;
   /** The {@link Time} to delete the message when it is a {@link ResultType#isError()}. */
-  @NonNull private Time toDeleteErrors = Time.of(15, Unit.SECONDS);
+  @NonNull private Duration toDeleteErrors = Duration.of(15, ChronoUnit.SECONDS);
   /**
    * Whether the message of the {@link Result} when it is not a {@link ResultType#isError()} should
-   * be deleted in
+   * be deleted in.
    */
   private boolean deleteSuccess = false;
   /** The {@link Time} to delete the message when it is not a {@link ResultType#isError()}. */
-  @NonNull private Time toDeleteSuccess = Time.of(15, Unit.SECONDS);
+  @NonNull private Duration toDeleteSuccess = Duration.of(15, ChronoUnit.SECONDS);
   /**
    * The {@link Color} of the {@link net.dv8tion.jda.api.entities.MessageEmbed} when the {@link
    * ResultType} is not {@link ResultType#isError()}
@@ -120,7 +120,7 @@ public class GenericListenerOptions implements ListenerOptions {
    */
   public Consumer<Message> getErrorDeleteConsumer() {
     return msg ->
-        msg.delete().queueAfter(this.getToDeleteErrors().toMillisRound(), TimeUnit.MILLISECONDS);
+        msg.delete().queueAfter(this.getToDeleteErrors().toMillis(), TimeUnit.MILLISECONDS);
   }
 
   /**
@@ -134,7 +134,7 @@ public class GenericListenerOptions implements ListenerOptions {
    */
   public Consumer<Message> getSuccessDeleteConsumer() {
     return msg ->
-        msg.delete().queueAfter(this.getToDeleteSuccess().toMillisRound(), TimeUnit.MILLISECONDS);
+        msg.delete().queueAfter(this.getToDeleteSuccess().toMillis(), TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -219,7 +219,9 @@ public class GenericListenerOptions implements ListenerOptions {
                   this.processResult(
                       Result.forType(ResultType.ERROR).setDescription(fail.getMessage()).build(),
                       context);
-              channel.sendMessage(message).queue();
+              if (message != null) {
+                channel.sendMessage(message).queue();
+              }
             },
             failure -> {});
   }

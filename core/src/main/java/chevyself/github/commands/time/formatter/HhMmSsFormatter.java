@@ -1,6 +1,6 @@
 package chevyself.github.commands.time.formatter;
 
-import chevyself.github.commands.time.Time;
+import java.time.Duration;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -18,8 +18,8 @@ public class HhMmSsFormatter implements TimeFormatter {
   private HhMmSsFormatter() {}
 
   @Override
-  public @NonNull String format(@NonNull Time time) {
-    long millis = Math.round(time.toMillis());
+  public String format(@NonNull Duration duration) {
+    long millis = Math.round(duration.toMillis());
     long secs = (millis / 1000) % 60;
     long minutes = (millis / (1000 * 60)) % 60;
     long hours = millis / (1000 * 60 * 60);

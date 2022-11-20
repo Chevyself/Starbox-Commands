@@ -1,13 +1,13 @@
 package chevyself.github.commands.time.formatter;
 
-import chevyself.github.commands.time.Time;
+import java.time.Duration;
 import lombok.NonNull;
 
 /**
- * Implementations of this class convert {@link Time} into a readable {@link String} such as {@link
- * HhMmSsFormatter} which converts the given instance of time into 'Hh:Mm:Ss'
+ * Implementations of this class convert {@link Duration} into a readable {@link String} such as
+ * {@link HhMmSsFormatter} which converts the given instance of time into 'Hh:Mm:Ss'.
  *
- * <p>Implement this class to format {@link Time} at your liking
+ * <p>Implement this class to format {@link Duration} at your liking
  *
  * @see HhMmSsFormatter
  */
@@ -16,9 +16,8 @@ public interface TimeFormatter {
   /**
    * Format the given time into a readable {@link String}.
    *
-   * @param time the instance of time to convert
+   * @param duration the instance of duration to convert
    * @return the formatted string
    */
-  @NonNull
-  String format(@NonNull Time time);
+  String format(@NonNull Duration duration);
 }

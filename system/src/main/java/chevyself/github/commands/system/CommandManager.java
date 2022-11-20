@@ -9,8 +9,9 @@ import chevyself.github.commands.providers.registry.ProvidersRegistry;
 import chevyself.github.commands.system.context.CommandContext;
 import chevyself.github.commands.system.middleware.CooldownMiddleware;
 import chevyself.github.commands.system.middleware.ResultHandlingMiddleware;
-import chevyself.github.commands.time.Time;
+import chevyself.github.commands.time.TimeUtil;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -118,7 +119,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
       throw new IllegalArgumentException(
           method + " does not contain the annotation " + Command.class);
     }
-    Time time = Time.of(annotation.cooldown());
+    Duration duration = TimeUtil.durationOf(annotation.cooldown());
     return new ReflectSystemCommand(
         this,
         Arrays.asList(annotation.aliases()),
@@ -128,7 +129,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
         object,
         Argument.parseArguments(method),
         new ArrayList<>(),
-        !time.isZero() ? new CooldownManager(time) : null);
+        !duration.isZero() ? new CooldownManager(duration) : null);
   }
 
   /**

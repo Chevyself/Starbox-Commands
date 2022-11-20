@@ -3,7 +3,7 @@ package chevyself.github.commands.messages;
 import chevyself.github.commands.arguments.Argument;
 import chevyself.github.commands.arguments.MultipleArgument;
 import chevyself.github.commands.context.StarboxCommandContext;
-import chevyself.github.commands.time.Time;
+import java.time.Duration;
 import lombok.NonNull;
 
 /**
@@ -54,17 +54,17 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
   String invalidBoolean(@NonNull String string, @NonNull T context);
 
   /**
-   * The message sent when a {@link String} is not valid as {@link Time}
+   * The message sent when a {@link String} is not valid as {@link java.time.Duration}.
    *
    * @param string the string that is invalid
    * @param context the context of the command
    * @return the message to tell that the input is wrong
    */
   @NonNull
-  String invalidTime(@NonNull String string, @NonNull T context);
+  String invalidDuration(@NonNull String string, @NonNull T context);
 
   /**
-   * Get the message to send when there's a missing an {@link Argument}
+   * Get the message to send when there's a missing an {@link Argument}.
    *
    * @param name the name of the argument
    * @param description the description of the argument
@@ -109,5 +109,5 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
    * @return the built string
    */
   @NonNull
-  String cooldown(@NonNull T context, @NonNull Time timeLeft);
+  String cooldown(@NonNull T context, @NonNull Duration timeLeft);
 }

@@ -1,7 +1,8 @@
 package chevyself.github.commands.system;
 
 import chevyself.github.commands.system.context.CommandContext;
-import chevyself.github.commands.time.Time;
+import chevyself.github.commands.time.TimeUtil;
+import java.time.Duration;
 import lombok.NonNull;
 
 /** The default {@link MessagesProvider} for System commands. */
@@ -28,7 +29,7 @@ public class SystemMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
+  public @NonNull String invalidDuration(@NonNull String string, @NonNull CommandContext context) {
     return String.format("%s is not valid time!", string);
   }
 
@@ -51,7 +52,7 @@ public class SystemMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
-    return "You are not allowed to run this command for another " + timeLeft;
+  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
+    return "You are not allowed to run this command for another " + TimeUtil.toString(timeLeft);
   }
 }

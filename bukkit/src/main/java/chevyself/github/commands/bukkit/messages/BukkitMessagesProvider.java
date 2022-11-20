@@ -3,8 +3,9 @@ package chevyself.github.commands.bukkit.messages;
 import chevyself.github.commands.bukkit.StarboxBukkitCommand;
 import chevyself.github.commands.bukkit.context.CommandContext;
 import chevyself.github.commands.bukkit.utils.BukkitUtils;
-import chevyself.github.commands.time.Time;
+import chevyself.github.commands.time.TimeUtil;
 import chevyself.github.commands.util.Strings;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
@@ -40,7 +41,7 @@ public class BukkitMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String invalidTime(@NonNull String string, @NonNull CommandContext context) {
+  public @NonNull String invalidDuration(@NonNull String string, @NonNull CommandContext context) {
     return Strings.format(
         BukkitMessagesProvider.ERROR_PREFIX + "&4&o{0} &c&ois not valid time", string);
   }
@@ -78,10 +79,10 @@ public class BukkitMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Time timeLeft) {
+  public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
     return BukkitMessagesProvider.ERROR_PREFIX
         + "&c&oYou will be allowed to run this command in &4&o"
-        + timeLeft;
+        + TimeUtil.toString(timeLeft);
   }
 
   @NonNull

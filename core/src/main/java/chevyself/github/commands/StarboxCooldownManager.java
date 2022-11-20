@@ -1,7 +1,7 @@
 package chevyself.github.commands;
 
 import chevyself.github.commands.context.StarboxCommandContext;
-import chevyself.github.commands.time.Time;
+import java.time.Duration;
 import lombok.NonNull;
 
 /**
@@ -27,8 +27,7 @@ public interface StarboxCooldownManager<C extends StarboxCommandContext> {
    * @param context the context that is running the command
    * @return the amount of time
    */
-  @NonNull
-  Time getTimeLeft(@NonNull C context);
+  Duration getTimeLeft(@NonNull C context);
 
   /**
    * Refreshes the time that a sender has to wait to execute the command again.
