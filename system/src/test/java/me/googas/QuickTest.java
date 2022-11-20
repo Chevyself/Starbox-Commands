@@ -1,10 +1,10 @@
 package me.googas;
 
-import me.googas.commands.providers.registry.ProvidersRegistry;
-import me.googas.commands.system.CommandManager;
-import me.googas.commands.system.SystemMessagesProvider;
-import me.googas.commands.system.context.CommandContext;
-import me.googas.commands.system.providers.CommandContextProvider;
+import chevyself.github.commands.providers.registry.ProvidersRegistry;
+import chevyself.github.commands.system.CommandManager;
+import chevyself.github.commands.system.SystemMessagesProvider;
+import chevyself.github.commands.system.context.CommandContext;
+import chevyself.github.commands.system.providers.CommandContextProvider;
 
 @SuppressWarnings("JavaDoc")
 public class QuickTest {

@@ -1,16 +1,16 @@
 package me.googas;
 
+import chevyself.github.commands.annotations.Free;
+import chevyself.github.commands.annotations.Multiple;
+import chevyself.github.commands.annotations.Required;
+import chevyself.github.commands.arguments.ArgumentBehaviour;
+import chevyself.github.commands.flags.Flag;
+import chevyself.github.commands.system.Command;
+import chevyself.github.commands.system.Result;
+import chevyself.github.commands.system.SystemResult;
+import chevyself.github.commands.system.context.CommandContext;
+import chevyself.github.commands.time.annotations.TimeAmount;
 import java.util.Locale;
-import me.googas.commands.annotations.Free;
-import me.googas.commands.annotations.Multiple;
-import me.googas.commands.annotations.Required;
-import me.googas.commands.arguments.ArgumentBehaviour;
-import me.googas.commands.flags.Flag;
-import me.googas.commands.system.Command;
-import me.googas.commands.system.Result;
-import me.googas.commands.system.SystemResult;
-import me.googas.commands.system.context.CommandContext;
-import me.googas.commands.time.annotations.TimeAmount;
 
 @SuppressWarnings("JavaDoc")
 public class Commands {
