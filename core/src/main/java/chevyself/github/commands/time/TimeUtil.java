@@ -14,8 +14,8 @@ import lombok.NonNull;
 /** This class contains static methods with utility for the 'java.time' package. */
 public class TimeUtil {
 
-  @NonNull private static final Map<Character, ChronoUnit> UNITS_CHARS = new HashMap<>();
-  @NonNull private static final List<ChronoUnit> UNITS_SORTED;
+  @NonNull public static final Map<Character, ChronoUnit> UNITS_CHARS = new HashMap<>();
+  @NonNull public static final List<ChronoUnit> UNITS;
 
   static {
     TimeUtil.UNITS_CHARS.put('L', ChronoUnit.MILLIS);
@@ -27,7 +27,7 @@ public class TimeUtil {
     TimeUtil.UNITS_CHARS.put('O', ChronoUnit.MONTHS);
     TimeUtil.UNITS_CHARS.put('Y', ChronoUnit.YEARS);
 
-    UNITS_SORTED = TimeUtil.UNITS_CHARS.values().stream().sorted().collect(Collectors.toList());
+    UNITS = TimeUtil.UNITS_CHARS.values().stream().sorted().collect(Collectors.toList());
   }
 
   /**
@@ -129,6 +129,13 @@ public class TimeUtil {
     }
   }
 
+  /**
+   * Convert a unit into a {@link String}.
+   *
+   * @see #durationOf(String)
+   * @param duration the duration to convert
+   * @return the string
+   */
   @NonNull
   public static String toString(@NonNull Duration duration) {
     if (duration.isNegative() || duration.isZero()) {
@@ -137,7 +144,7 @@ public class TimeUtil {
     long millis = duration.toMillis();
     ChronoUnit current = TimeUtil.fromMillis(millis);
     StringBuilder builder = new StringBuilder();
-    List<ChronoUnit> list = new ArrayList<>(TimeUtil.UNITS_SORTED);
+    List<ChronoUnit> list = new ArrayList<>(TimeUtil.UNITS);
     Collections.reverse(list);
     for (ChronoUnit unit : list) {
       long unitMillis = unit.getDuration().toMillis();
@@ -153,6 +160,13 @@ public class TimeUtil {
     return builder.toString();
   }
 
+  /**
+   * Get the character that matches the unit.
+   *
+   * @param unit the unit to match the character with
+   * @return the character that matches
+   * @throws IllegalArgumentException if not character matches the unit
+   */
   public static char getChar(@NonNull ChronoUnit unit) {
     return TimeUtil.UNITS_CHARS.entrySet().stream()
         .filter(entry -> entry.getValue().equals(unit))
@@ -161,13 +175,29 @@ public class TimeUtil {
         .getKey();
   }
 
+  /**
+   * Get the unit that matches the given millis. This will attempt to get the unit with the closer
+   * {@link ChronoUnit#getDuration()} -> {@link Duration#toMillis()}
+   *
+   * <p>This means that:
+   *
+   * <ul>
+   *   <li>5000 = {@link #SECONDS}
+   *   <li>31567800000 = {@link #YEARS}
+   *   <li>80000 = {@link #MINUTES}
+   * </ul>
+   *
+   * @param millis the millis to match the unit to
+   * @return the unit that matches the millis
+   * @throws IllegalArgumentException if millis is lower than 0
+   */
   @NonNull
   public static ChronoUnit fromMillis(long millis) {
     if (millis < 0) {
       throw new IllegalArgumentException("millis must be higher than 0");
     }
     ChronoUnit unit = ChronoUnit.MILLIS;
-    for (ChronoUnit value : TimeUtil.UNITS_SORTED) {
+    for (ChronoUnit value : TimeUtil.UNITS) {
       if (value.getDuration().toMillis() <= millis) {
         unit = value;
       }
