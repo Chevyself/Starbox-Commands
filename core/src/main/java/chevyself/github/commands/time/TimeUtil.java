@@ -177,14 +177,14 @@ public class TimeUtil {
 
   /**
    * Get the unit that matches the given millis. This will attempt to get the unit with the closer
-   * {@link ChronoUnit#getDuration()} -> {@link Duration#toMillis()}
+   * {@link ChronoUnit#getDuration()} {@link Duration#toMillis()}
    *
    * <p>This means that:
    *
    * <ul>
-   *   <li>5000 = {@link #SECONDS}
-   *   <li>31567800000 = {@link #YEARS}
-   *   <li>80000 = {@link #MINUTES}
+   *   <li>5000 = {@link ChronoUnit#SECONDS}
+   *   <li>31567800000 = {@link ChronoUnit#YEARS}
+   *   <li>80000 = {@link ChronoUnit#MINUTES}
    * </ul>
    *
    * @param millis the millis to match the unit to
