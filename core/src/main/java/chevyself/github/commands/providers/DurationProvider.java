@@ -5,6 +5,7 @@ import chevyself.github.commands.context.StarboxCommandContext;
 import chevyself.github.commands.exceptions.ArgumentProviderException;
 import chevyself.github.commands.messages.StarboxMessagesProvider;
 import chevyself.github.commands.providers.type.StarboxArgumentProvider;
+import chevyself.github.commands.time.TimeUtil;
 import java.time.Duration;
 import lombok.NonNull;
 
@@ -32,7 +33,7 @@ public class DurationProvider<T extends StarboxCommandContext>
   public @NonNull Duration fromString(@NonNull String string, @NonNull T context)
       throws ArgumentProviderException {
     try {
-      return Duration.parse(string);
+      return TimeUtil.durationOf(string);
     } catch (IllegalArgumentException e) {
       throw new ArgumentProviderException(this.messagesProvider.invalidDuration(string, context));
     }
