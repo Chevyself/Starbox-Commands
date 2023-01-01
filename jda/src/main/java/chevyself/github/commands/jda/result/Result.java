@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 /**
  * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
@@ -19,7 +20,7 @@ import net.dv8tion.jda.api.entities.Message;
  * <ul>
  *   <li>{@link #type} which changes the output in the {@link CommandListener}
  *   <li>{@link #message} the message that will be send to the {@link
- *       net.dv8tion.jda.api.entities.TextChannel} where the command was executed
+ *       net.dv8tion.jda.api.entities.channel.concrete.TextChannel} where the command was executed
  *   <li>{@link #description} the content of the {@link #message} as a {@link String} if {@link
  *       #message} is null then the content will be added to a {@link Message}
  *   <li>{@link #success} which is the consumer of the {@link #message} after it is sent
@@ -27,13 +28,13 @@ import net.dv8tion.jda.api.entities.Message;
  */
 public class Result implements JdaResult {
 
-  /** Which changes the output in the {@link CommandListener} depends on the command output */
+  /** Which changes the output in the {@link CommandListener} depends on the command output. */
   @NonNull @Getter private final ResultType type;
   /**
-   * The message that will be sent to the {@link net.dv8tion.jda.api.entities.TextChannel} where the
+   * The message that will be sent to the {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel} where the
    * command was executed
    */
-  private final Message message;
+  private final MessageCreateData message;
   /**
    * The content of the {@link #message} as a {@link String} if {@link #message} is null then the
    * content will be added to a {@link Message}.
@@ -53,7 +54,7 @@ public class Result implements JdaResult {
    * @param success the action to do after the message is sent
    */
   protected Result(
-      @NonNull ResultType type, Message message, String description, Consumer<Message> success) {
+      @NonNull ResultType type, MessageCreateData message, String description, Consumer<Message> success) {
     this.type = type;
     this.message = message;
     this.description = description;
@@ -92,7 +93,7 @@ public class Result implements JdaResult {
    * @return a {@link Optional} holding the nullable message
    */
   @NonNull
-  public Optional<Message> getDiscordMessage() {
+  public Optional<MessageCreateData> getDiscordMessage() {
     return Optional.ofNullable(this.message);
   }
 
@@ -108,7 +109,7 @@ public class Result implements JdaResult {
     @NonNull private ResultType type = ResultType.GENERIC;
     private String description = null;
     private transient Consumer<Message> success = null;
-    private transient Supplier<Message> messageSupplier = null;
+    private transient Supplier<MessageCreateData> messageSupplier = null;
     private boolean cooldown;
 
     /**
@@ -131,7 +132,7 @@ public class Result implements JdaResult {
      * @return this same instance
      */
     @NonNull
-    public Result.Builder setMessage(Supplier<Message> supplier) {
+    public Result.Builder setMessage(Supplier<MessageCreateData> supplier) {
       this.messageSupplier = supplier;
       return this;
     }

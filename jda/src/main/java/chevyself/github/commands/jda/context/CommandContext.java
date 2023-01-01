@@ -8,8 +8,8 @@ import java.util.Optional;
 import lombok.NonNull;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 /** This context is used for every command {@link User being the sender}. */
 public interface CommandContext extends StarboxCommandContext {

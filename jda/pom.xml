@@ -40,6 +40,6 @@
   </repositories>
 
   <properties>
-    <JDA.version>5.0.0-alpha.12</JDA.version>
+    <JDA.version>5.0.0-beta.2</JDA.version>
   </properties>
 </project>

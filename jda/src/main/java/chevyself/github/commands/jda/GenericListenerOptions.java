@@ -17,13 +17,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 /**
  * The default implementation for {@link ListenerOptions}
@@ -153,9 +154,9 @@ public class GenericListenerOptions implements ListenerOptions {
     }
   }
 
-  private Message processResult(Result result, @NonNull CommandContext context) {
+  private MessageCreateData processResult(Result result, @NonNull CommandContext context) {
     if (result != null && !result.getDiscordMessage().isPresent()) {
-      MessageBuilder builder = new MessageBuilder();
+      MessageCreateBuilder builder = new MessageCreateBuilder();
       MessagesProvider messagesProvider = context.getMessagesProvider();
       String thumbnail = messagesProvider.thumbnailUrl(context);
       Optional<String> optionalMessage = result.getMessage();
@@ -177,7 +178,7 @@ public class GenericListenerOptions implements ListenerOptions {
             .map(
                 s ->
                     builder
-                        .append(
+                        .setContent(
                             messagesProvider.response(
                                 result.getType().getTitle(messagesProvider, context), s, context))
                         .build())
@@ -215,7 +216,7 @@ public class GenericListenerOptions implements ListenerOptions {
         .openPrivateChannel()
         .queue(
             channel -> {
-              Message message =
+              MessageCreateData message =
                   this.processResult(
                       Result.forType(ResultType.ERROR).setDescription(fail.getMessage()).build(),
                       context);
@@ -237,7 +238,7 @@ public class GenericListenerOptions implements ListenerOptions {
       throw new IllegalArgumentException(
           jdaResult + " is a result instance which cannot be handled by this options");
     Result result = (Result) jdaResult;
-    Message response = this.processResult(result, context);
+    MessageCreateData response = this.processResult(result, context);
     Consumer<Message> consumer = this.processConsumer(result, context);
     Optional<MessageChannel> optionalChannel = context.getChannel();
     if (context instanceof SlashCommandContext) {

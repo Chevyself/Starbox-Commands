@@ -7,8 +7,8 @@ import chevyself.github.commands.jda.annotations.Entry;
 import chevyself.github.commands.jda.result.Result;
 import chevyself.github.commands.time.annotations.TimeAmount;
 import chevyself.github.commands.util.Strings;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 
 public class TestCommands {
 
@@ -41,7 +41,7 @@ public class TestCommands {
   @Command(aliases = "foo", description = "Who is a foo", cooldown = @TimeAmount("10s"))
   public Result foo(@Required(name = "foo", description = "The foo") Member member) {
     return Result.builder()
-        .setMessage(() -> new MessageBuilder().setContent("The foo is ").append(member).build())
+        .setMessage(() -> new MessageCreateBuilder().setContent("The foo is ").mention(member).build())
         .setCooldown(true)
         .build();
   }
