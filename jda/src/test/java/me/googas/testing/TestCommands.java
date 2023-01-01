@@ -41,7 +41,8 @@ public class TestCommands {
   @Command(aliases = "foo", description = "Who is a foo", cooldown = @TimeAmount("10s"))
   public Result foo(@Required(name = "foo", description = "The foo") Member member) {
     return Result.builder()
-        .setMessage(() -> new MessageCreateBuilder().setContent("The foo is ").mention(member).build())
+        .setMessage(
+            () -> new MessageCreateBuilder().setContent("The foo is ").mention(member).build())
         .setCooldown(true)
         .build();
   }

@@ -31,8 +31,8 @@ public class Result implements JdaResult {
   /** Which changes the output in the {@link CommandListener} depends on the command output. */
   @NonNull @Getter private final ResultType type;
   /**
-   * The message that will be sent to the {@link net.dv8tion.jda.api.entities.channel.concrete.TextChannel} where the
-   * command was executed
+   * The message that will be sent to the {@link
+   * net.dv8tion.jda.api.entities.channel.concrete.TextChannel} where the command was executed
    */
   private final MessageCreateData message;
   /**
@@ -54,7 +54,10 @@ public class Result implements JdaResult {
    * @param success the action to do after the message is sent
    */
   protected Result(
-      @NonNull ResultType type, MessageCreateData message, String description, Consumer<Message> success) {
+      @NonNull ResultType type,
+      MessageCreateData message,
+      String description,
+      Consumer<Message> success) {
     this.type = type;
     this.message = message;
     this.description = description;
