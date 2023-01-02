@@ -1,203 +1,129 @@
-Starbox-Commands [![Jitpack](https://jitpack.io/v/me.googas/starbox-commands.svg)](https://jitpack.io/#me.googas/starbox-commands)
+Starbox-Commands [![](https://jitpack.io/v/Chevyself/starbox-commands.svg)](https://jitpack.io/#Chevyself/starbox-commands)
 ===
 
-This project aims to provide an easy creation of commands for Bukkit, Bungee, JDA and more to come.
-It includes some utilities to shorten the amount of lines in your project.
+This project is an abstract interface extended for the use of Bukkit, Bungeecord and JDA. It can also be extended to any platform.
 
-JavaDoc
---------
-Check latest JavaDoc
-in [Jitpack](https://jitpack.io/com/github/chevyself/starbox-commands/master-SNAPSHOT/javadoc/)
-
-Installing
+Documentation and Installation
 --------
 
-1. Add the repository to your maven project
+* Check latest JavaDoc in [Jitpack](https://jitpack.io/com/github/chevyself/starbox-commands/master-SNAPSHOT/javadoc/)
+* You can find tutorials in the [Wiki](https://github.com/Chevyself/Starbox-commands/wiki).
+* Installation steps can be found in [Jitpack](https://jitpack.io/com/github/chevyself/starbox-commands/master-SNAPSHOT/javadoc/) 
 
-```xml
-<repositories>
-  <repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-  </repository>
-</repositories>
-```
+---
 
-2. Add the dependency
-
-### Bukkit
-
-```xml
-<dependency>
-  <groupId>me.googas.starbox-commands</groupId>
-  <artifactId>bukkit</artifactId>
-  <version>tag</version>
-</dependency>
-```
-
-### Bungee
-
-```xml
-<dependency>
-  <groupId>me.googas.starbox-commands</groupId>
-  <artifactId>bungee</artifactId>
-  <version>Tag</version>
-</dependency>
-```
-
-### JDA
-
-```xml
-<dependency>
-  <groupId>me.googas.starbox-commands</groupId>
-  <artifactId>jda</artifactId>
-  <version>Tag</version>
-</dependency>
-```
-
-### Core
-
-This is used to create implementations of the `core` framework
-
-```xml
-<dependency>
-  <groupId>me.googas.starbox-commands</groupId>
-  <artifactId>core</artifactId>
-  <version>Tag</version>
-</dependency>
-```
-
-Usage
+Creating the Command Manager
 --------
 
-### Creating a command
+Each module has implemented `CommandManager`, thus, making the constructor of the class different in each. While in Bukkit and Bungee you need the `plugin`, in JDA you need the `JDA` object. The manager depends in two classes: the [ProvidersRegistry](./wiki/Providers-Registry) which handles argument providers and the [MessagesProvider](./wiki/Messages-Provider) which provides messages.
 
-1. Every single commands requires the `@Command` annotation and in each project it has different
-   properties.
-
-2. The annotation must be in the method that you want to use as a command. The method must
-   return `Void` or `Result` else
-   when the command is being parsed the `CommandManager` will thrown an error. `Result` is also
-   different in each module.
-
-At the moment your method should look like this:
-
+Bukkit and Bungee example:
 ```java
-public class Test {
-    @Command(aliases = "command")
-    public Result command() {
-        return new Result();
+public class Main extends JavaPlugin {
+    private CommandManager commandManager;
+    
+    @Override
+    public void onEnable() {
+        ProvidersRegistry<> providersRegistry = ...;
+        MessagesProvider messagesProvider = ...;
+        this.commandManager = new CommandManager(this, providersRegistry, messagesProvider);
     }
 }
 ```
 
-4. Simple as that! Now you can add all the logic you want to the command, parse and register it in
-   the `CommandManager`
+The JDA module also depends in the `ListenerOptions` which handles commands pre-execution, any kind of error, prefixes and the result of slash commands. You could use the default behaviour using `GenericListenerOptions` or create your own class extending `ListenerOptions`.
 
-5. You can also create parent commands which will make the execution as follows:
-
-> (prefix)(parent) (command)
-
-6. Just add the annotation `@Parent` to the method that should be the parent method.
-
-### Arguments for commands
-
-There are three types of arguments:
-
-#### Extra
-
-Extra arguments do not require any type of annotation and to register the provider it must
-extend `StarboxExtraArgumentProvider`
-or just implement the interface given by the module:
-
-*
-Bukkit: [BukkitExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitExtraArgumentProvider.java)
-*
-Bungee: [BungeeExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeExtraArgumentProvider.java)
-*
-JDA: [JdaExtraArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaExtraArgumentProvider.java)
-
-In general extra arguments is the context of the command, the input, the sender, and such.
-
+JDA example:
 ```java
-public class Test {
-    @Command(name = "command")
-    public Result command(CommandSender sender) {
-        return new Result();
+public class Main {
+    public static void main(String[] args) {
+        ProvidersRegistry<> providersRegistry = ...;
+        MessagesProvider messagesProvider = ...;
+        JDA jda = ...;
+        ListenerOptions listenerOptions = ...;
+        CommandManager commandManager = new CommandManager(providersRegistry, messagesProvider, jda, listenerOptions);
     }
 }
 ```
 
-#### Required and Free
+### Middlewares
 
-Both arguments require an input from the user, and the provider must extend `Starbox` or just
-implement the interface given by the module: The provider will never
-return `null` as it may be needed as a required argument, and the `String` parameter is never null
-too.
+Once you got your manager, you can add [middlewares](./wiki/Middlewares). These will change how the command is executed, for example, you can add a middleware to check if the sender has a permission or if the command is executed in a specific channel. You can also handle the result, for example, you can add a middleware to send a message to the sender if the command was executed successfully.
 
-*
-Bukkit: [BukkitArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitArgumentProvider.java)
-*
-Bungee: [BungeeArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeArgumentProvider.java)
-*
-JDA: [JdaArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaArgumentProvider.java)
+Example:
+```java
+CommandManager manager = ...;
+// Adds a global middleware
+manager.addGlobalMiddleware(middleware);
+// Adds many global middlewares
+manager.addGlobalMiddlewares(middleware1, middleware2, middleware3);
+// Adds a middleware
+manager.addMiddleware(middleware);
+// Adds many middlewares
+manager.addMiddlewares(middleware1, middleware2, middleware3);
+```
 
-It is easy to understand each annotation as a `NonNull` and `Nullable`. This may be used as
-arguments for a different
-output in the logic.
+### Registering commands
+
+Once you got your manager ready, you can register your commands. You can either implement the command class:
+
+* Bukkit -> StarboxBukkitCommand
+* Bungee -> BungeeCommand
+* JDA -> JdaCommand
+
+Or [parse commands using reflection](./wiki/Reflection-Commands).
+
+Example:
+```java
+List<AnnotatedCommands> commands = commandManager.parseCommands(new MyCommand());
+```
+
+When you have your commands ready, you can register them:
 
 ```java
-public class Test {
-    @Command(name = "command")
-    public Result command(CommandSender sender, @Required String name, @Free long size) {
-        return new Result();
-    }
-}            
-```            
+// Registers a single command
+commandManager.register(command);
+// Registers many commands
+commandManager.registerAll(command1, command2, command3);
+// Register many commands in a collection
+List<? extends StarboxCommand> commands = ...;
+commandManager.registerAll(commands);
+```
 
-#### Multiple
+## Close the manager
 
-It is just as `@Required` or `@Free` but requires multiple strings, it requires any of the above
-annotation plus
-`@Multiple` and the provider must extend `StarboxMultipleArgumentProvider` or just implement the
-interface given by the module.
+Managers have a `close()` method which will close the manager and unregister all commands.
 
-*
-Bukkit: [BukkitMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bukkit/src/main/java/me/googas/commands/bukkit/providers/type/BukkitMultiArgumentProvider.java)
-*
-Bungee: [BungeeMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/bungee/src/main/java/me/googas/commands/bungee/providers/type/BungeeMultiArgumentProvider.java)
-*
-JDA: [JdaMultiArgumentProvider](https://github.com/Chevyself/Starbox-Commands/blob/master/jda/src/main/java/me/googas/commands/jda/providers/type/JdaMultiArgumentProvider.java)
-
+Example:
 ```java
-public class Test {
-    @Command(name = "command")
-    public Result command(CommandSender sender, @Required String name, @Free long size, @Multiple @Free JoinedStrings args) {
-        return new Result();
-    }
-}            
-```    
+manager.close();
+```
 
-Registering commands
+---
+
+Dependencies
 --------
 
-1. Creating the Command Manager. Each `CommandManager` has its own options.
+You are adviced to view the platforms used in the framework.
 
-```java
-CommandManager manager = new CommandManager(
-        // Options of the command manager
-        );
-```
+* [Spigot](https://hub.spigotmc.org/)
+* [BungeeCord](https://github.com/SpigotMC/BungeeCord)
+* [JDA](https://github.com/DV8FromTheWorld/JDA)
 
-2. You can either create a command extending the class in the module that
-   implements `StarboxCommand` or using `CommandManager#parseCommand(Object)` which will get the
-   commands using
-   reflection as shown in [creating a command](#creating-a-command)
+Contribution
+--------
+To contribute, simply, branch out of the `master` branch and create a pull request. If you want to add a new feature, please, create an issue first.
 
-```java
-manager.register(manager.parseCommand(cmd));
-// or
-manager.parseAndRegister(cmd);
-```
+Deprecated content will be removed in the next major release.
 
-4. You are done! You've registered your commands.
+Subject to change:
+* [ ] The `@Command` annotation of each module may join in a single one.
+* [ ] The `CommandManager` of each module may join in a single one.
+* [ ] An `Adapter` interface may be introduced to handle the differences between each module.
+
+All the changes above are in favor to reduce duplicated code and make it easier to maintain.
+
+License
+--------
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
