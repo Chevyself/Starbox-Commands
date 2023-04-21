@@ -1,15 +1,15 @@
 package me.googas;
 
-import chevyself.github.commands.annotations.Free;
-import chevyself.github.commands.annotations.Multiple;
-import chevyself.github.commands.annotations.Required;
-import chevyself.github.commands.arguments.ArgumentBehaviour;
-import chevyself.github.commands.flags.Flag;
-import chevyself.github.commands.system.Command;
-import chevyself.github.commands.system.Result;
-import chevyself.github.commands.system.SystemResult;
-import chevyself.github.commands.system.context.CommandContext;
-import chevyself.github.commands.time.annotations.TimeAmount;
+import com.github.chevyself.starbox.annotations.Free;
+import com.github.chevyself.starbox.annotations.Multiple;
+import com.github.chevyself.starbox.annotations.Required;
+import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
+import com.github.chevyself.starbox.flags.Flag;
+import com.github.chevyself.starbox.system.Command;
+import com.github.chevyself.starbox.system.Result;
+import com.github.chevyself.starbox.system.SystemResult;
+import com.github.chevyself.starbox.system.context.CommandContext;
+import com.github.chevyself.starbox.time.annotations.TimeAmount;
 import java.util.Locale;
 
 @SuppressWarnings("JavaDoc")

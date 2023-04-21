@@ -1,12 +1,12 @@
 package me.googas.testing;
 
-import chevyself.github.commands.annotations.Free;
-import chevyself.github.commands.annotations.Required;
-import chevyself.github.commands.jda.annotations.Command;
-import chevyself.github.commands.jda.annotations.Entry;
-import chevyself.github.commands.jda.result.Result;
-import chevyself.github.commands.time.annotations.TimeAmount;
-import chevyself.github.commands.util.Strings;
+import com.github.chevyself.starbox.annotations.Free;
+import com.github.chevyself.starbox.annotations.Required;
+import com.github.chevyself.starbox.jda.annotations.Command;
+import com.github.chevyself.starbox.jda.annotations.Entry;
+import com.github.chevyself.starbox.jda.result.Result;
+import com.github.chevyself.starbox.time.annotations.TimeAmount;
+import com.github.chevyself.starbox.util.Strings;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 

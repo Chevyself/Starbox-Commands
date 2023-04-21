@@ -1,6 +1,6 @@
 package me.googas.samples;
 
-import chevyself.github.commands.time.TimeUtil;
+import com.github.chevyself.starbox.time.TimeUtil;
 import java.time.Duration;
 
 public class TimeUtilTest {

@@ -1,12 +1,12 @@
 package me.googas.testing;
 
-import chevyself.github.commands.jda.CommandManager;
-import chevyself.github.commands.jda.GenericListenerOptions;
-import chevyself.github.commands.jda.messages.JdaMessagesProvider;
-import chevyself.github.commands.jda.messages.MessagesProvider;
-import chevyself.github.commands.jda.middleware.CooldownMiddleware;
-import chevyself.github.commands.jda.middleware.PermissionMiddleware;
-import chevyself.github.commands.jda.providers.registry.JdaProvidersRegistry;
+import com.github.chevyself.starbox.jda.CommandManager;
+import com.github.chevyself.starbox.jda.GenericListenerOptions;
+import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
+import com.github.chevyself.starbox.jda.messages.MessagesProvider;
+import com.github.chevyself.starbox.jda.middleware.CooldownMiddleware;
+import com.github.chevyself.starbox.jda.middleware.PermissionMiddleware;
+import com.github.chevyself.starbox.jda.providers.registry.JdaProvidersRegistry;
 import java.util.Arrays;
 import javax.security.auth.login.LoginException;
 import lombok.NonNull;

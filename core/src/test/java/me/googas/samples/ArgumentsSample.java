@@ -1,10 +1,10 @@
 package me.googas.samples;
 
-import chevyself.github.commands.annotations.Free;
-import chevyself.github.commands.annotations.Multiple;
-import chevyself.github.commands.annotations.Required;
-import chevyself.github.commands.arguments.Argument;
-import chevyself.github.commands.context.StarboxCommandContext;
+import com.github.chevyself.starbox.annotations.Free;
+import com.github.chevyself.starbox.annotations.Multiple;
+import com.github.chevyself.starbox.annotations.Required;
+import com.github.chevyself.starbox.arguments.Argument;
+import com.github.chevyself.starbox.context.StarboxCommandContext;
 import java.util.List;
 
 @SuppressWarnings("JavaDoc")

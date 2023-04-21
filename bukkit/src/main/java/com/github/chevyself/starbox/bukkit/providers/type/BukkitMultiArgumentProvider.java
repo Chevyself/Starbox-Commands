@@ -1,0 +1,24 @@
+package com.github.chevyself.starbox.bukkit.providers.type;
+
+import com.github.chevyself.starbox.bukkit.context.CommandContext;
+import com.github.chevyself.starbox.providers.type.StarboxMultipleArgumentProvider;
+import java.util.List;
+import lombok.NonNull;
+
+/**
+ * An extension for a providers made for bukkit commands.
+ *
+ * @param <O> the type of the object to provide
+ */
+public interface BukkitMultiArgumentProvider<O>
+    extends StarboxMultipleArgumentProvider<O, CommandContext> {
+
+  /**
+   * Get the suggestions for the command.
+   *
+   * @param context the context of the command
+   * @return a list of suggestions of the command
+   */
+  @NonNull
+  List<String> getSuggestions(@NonNull CommandContext context);
+}
