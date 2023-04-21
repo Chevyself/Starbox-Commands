@@ -3,6 +3,8 @@ Starbox-Commands [![](https://jitpack.io/v/Chevyself/starbox-commands.svg)](http
 
 This project is an abstract interface extended for the use of Bukkit, Bungeecord and JDA. It can also be extended to any platform.
 
+It aims to simplify the process of creating commands and managing commands in Bukkit, Bungeecord and JDA. It also has an interface that can be extended to any platform. You can easily customize commands with middlewares, providers and other managing options. It's easy to write complex commands with minimal effort. 
+
 Documentation and Installation
 --------
 
