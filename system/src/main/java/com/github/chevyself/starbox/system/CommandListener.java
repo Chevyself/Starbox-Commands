@@ -1,9 +1,9 @@
 package com.github.chevyself.starbox.system;
 
 import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.FlagArgument.Parser;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.context.sender.ConsoleCommandSender;
-import com.github.chevyself.starbox.flags.FlagArgument.Parser;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;

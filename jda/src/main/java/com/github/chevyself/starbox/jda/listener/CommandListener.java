@@ -75,7 +75,6 @@ public class CommandListener implements EventListener {
    */
   @SubscribeEvent
   public void onSlashCommand(SlashCommandInteractionEvent event) {
-    event.deferReply().queue();
     String name = event.getName();
     String[] strings =
         event.getOptions().stream().map(OptionMapping::getAsString).toArray(String[]::new);

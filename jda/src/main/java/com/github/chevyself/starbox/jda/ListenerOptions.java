@@ -33,8 +33,12 @@ public interface ListenerOptions {
    * @param name the alias of the {@link JdaCommand} that is going to be executed
    * @param strings the arguments used to execute the command
    */
-  void preCommand(
-      @NonNull SlashCommandInteractionEvent event, @NonNull String name, @NonNull String[] strings);
+  default void preCommand(
+      @NonNull SlashCommandInteractionEvent event,
+      @NonNull String name,
+      @NonNull String[] strings) {
+    event.deferReply(true).queue();
+  }
 
   /**
    * Called before the command is executed. This means before {@link
@@ -48,7 +52,7 @@ public interface ListenerOptions {
       @NonNull MessageReceivedEvent event, @NonNull String commandName, @NonNull String[] strings);
 
   /**
-   * Handles any kind of error that is thrown in {@link CommandListener}
+   * Handles any kind of error that is thrown in {@link CommandListener}.
    *
    * @param fail any kind of exception thrown in {@link CommandListener}
    * @param context the context of the command execution

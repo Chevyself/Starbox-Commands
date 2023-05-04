@@ -140,14 +140,6 @@ public class GenericListenerOptions implements ListenerOptions {
 
   @Override
   public void preCommand(
-      @NonNull SlashCommandInteractionEvent event,
-      @NonNull String name,
-      @NonNull String[] strings) {
-    // Empty. The slash command interaction will be deleted
-  }
-
-  @Override
-  public void preCommand(
       @NonNull MessageReceivedEvent event, @NonNull String commandName, @NonNull String[] strings) {
     if (this.isDeleteCommands() && event.getChannelType() != ChannelType.PRIVATE) {
       event.getMessage().delete().queue();
