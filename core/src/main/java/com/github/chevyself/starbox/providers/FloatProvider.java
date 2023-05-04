@@ -45,6 +45,6 @@ public final class FloatProvider<T extends StarboxCommandContext>
 
   @Override
   public boolean provides(@NonNull Class<?> clazz) {
-    return clazz == Double.class || clazz == double.class;
+    return clazz == Float.class || clazz == float.class;
   }
 }
