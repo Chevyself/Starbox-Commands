@@ -1,5 +1,6 @@
 package com.github.chevyself.starbox.bukkit.messages;
 
+import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
@@ -7,8 +8,10 @@ import com.github.chevyself.starbox.time.TimeUtil;
 import com.github.chevyself.starbox.util.Strings;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import lombok.NonNull;
+import org.bukkit.command.Command;
 import org.bukkit.plugin.Plugin;
 
 /** The default {@link MessagesProvider} for Bukkit. */
@@ -83,6 +86,17 @@ public class BukkitMessagesProvider implements MessagesProvider {
     return BukkitMessagesProvider.ERROR_PREFIX
         + "&c&oYou will be allowed to run this command in &4&o"
         + TimeUtil.toString(timeLeft);
+  }
+
+  @Override
+  public @NonNull String commandHelp(@NonNull StarboxCommand<CommandContext, ?> command,
+      CommandContext context) {
+    if (command instanceof StarboxBukkitCommand) {
+      StarboxBukkitCommand bukkitCommand = (StarboxBukkitCommand) command;
+      return "&c" + StarboxCommand.genericHelp(bukkitCommand, bukkitCommand.getChildren(),
+          Command::getName);
+    }
+    return "&cUnknown command";
   }
 
   @NonNull

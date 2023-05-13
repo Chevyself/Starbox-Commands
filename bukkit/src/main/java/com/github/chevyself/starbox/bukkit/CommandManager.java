@@ -13,6 +13,7 @@ import com.github.chevyself.starbox.bukkit.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.bukkit.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.bukkit.providers.registry.BukkitProvidersRegistry;
 import com.github.chevyself.starbox.bukkit.result.BukkitResult;
+import com.github.chevyself.starbox.bukkit.result.Result;
 import com.github.chevyself.starbox.bukkit.topic.PluginHelpTopic;
 import com.github.chevyself.starbox.bukkit.topic.StarboxCommandHelpTopicFactory;
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
@@ -56,7 +57,7 @@ import org.bukkit.plugin.Plugin;
  *
  * }</pre>
  */
-public class CommandManager implements StarboxCommandManager<CommandContext, StarboxBukkitCommand> {
+public class CommandManager implements StarboxCommandManager<Command, CommandContext, StarboxBukkitCommand> {
 
   /**
    * The Bukkit HelpMap which is used to parseAndRegister. the {@link org.bukkit.help.HelpTopic} for
@@ -154,7 +155,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
       if (method.isAnnotationPresent(Command.class) && !method.isAnnotationPresent(Parent.class)) {
         final AnnotatedCommand cmd = this.parseCommand(object, method);
         if (parent != null) {
-          parent.addChildren(cmd);
+          parent.addChild(cmd);
         } else {
           commands.add(cmd);
         }
@@ -275,9 +276,50 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   }
 
   @Override
-  public @NonNull StarboxCommandManager<CommandContext, StarboxBukkitCommand> addMiddleware(
+  public @NonNull CommandManager addMiddleware(
       @NonNull Middleware<CommandContext> middleware) {
     this.middlewares.add(middleware);
     return this;
+  }
+
+  @Override
+  public @NonNull StarboxBukkitCommand provideDefaultParent(@NonNull Command command) {
+    List<StarboxBukkitCommand> children = new ArrayList<>();
+    return new StarboxBukkitCommand(this, command.aliases()[0], command.aliases().length > 1
+        ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
+        : new ArrayList<>(), command.description(),
+        "/"
+            + Strings.buildUsageAliases(command.aliases())
+            + " <command> [arguments]", Option.of(command.options()), this.getMiddlewares(command), command.async(), CooldownManager.of(command.cooldown()).orElse(null)) {
+      @Override
+      public BukkitResult execute(@NonNull CommandContext context) {
+        return Result.of(messagesProvider.commandHelp(this, context));
+      }
+
+      @Override
+      public String getPermission() {
+        return command.permission();
+      }
+
+      @Override
+      public boolean hasAlias(@NonNull String alias) {
+        for (String string : command.aliases()) {
+          if (alias.equalsIgnoreCase(string)) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      @Override
+      public @NonNull Collection<StarboxBukkitCommand> getChildren() {
+        return children;
+      }
+    };
+  }
+
+  @Override
+  public @NonNull Class<Command> getAnnotation() {
+    return Command.class;
   }
 }
