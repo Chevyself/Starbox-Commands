@@ -13,6 +13,7 @@ import com.github.chevyself.starbox.bungee.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.bungee.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.bungee.providers.registry.BungeeProvidersRegistry;
 import com.github.chevyself.starbox.bungee.result.BungeeResult;
+import com.github.chevyself.starbox.bungee.result.Result;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
@@ -48,7 +49,7 @@ import net.md_5.bungee.api.plugin.PluginManager;
  *
  * }</pre>
  */
-public class CommandManager implements StarboxCommandManager<CommandContext, BungeeCommand> {
+public class CommandManager implements StarboxCommandManager<Command, CommandContext, BungeeCommand> {
 
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final PluginManager manager;
@@ -103,7 +104,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
       if (!method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
         final AnnotatedCommand cmd = this.parseCommand(object, method);
         if (parent != null) {
-          parent.addChildren(cmd);
+          parent.addChild(cmd);
         } else {
           commands.add(cmd);
         }
@@ -217,5 +218,30 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
   public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext> middleware) {
     this.middlewares.add(middleware);
     return this;
+  }
+
+  @Override
+  public @NonNull BungeeCommand provideDefaultParent(@NonNull Command annotation) {
+    return new BungeeCommand(
+        annotation.aliases()[0],
+        annotation.permission().isEmpty() ? null : annotation.permission(),
+        new ArrayList<>(),
+        this,
+        Option.of(annotation.options()),
+        this.getMiddlewares(annotation),
+        annotation.async(),
+        CooldownManager.of(annotation.cooldown()).orElse(null),
+        Arrays.copyOfRange(annotation.aliases(), 1, annotation.aliases().length)
+    ) {
+      @Override
+      public BungeeResult execute(@NonNull CommandContext context) {
+        return Result.of(messagesProvider.commandHelp(this, context));
+      }
+    };
+  }
+
+  @Override
+  public @NonNull Class<Command> getAnnotation() {
+    return Command.class;
   }
 }
