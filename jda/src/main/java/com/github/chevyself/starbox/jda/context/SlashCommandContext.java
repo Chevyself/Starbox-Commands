@@ -86,15 +86,17 @@ public class SlashCommandContext implements CommandContext {
 
   @Override
   public @NonNull SlashCommandContext getChildren() {
+    String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
+    FlagArgument.Parser parse = FlagArgument.parse(command.getOptions(), copy);
     return new SlashCommandContext(
         this.jda,
         command,
         this.sender,
-        this.string,
-        Arrays.copyOfRange(strings, 1, strings.length),
+        parse.getArgumentsString(),
+        parse.getArgumentsArray(),
         this.registry,
         this.messagesProvider,
-        flags,
+        parse.getFlags(),
         event,
         this.options,
         this.channel);

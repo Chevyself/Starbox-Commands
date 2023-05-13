@@ -53,8 +53,6 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
         SystemCommand subcommand = optionalCommand.get();
         String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
         FlagArgument.Parser parse = FlagArgument.parse(subcommand.getOptions(), copy);
-        // FIXME: Much check in other modules that this is correct, this was not
-        // parsing flags correctly. It's been fixed in this module.
         return subcommand.execute(
             new CommandContext(
                 this,
