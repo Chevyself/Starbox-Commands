@@ -16,7 +16,6 @@ import com.github.chevyself.starbox.util.Strings;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -26,18 +25,13 @@ import lombok.NonNull;
  *
  * <p>The methods that are annotated with {@link Command} represent of this commands
  */
-public class ReflectSystemCommand
-    implements SystemCommand, ReflectCommand<CommandContext, SystemCommand> {
+public class ReflectSystemCommand extends AbstractSystemCommand
+    implements ReflectCommand<CommandContext, SystemCommand> {
 
   @NonNull @Getter private final CommandManager manager;
-  @NonNull @Getter private final List<String> aliases;
-  @NonNull @Getter private final List<Option> options;
-  @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
   @NonNull @Getter private final Method method;
   @NonNull @Getter private final Object object;
   @NonNull @Getter private final List<Argument<?>> arguments;
-  @NonNull @Getter private final List<SystemCommand> children;
-  private final CooldownManager cooldown;
 
   /**
    * Create the command.
@@ -65,20 +59,16 @@ public class ReflectSystemCommand
       @NonNull List<Argument<?>> arguments,
       @NonNull List<SystemCommand> children,
       CooldownManager cooldown) {
-    this.middlewares = middlewares;
+    super(aliases, children, options, middlewares, cooldown);
     this.method = method;
     this.object = object;
     this.arguments = arguments;
     this.manager = manager;
-    this.aliases = aliases;
-    this.children = children;
-    this.options = options;
-    this.cooldown = cooldown;
   }
 
   @Override
   public SystemResult execute(@NonNull CommandContext context) {
-    return SystemCommand.super.execute(context);
+    return super.execute(context);
   }
 
   @Override
@@ -93,14 +83,14 @@ public class ReflectSystemCommand
       }
     } catch (final IllegalAccessException e) {
       e.printStackTrace();
-      return new Result("IllegalAccessException, e");
+      return new Result("IllegalAccessException: " + e.getMessage() + ", e");
     } catch (final InvocationTargetException e) {
       final String message = e.getMessage();
       if (message != null && !message.isEmpty()) {
         return new Result("{0}");
       } else {
         e.printStackTrace();
-        return new Result("InvocationTargetException, e");
+        return new Result("InvocationTargetException: " + e.getMessage() + "e");
       }
     } catch (MissingArgumentException | ArgumentProviderException e) {
       return new Result(e.getMessage());
@@ -132,10 +122,5 @@ public class ReflectSystemCommand
       }
     }
     return false;
-  }
-
-  @Override
-  public @NonNull Optional<CooldownManager> getCooldownManager() {
-    return Optional.ofNullable(cooldown);
   }
 }

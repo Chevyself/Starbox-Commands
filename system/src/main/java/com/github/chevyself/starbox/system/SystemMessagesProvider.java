@@ -1,8 +1,10 @@
 package com.github.chevyself.starbox.system;
 
+import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.time.TimeUtil;
 import java.time.Duration;
+import java.util.Collection;
 import lombok.NonNull;
 
 /** The default {@link MessagesProvider} for System commands. */
@@ -54,5 +56,26 @@ public class SystemMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
     return "You are not allowed to run this command for another " + TimeUtil.toString(timeLeft);
+  }
+
+  @Override
+  public @NonNull String commandHelp(
+      @NonNull StarboxCommand<CommandContext, ?> command, CommandContext context) {
+    StringBuilder builder = new StringBuilder(StarboxCommand.generateUsage(command));
+    if (command.getChildren().size() > 0 && command instanceof SystemCommand) {
+      SystemCommand systemCommand = (SystemCommand) command;
+      Collection<SystemCommand> children = systemCommand.getChildren();
+      if (children.size() > 0) {
+        builder.append("\nSubcommands:");
+        for (SystemCommand child : children) {
+          builder
+              .append("\n + ")
+              .append(child.getName())
+              .append(" ")
+              .append(StarboxCommand.generateUsage(child));
+        }
+      }
+    }
+    return builder.toString();
   }
 }

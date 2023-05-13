@@ -3,6 +3,7 @@ package com.github.chevyself.starbox.system;
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.arguments.Argument;
+import com.github.chevyself.starbox.flags.FlagArgument;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.context.sender.CommandSender;
 import com.github.chevyself.starbox.util.Strings;
@@ -49,18 +50,20 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
     if (strings.length >= 1) {
       Optional<SystemCommand> optionalCommand = this.getChildren(strings[0]);
       if (optionalCommand.isPresent()) {
+        SystemCommand subcommand = optionalCommand.get();
         String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
-        return optionalCommand
-            .get()
-            .execute(
-                new CommandContext(
-                    this,
-                    context.getSender(),
-                    copy,
-                    Strings.join(copy),
-                    context.getRegistry(),
-                    context.getMessagesProvider(),
-                    context.getFlags()));
+        FlagArgument.Parser parse = FlagArgument.parse(subcommand.getOptions(), copy);
+        // FIXME: Much check in other modules that this is correct, this was not
+        // parsing flags correctly. It's been fixed in this module.
+        return subcommand.execute(
+            new CommandContext(
+                this,
+                context.getSender(),
+                parse.getArgumentsArray(),
+                parse.getArgumentsString(),
+                context.getRegistry(),
+                context.getMessagesProvider(),
+                parse.getFlags()));
       }
     }
     SystemResult result =
@@ -88,4 +91,7 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
   @Override
   @NonNull
   Optional<CooldownManager> getCooldownManager();
+
+  @NonNull
+  String getName();
 }

@@ -13,6 +13,9 @@ import com.github.chevyself.starbox.time.annotations.TimeAmount;
 import java.util.Locale;
 
 @SuppressWarnings("JavaDoc")
+@Command(
+    aliases = "test",
+    options = {@Flag(aliases = "message", value = "Hello world!")})
 public class Commands {
 
   @Command(

@@ -2,14 +2,18 @@ package com.github.chevyself.starbox.system;
 
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
+import com.github.chevyself.starbox.annotations.CommandCollection;
 import com.github.chevyself.starbox.annotations.Parent;
+import com.github.chevyself.starbox.annotations.ParentOverride;
 import com.github.chevyself.starbox.arguments.Argument;
+import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.middleware.CooldownMiddleware;
 import com.github.chevyself.starbox.system.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.time.TimeUtil;
+import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -119,6 +123,11 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
       throw new IllegalArgumentException(
           method + " does not contain the annotation " + Command.class);
     }
+    return this.parseCommand(object, method, annotation);
+  }
+
+  private @NonNull ReflectSystemCommand parseCommand(
+      @NonNull Object object, @NonNull Method method, @NonNull Command annotation) {
     Duration duration = TimeUtil.durationOf(annotation.cooldown());
     return new ReflectSystemCommand(
         this,
@@ -211,5 +220,67 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext> middleware) {
     this.middlewares.add(middleware);
     return this;
+  }
+
+  @Override
+  public @NonNull StarboxCommandManager<CommandContext, SystemCommand> registerAllIn(
+      @NonNull String packageName) {
+    new ClassFinder<>(packageName)
+        .setRecursive(true)
+        .setPredicate(ClassFinder.checkForAnyAnnotations(Command.class, CommandCollection.class))
+        .find()
+        .forEach(
+            clazz -> {
+              Object instance;
+              try {
+                instance = clazz.newInstance();
+              } catch (InstantiationException | IllegalAccessException e) {
+                throw new CommandRegistrationException("Could not create instance of " + clazz, e);
+              }
+              if (clazz.isAnnotationPresent(Command.class)) {
+                this.registerAllIn(instance, clazz);
+              } else if (clazz.isAnnotationPresent(CommandCollection.class)) {
+                this.parseAndRegister(instance);
+              }
+            });
+    return this;
+  }
+
+  private void registerAllIn(Object instance, @NonNull Class<?> clazz) {
+    Command annotation = clazz.getAnnotation(Command.class);
+    Duration duration = TimeUtil.durationOf(annotation.cooldown());
+    List<SystemCommand> children = new ArrayList<>(this.parseCommands(instance));
+    Optional<Method> override = this.getOverride(clazz);
+    SystemCommand parent;
+    if (override.isPresent()) {
+      parent = this.parseCommand(instance, override.get(), annotation);
+    } else {
+      parent =
+          new AbstractSystemCommand(
+              Arrays.asList(annotation.aliases()),
+              children,
+              Option.of(annotation.options()),
+              this.getMiddlewares(annotation),
+              duration.isZero() ? null : new CooldownManager(duration)) {
+            @Override
+            public SystemResult run(@NonNull CommandContext context) {
+              return new Result(
+                  "usage: " + this.getName() + " " + messagesProvider.commandHelp(this, context));
+            }
+          };
+    }
+    this.register(parent);
+  }
+
+  @NonNull
+  private Optional<Method> getOverride(@NonNull Class<?> clazz) {
+    Method optional = null;
+    for (Method method : clazz.getDeclaredMethods()) {
+      if (method.isAnnotationPresent(ParentOverride.class)) {
+        optional = method;
+        break;
+      }
+    }
+    return Optional.ofNullable(optional);
   }
 }
