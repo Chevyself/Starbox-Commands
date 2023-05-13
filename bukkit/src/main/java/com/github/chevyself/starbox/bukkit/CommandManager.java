@@ -13,7 +13,6 @@ import com.github.chevyself.starbox.bukkit.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.bukkit.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.bukkit.providers.registry.BukkitProvidersRegistry;
 import com.github.chevyself.starbox.bukkit.result.BukkitResult;
-import com.github.chevyself.starbox.bukkit.result.Result;
 import com.github.chevyself.starbox.bukkit.topic.PluginHelpTopic;
 import com.github.chevyself.starbox.bukkit.topic.StarboxCommandHelpTopicFactory;
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
@@ -57,7 +56,7 @@ import org.bukkit.plugin.Plugin;
  *
  * }</pre>
  */
-public class CommandManager implements StarboxCommandManager<Command, CommandContext, StarboxBukkitCommand> {
+public class CommandManager implements StarboxCommandManager<CommandContext, StarboxBukkitCommand> {
 
   /**
    * The Bukkit HelpMap which is used to parseAndRegister. the {@link org.bukkit.help.HelpTopic} for
@@ -85,6 +84,7 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final List<Middleware<CommandContext>> globalMiddlewares;
   @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
+  @NonNull @Getter private final BukkitCommandParser parser;
 
   /**
    * Create an instance.
@@ -105,6 +105,7 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
     this.messagesProvider = messagesProvider;
     this.globalMiddlewares = new ArrayList<>();
     this.middlewares = new ArrayList<>();
+    this.parser = new BukkitCommandParser(this);
   }
 
   /**
@@ -276,50 +277,8 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
   }
 
   @Override
-  public @NonNull CommandManager addMiddleware(
-      @NonNull Middleware<CommandContext> middleware) {
+  public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext> middleware) {
     this.middlewares.add(middleware);
     return this;
-  }
-
-  @Override
-  public @NonNull StarboxBukkitCommand provideDefaultParent(@NonNull Command command) {
-    List<StarboxBukkitCommand> children = new ArrayList<>();
-    return new StarboxBukkitCommand(this, command.aliases()[0], command.aliases().length > 1
-        ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
-        : new ArrayList<>(), command.description(),
-        "/"
-            + Strings.buildUsageAliases(command.aliases())
-            + " <command> [arguments]", Option.of(command.options()), this.getMiddlewares(command), command.async(), CooldownManager.of(command.cooldown()).orElse(null)) {
-      @Override
-      public BukkitResult execute(@NonNull CommandContext context) {
-        return Result.of(messagesProvider.commandHelp(this, context));
-      }
-
-      @Override
-      public String getPermission() {
-        return command.permission();
-      }
-
-      @Override
-      public boolean hasAlias(@NonNull String alias) {
-        for (String string : command.aliases()) {
-          if (alias.equalsIgnoreCase(string)) {
-            return true;
-          }
-        }
-        return false;
-      }
-
-      @Override
-      public @NonNull Collection<StarboxBukkitCommand> getChildren() {
-        return children;
-      }
-    };
-  }
-
-  @Override
-  public @NonNull Class<Command> getAnnotation() {
-    return Command.class;
   }
 }

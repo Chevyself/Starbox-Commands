@@ -18,7 +18,8 @@ import lombok.NonNull;
  * @param <C> the type of command context that is used to run the commands
  * @param <T> the type of command that this instance manages
  */
-public interface StarboxCommandManager<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
+public interface StarboxCommandManager<
+    C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
    * Get all the middlewares that apply.
@@ -240,16 +241,20 @@ public interface StarboxCommandManager<C extends StarboxCommandContext, T extend
   StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C> middleware);
 
   /**
-   * Registers all the commands in the provided package. This will loop around each class that is annotated
-   * with either the command annotation of the module or {@link com.github.chevyself.starbox.annotations.CommandCollection}.
+   * Registers all the commands in the provided package. This will loop around each class that is
+   * annotated with either the command annotation of the module or {@link
+   * com.github.chevyself.starbox.annotations.CommandCollection}.
    *
    * <ul>
-   *   <li>If the class is annotated with {@link com.github.chevyself.starbox.annotations.CommandCollection}, then
-   *   the method {@link #parseCommands(Object)} will be called to get the commands from the object instance.</li>
-   *   <li>If the class is annotated with the command annotation of the module, then a parent command will be created:
-   *   if the class contains a method with the annotation {@link com.github.chevyself.starbox.annotations.ParentOverride} the
-   *   default parent command logic will be overridden, this method is treated as any other command method. If there's
-   *   no method with such annotation, then a message with the usage of the subcommands will be sent.</li>
+   *   <li>If the class is annotated with {@link
+   *       com.github.chevyself.starbox.annotations.CommandCollection}, then the method {@link
+   *       #parseCommands(Object)} will be called to get the commands from the object instance.
+   *   <li>If the class is annotated with the command annotation of the module, then a parent
+   *       command will be created: if the class contains a method with the annotation {@link
+   *       com.github.chevyself.starbox.annotations.ParentOverride} the default parent command logic
+   *       will be overridden, this method is treated as any other command method. If there's no
+   *       method with such annotation, then a message with the usage of the subcommands will be
+   *       sent.
    * </ul>
    *
    * @param packageName the package name to get the commands from

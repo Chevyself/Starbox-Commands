@@ -15,9 +15,7 @@ import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
 import com.github.chevyself.starbox.jda.messages.MessagesProvider;
 import com.github.chevyself.starbox.jda.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.jda.providers.registry.JdaProvidersRegistry;
-import com.github.chevyself.starbox.jda.result.JdaResult;
 import com.github.chevyself.starbox.jda.result.Result;
-import com.github.chevyself.starbox.jda.result.ResultType;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
 import java.lang.reflect.Method;
@@ -60,7 +58,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * new CommandManager(new JdaProvidersRegistry(messagesProvider), messagesProvider, () -&gt; messagesProvider, jda, new ListenerOptions(), "-");
  * }</pre>
  */
-public class CommandManager implements StarboxCommandManager<Command, CommandContext, JdaCommand> {
+public class CommandManager implements StarboxCommandManager<CommandContext, JdaCommand> {
 
   @NonNull @Getter private final List<JdaCommand> commands = new ArrayList<>();
   @NonNull @Getter private final Map<Long, List<JdaCommand>> guildCommands = new HashMap<>();
@@ -69,6 +67,7 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final List<Middleware<CommandContext>> globalMiddlewares;
   @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
+  @NonNull @Getter private final JdaCommandParser parser;
   @NonNull @Getter private final CommandListener listener;
   @NonNull @Getter private final ListenerOptions listenerOptions;
 
@@ -92,6 +91,7 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
     this.jda = jda;
     this.globalMiddlewares = new ArrayList<>();
     this.middlewares = new ArrayList<>();
+    this.parser = new JdaCommandParser(this);
     this.listenerOptions = listenerOptions;
     this.listener = new CommandListener(this, listenerOptions, messagesProvider);
     jda.addEventListener(this.listener);
@@ -337,34 +337,5 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
   public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext> middleware) {
     this.middlewares.add(middleware);
     return this;
-  }
-
-  @Override
-  public @NonNull JdaCommand provideDefaultParent(@NonNull Command annotation) {
-    List<String> aliases = new ArrayList<>(Arrays.asList(annotation.aliases()));
-    List<JdaCommand> children = new ArrayList<>();
-    return new JdaCommand(this, annotation.description(), this.getMap(annotation),
-        Option.of(annotation.options()), this.getMiddlewares(annotation),
-        CooldownManager.of(annotation).orElse(null)) {
-      @Override
-      public @NonNull List<String> getAliases() {
-        return aliases;
-      }
-
-      @Override
-      JdaResult run(@NonNull CommandContext context) {
-        return Result.forType(ResultType.USAGE).setDescription(messagesProvider.commandHelp(this, context)).build();
-      }
-
-      @Override
-      public @NonNull Collection<JdaCommand> getChildren() {
-        return children;
-      }
-    };
-  }
-
-  @Override
-  public @NonNull Class<Command> getAnnotation() {
-    return Command.class;
   }
 }

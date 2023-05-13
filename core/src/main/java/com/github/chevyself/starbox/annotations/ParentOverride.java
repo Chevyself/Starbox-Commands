@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation targets the method that will be executed when the parent command is executed. Overriding the
- * default behaviour of the parent command.
+ * This annotation targets the method that will be executed when the parent command is executed.
+ * Overriding the default behaviour of the parent command.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

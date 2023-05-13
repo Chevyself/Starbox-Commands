@@ -2,17 +2,13 @@ package com.github.chevyself.starbox.system;
 
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
-import com.github.chevyself.starbox.annotations.CommandCollection;
-import com.github.chevyself.starbox.annotations.Parent;
 import com.github.chevyself.starbox.arguments.Argument;
-import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.middleware.CooldownMiddleware;
 import com.github.chevyself.starbox.system.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.time.TimeUtil;
-import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -41,13 +37,14 @@ import lombok.NonNull;
  *
  * }</pre>
  */
-public class CommandManager implements StarboxCommandManager<Command, CommandContext, SystemCommand> {
+public class CommandManager implements StarboxCommandManager<CommandContext, SystemCommand> {
 
   @NonNull @Getter private final List<SystemCommand> commands = new ArrayList<>();
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull @Getter private final MessagesProvider messagesProvider;
   @NonNull @Getter private final List<Middleware<CommandContext>> globalMiddlewares;
   @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
+  @NonNull @Getter private final SystemCommandParser parser;
   @NonNull @Getter private final CommandListener listener;
 
   /**
@@ -68,6 +65,7 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
     this.listener = new CommandListener(this, prefix);
     this.globalMiddlewares = new ArrayList<>();
     this.middlewares = new ArrayList<>();
+    this.parser = new SystemCommandParser(this);
     this.listener.start();
   }
 
@@ -87,42 +85,6 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
   public @NonNull CommandManager register(@NonNull SystemCommand command) {
     this.commands.add(command);
     return this;
-  }
-
-  @Override
-  public @NonNull List<ReflectSystemCommand> parseCommands(@NonNull Object object) {
-    List<ReflectSystemCommand> commands = new ArrayList<>();
-    ReflectSystemCommand parent = null;
-    final Class<?> clazz = object.getClass();
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        parent = this.parseCommand(object, method);
-        commands.add(parent);
-        break;
-      }
-    }
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Command.class) && !method.isAnnotationPresent(Parent.class)) {
-        final ReflectSystemCommand cmd = this.parseCommand(object, method);
-        if (parent != null) {
-          parent.addChild(cmd);
-        } else {
-          commands.add(cmd);
-        }
-      }
-    }
-    return commands;
-  }
-
-  @Override
-  public @NonNull ReflectSystemCommand parseCommand(
-      @NonNull Object object, @NonNull Method method) {
-    Command annotation = method.getAnnotation(Command.class);
-    if (annotation == null) {
-      throw new IllegalArgumentException(
-          method + " does not contain the annotation " + Command.class);
-    }
-    return this.parseCommand(object, method, annotation);
   }
 
   private @NonNull ReflectSystemCommand parseCommand(
@@ -219,27 +181,5 @@ public class CommandManager implements StarboxCommandManager<Command, CommandCon
   public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext> middleware) {
     this.middlewares.add(middleware);
     return this;
-  }
-
-  @Override
-  public @NonNull SystemCommand provideDefaultParent(@NonNull Command annotation) {
-    Duration duration = TimeUtil.durationOf(annotation.cooldown());
-    return new AbstractSystemCommand(
-        Arrays.asList(annotation.aliases()),
-        new ArrayList<>(),
-        Option.of(annotation.options()),
-        this.getMiddlewares(annotation),
-        duration.isZero() ? null : new CooldownManager(duration)) {
-      @Override
-      public SystemResult run(@NonNull CommandContext context) {
-        return new Result(
-            "usage: " + this.getName() + " " + messagesProvider.commandHelp(this, context));
-      }
-    };
-  }
-
-  @Override
-  public @NonNull Class<Command> getAnnotation() {
-    return Command.class;
   }
 }

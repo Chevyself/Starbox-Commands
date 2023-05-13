@@ -8,7 +8,6 @@ import com.github.chevyself.starbox.time.TimeUtil;
 import com.github.chevyself.starbox.util.Strings;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import lombok.NonNull;
 import org.bukkit.command.Command;
@@ -89,12 +88,13 @@ public class BukkitMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String commandHelp(@NonNull StarboxCommand<CommandContext, ?> command,
-      CommandContext context) {
+  public @NonNull String commandHelp(
+      @NonNull StarboxCommand<CommandContext, ?> command, CommandContext context) {
     if (command instanceof StarboxBukkitCommand) {
       StarboxBukkitCommand bukkitCommand = (StarboxBukkitCommand) command;
-      return "&c" + StarboxCommand.genericHelp(bukkitCommand, bukkitCommand.getChildren(),
-          Command::getName);
+      return "&c"
+          + StarboxCommand.genericHelp(
+              bukkitCommand, bukkitCommand.getChildren(), Command::getName);
     }
     return "&cUnknown command";
   }

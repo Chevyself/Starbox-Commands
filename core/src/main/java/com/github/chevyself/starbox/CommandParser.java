@@ -21,15 +21,24 @@ import lombok.NonNull;
  * @param <C> the command context
  * @param <T> the command type
  */
-public interface CommandParser<A extends Annotation,
-    C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
+public interface CommandParser<
+    A extends Annotation, C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
    * Get the annotation class that will be used to represent commands in methods and classes.
    *
    * @return the annotation class
    */
-    @NonNull Class<A> getAnnotationClass();
+  @NonNull
+  Class<A> getAnnotationClass();
+
+  /**
+   * Get the command manager that will be used to register the commands.
+   *
+   * @return the command manager
+   */
+  @NonNull
+  StarboxCommandManager<C, T> getCommandManager();
 
   /**
    * Parse the {@link ReflectCommand} from the provided object. This depends on each implementation
@@ -56,8 +65,8 @@ public interface CommandParser<A extends Annotation,
   }
 
   /**
-   * Get the parent command from the provided object. This will check for methods with the {@link Parent}
-   * annotation
+   * Get the parent command from the provided object. This will check for methods with the {@link
+   * Parent} annotation
    *
    * @param object the object to get the parent command from
    * @param clazz the class of the object
@@ -65,7 +74,8 @@ public interface CommandParser<A extends Annotation,
    */
   default T getParent(@NonNull Object object, @NonNull Class<?> clazz) {
     for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(this.getAnnotationClass())) {
+      if (method.isAnnotationPresent(Parent.class)
+          && method.isAnnotationPresent(this.getAnnotationClass())) {
         return this.parseCommand(object, method);
       }
     }
@@ -83,23 +93,31 @@ public interface CommandParser<A extends Annotation,
   @NonNull
   default T parseCommand(@NonNull Object object, @NonNull Method method) {
     this.checkReturnType(method);
-    if (method.isAnnotationPresent(this.getAnnotationClass())) {
-      throw new CommandRegistrationException("The method " + method.getName() + " is not annotated with " + this.getAnnotationClass().getSimpleName());
+    if (!method.isAnnotationPresent(this.getAnnotationClass())) {
+      throw new CommandRegistrationException(
+          "The method "
+              + method.getName()
+              + " is not annotated with "
+              + this.getAnnotationClass().getSimpleName());
     }
     return this.parseCommand(object, method, method.getAnnotation(this.getAnnotationClass()));
   }
 
   /**
-   * Registers all the commands in the provided package. This will loop around each class that is annotated
-   * with either the command annotation of the module or {@link com.github.chevyself.starbox.annotations.CommandCollection}.
+   * Registers all the commands in the provided package. This will loop around each class that is
+   * annotated with either the command annotation of the module or {@link
+   * com.github.chevyself.starbox.annotations.CommandCollection}.
    *
    * <ul>
-   *   <li>If the class is annotated with {@link com.github.chevyself.starbox.annotations.CommandCollection}, then
-   *   the method {@link #parseCommands(Object)} will be called to get the commands from the object instance.</li>
-   *   <li>If the class is annotated with the command annotation of the module, then a parent command will be created:
-   *   if the class contains a method with the annotation {@link com.github.chevyself.starbox.annotations.ParentOverride} the
-   *   default parent command logic will be overridden, this method is treated as any other command method. If there's
-   *   no method with such annotation, then a message with the usage of the subcommands will be sent.</li>
+   *   <li>If the class is annotated with {@link
+   *       com.github.chevyself.starbox.annotations.CommandCollection}, then the method {@link
+   *       #parseCommands(Object)} will be called to get the commands from the object instance.
+   *   <li>If the class is annotated with the command annotation of the module, then a parent
+   *       command will be created: if the class contains a method with the annotation {@link
+   *       com.github.chevyself.starbox.annotations.ParentOverride} the default parent command logic
+   *       will be overridden, this method is treated as any other command method. If there's no
+   *       method with such annotation, then a message with the usage of the subcommands will be
+   *       sent.
    * </ul>
    *
    * @param packageName the package name to get the commands from
@@ -110,28 +128,31 @@ public interface CommandParser<A extends Annotation,
     List<T> commands = new ArrayList<>();
     new ClassFinder<>(packageName)
         .setRecursive(true)
-        .setPredicate(ClassFinder.checkForAnyAnnotations(this.getAnnotationClass(), CommandCollection.class))
+        .setPredicate(
+            ClassFinder.checkForAnyAnnotations(this.getAnnotationClass(), CommandCollection.class))
         .find()
-        .forEach(clazz -> {
-          Object instance;
-          try {
-            instance = clazz.newInstance();
-          } catch (InstantiationException | IllegalAccessException e) {
-            throw new CommandRegistrationException("Could not instantiate class " + clazz.getName(), e);
-          }
-          if (clazz.isAnnotationPresent(CommandCollection.class)) {
-            commands.addAll(this.parseCommands(instance));
-          } else {
-            commands.add(this.parseParentCommand(instance, clazz));
-          }
-        });
+        .forEach(
+            clazz -> {
+              Object instance;
+              try {
+                instance = clazz.newInstance();
+              } catch (InstantiationException | IllegalAccessException e) {
+                throw new CommandRegistrationException(
+                    "Could not instantiate class " + clazz.getName(), e);
+              }
+              if (clazz.isAnnotationPresent(CommandCollection.class)) {
+                commands.addAll(this.parseCommands(instance));
+              } else {
+                commands.add(this.parseParentCommand(instance, clazz));
+              }
+            });
     return commands;
   }
 
   /**
-   * Parses a parent command from a class that is annotated with the command annotation of the module. If no
-   * override is provided by {@link #getOverride(Class)}, then a default parent command will be created from
-   * {@link #getParentCommandSupplier(Annotation)}
+   * Parses a parent command from a class that is annotated with the command annotation of the
+   * module. If no override is provided by {@link #getOverride(Class)}, then a default parent
+   * command will be created from {@link #getParentCommandSupplier()}
    *
    * @param instance the instance of the class
    * @param clazz the class
@@ -141,29 +162,29 @@ public interface CommandParser<A extends Annotation,
   default T parseParentCommand(@NonNull Object instance, @NonNull Class<?> clazz) {
     A annotation = clazz.getAnnotation(this.getAnnotationClass());
     Optional<Method> override = this.getOverride(clazz);
-    return override.map(method -> this.parseCommand(instance, method))
-        .orElseGet(() -> this.getParentCommandSupplier().apply(annotation));
+    List<T> children = this.parseCommands(instance);
+    T parent =
+        override
+            .map(method -> this.parseCommand(instance, method))
+            .orElseGet(() -> this.getParentCommandSupplier().apply(annotation));
+    children.forEach(parent::addChild);
+    return parent;
   }
 
   /**
-   * Get the function that will be used to create the default parent command. This will be used if no
-   * {@link ParentOverride} is provided in the class.
+   * Get the function that will be used to create the default parent command. This will be used if
+   * no {@link ParentOverride} is provided in the class.
    *
    * @return the function that will be used to create the default parent command
    */
   @NonNull
-  default Function<A, T> getParentCommandSupplier() {
-    return this::provideDefaultParent;
-  }
-
-  @NonNull
-  @Deprecated
-  T provideDefaultParent(@NonNull A annotation);
+  Function<A, T> getParentCommandSupplier();
 
   /**
    * Get the method that overrides the default parent command logic.
    *
    * <p>The overriding method must be annotated with {@link ParentOverride}
+   *
    * @param clazz the class to get the method from
    * @return the method that overrides the default parent command logic
    */
@@ -180,9 +201,10 @@ public interface CommandParser<A extends Annotation,
   }
 
   /**
-   * Check if the return type of the command method is valid. This will throw a {@link CommandRegistrationException}
-   * if the return type is not valid. Each module has its own extension of {@link com.github.chevyself.starbox.result.StarboxResult}
-   * which can be used as the return type of the command method, you could also use {@link Void} as the return type.
+   * Check if the return type of the command method is valid. This will throw a {@link
+   * CommandRegistrationException} if the return type is not valid. Each module has its own
+   * extension of {@link com.github.chevyself.starbox.result.StarboxResult} which can be used as the
+   * return type of the command method, you could also use {@link Void} as the return type.
    *
    * @param method the method to check
    */

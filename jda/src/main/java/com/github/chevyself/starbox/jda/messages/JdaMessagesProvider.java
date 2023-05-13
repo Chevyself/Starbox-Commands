@@ -7,7 +7,6 @@ import com.github.chevyself.starbox.jda.result.ResultType;
 import com.github.chevyself.starbox.time.TimeUtil;
 import com.github.chevyself.starbox.util.Strings;
 import java.time.Duration;
-import java.util.Collection;
 import lombok.NonNull;
 
 /**
@@ -103,12 +102,11 @@ public class JdaMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String commandHelp(@NonNull StarboxCommand<CommandContext, ?> command,
-      CommandContext context) {
+  public @NonNull String commandHelp(
+      @NonNull StarboxCommand<CommandContext, ?> command, CommandContext context) {
     if (command instanceof JdaCommand) {
       JdaCommand jdaCommand = (JdaCommand) command;
-      return StarboxCommand.genericHelp(jdaCommand, jdaCommand.getChildren(),
-          JdaCommand::getName);
+      return StarboxCommand.genericHelp(jdaCommand, jdaCommand.getChildren(), JdaCommand::getName);
     }
     return "Unknown command";
   }

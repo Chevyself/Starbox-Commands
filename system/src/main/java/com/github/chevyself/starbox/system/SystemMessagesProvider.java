@@ -4,7 +4,6 @@ import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.time.TimeUtil;
 import java.time.Duration;
-import java.util.Collection;
 import lombok.NonNull;
 
 /** The default {@link MessagesProvider} for System commands. */
@@ -63,8 +62,8 @@ public class SystemMessagesProvider implements MessagesProvider {
       @NonNull StarboxCommand<CommandContext, ?> command, CommandContext context) {
     if (command instanceof SystemCommand) {
       SystemCommand systemCommand = (SystemCommand) command;
-      return StarboxCommand.genericHelp(systemCommand, systemCommand.getChildren(),
-          SystemCommand::getName);
+      return StarboxCommand.genericHelp(
+          systemCommand, systemCommand.getChildren(), SystemCommand::getName);
     }
     return "Unknown command";
   }

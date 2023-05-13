@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import lombok.NonNull;
 
 /**
@@ -28,8 +27,8 @@ import lombok.NonNull;
 public interface StarboxCommand<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
-   * Generates the usage of the command. Commands don't require a name, so, the base of the usage
-   * is just the flags and arguments in case it is a {@link ReflectCommand}.
+   * Generates the usage of the command. Commands don't require a name, so, the base of the usage is
+   * just the flags and arguments in case it is a {@link ReflectCommand}.
    *
    * @see Option#generateUsage(Collection)
    * @see Argument#generateUsage(List)
@@ -72,7 +71,10 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
       @NonNull Collection<T> children,
       @NonNull Function<T, String> nameSupplier) {
     StringBuilder builder = new StringBuilder();
-    builder.append("usage: ").append(nameSupplier.apply(command)).append(" ")
+    builder
+        .append("usage: ")
+        .append(nameSupplier.apply(command))
+        .append(" ")
         .append(StarboxCommand.generateUsage(command));
     if (children.size() > 0) {
       builder.append("\nSubcommands:");
