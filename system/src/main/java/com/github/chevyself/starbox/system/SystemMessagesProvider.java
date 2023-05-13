@@ -61,21 +61,11 @@ public class SystemMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String commandHelp(
       @NonNull StarboxCommand<CommandContext, ?> command, CommandContext context) {
-    StringBuilder builder = new StringBuilder(StarboxCommand.generateUsage(command));
-    if (command.getChildren().size() > 0 && command instanceof SystemCommand) {
+    if (command instanceof SystemCommand) {
       SystemCommand systemCommand = (SystemCommand) command;
-      Collection<SystemCommand> children = systemCommand.getChildren();
-      if (children.size() > 0) {
-        builder.append("\nSubcommands:");
-        for (SystemCommand child : children) {
-          builder
-              .append("\n + ")
-              .append(child.getName())
-              .append(" ")
-              .append(StarboxCommand.generateUsage(child));
-        }
-      }
+      return StarboxCommand.genericHelp(systemCommand, systemCommand.getChildren(),
+          SystemCommand::getName);
     }
-    return builder.toString();
+    return "Unknown command";
   }
 }

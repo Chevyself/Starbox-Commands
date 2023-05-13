@@ -1,12 +1,18 @@
 package com.github.chevyself.starbox;
 
+import com.github.chevyself.starbox.annotations.CommandCollection;
+import com.github.chevyself.starbox.annotations.ParentOverride;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
+import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.util.ClassFinder;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 
@@ -18,7 +24,7 @@ import lombok.NonNull;
  * @param <C> the type of command context that is used to run the commands
  * @param <T> the type of command that this instance manages
  */
-public interface StarboxCommandManager<
+public interface StarboxCommandManager<A extends Annotation,
     C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
 
   /**
@@ -86,7 +92,7 @@ public interface StarboxCommandManager<
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  StarboxCommandManager<C, T> register(@NonNull T command);
+  StarboxCommandManager<A, C, T> register(@NonNull T command);
 
   /**
    * Register the commands contained inside the class of the provided object. This will execute
@@ -96,7 +102,7 @@ public interface StarboxCommandManager<
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  StarboxCommandManager<C, T> parseAndRegister(@NonNull Object object);
+  StarboxCommandManager<A, C, T> parseAndRegister(@NonNull Object object);
 
   /**
    * Register all the objects in an array. This will loop around each object to execute {@link
@@ -106,7 +112,7 @@ public interface StarboxCommandManager<
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  default StarboxCommandManager<C, T> parseAndRegisterAll(@NonNull Object... objects) {
+  default StarboxCommandManager<A, C, T> parseAndRegisterAll(@NonNull Object... objects) {
     for (Object object : objects) {
       this.parseAndRegister(object);
     }
@@ -121,7 +127,7 @@ public interface StarboxCommandManager<
    * @return the collection of parsed commands.
    */
   @NonNull
-  Collection<? extends ReflectCommand<C, T>> parseCommands(@NonNull Object object);
+  Collection<? extends T> parseCommands(@NonNull Object object);
 
   /**
    * Parse a reflective command using the method where it will be executed and the method instance
@@ -132,7 +138,7 @@ public interface StarboxCommandManager<
    * @return the parsed command
    */
   @NonNull
-  ReflectCommand<C, T> parseCommand(@NonNull Object object, @NonNull Method method);
+  T parseCommand(@NonNull Object object, @NonNull Method method);
 
   /**
    * Registers the collection of commands. This will call {@link #register(StarboxCommand)} on loop
@@ -141,7 +147,7 @@ public interface StarboxCommandManager<
    * @return this same command manager instance to allow chain method calls
    */
   @NonNull
-  default StarboxCommandManager<C, T> registerAll(@NonNull Collection<? extends T> commands) {
+  default StarboxCommandManager<A, C, T> registerAll(@NonNull Collection<? extends T> commands) {
     for (T command : commands) {
       this.register(command);
     }
@@ -157,7 +163,7 @@ public interface StarboxCommandManager<
    */
   @SuppressWarnings("unchecked")
   @NonNull
-  default StarboxCommandManager<C, T> registerAll(@NonNull T... commands) {
+  default StarboxCommandManager<A, C, T> registerAll(@NonNull T... commands) {
     return this.registerAll(Arrays.asList(commands));
   }
 
@@ -212,7 +218,7 @@ public interface StarboxCommandManager<
    * @return this same instance
    */
   @NonNull
-  StarboxCommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C> middleware);
+  StarboxCommandManager<A, C, T> addGlobalMiddleware(@NonNull Middleware<C> middleware);
 
   /**
    * Add a {@link Middleware} to this manager.
@@ -221,7 +227,7 @@ public interface StarboxCommandManager<
    * @return this same instance
    */
   @NonNull
-  StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C> middleware);
+  StarboxCommandManager<A, C, T> addMiddleware(@NonNull Middleware<C> middleware);
 
   /**
    * Registers all the commands in the provided package. This will loop around each class that is annotated
@@ -240,7 +246,51 @@ public interface StarboxCommandManager<
    * @return this same instance
    */
   @NonNull
-  StarboxCommandManager<C, T> registerAllIn(@NonNull String packageName);
+  default StarboxCommandManager<A, C, T> registerAllIn(@NonNull String packageName) {
+    new ClassFinder<>(packageName)
+        .setRecursive(true)
+        .setPredicate(ClassFinder.checkForAnyAnnotations(this.getAnnotation(), CommandCollection.class))
+        .find()
+        .forEach(clazz -> {
+          Object instance;
+          try {
+            instance = clazz.newInstance();
+          } catch (InstantiationException | IllegalAccessException e) {
+            throw new CommandRegistrationException("Could not instantiate class " + clazz.getName(), e);
+          }
+          if (clazz.isAnnotationPresent(CommandCollection.class)) {
+            this.parseAndRegister(instance);
+          } else {
+            this.registerAllIn(instance, clazz);
+          }
+        });
+    return this;
+  }
+
+  default void registerAllIn(Object instance, Class<?> clazz) {
+    A annotation = clazz.getAnnotation(this.getAnnotation());
+    Optional<Method> override = this.getOverride(clazz);
+    T parent = override.map(method -> this.parseCommand(instance, method))
+        .orElseGet(() -> this.provideDefaultParent(annotation));
+    this.parseCommands(instance).forEach(parent::addChild);
+    this.register(parent);
+  }
+
+  @NonNull
+  T provideDefaultParent(@NonNull A annotation);
+
+  default Optional<Method> getOverride(Class<?> clazz) {
+    Method optional = null;
+    for (Method method : clazz.getDeclaredMethods()) {
+      if (method.isAnnotationPresent(ParentOverride.class)) {
+        optional = method;
+        break;
+      }
+    }
+    return Optional.ofNullable(optional);
+  }
+
+  @NonNull Class<A> getAnnotation();
 
   /**
    * Add many global {@link Middleware} to this manager.
@@ -250,7 +300,7 @@ public interface StarboxCommandManager<
    */
   @SuppressWarnings("unchecked")
   @NonNull
-  default StarboxCommandManager<C, T> addGlobalMiddlewares(@NonNull Middleware<C>... middlewares) {
+  default StarboxCommandManager<A, C, T> addGlobalMiddlewares(@NonNull Middleware<C>... middlewares) {
     for (Middleware<C> middleware : middlewares) {
       this.addGlobalMiddleware(middleware);
     }
@@ -265,7 +315,7 @@ public interface StarboxCommandManager<
    */
   @SuppressWarnings("unchecked")
   @NonNull
-  default StarboxCommandManager<C, T> addMiddlewares(@NonNull Middleware<C>... middlewares) {
+  default StarboxCommandManager<A, C, T> addMiddlewares(@NonNull Middleware<C>... middlewares) {
     for (Middleware<C> middleware : middlewares) {
       this.addMiddleware(middleware);
     }

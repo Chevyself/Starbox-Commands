@@ -110,7 +110,7 @@ public class Option implements StarboxFlag {
    *   Option.create("verbose", false, "v");
    * </pre>
    *
-   * <p>The generated usage would be '[--description=<value>] [--force] [--verbose]'
+   * <p>The generated usage would be '[--description=&lt;value&gt;] [--force] [--verbose]'
    *
    * @param options the options to generate the usage of
    * @return the usage of the options

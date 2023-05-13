@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.util;
 
-import com.sun.istack.internal.Nullable;
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import lombok.NonNull;
 public final class ClassFinder<T> {
 
   /** The type of class to find. */
-  @Nullable private final Class<T> type;
+  private final Class<T> type;
   /** The package name to search in. */
   @NonNull private final String packageName;
   /** The path of the package. This is the package name but with '/' instead of '.'. */
@@ -34,7 +33,7 @@ public final class ClassFinder<T> {
    * @param type the type of class to find.
    * @param packageName the package name to search in.
    */
-  public ClassFinder(@Nullable Class<T> type, @NonNull String packageName) {
+  public ClassFinder(Class<T> type, @NonNull String packageName) {
     this.type = type;
     this.packageName = packageName;
     this.path = packageName.replace('.', '/');

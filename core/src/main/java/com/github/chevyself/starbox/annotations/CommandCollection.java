@@ -5,7 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/** This annotation targets a class that contains {@link Command} methods. */
+/**
+ * This annotation targets a class that contains command methods.
+ *
+ * @see com.github.chevyself.starbox.StarboxCommandManager#registerAllIn(String)
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandCollection {}

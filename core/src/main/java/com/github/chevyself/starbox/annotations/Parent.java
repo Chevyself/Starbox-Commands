@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  *
  * <p>Lets suppose to have the prefix '/'. If you have the {@link StarboxCommand} 'hello' you can
  * parseAndRegister other {@link StarboxCommand} using {@link
- * StarboxCommand#addChildren(StarboxCommand)} and the command execution with be as follows:
+ * StarboxCommand#addChild(StarboxCommand)} and the command execution with be as follows:
  *
  * <p>/hello &lt;command&gt; &lt;**args&gt;
  */

@@ -5,7 +5,10 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.result.StarboxResult;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import lombok.NonNull;
 
 /**
@@ -29,7 +32,7 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    * is just the flags and arguments in case it is a {@link ReflectCommand}.
    *
    * @see Option#generateUsage(Collection)
-   * @see Argument#generateUsage(Collection)
+   * @see Argument#generateUsage(List)
    * @param command the command to generate the help
    * @return the usage of the command
    */
@@ -64,16 +67,24 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    */
   boolean hasAlias(@NonNull String alias);
 
-  /**
-   * Add a children that can be used to run in this.
-   *
-   * @param command the child command to add
-   * @return this same command instance to allow chain methods
-   */
-  @NonNull
-  default StarboxCommand<C, T> addChildren(@NonNull T command) {
-    this.getChildren().add(command);
-    return this;
+  static <T extends StarboxCommand<?, ?>> String genericHelp(
+      @NonNull T command,
+      @NonNull Collection<T> children,
+      @NonNull Function<T, String> nameSupplier) {
+    StringBuilder builder = new StringBuilder();
+    builder.append("usage: ").append(nameSupplier.apply(command)).append(" ")
+        .append(StarboxCommand.generateUsage(command));
+    if (children.size() > 0) {
+      builder.append("\nSubcommands:");
+      for (T child : children) {
+        builder
+            .append("\n + ")
+            .append(nameSupplier.apply(child))
+            .append(" ")
+            .append(StarboxCommand.generateUsage(child));
+      }
+    }
+    return builder.toString();
   }
 
   /**
@@ -89,13 +100,16 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   }
 
   /**
-   * Get the collection of registered children in this parent. All the children added in this
-   * collection add from {@link #addChildren(StarboxCommand)}
+   * Add a children that can be used to run in this.
    *
-   * @return the collection of children
+   * @param command the child command to add
+   * @return this same command instance to allow chain methods
    */
   @NonNull
-  Collection<T> getChildren();
+  default StarboxCommand<C, T> addChild(@NonNull T command) {
+    this.getChildren().add(command);
+    return this;
+  }
 
   /**
    * Get the manager for the cooldown of this command.
@@ -133,4 +147,13 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   default Optional<? extends Option> getOption(@NonNull String alias) {
     return this.getOptions().stream().filter(option -> option.hasAlias(alias)).findFirst();
   }
+
+  /**
+   * Get the collection of registered children in this parent. All the children added in this
+   * collection add from {@link #addChild(StarboxCommand)}
+   *
+   * @return the collection of children
+   */
+  @NonNull
+  Collection<T> getChildren();
 }
