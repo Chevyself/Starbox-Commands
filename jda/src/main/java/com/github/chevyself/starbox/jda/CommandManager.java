@@ -334,6 +334,11 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
   }
 
   @Override
+  public @NonNull CommandManager registerAllIn(@NonNull String packageName) {
+    return (CommandManager) StarboxCommandManager.super.registerAllIn(packageName);
+  }
+
+  @Override
   public @NonNull CommandManager addMiddleware(@NonNull Middleware<CommandContext> middleware) {
     this.middlewares.add(middleware);
     return this;

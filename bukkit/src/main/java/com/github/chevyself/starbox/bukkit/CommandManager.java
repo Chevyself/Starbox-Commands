@@ -248,6 +248,11 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   }
 
   @Override
+  public @NonNull CommandManager registerAllIn(@NonNull String packageName) {
+    return (CommandManager) StarboxCommandManager.super.registerAllIn(packageName);
+  }
+
+  @Override
   public void close() {
     this.commands.forEach(command -> command.unregister(CommandManager.commandMap));
     this.commands.clear();

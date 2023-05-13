@@ -82,6 +82,11 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
   }
 
   @Override
+  public @NonNull CommandManager registerAllIn(@NonNull String packageName) {
+    return (CommandManager) StarboxCommandManager.super.registerAllIn(packageName);
+  }
+
+  @Override
   public @NonNull CommandManager register(@NonNull BungeeCommand command) {
     this.manager.registerCommand(this.plugin, command);
     this.commands.add(command);

@@ -127,8 +127,13 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sys
   }
 
   @Override
+  public @NonNull CommandManager registerAllIn(@NonNull String packageName) {
+    return (CommandManager) StarboxCommandManager.super.registerAllIn(packageName);
+  }
+
+  @Override
   public @NonNull CommandManager parseAndRegister(@NonNull Object object) {
-    this.registerAll(this.parseCommands(object));
+    this.registerAll(this.getParser().parseCommands(object));
     return this;
   }
 
