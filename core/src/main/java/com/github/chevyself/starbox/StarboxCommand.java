@@ -1,5 +1,6 @@
 package com.github.chevyself.starbox;
 
+import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.result.StarboxResult;
@@ -8,7 +9,7 @@ import java.util.Optional;
 import lombok.NonNull;
 
 /**
- * This class represents a Command which may be executed by an user depending on the implementations
+ * This class represents a Command which may be executed by a user depending on the implementations
  * it may change.
  *
  * <p>This allows to have children commands which will be recognized using the first parameter of
@@ -22,6 +23,28 @@ import lombok.NonNull;
  * @param <T> the type of commands that are allowed as children commands
  */
 public interface StarboxCommand<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
+
+  /**
+   * Generates the usage of the command. Commands don't require a name, so, the base of the usage
+   * is just the flags and arguments in case it is a {@link ReflectCommand}.
+   *
+   * @see Option#generateUsage(Collection)
+   * @see Argument#generateUsage(Collection)
+   * @param command the command to generate the help
+   * @return the usage of the command
+   */
+  @NonNull
+  static String generateUsage(StarboxCommand<?, ?> command) {
+    StringBuilder builder = new StringBuilder();
+    builder.append(Option.generateUsage(command.getOptions()));
+    if (command instanceof ReflectCommand) {
+      ReflectCommand<?, ?> reflectCommand = (ReflectCommand<?, ?>) command;
+      if (reflectCommand.getArguments().size() > 0) {
+        builder.append(Argument.generateUsage(reflectCommand.getArguments()));
+      }
+    }
+    return builder.toString();
+  }
 
   /**
    * Execute the command.

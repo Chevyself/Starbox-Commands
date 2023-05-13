@@ -2,6 +2,7 @@ package com.github.chevyself.starbox.flags;
 
 import com.github.chevyself.starbox.StarboxCommand;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.Getter;
@@ -98,6 +99,37 @@ public class Option implements StarboxFlag {
   @NonNull
   public static Option of(@NonNull Flag flag) {
     return Option.create(flag.description(), flag.value(), flag.valuable(), flag.aliases());
+  }
+
+  /**
+   * Generates the usage of a collection of options. For instance, if we have the options:
+   *
+   * <pre>
+   *   Option.create("description", true, "d");
+   *   Option.create("force", false, "f");
+   *   Option.create("verbose", false, "v");
+   * </pre>
+   *
+   * <p>The generated usage would be '[--description=<value>] [--force] [--verbose]'
+   *
+   * @param options the options to generate the usage of
+   * @return the usage of the options
+   */
+  @NonNull
+  public static String generateUsage(@NonNull Collection<? extends Option> options) {
+    if (options.size() == 0) {
+      return "";
+    }
+    StringBuilder builder = new StringBuilder();
+    for (Option option : options) {
+      builder.append("[").append(option.getAliases().get(0));
+      if (option.isValuable()) {
+        builder.append("=<value>");
+      }
+      builder.append("] ");
+    }
+    builder.setLength(builder.length() - 1);
+    return builder.toString();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package com.github.chevyself.starbox.messages;
 
+import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.arguments.MultipleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
@@ -110,4 +111,15 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
    */
   @NonNull
   String cooldown(@NonNull T context, @NonNull Duration timeLeft);
+
+  /**
+   * Generates the help message for a command.
+   *
+   * @see StarboxCommand#generateUsage(StarboxCommand)
+   * @param command the command to generate the help for
+   * @param context the context of the command
+   * @return the help message
+   */
+  @NonNull
+  String commandHelp(@NonNull StarboxCommand<T, ?> command, T context);
 }

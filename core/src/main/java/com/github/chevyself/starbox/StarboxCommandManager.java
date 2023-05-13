@@ -224,6 +224,25 @@ public interface StarboxCommandManager<
   StarboxCommandManager<C, T> addMiddleware(@NonNull Middleware<C> middleware);
 
   /**
+   * Registers all the commands in the provided package. This will loop around each class that is annotated
+   * with either the command annotation of the module or {@link com.github.chevyself.starbox.annotations.CommandCollection}.
+   *
+   * <ul>
+   *   <li>If the class is annotated with {@link com.github.chevyself.starbox.annotations.CommandCollection}, then
+   *   the method {@link #parseCommands(Object)} will be called to get the commands from the object instance.</li>
+   *   <li>If the class is annotated with the command annotation of the module, then a parent command will be created:
+   *   if the class contains a method with the annotation {@link com.github.chevyself.starbox.annotations.ParentOverride} the
+   *   default parent command logic will be overridden, this method is treated as any other command method. If there's
+   *   no method with such annotation, then a message with the usage of the subcommands will be sent.</li>
+   * </ul>
+   *
+   * @param packageName the package name to get the commands from
+   * @return this same instance
+   */
+  @NonNull
+  StarboxCommandManager<C, T> registerAllIn(@NonNull String packageName);
+
+  /**
    * Add many global {@link Middleware} to this manager.
    *
    * @param middlewares the array of global middlewares to add
