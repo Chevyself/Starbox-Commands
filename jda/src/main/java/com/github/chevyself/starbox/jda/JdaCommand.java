@@ -17,7 +17,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 /**
- * This is the direct implementation of {@link StarboxCommand} for the "JDA" module extending this
+ * This is the direct implementation of {@link StarboxCommand} for the "JDA" module. Extending this
  * class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(JdaCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link AnnotatedCommand}
