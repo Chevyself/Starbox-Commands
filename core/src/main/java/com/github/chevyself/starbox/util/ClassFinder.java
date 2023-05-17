@@ -1,10 +1,14 @@
 package com.github.chevyself.starbox.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import lombok.NonNull;
 
 /**
@@ -158,26 +162,26 @@ public final class ClassFinder<T> {
           this.checkFile(file);
         }
       }
+    } else {
+      try (JarFile jarFile = new JarFile(entry)) {
+        Enumeration<JarEntry> enumeration = jarFile.entries();
+        while (enumeration.hasMoreElements()) {
+          JarEntry jarEntry = enumeration.nextElement();
+          String name = jarEntry.getName();
+          if (!jarEntry.isDirectory() && name.endsWith(".class")) {
+            this.checkClass(name);
+          }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
   private void checkFile(@NonNull File file) {
     String fileName = file.getName();
     if (file.isFile() && fileName.endsWith(".class")) {
-      String className = fileName.substring(0, fileName.length() - 6);
-      try {
-        Class<?> clazz = Class.forName(this.packageName + "." + className);
-        if (this.type != null && !this.type.isAssignableFrom(clazz)) {
-          return;
-        }
-        //noinspection unchecked: we checked the type on the statement above.
-        Class<T> clazzAsType = (Class<T>) clazz;
-        if (this.predicate.test(clazzAsType)) {
-          this.classes.add(clazzAsType);
-        }
-      } catch (ClassNotFoundException e) {
-        // Ignored
-      }
+      this.checkClass(fileName);
     } else if (this.recursive && file.isDirectory()) {
       String subPackageName = this.packageName + "." + fileName;
       this.classes.addAll(
@@ -185,6 +189,23 @@ public final class ClassFinder<T> {
               .setPredicate(this.predicate)
               .setRecursive(true)
               .find());
+    }
+  }
+
+  private void checkClass(@NonNull String fileName) {
+    String className = fileName.substring(0, fileName.length() - 6);
+    try {
+      Class<?> clazz = Class.forName(this.packageName + "." + className);
+      if (this.type != null && !this.type.isAssignableFrom(clazz)) {
+        return;
+      }
+      //noinspection unchecked: we checked the type on the statement above.
+      Class<T> clazzAsType = (Class<T>) clazz;
+      if (this.predicate.test(clazzAsType)) {
+        this.classes.add(clazzAsType);
+      }
+    } catch (ClassNotFoundException e) {
+      // Ignored
     }
   }
 }
