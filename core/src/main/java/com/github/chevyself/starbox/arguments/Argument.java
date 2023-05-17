@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.arguments;
 
 import com.github.chevyself.starbox.annotations.Free;
-import com.github.chevyself.starbox.annotations.Multiple;
 import com.github.chevyself.starbox.annotations.Required;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
@@ -29,7 +28,7 @@ import lombok.NonNull;
  *       command execution, that is why it does not require an annotation as you can see in {@link
  *       #isEmpty(Annotation[])} if this method returns true it will be considered as an {@link
  *       ExtraArgument}
- *   <li>{@link SingleArgument} this argument expects an user input unless it is annotated with
+ *   <li>{@link SingleArgument} this argument expects a user input unless it is annotated with
  *       {@link Free}. It has a place inside the command usage: [prefix][command] [argument]...
  *       <p>This kind of argument has three different behaviours
  *
@@ -44,7 +43,7 @@ import lombok.NonNull;
  *
  *     public static void main(String[] args) throws NoSuchMethodException {
  *         // Parsing from the AMethod of this same class
- *         List<Argument<?>> arguments = Argument.parseArguments(ArgumentsSample.class.getMethod("AMethod", StarboxCommandContext.class, String.class, String.class, String[].class));
+ *         List<Argument<?>> arguments = Argument.p@arseArguments(ArgumentsSample.class.getMethod("AMethod", StarboxCommandContext.class, String.class, String.class, String[].class));
  *         for (Argument<?> argument : arguments) {
  *             System.out.println("argument = " + argument);
  *         }
@@ -131,7 +130,6 @@ public interface Argument<O> {
   @NonNull
   static SingleArgument<?> parseArgument(
       @NonNull Class<?> parameter, @NonNull Annotation[] annotations, int position) {
-    Multiple multiple = Argument.getMultiple(annotations);
     for (Annotation annotation : annotations) {
       if (annotation instanceof Required) {
         Required required = (Required) annotation;
@@ -139,21 +137,14 @@ public interface Argument<O> {
         String description = required.description();
         List<String> suggestions = Arrays.asList(required.suggestions());
         return Argument.getArgument(
-            parameter,
-            position,
-            multiple,
-            true,
-            name,
-            description,
-            suggestions,
-            required.behaviour());
+            parameter, position, true, name, description, suggestions, required.behaviour());
       } else if (annotation instanceof Free) {
         Free free = (Free) annotation;
         String name = free.name();
         String description = free.description();
         List<String> suggestions = Arrays.asList(free.suggestions());
         return Argument.getArgument(
-            parameter, position, multiple, false, name, description, suggestions, free.behaviour());
+            parameter, position, false, name, description, suggestions, free.behaviour());
       }
     }
     throw new CommandRegistrationException(
@@ -182,30 +173,11 @@ public interface Argument<O> {
   }
 
   /**
-   * Get the annotation {@link Multiple} from an array of annotations.
-   *
-   * @param annotations the array of annotations
-   * @return the annotation if the array contains it else null
-   * @deprecated This annotation has been replaced by {@link ArgumentBehaviour#CONTINUOUS}
-   */
-  static Multiple getMultiple(@NonNull Annotation[] annotations) {
-    for (Annotation annotation : annotations) {
-      if (annotation instanceof Multiple) {
-        return (Multiple) annotation;
-      }
-    }
-    return null;
-  }
-
-  /**
    * This gets the final instance of the argument. Called by {@link #parseArgument(Class,
    * Annotation[], int)}
    *
    * @param parameter the class of the parameter
    * @param position the position of the argument
-   * @param multiple the annotation required to get an {@link MultipleArgument} if it is null it
-   *     will be a {@link SingleArgument}. This annotation has been replaced by {@link
-   *     ArgumentBehaviour#CONTINUOUS}, remove this parameter in future versions
    * @param required whether the argument is required (if it has the annotation {@link Required} it
    *     is required)
    * @param name the name of the argument
@@ -218,26 +190,13 @@ public interface Argument<O> {
   static SingleArgument<?> getArgument(
       @NonNull Class<?> parameter,
       int position,
-      Multiple multiple,
       boolean required,
       @NonNull String name,
       @NonNull String description,
       @NonNull List<String> suggestions,
       @NonNull ArgumentBehaviour behaviour) {
-    if (multiple != null) {
-      return Argument.getArgument(
-          parameter,
-          position,
-          null,
-          required,
-          name,
-          description,
-          suggestions,
-          ArgumentBehaviour.CONTINUOUS);
-    } else {
-      return new SingleArgument<>(
-          name, description, suggestions, behaviour, parameter, required, position);
-    }
+    return new SingleArgument<>(
+        name, description, suggestions, behaviour, parameter, required, position);
   }
 
   /**
@@ -292,15 +251,14 @@ public interface Argument<O> {
    * <ul>
    *   <li>String = java.lang.String
    *   <li>Long = java.lang.Long
-   *   <li>JoinedStrings = me.googas.commands.objects.JoinedStrings
    * </ul>
    *
    * <p>Are possible mappings which may be used in the parse of a command
    *
-   * <p>If the {@link String} starts with a '@' it will be considered as a {@link Multiple}
-   * annotation next (Ignoring the optional starting '@'): The {@link String} must start with '&lt;'
-   * and end with '&gt;' for a required argument and start with '[' and end with ']' for an optional
-   * argument.
+   * <p>If the {@link String} starts with a '@' it will be considered as a {@link
+   * ArgumentBehaviour#CONTINUOUS} annotation next (Ignoring the optional starting '@'): The {@link
+   * String} must start with '&lt;' and end with '&gt;' for a required argument and start with '['
+   * and end with ']' for an optional argument.
    *
    * <p>The {@link Class}, name and description must be split by a ':' and replace the spaces of the
    * description with '-'
@@ -330,7 +288,7 @@ public interface Argument<O> {
       @NonNull String string,
       @NonNull List<String> suggestions,
       int position) {
-    return Argument.parse(mappings, string, suggestions, ArgumentBehaviour.NORMAL, false, position);
+    return Argument.parse(mappings, string, suggestions, ArgumentBehaviour.NORMAL, position);
   }
 
   /**
@@ -341,8 +299,6 @@ public interface Argument<O> {
    * @param suggestions the suggestions that can be given to input the argument check {@link
    *     SingleArgument#getSuggestions(StarboxCommandContext)}
    * @param behaviour the behaviour of the argument
-   * @param multiple whether it is a multiple strings parameter. This is deprecated and will be
-   *     removed in future versions
    * @param position the position in which the argument must be input
    * @return the parsed argument
    * @throws IllegalArgumentException if the {@link String} does not start and end with either
@@ -356,19 +312,13 @@ public interface Argument<O> {
       @NonNull String string,
       @NonNull List<String> suggestions,
       @NonNull ArgumentBehaviour behaviour,
-      boolean multiple,
       int position) {
     if (string.startsWith("@")) {
       return Argument.parse(
-          mappings,
-          string.substring(1),
-          suggestions,
-          ArgumentBehaviour.CONTINUOUS,
-          false,
-          position);
+          mappings, string.substring(1), suggestions, ArgumentBehaviour.CONTINUOUS, position);
     } else if (string.startsWith("*")) {
       return Argument.parse(
-          mappings, string.substring(1), suggestions, ArgumentBehaviour.MULTIPLE, false, position);
+          mappings, string.substring(1), suggestions, ArgumentBehaviour.MULTIPLE, position);
     } else {
       boolean required;
       if (string.startsWith("<") && string.endsWith(">")) {
@@ -394,13 +344,8 @@ public interface Argument<O> {
         Class<?> clazz = Class.forName(mappings.get(split[0]));
         String name = split[1];
         String description = split.length > 2 ? split[2].replace("-", " ") : "No description given";
-        if (multiple) {
-          return new MultipleArgument<>(
-              name, description, suggestions, clazz, required, position, 1, -1);
-        } else {
-          return new SingleArgument<>(
-              name, description, suggestions, behaviour, clazz, required, position);
-        }
+        return new SingleArgument<>(
+            name, description, suggestions, behaviour, clazz, required, position);
       } catch (ClassNotFoundException e) {
         throw new IllegalArgumentException(
             string + " does not have a correct mapping in: " + split[0]);

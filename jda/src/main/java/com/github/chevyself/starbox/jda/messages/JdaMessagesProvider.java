@@ -86,17 +86,6 @@ public class JdaMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String missingStrings(
-      @NonNull String name,
-      @NonNull String description,
-      int position,
-      int minSize,
-      int missing,
-      @NonNull CommandContext context) {
-    return "You are missing " + missing + " strings in " + name;
-  }
-
-  @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
     return "You are on cooldown! please wait " + TimeUtil.toString(timeLeft);
   }

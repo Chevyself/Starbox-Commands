@@ -9,7 +9,6 @@ import com.github.chevyself.starbox.bungee.annotations.Command;
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.messages.MessagesProvider;
 import com.github.chevyself.starbox.bungee.providers.type.BungeeArgumentProvider;
-import com.github.chevyself.starbox.bungee.providers.type.BungeeMultiArgumentProvider;
 import com.github.chevyself.starbox.bungee.result.BungeeResult;
 import com.github.chevyself.starbox.bungee.result.Result;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
@@ -123,10 +122,6 @@ public class AnnotatedCommand extends BungeeCommand
             return Strings.copyPartials(
                 strings[strings.length - 1],
                 ((BungeeArgumentProvider<?>) provider).getSuggestions(context));
-          } else if (provider instanceof BungeeMultiArgumentProvider) {
-            return Strings.copyPartials(
-                strings[strings.length - 1],
-                ((BungeeMultiArgumentProvider<?>) provider).getSuggestions(context));
           }
         }
         return new ArrayList<>();

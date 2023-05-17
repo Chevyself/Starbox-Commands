@@ -8,7 +8,6 @@ import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.bukkit.annotations.Command;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.providers.type.BukkitArgumentProvider;
-import com.github.chevyself.starbox.bukkit.providers.type.BukkitMultiArgumentProvider;
 import com.github.chevyself.starbox.bukkit.result.BukkitResult;
 import com.github.chevyself.starbox.bukkit.result.Result;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
@@ -127,11 +126,6 @@ public class AnnotatedCommand extends StarboxBukkitCommand
                 strings[strings.length - 1],
                 ((BukkitArgumentProvider<?>) provider)
                     .getSuggestions(strings[strings.length - 1], context),
-                new ArrayList<>());
-          } else if (provider instanceof BukkitMultiArgumentProvider) {
-            return StringUtil.copyPartialMatches(
-                strings[strings.length - 1],
-                ((BukkitMultiArgumentProvider<?>) provider).getSuggestions(context),
                 new ArrayList<>());
           }
         }

@@ -1,7 +1,6 @@
 package me.googas;
 
 import com.github.chevyself.starbox.annotations.Free;
-import com.github.chevyself.starbox.annotations.Multiple;
 import com.github.chevyself.starbox.annotations.Required;
 import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
 import com.github.chevyself.starbox.flags.Flag;
@@ -54,7 +53,8 @@ public class Commands {
             value = "false",
             valuable = false)
       })
-  public SystemResult message(CommandContext context, @Free @Multiple String message) {
+  public SystemResult message(
+      CommandContext context, @Free(behaviour = ArgumentBehaviour.CONTINUOUS) String message) {
     String string = message == null || message.isEmpty() ? "No message was sent" : message;
     return new Result(context.hasFlag("capitalize") ? string.toUpperCase(Locale.ROOT) : string);
   }

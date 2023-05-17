@@ -11,7 +11,6 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
  * <ul>
  *   <li>{@link StarboxArgumentProvider}
  *   <li>{@link StarboxExtraArgumentProvider}
- *   <li>{@link StarboxMultipleArgumentProvider}
  * </ul>
  *
  * @param <O> the type of object to provide

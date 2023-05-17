@@ -3,7 +3,6 @@ package com.github.chevyself.starbox.providers.registry;
 import com.github.chevyself.starbox.ReflectCommand;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.arguments.ExtraArgument;
-import com.github.chevyself.starbox.arguments.MultipleArgument;
 import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
@@ -18,7 +17,6 @@ import com.github.chevyself.starbox.providers.StringProvider;
 import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
 import com.github.chevyself.starbox.providers.type.StarboxExtraArgumentProvider;
-import com.github.chevyself.starbox.providers.type.StarboxMultipleArgumentProvider;
 import com.github.chevyself.starbox.providers.type.StarboxSimpleArgumentProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +31,7 @@ import lombok.NonNull;
  *
  * <p>To add new providers use {@link #addProvider(StarboxContextualProvider)} and to get an object
  * you can use {@link #getObject(Class, StarboxCommandContext)}, {@link #fromString(String, Class,
- * StarboxCommandContext)} or {@link #fromStrings(String[], Class, StarboxCommandContext)}
+ * StarboxCommandContext)}.
  */
 public class ProvidersRegistry<T extends StarboxCommandContext> {
 
@@ -197,37 +195,6 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   }
 
   /**
-   * Get the object to use as a parameter in the invocation of a command from strings. This object
-   * provides a {@link MultipleArgument}
-   *
-   * <p>We will get all the providers using {@link #getProviders(Class)} to get a {@link
-   * StarboxMultipleArgumentProvider}
-   *
-   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast
-   *
-   * @param strings the strings to get the object from
-   * @param clazz the clazz to get the provider from
-   * @param context the context of the command execution
-   * @return the object provided by the {@link StarboxMultipleArgumentProvider}
-   * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link
-   *     StarboxMultipleArgumentProvider#fromStrings(String[], StarboxCommandContext)}
-   */
-  @SuppressWarnings("unchecked")
-  @NonNull
-  @Deprecated
-  public Object fromStrings(@NonNull String[] strings, @NonNull Class<?> clazz, @NonNull T context)
-      throws ArgumentProviderException {
-    for (StarboxContextualProvider<?, T> provider : this.getProviders(clazz)) {
-      if (provider instanceof StarboxMultipleArgumentProvider) {
-        return ((StarboxMultipleArgumentProvider<?, T>) provider).fromStrings(strings, context);
-      }
-    }
-    throw new ArgumentProviderException(
-        StarboxMultipleArgumentProvider.class + " was not found for " + clazz);
-  }
-
-  /**
    * This method uses {@link #getObject(Class, StarboxCommandContext)} and casts the returned object
    * as it is safe to do so.
    *
@@ -260,24 +227,5 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   public <O> O get(@NonNull String string, @NonNull Class<O> clazz, @NonNull T context)
       throws ArgumentProviderException {
     return clazz.cast(this.fromString(string, clazz, context));
-  }
-
-  /**
-   * This method uses {@link #fromStrings(String[], Class, StarboxCommandContext)} and casts the
-   * returned object as it is safe to do so.
-   *
-   * @param strings the strings to get the object from
-   * @param clazz the clazz to get the provider from
-   * @param context the context of the command execution
-   * @param <O> the type of object to get from the provider
-   * @return the object returned by the provider
-   * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link StarboxMultipleArgumentProvider}
-   */
-  @NonNull
-  @Deprecated
-  public <O> O get(@NonNull String[] strings, @NonNull Class<O> clazz, @NonNull T context)
-      throws ArgumentProviderException {
-    return clazz.cast(this.fromStrings(strings, clazz, context));
   }
 }

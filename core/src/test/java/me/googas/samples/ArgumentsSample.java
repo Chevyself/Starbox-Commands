@@ -1,9 +1,9 @@
 package me.googas.samples;
 
 import com.github.chevyself.starbox.annotations.Free;
-import com.github.chevyself.starbox.annotations.Multiple;
 import com.github.chevyself.starbox.annotations.Required;
 import com.github.chevyself.starbox.arguments.Argument;
+import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class ArgumentsSample {
       StarboxCommandContext context,
       @Required String name,
       @Free String description,
-      @Required @Multiple String[] messages) {
+      @Required(behaviour = ArgumentBehaviour.CONTINUOUS) String[] messages) {
     // Has 4 arguments
     // An ExtraArgument: the context
     // Two SingleArgument: The name and description
@@ -56,7 +56,8 @@ public class ArgumentsSample {
     System.out.println(name + " is " + age + " years old");
   }
 
-  public void AMethod(@Multiple @Free(suggestions = "Hello world") String message) {
+  public void AMethod(
+      @Free(suggestions = "Hello world", behaviour = ArgumentBehaviour.CONTINUOUS) String message) {
     System.out.println(message);
   }
 }

@@ -60,23 +60,6 @@ public class BungeeMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String missingStrings(
-      @NonNull String name,
-      @NonNull String description,
-      int position,
-      int minSize,
-      int missing,
-      @NonNull CommandContext context) {
-    return BungeeMessagesProvider.errorPrefix
-        + "&c&oYou are missing at least &4&o"
-        + missing
-        + "&c&o strings of the argument &4&o"
-        + name
-        + "&c&o: &7&o"
-        + description;
-  }
-
-  @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
     return Strings.format(
         BungeeMessagesProvider.errorPrefix + "&4&o{0} &c&ois not valid time",

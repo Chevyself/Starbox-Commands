@@ -41,18 +41,6 @@ public class SystemMessagesProvider implements MessagesProvider {
   }
 
   @Override
-  public @NonNull String missingStrings(
-      @NonNull String name,
-      @NonNull String description,
-      int position,
-      int minSize,
-      int missing,
-      @NonNull CommandContext context) {
-    return String.format(
-        "Missing arguments of %s (%s) in %d missing: %d", name, description, position, missing);
-  }
-
-  @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
     return "You are not allowed to run this command for another " + TimeUtil.toString(timeLeft);
   }

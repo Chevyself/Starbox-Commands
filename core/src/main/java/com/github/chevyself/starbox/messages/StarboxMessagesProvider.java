@@ -2,7 +2,6 @@ package com.github.chevyself.starbox.messages;
 
 import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.arguments.Argument;
-import com.github.chevyself.starbox.arguments.MultipleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import java.time.Duration;
 import lombok.NonNull;
@@ -77,30 +76,6 @@ public interface StarboxMessagesProvider<T extends StarboxCommandContext> {
   @NonNull
   String missingArgument(
       @NonNull String name, @NonNull String description, int position, T context);
-
-  /**
-   * Get the message sent when a {@link MultipleArgument} min size is bigger than the context
-   * strings.
-   *
-   * @param name the name of the argument
-   * @param description the description of the argument
-   * @param position the position of the argument
-   * @param minSize the minimum size of the arguments
-   * @param missing how many strings are missing
-   * @param context the context of the command
-   * @return the message to tell that the command execution is missing arguments
-   * @see Argument
-   * @see MultipleArgument
-   */
-  @NonNull
-  @Deprecated
-  String missingStrings(
-      @NonNull String name,
-      @NonNull String description,
-      int position,
-      int minSize,
-      int missing,
-      @NonNull T context);
 
   /**
    * Get the message sent when the user is still on cooldown.
