@@ -150,8 +150,8 @@ public final class ClassFinder<T> {
   }
 
   private void checkEntry(@NonNull String entry) {
+    String packagePath = entry + "/" + this.path;
     if (!entry.endsWith(".jar")) {
-      String packagePath = entry + "/" + this.path;
       File packageFile = new File(packagePath);
       if (packageFile.exists() && packageFile.isDirectory()) {
         File[] files = packageFile.listFiles();
@@ -163,7 +163,7 @@ public final class ClassFinder<T> {
         }
       }
     } else {
-      try (JarFile jarFile = new JarFile(entry)) {
+      try (JarFile jarFile = new JarFile(packagePath)) {
         Enumeration<JarEntry> enumeration = jarFile.entries();
         while (enumeration.hasMoreElements()) {
           JarEntry jarEntry = enumeration.nextElement();
