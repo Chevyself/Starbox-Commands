@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import lombok.NonNull;
@@ -30,6 +31,8 @@ public final class ClassFinder<T> {
   @NonNull private final List<Class<T>> classes;
   /** The predicate to check if the class is valid. */
   @NonNull private Predicate<Class<T>> predicate;
+  /** A class loader to check for classes. */
+  private Supplier<URLClassLoader> classLoaderSupplier;
   /** Whether to search in sub packages. */
   private boolean recursive;
 
@@ -100,6 +103,18 @@ public final class ClassFinder<T> {
   }
 
   /**
+   * Set the class loader to check for classes.
+   *
+   * @param classLoaderSupplier the class loader to check for classes
+   * @return this instance
+   */
+  @NonNull
+  public ClassFinder<T> setClassLoaderSupplier(Supplier<URLClassLoader> classLoaderSupplier) {
+    this.classLoaderSupplier = classLoaderSupplier;
+    return this;
+  }
+
+  /**
    * Set the predicate to check if the class is valid.
    *
    * @param predicate the predicate to check
@@ -145,16 +160,24 @@ public final class ClassFinder<T> {
       // Thread loader
       ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
       this.checkInLoader(threadClassLoader);
+
+      // Custom loader
+      if (this.classLoaderSupplier != null) {
+        checkInLoader(this.classLoaderSupplier.get());
+      }
     }
     return this.classes;
   }
 
-  private void checkInLoader(ClassLoader systemClassLoader) {
-    if (!(systemClassLoader instanceof URLClassLoader)) {
+  private void checkInLoader(@NonNull ClassLoader loader) {
+    if (!(loader instanceof URLClassLoader)) {
       return;
     }
-    URLClassLoader classLoader = (URLClassLoader) systemClassLoader;
-    URL[] urls = classLoader.getURLs();
+    this.checkInLoader((URLClassLoader) loader);
+  }
+
+  private void checkInLoader(@NonNull URLClassLoader loader) {
+    URL[] urls = loader.getURLs();
     for (URL url : urls) {
       if (url.getProtocol().equals("file")) {
         String jarPath = url.getPath();
@@ -188,7 +211,7 @@ public final class ClassFinder<T> {
         }
       }
     } else {
-      try (JarFile jarFile = new JarFile(packageName)) {
+      try (JarFile jarFile = new JarFile(packagePath)) {
         Enumeration<JarEntry> enumeration = jarFile.entries();
         while (enumeration.hasMoreElements()) {
           JarEntry jarEntry = enumeration.nextElement();

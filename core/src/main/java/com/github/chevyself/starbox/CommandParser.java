@@ -150,6 +150,21 @@ public interface CommandParser<
   }
 
   /**
+   * Creates the class finder for a package name. This will be a finder to check for the annotation
+   * of the module or {@link com.github.chevyself.starbox.annotations.CommandCollection}
+   *
+   * @param packageName the package to get the commands from
+   * @return the class finder
+   */
+  @NonNull
+  default ClassFinder<?> createFinder(@NonNull String packageName) {
+    return new ClassFinder<>(packageName)
+        .setRecursive(true)
+        .setPredicate(
+            ClassFinder.checkForAnyAnnotations(this.getAnnotationClass(), CommandCollection.class));
+  }
+
+  /**
    * Parses a parent command from a class that is annotated with the command annotation of the
    * module. If no override is provided by {@link #getOverride(Class)}, then a default parent
    * command will be created from {@link #getParentCommandSupplier()}
