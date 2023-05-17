@@ -138,16 +138,29 @@ public final class ClassFinder<T> {
         this.checkEntry(entry);
       }
 
-      URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-      URL[] urls = classLoader.getURLs();
-      for (URL url : urls) {
-        if (url.getProtocol().equals("file")) {
-          String jarPath = url.getPath();
-          this.checkEntry(jarPath);
-        }
-      }
+      // System loader
+      ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+      this.checkInLoader(systemClassLoader);
+
+      // Thread loader
+      ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
+      this.checkInLoader(threadClassLoader);
     }
     return this.classes;
+  }
+
+  private void checkInLoader(ClassLoader systemClassLoader) {
+    if (!(systemClassLoader instanceof URLClassLoader)) {
+      return;
+    }
+    URLClassLoader classLoader = (URLClassLoader) systemClassLoader;
+    URL[] urls = classLoader.getURLs();
+    for (URL url : urls) {
+      if (url.getProtocol().equals("file")) {
+        String jarPath = url.getPath();
+        this.checkEntry(jarPath);
+      }
+    }
   }
 
   /**
