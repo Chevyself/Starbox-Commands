@@ -3,6 +3,8 @@ package com.github.chevyself.starbox.util;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -131,8 +133,18 @@ public final class ClassFinder<T> {
     if (this.classes.isEmpty()) {
       String classPath = System.getProperty("java.class.path");
       String[] split = classPath.split(File.pathSeparator);
+
       for (String entry : split) {
         this.checkEntry(entry);
+      }
+
+      URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+      URL[] urls = classLoader.getURLs();
+      for (URL url : urls) {
+        if (url.getProtocol().equals("file")) {
+          String jarPath = url.getPath();
+          this.checkEntry(jarPath);
+        }
       }
     }
     return this.classes;
@@ -163,7 +175,7 @@ public final class ClassFinder<T> {
         }
       }
     } else {
-      try (JarFile jarFile = new JarFile(packagePath)) {
+      try (JarFile jarFile = new JarFile(packageName)) {
         Enumeration<JarEntry> enumeration = jarFile.entries();
         while (enumeration.hasMoreElements()) {
           JarEntry jarEntry = enumeration.nextElement();
@@ -173,7 +185,7 @@ public final class ClassFinder<T> {
           }
         }
       } catch (IOException e) {
-        e.printStackTrace();
+        // Ignored package does not exist
       }
     }
   }
