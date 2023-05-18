@@ -126,10 +126,7 @@ public interface CommandParser<
   @NonNull
   default List<T> parseAllIn(@NonNull String packageName) {
     List<T> commands = new ArrayList<>();
-    new ClassFinder<>(packageName)
-        .setRecursive(true)
-        .setPredicate(
-            ClassFinder.checkForAnyAnnotations(this.getAnnotationClass(), CommandCollection.class))
+    this.createClassFinder(packageName)
         .find()
         .forEach(
             clazz -> {
@@ -149,15 +146,8 @@ public interface CommandParser<
     return commands;
   }
 
-  /**
-   * Creates the class finder for a package name. This will be a finder to check for the annotation
-   * of the module or {@link com.github.chevyself.starbox.annotations.CommandCollection}
-   *
-   * @param packageName the package to get the commands from
-   * @return the class finder
-   */
   @NonNull
-  default ClassFinder<?> createFinder(@NonNull String packageName) {
+  default ClassFinder<?> createClassFinder(@NonNull String packageName) {
     return new ClassFinder<>(packageName)
         .setRecursive(true)
         .setPredicate(

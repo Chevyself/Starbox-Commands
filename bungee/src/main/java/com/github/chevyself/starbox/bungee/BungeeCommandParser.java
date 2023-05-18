@@ -11,7 +11,6 @@ import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Method;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,18 +52,10 @@ public class BungeeCommandParser implements CommandParser<Command, CommandContex
   }
 
   @Override
-  public @NonNull ClassFinder<?> createFinder(@NonNull String packageName) {
+  public @NonNull ClassFinder<?> createClassFinder(@NonNull String packageName) {
     return CommandParser.super
-        .createFinder(packageName)
-        .setClassLoaderSupplier(
-            () -> {
-              ClassLoader loader = this.commandManager.getPlugin().getClass().getClassLoader();
-              if (loader instanceof URLClassLoader) {
-                return (URLClassLoader) loader;
-              }
-              throw new IllegalArgumentException(
-                  "Plugin ClassLoader is not an instance of URLClassLoader");
-            });
+        .createClassFinder(packageName)
+        .setClassLoaderSupplier(() -> commandManager.getPlugin().getClass().getClassLoader());
   }
 
   @NonNull

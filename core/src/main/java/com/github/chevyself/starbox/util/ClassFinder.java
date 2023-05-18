@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Predicate;
@@ -31,8 +32,9 @@ public final class ClassFinder<T> {
   @NonNull private final List<Class<T>> classes;
   /** The predicate to check if the class is valid. */
   @NonNull private Predicate<Class<T>> predicate;
-  /** A class loader to check for classes. */
-  private Supplier<URLClassLoader> classLoaderSupplier;
+
+  /** The class loader supplier to check for classes. */
+  private Supplier<ClassLoader> classLoaderSupplier;
   /** Whether to search in sub packages. */
   private boolean recursive;
 
@@ -103,18 +105,6 @@ public final class ClassFinder<T> {
   }
 
   /**
-   * Set the class loader to check for classes.
-   *
-   * @param classLoaderSupplier the class loader to check for classes
-   * @return this instance
-   */
-  @NonNull
-  public ClassFinder<T> setClassLoaderSupplier(Supplier<URLClassLoader> classLoaderSupplier) {
-    this.classLoaderSupplier = classLoaderSupplier;
-    return this;
-  }
-
-  /**
    * Set the predicate to check if the class is valid.
    *
    * @param predicate the predicate to check
@@ -148,23 +138,24 @@ public final class ClassFinder<T> {
     if (this.classes.isEmpty()) {
       String classPath = System.getProperty("java.class.path");
       String[] split = classPath.split(File.pathSeparator);
-
       for (String entry : split) {
         this.checkEntry(entry);
       }
 
-      // System loader
-      ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-      this.checkInLoader(systemClassLoader);
-
-      // Thread loader
-      ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
-      this.checkInLoader(threadClassLoader);
-
-      // Custom loader
-      if (this.classLoaderSupplier != null) {
-        checkInLoader(this.classLoaderSupplier.get());
+      // Classloaders
+      for (ClassLoader classLoader :
+          Arrays.asList(
+              ClassLoader.getSystemClassLoader(),
+              Thread.currentThread().getContextClassLoader(),
+              ClassFinder.class.getClassLoader())) {
+        this.checkInLoader(classLoader);
       }
+      // Supplied
+      if (this.classLoaderSupplier != null) {
+        this.checkInLoader(this.classLoaderSupplier.get());
+      }
+
+      return classes;
     }
     return this.classes;
   }
@@ -198,8 +189,8 @@ public final class ClassFinder<T> {
   }
 
   private void checkEntry(@NonNull String entry) {
-    String packagePath = entry + "/" + this.path;
     if (!entry.endsWith(".jar")) {
+      String packagePath = entry + "/" + this.path;
       File packageFile = new File(packagePath);
       if (packageFile.exists() && packageFile.isDirectory()) {
         File[] files = packageFile.listFiles();
@@ -211,12 +202,14 @@ public final class ClassFinder<T> {
         }
       }
     } else {
-      try (JarFile jarFile = new JarFile(packagePath)) {
+      try (JarFile jarFile = new JarFile(entry)) {
         Enumeration<JarEntry> enumeration = jarFile.entries();
         while (enumeration.hasMoreElements()) {
           JarEntry jarEntry = enumeration.nextElement();
           String name = jarEntry.getName();
-          if (!jarEntry.isDirectory() && name.endsWith(".class")) {
+          if (!jarEntry.isDirectory()
+              && name.startsWith(this.path.replace('.', '/'))
+              && name.endsWith(".class")) {
             this.checkClass(name);
           }
         }
@@ -229,21 +222,28 @@ public final class ClassFinder<T> {
   private void checkFile(@NonNull File file) {
     String fileName = file.getName();
     if (file.isFile() && fileName.endsWith(".class")) {
-      this.checkClass(fileName);
+      this.checkClass(this.packageName + "." + fileName);
     } else if (this.recursive && file.isDirectory()) {
       String subPackageName = this.packageName + "." + fileName;
       this.classes.addAll(
           new ClassFinder<>(this.type, subPackageName)
               .setPredicate(this.predicate)
               .setRecursive(true)
+              .setClassLoaderSupplier(this.classLoaderSupplier)
               .find());
     }
   }
 
+  @NonNull
+  public ClassFinder<T> setClassLoaderSupplier(@NonNull Supplier<ClassLoader> classLoaderSupplier) {
+    this.classLoaderSupplier = classLoaderSupplier;
+    return this;
+  }
+
   private void checkClass(@NonNull String fileName) {
-    String className = fileName.substring(0, fileName.length() - 6);
+    String className = fileName.substring(0, fileName.length() - 6).replace('/', '.');
     try {
-      Class<?> clazz = Class.forName(this.packageName + "." + className);
+      Class<?> clazz = Class.forName(className);
       if (this.type != null && !this.type.isAssignableFrom(clazz)) {
         return;
       }
