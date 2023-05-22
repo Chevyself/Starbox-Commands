@@ -1,10 +1,10 @@
 package com.github.chevyself.starbox.system;
 
-import com.github.chevyself.starbox.CommandParser;
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.flags.Option;
+import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.time.TimeUtil;
 import java.lang.reflect.Method;

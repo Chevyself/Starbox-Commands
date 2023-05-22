@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.bukkit;
 
-import com.github.chevyself.starbox.CommandParser;
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.arguments.Argument;
@@ -10,6 +9,7 @@ import com.github.chevyself.starbox.bukkit.result.BukkitResult;
 import com.github.chevyself.starbox.bukkit.result.Result;
 import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.flags.Option;
+import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.util.ClassFinder;
 import com.github.chevyself.starbox.util.Strings;
 import java.lang.reflect.Method;

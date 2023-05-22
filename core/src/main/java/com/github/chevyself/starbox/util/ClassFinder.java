@@ -249,7 +249,7 @@ public final class ClassFinder<T> {
       }
       //noinspection unchecked: we checked the type on the statement above.
       Class<T> clazzAsType = (Class<T>) clazz;
-      if (this.predicate.test(clazzAsType)) {
+      if (!this.classes.contains(clazzAsType) && this.predicate.test(clazzAsType)) {
         this.classes.add(clazzAsType);
       }
     } catch (ClassNotFoundException e) {

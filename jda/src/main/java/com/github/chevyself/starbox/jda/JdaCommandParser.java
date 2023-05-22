@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.jda;
 
-import com.github.chevyself.starbox.CommandParser;
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.arguments.Argument;
@@ -12,6 +11,7 @@ import com.github.chevyself.starbox.jda.cooldown.CooldownManager;
 import com.github.chevyself.starbox.jda.result.JdaResult;
 import com.github.chevyself.starbox.jda.result.Result;
 import com.github.chevyself.starbox.jda.result.ResultType;
+import com.github.chevyself.starbox.parsers.CommandParser;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;

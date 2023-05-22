@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.bungee;
 
-import com.github.chevyself.starbox.CommandParser;
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.bungee.annotations.Command;
@@ -9,6 +8,7 @@ import com.github.chevyself.starbox.bungee.result.BungeeResult;
 import com.github.chevyself.starbox.bungee.result.Result;
 import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.flags.Option;
+import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
