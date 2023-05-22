@@ -7,6 +7,8 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,10 +134,14 @@ public interface CommandParser<
             clazz -> {
               Object instance;
               try {
-                instance = clazz.newInstance();
-              } catch (InstantiationException | IllegalAccessException e) {
+                Constructor<?> constructor = clazz.getConstructor();
+                instance = constructor.newInstance();
+              } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new CommandRegistrationException(
                     "Could not instantiate class " + clazz.getName(), e);
+              } catch (NoSuchMethodException e) {
+                throw new CommandRegistrationException(
+                    "Could not find a default constructor in class " + clazz.getName(), e);
               }
               if (clazz.isAnnotationPresent(CommandCollection.class)) {
                 commands.addAll(this.parseCommands(instance));
