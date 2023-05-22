@@ -1,5 +1,8 @@
-package com.github.chevyself.starbox;
+package com.github.chevyself.starbox.parsers;
 
+import com.github.chevyself.starbox.ReflectCommand;
+import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.annotations.CommandCollection;
 import com.github.chevyself.starbox.annotations.Parent;
 import com.github.chevyself.starbox.annotations.ParentOverride;

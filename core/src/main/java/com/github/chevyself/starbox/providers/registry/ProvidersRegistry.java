@@ -7,6 +7,7 @@ import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.parsers.ProviderParser;
 import com.github.chevyself.starbox.providers.BooleanProvider;
 import com.github.chevyself.starbox.providers.DoubleProvider;
 import com.github.chevyself.starbox.providers.DurationProvider;

@@ -2,6 +2,7 @@ package com.github.chevyself.starbox;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import java.lang.reflect.Method;
 import java.util.Arrays;

@@ -1,13 +1,15 @@
-package com.github.chevyself.starbox.providers.registry;
+package com.github.chevyself.starbox.parsers;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderRegistrationException;
+import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
 import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.NonNull;
 
 /**
@@ -22,18 +24,19 @@ import lombok.NonNull;
  *
  * @param <C> the context of the providers
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
 public class ProviderParser<C extends StarboxCommandContext> {
 
-  @NonNull private final ClassFinder<? extends StarboxContextualProvider> providers;
+  @NonNull @Getter private final ClassFinder<? extends StarboxContextualProvider<?, C>> providers;
 
   /**
    * Create a new parser for the providers in the given package.
    *
    * @param packageName the package to search for the providers
    */
+  @SuppressWarnings({"rawtypes", "unchecked"})
   public ProviderParser(@NonNull String packageName) {
-    this.providers = new ClassFinder<>(StarboxContextualProvider.class, packageName);
+    this.providers =
+        new ClassFinder(StarboxContextualProvider.class, packageName).setRecursive(true);
   }
 
   /**
@@ -47,7 +50,7 @@ public class ProviderParser<C extends StarboxCommandContext> {
         .map(
             providerClass -> {
               try {
-                Constructor<? extends StarboxContextualProvider> constructor =
+                Constructor<? extends StarboxContextualProvider<?, C>> constructor =
                     providerClass.getConstructor();
                 return (StarboxContextualProvider<?, C>) constructor.newInstance();
               } catch (NoSuchMethodException e) {
