@@ -136,7 +136,9 @@ public interface CommandParser<
               try {
                 Constructor<?> constructor = clazz.getConstructor();
                 instance = constructor.newInstance();
-              } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+              } catch (InstantiationException
+                  | IllegalAccessException
+                  | InvocationTargetException e) {
                 throw new CommandRegistrationException(
                     "Could not instantiate class " + clazz.getName(), e);
               } catch (NoSuchMethodException e) {
@@ -152,6 +154,12 @@ public interface CommandParser<
     return commands;
   }
 
+  /**
+   * Creates the class finder that will be used to find the classes that contain commands.
+   *
+   * @param packageName the package name to get the commands from
+   * @return the class finder
+   */
   @NonNull
   default ClassFinder<?> createClassFinder(@NonNull String packageName) {
     return new ClassFinder<>(packageName)

@@ -97,6 +97,18 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   }
 
   /**
+   * Registers all providers inside a package.
+   *
+   * @param packageName the package to register the providers from
+   * @return this same instance of registry
+   */
+  @NonNull
+  public ProvidersRegistry<T> addAllIn(@NonNull String packageName) {
+    this.addProviders(new ProviderParser<T>(packageName).parseProviders());
+    return this;
+  }
+
+  /**
    * Get all the providers that provide the queried class.
    *
    * <p>For example if you have the provider
@@ -151,7 +163,6 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
    *     the object for some reason, see {@link
    *     StarboxExtraArgumentProvider#getObject(StarboxCommandContext)}
    */
-  @SuppressWarnings("unchecked")
   @NonNull
   public Object getObject(@NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {
@@ -181,7 +192,6 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
    *     the object for some reason, see {@link StarboxArgumentProvider#fromString(String,
    *     StarboxCommandContext)}
    */
-  @SuppressWarnings("unchecked")
   @NonNull
   public Object fromString(@NonNull String string, @NonNull Class<?> clazz, @NonNull T context)
       throws ArgumentProviderException {

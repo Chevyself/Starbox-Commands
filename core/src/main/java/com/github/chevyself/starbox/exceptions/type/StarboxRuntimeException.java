@@ -16,7 +16,7 @@ public class StarboxRuntimeException extends RuntimeException {
    *
    * @param message the message with the cause of the exception
    */
-  public StarboxRuntimeException(@NonNull String message) {
+  public StarboxRuntimeException(String message) {
     super(message);
   }
 

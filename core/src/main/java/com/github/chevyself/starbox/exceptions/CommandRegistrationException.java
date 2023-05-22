@@ -16,7 +16,7 @@ public class CommandRegistrationException extends StarboxRuntimeException {
    *
    * @param message the message with the cause of the exception
    */
-  public CommandRegistrationException(@NonNull String message) {
+  public CommandRegistrationException(String message) {
     super(message);
   }
 
@@ -24,9 +24,9 @@ public class CommandRegistrationException extends StarboxRuntimeException {
    * Create an exception with a message and a cause.
    *
    * @param message the message with the cause of the exception
-   * @param e the cause of the exception
+   * @param cause the cause of the exception
    */
-  public CommandRegistrationException(String message, ReflectiveOperationException e) {
-    super(message, e);
+  public CommandRegistrationException(String message, @NonNull Throwable cause) {
+    super(message, cause);
   }
 }
