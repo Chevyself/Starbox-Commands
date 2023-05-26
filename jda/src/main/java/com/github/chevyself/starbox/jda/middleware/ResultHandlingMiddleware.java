@@ -1,5 +1,7 @@
-package com.github.chevyself.starbox.jda;
+package com.github.chevyself.starbox.jda.middleware;
 
+import com.github.chevyself.starbox.Middleware;
+import com.github.chevyself.starbox.jda.ListenerOptions;
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import com.github.chevyself.starbox.jda.context.GenericCommandContext;
 import com.github.chevyself.starbox.jda.context.SlashCommandContext;
@@ -7,7 +9,8 @@ import com.github.chevyself.starbox.jda.messages.MessagesProvider;
 import com.github.chevyself.starbox.jda.result.JdaResult;
 import com.github.chevyself.starbox.jda.result.Result;
 import com.github.chevyself.starbox.jda.result.ResultType;
-import java.awt.*;
+import com.github.chevyself.starbox.result.StarboxResult;
+import java.awt.Color;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -17,7 +20,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -48,8 +50,7 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
  * </ul>
  */
 @Data
-@Deprecated
-public class GenericListenerOptions implements ListenerOptions {
+public class ResultHandlingMiddleware implements Middleware<CommandContext> {
 
   @NonNull @Getter private String prefix = "-";
 
@@ -97,7 +98,7 @@ public class GenericListenerOptions implements ListenerOptions {
    * @return this same instance
    */
   @NonNull
-  public GenericListenerOptions setPrefix(String prefix) {
+  public ResultHandlingMiddleware setPrefix(String prefix) {
     this.prefix = prefix;
     return this;
   }
@@ -108,6 +109,26 @@ public class GenericListenerOptions implements ListenerOptions {
       return this.getError();
     } else {
       return this.getSuccess();
+    }
+  }
+
+  @Override
+  public @NonNull Optional<? extends StarboxResult> next(@NonNull CommandContext context) {
+    if (context instanceof GenericCommandContext) {
+      this.preCommand(
+          ((GenericCommandContext) context).getEvent(),
+          context.getCommand().getName(),
+          context.getStrings());
+    } else if (context instanceof SlashCommandContext) {
+      ((SlashCommandContext) context).getEvent().deferReply(true);
+    }
+    return Optional.empty();
+  }
+
+  @Override
+  public void next(@NonNull CommandContext context, StarboxResult result) {
+    if (result instanceof JdaResult) {
+      this.handle(((JdaResult) result), context);
     }
   }
 
@@ -139,7 +160,6 @@ public class GenericListenerOptions implements ListenerOptions {
         msg.delete().queueAfter(this.getToDeleteSuccess().toMillis(), TimeUnit.MILLISECONDS);
   }
 
-  @Override
   public void preCommand(
       @NonNull MessageReceivedEvent event, @NonNull String commandName, @NonNull String[] strings) {
     if (this.isDeleteCommands() && event.getChannelType() != ChannelType.PRIVATE) {
@@ -198,7 +218,6 @@ public class GenericListenerOptions implements ListenerOptions {
     return null;
   }
 
-  @Override
   public void handle(@NonNull Throwable fail, @NonNull CommandContext context) {
     if (!this.isSendErrors()) {
       return;
@@ -220,12 +239,6 @@ public class GenericListenerOptions implements ListenerOptions {
             failure -> {});
   }
 
-  @Override
-  public @NonNull String getPrefix(Guild guild) {
-    return this.prefix;
-  }
-
-  @Override
   public void handle(JdaResult jdaResult, @NonNull CommandContext context) {
     if (!(jdaResult instanceof Result))
       throw new IllegalArgumentException(

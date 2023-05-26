@@ -61,11 +61,9 @@ public class CommandListener implements EventListener {
       return;
     }
     String name = strings[0].substring(prefix.length());
-    this.listenerOptions.preCommand(event, name, strings);
     JdaCommand command = this.getCommand(event.isFromGuild() ? event.getGuild() : null, name);
     GenericCommandContext context = this.getCommandContext(event, strings, command);
-    JdaResult result = this.getResult(command, name, context);
-    this.listenerOptions.handle(result, context);
+    command.execute(context);
   }
 
   /**
@@ -78,7 +76,6 @@ public class CommandListener implements EventListener {
     String name = event.getName();
     String[] strings =
         event.getOptions().stream().map(OptionMapping::getAsString).toArray(String[]::new);
-    this.listenerOptions.preCommand(event, event.getName(), strings);
     JdaCommand command = this.getCommand(event.isFromGuild() ? event.getGuild() : null, name);
     FlagArgument.Parser parse = FlagArgument.parse(command.getOptions(), false, strings);
     CommandContext context =
@@ -94,8 +91,7 @@ public class CommandListener implements EventListener {
             event,
             event.getOptions(),
             event.getChannel());
-    JdaResult result = this.getResult(command, command.getName(), context);
-    this.listenerOptions.handle(result, context);
+    command.execute(context);
   }
 
   @NonNull
@@ -112,6 +108,7 @@ public class CommandListener implements EventListener {
    * @param context the context of the command
    * @return the result of the command execution
    */
+  @Deprecated
   private JdaResult getResult(
       @NonNull JdaCommand command,
       @Deprecated @NonNull String commandName,

@@ -48,8 +48,10 @@ public interface ListenerOptions {
    * @param commandName the alias of the {@link JdaCommand} that is going to be executed
    * @param strings the arguments used to execute the command
    */
-  void preCommand(
-      @NonNull MessageReceivedEvent event, @NonNull String commandName, @NonNull String[] strings);
+  default void preCommand(
+      @NonNull MessageReceivedEvent event,
+      @NonNull String commandName,
+      @NonNull String[] strings) {}
 
   /**
    * Handles any kind of error that is thrown in {@link CommandListener}.
@@ -57,7 +59,8 @@ public interface ListenerOptions {
    * @param fail any kind of exception thrown in {@link CommandListener}
    * @param context the context of the command execution
    */
-  void handle(@NonNull Throwable fail, @NonNull CommandContext context);
+  @Deprecated
+  default void handle(@NonNull Throwable fail, @NonNull CommandContext context) {}
 
   /**
    * Get the prefix that is used for commands inside a {@link Guild}. If the parameter {@link Guild}
@@ -76,5 +79,6 @@ public interface ListenerOptions {
    * @param result the result to handle
    * @param context the context which executed the command
    */
-  void handle(JdaResult result, @NonNull CommandContext context);
+  @Deprecated
+  default void handle(JdaResult result, @NonNull CommandContext context) {}
 }

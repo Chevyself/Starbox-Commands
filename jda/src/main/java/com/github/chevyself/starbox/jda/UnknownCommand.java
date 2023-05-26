@@ -43,6 +43,8 @@ public class UnknownCommand extends JdaCommand {
 
   @Override
   Result run(@NonNull CommandContext context) {
-    return null;
+    return Result.builder()
+        .setDescription(context.getMessagesProvider().commandNotFound(this.name, context))
+        .build();
   }
 }

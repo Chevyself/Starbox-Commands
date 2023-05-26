@@ -4,7 +4,7 @@ import com.github.chevyself.starbox.jda.AnnotatedCommand;
 
 /**
  * This class allows to implement a builder for {@link JdaResult} which can be used in a {@link
- * AnnotatedCommand}/
+ * AnnotatedCommand}.
  */
 public interface JdaResultBuilder {
 
