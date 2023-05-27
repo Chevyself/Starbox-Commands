@@ -2,23 +2,17 @@ package com.github.chevyself.starbox.jda;
 
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
-import com.github.chevyself.starbox.annotations.Parent;
-import com.github.chevyself.starbox.arguments.Argument;
-import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.jda.annotations.Command;
 import com.github.chevyself.starbox.jda.annotations.Entry;
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import com.github.chevyself.starbox.jda.context.GenericCommandContext;
-import com.github.chevyself.starbox.jda.cooldown.CooldownManager;
 import com.github.chevyself.starbox.jda.listener.CommandListener;
 import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
 import com.github.chevyself.starbox.jda.messages.MessagesProvider;
 import com.github.chevyself.starbox.jda.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.jda.providers.registry.JdaProvidersRegistry;
-import com.github.chevyself.starbox.jda.result.Result;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,8 +31,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * {@link CommandListener#onMessageReceived(MessageReceivedEvent)}
  *
  * <p>The easiest way to create commands is using reflection with the method {@link
- * #parseCommands(Object)} those parsed commands can be later registered in this instance using
- * {@link #registerAll(Collection)}.
+ * JdaCommandParser#parseCommands(Object)} those parsed commands can be later registered in this
+ * instance using {@link #registerAll(Collection)}.
  *
  * <p>To create a {@link CommandManager} instance you simply need a {@link ProvidersRegistry} you
  * can use {@link JdaProvidersRegistry} which includes some providers that are intended for JDA use
@@ -173,51 +167,6 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
     return this.guildCommands.computeIfAbsent(guild.getIdLong(), id -> new ArrayList<>());
   }
 
-  @Override
-  public @NonNull List<AnnotatedCommand> parseCommands(@NonNull Object object) {
-    List<AnnotatedCommand> commands = new ArrayList<>();
-    AnnotatedCommand parent = null;
-    final Class<?> clazz = object.getClass();
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        parent = this.parseCommand(object, method);
-        commands.add(parent);
-        break;
-      }
-    }
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (!method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        final AnnotatedCommand cmd = this.parseCommand(object, method);
-        if (parent != null) {
-          parent.addChild(cmd);
-        } else {
-          commands.add(cmd);
-        }
-      }
-    }
-    return commands;
-  }
-
-  @Override
-  public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
-    if (!Result.class.isAssignableFrom(method.getReturnType())
-        && !method.getReturnType().equals(Void.TYPE)) {
-      throw new IllegalArgumentException(method + " must return void or " + Result.class);
-    }
-    Command annotation = method.getAnnotation(Command.class);
-    return new AnnotatedCommand(
-        this,
-        annotation.description(),
-        this.getMap(annotation),
-        Option.of(annotation.options()),
-        this.getMiddlewares(annotation),
-        CooldownManager.of(annotation).orElse(null),
-        Arrays.asList(annotation.aliases()),
-        method,
-        object,
-        Argument.parseArguments(method));
-  }
-
   @NonNull
   private Map<String, String> getMap(@NonNull Command annotation) {
     Map<String, String> map = new HashMap<>();
@@ -235,7 +184,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
 
   @Override
   public @NonNull CommandManager parseAndRegister(@NonNull Object object) {
-    this.registerAll(this.parseCommands(object));
+    this.registerAll(parser.parseCommands(object));
     return this;
   }
 
@@ -262,7 +211,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    * @return this same instance
    */
   public @NonNull CommandManager parseAndRegister(@NonNull Guild guild, @NonNull Object object) {
-    return this.registerAll(guild, this.parseCommands(object));
+    return this.registerAll(guild, parser.parseCommands(object));
   }
 
   /**
@@ -274,7 +223,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Jda
    */
   public @NonNull CommandManager parseAndRegisterAll(
       @NonNull Guild guild, @NonNull Object... objects) {
-    return this.registerAll(guild, this.parseCommands(objects));
+    return this.registerAll(guild, parser.parseCommands(objects));
   }
 
   /**
