@@ -54,16 +54,24 @@ public interface CommandParser<
    */
   @NonNull
   default List<T> parseCommands(@NonNull Object object) {
-    final List<T> commands = new ArrayList<>();
     final Class<?> clazz = object.getClass();
-    final T parent = this.getParent(object, clazz);
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(this.getAnnotationClass())) {
-        final T command = this.parseCommand(object, method);
-        if (parent != null) {
-          parent.addChild(command);
+    final List<T> commands = new ArrayList<>();
+    if (clazz.isAnnotationPresent(this.getAnnotationClass())) {
+      commands.add(this.parseParentCommand(object, clazz));
+    } else {
+      final T parent = this.getParent(object, clazz);
+      for (final Method method : clazz.getDeclaredMethods()) {
+        if (method.isAnnotationPresent(this.getAnnotationClass())) {
+          final T command = this.parseCommand(object, method);
+          if (parent != null) {
+            parent.addChild(command);
+          } else {
+            commands.add(command);
+          }
         }
-        commands.add(command);
+      }
+      if (parent != null) {
+        commands.add(parent);
       }
     }
     return commands;
@@ -148,10 +156,9 @@ public interface CommandParser<
                 throw new CommandRegistrationException(
                     "Could not find a default constructor in class " + clazz.getName(), e);
               }
-              if (clazz.isAnnotationPresent(CommandCollection.class)) {
+              if (clazz.isAnnotationPresent(CommandCollection.class) || clazz.isAnnotationPresent(
+                  this.getAnnotationClass())) {
                 commands.addAll(this.parseCommands(instance));
-              } else {
-                commands.add(this.parseParentCommand(instance, clazz));
               }
             });
     return commands;
