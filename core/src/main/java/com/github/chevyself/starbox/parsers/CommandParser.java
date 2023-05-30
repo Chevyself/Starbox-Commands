@@ -156,8 +156,8 @@ public interface CommandParser<
                 throw new CommandRegistrationException(
                     "Could not find a default constructor in class " + clazz.getName(), e);
               }
-              if (clazz.isAnnotationPresent(CommandCollection.class) || clazz.isAnnotationPresent(
-                  this.getAnnotationClass())) {
+              if (clazz.isAnnotationPresent(CommandCollection.class)
+                  || clazz.isAnnotationPresent(this.getAnnotationClass())) {
                 commands.addAll(this.parseCommands(instance));
               }
             });
