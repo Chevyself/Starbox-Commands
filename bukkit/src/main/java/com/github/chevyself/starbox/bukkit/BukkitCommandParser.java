@@ -107,9 +107,6 @@ public class BukkitCommandParser
         && !method.getReturnType().equals(Void.TYPE)) {
       throw new CommandRegistrationException(method + " must return void or " + BukkitResult.class);
     }
-    if (!method.isAnnotationPresent(Command.class)) {
-      throw new CommandRegistrationException(method + " is not annotated with " + Command.class);
-    }
   }
 
   @Override
