@@ -10,8 +10,7 @@ public class FlagsTest {
     Scanner scanner = new Scanner(System.in);
     Pattern test = Pattern.compile("((\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")|\\S+)");
     while (true) {
-      String command =
-          "The power of \"Jesus Christ\"";
+      String command = "The power of \"Jesus Christ\"";
       String[] split = command.split(" +");
       String line = scanner.nextLine();
       // System.out.println(Arrays.toString(split));

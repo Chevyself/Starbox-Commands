@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
@@ -46,7 +45,9 @@ public final class CommandLineParser {
    *
    * Arguments can be surrounded by quotation marks to allow spaces.
    */
-  @NonNull private static final Pattern argumentsPattern = Pattern.compile("((\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")|\\S+)");
+  @NonNull
+  private static final Pattern argumentsPattern =
+      Pattern.compile("((\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")|\\S+)");
 
   /** The arguments as they were passed to the command line. */
   @NonNull private final String[] rawArguments;
@@ -160,8 +161,12 @@ public final class CommandLineParser {
   private static String buildArgumentsString(@NonNull Iterable<String> subList) {
     StringBuilder builder = new StringBuilder();
     for (String string : subList) {
-      builder.append(
-          CommandLineParser.hasSpaces(string) ? "\"" + string.replace("\"", "\\\"") + "\"" : string).append(" ");
+      builder
+          .append(
+              CommandLineParser.hasSpaces(string)
+                  ? "\"" + string.replace("\"", "\\\"") + "\""
+                  : string)
+          .append(" ");
     }
     if (builder.length() > 0) {
       builder.deleteCharAt(builder.length() - 1);
