@@ -42,9 +42,10 @@ public class BukkitCommandParser
   }
 
   @Override
-  public @NonNull ClassFinder<?> createClassFinder(@NonNull String packageName) {
+  public @NonNull <O> ClassFinder<O> createClassFinder(
+      Class<O> clazz, @NonNull String packageName) {
     return CommandParser.super
-        .createClassFinder(packageName)
+        .createClassFinder(clazz, packageName)
         .setClassLoaderSupplier(() -> commandManager.getPlugin().getClass().getClassLoader());
   }
 

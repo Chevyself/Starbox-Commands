@@ -1,5 +1,6 @@
 package com.github.chevyself.starbox.parsers;
 
+import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.ReflectCommand;
 import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.StarboxCommandManager;
@@ -7,16 +8,22 @@ import com.github.chevyself.starbox.annotations.CommandCollection;
 import com.github.chevyself.starbox.annotations.Parent;
 import com.github.chevyself.starbox.annotations.ParentOverride;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
+import com.github.chevyself.starbox.exceptions.ArgumentProviderRegistrationException;
 import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
+import com.github.chevyself.starbox.exceptions.MiddlewareParsingException;
+import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
 import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 
 /**
@@ -146,7 +153,9 @@ public interface CommandParser<
   @NonNull
   default List<T> parseAllIn(@NonNull String packageName) {
     List<T> commands = new ArrayList<>();
-    this.createClassFinder(packageName)
+    this.createClassFinder(null, packageName)
+        .setPredicate(
+            ClassFinder.checkForAnyAnnotations(this.getAnnotationClass(), CommandCollection.class))
         .find()
         .forEach(
             clazz -> {
@@ -172,17 +181,16 @@ public interface CommandParser<
   }
 
   /**
-   * Creates the class finder that will be used to find the classes that contain commands.
+   * Creates a class finder with the context of this parser.
    *
-   * @param packageName the package name to get the commands from
+   * @param clazz the class of the objects to find
+   * @param packageName the package name to get the objects from
    * @return the class finder
+   * @param <O> the type of the objects to find
    */
   @NonNull
-  default ClassFinder<?> createClassFinder(@NonNull String packageName) {
-    return new ClassFinder<>(packageName)
-        .setRecursive(true)
-        .setPredicate(
-            ClassFinder.checkForAnyAnnotations(this.getAnnotationClass(), CommandCollection.class));
+  default <O> ClassFinder<O> createClassFinder(Class<O> clazz, @NonNull String packageName) {
+    return new ClassFinder<>(clazz, packageName).setRecursive(true);
   }
 
   /**
@@ -255,4 +263,62 @@ public interface CommandParser<
    * @return the parsed command
    */
   T parseCommand(@NonNull Object object, @NonNull Method method, @NonNull A annotation);
+
+  /**
+   * Parse the middlewares in the package and return them as a list.
+   *
+   * @param packageName the package name to get the middlewares from
+   * @return the list of middlewares
+   */
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  @NonNull
+  default List<Middleware<C>> parseMiddlewares(@NonNull String packageName) {
+    return this.createClassFinder(Middleware.class, packageName).find().stream()
+        .map(
+            clazz -> {
+              if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) return null;
+              try {
+                Constructor<Middleware> constructor = clazz.getConstructor();
+                return (Middleware<C>) constructor.newInstance();
+              } catch (NoSuchMethodException e) {
+                throw new MiddlewareParsingException(
+                    "Middleware must have a no-args constructor", e);
+              } catch (InvocationTargetException
+                  | InstantiationException
+                  | IllegalAccessException e) {
+                throw new MiddlewareParsingException("Could not instantiate middleware", e);
+              }
+            })
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Parse the providers in the package and return them as a list. Please note that this method is
+   * experimental as it depends on raw types and unchecked casts
+   *
+   * @param packageName the package name to get the middlewares from
+   * @return the list of providers
+   */
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  @NonNull
+  default List<StarboxContextualProvider<?, C>> parseProviders(@NonNull String packageName) {
+    return this.createClassFinder(StarboxContextualProvider.class, packageName).find().stream()
+        .map(
+            clazz -> {
+              try {
+                Constructor<StarboxContextualProvider> constructor = clazz.getConstructor();
+                return (StarboxContextualProvider<?, C>) constructor.newInstance();
+              } catch (NoSuchMethodException e) {
+                throw new ArgumentProviderRegistrationException(
+                    "The provider " + clazz.getName() + " must have a default constructor");
+              } catch (InvocationTargetException
+                  | InstantiationException
+                  | IllegalAccessException e) {
+                throw new ArgumentProviderRegistrationException(
+                    "Could not instantiate the provider " + clazz.getName(), e);
+              }
+            })
+        .collect(Collectors.toList());
+  }
 }

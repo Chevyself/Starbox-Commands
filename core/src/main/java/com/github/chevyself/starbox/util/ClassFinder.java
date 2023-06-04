@@ -6,7 +6,6 @@ import java.lang.annotation.Annotation;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Predicate;
@@ -32,9 +31,12 @@ public final class ClassFinder<T> {
   @NonNull private final List<Class<T>> classes;
   /** The predicate to check if the class is valid. */
   @NonNull private Predicate<Class<T>> predicate;
+  /** Extra class loaders to check for classes. */
+  @NonNull private final List<ClassLoader> extras;
 
   /** The class loader supplier to check for classes. */
-  private Supplier<ClassLoader> classLoaderSupplier;
+  @NonNull private Supplier<ClassLoader> classLoaderSupplier;
+
   /** Whether to search in sub packages. */
   private boolean recursive;
 
@@ -50,6 +52,8 @@ public final class ClassFinder<T> {
     this.path = packageName.replace('.', '/');
     this.classes = new ArrayList<>();
     this.predicate = clazz -> true;
+    this.extras = new ArrayList<>();
+    this.classLoaderSupplier = () -> Thread.currentThread().getContextClassLoader();
     this.recursive = false;
   }
 
@@ -60,6 +64,18 @@ public final class ClassFinder<T> {
    */
   public ClassFinder(@NonNull String packageName) {
     this(null, packageName);
+  }
+
+  /**
+   * Add a class loader to check for classes.
+   *
+   * @param loader the loader to check.
+   * @return this class finder.
+   */
+  @NonNull
+  public ClassFinder<T> checkIn(@NonNull ClassLoader loader) {
+    this.extras.add(loader);
+    return this;
   }
 
   /**
@@ -141,20 +157,10 @@ public final class ClassFinder<T> {
       for (String entry : split) {
         this.checkEntry(entry);
       }
-
-      // Classloaders
-      for (ClassLoader classLoader :
-          Arrays.asList(
-              ClassLoader.getSystemClassLoader(),
-              Thread.currentThread().getContextClassLoader(),
-              ClassFinder.class.getClassLoader())) {
-        this.checkInLoader(classLoader);
-      }
       // Supplied
-      if (this.classLoaderSupplier != null) {
-        this.checkInLoader(this.classLoaderSupplier.get());
-      }
-
+      this.checkInLoader(this.classLoaderSupplier.get());
+      // Extra
+      this.extras.forEach(this::checkInLoader);
       return classes;
     }
     return this.classes;

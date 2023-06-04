@@ -7,7 +7,6 @@ import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
-import com.github.chevyself.starbox.parsers.ProviderParser;
 import com.github.chevyself.starbox.providers.BooleanProvider;
 import com.github.chevyself.starbox.providers.DoubleProvider;
 import com.github.chevyself.starbox.providers.DurationProvider;
@@ -95,18 +94,6 @@ public class ProvidersRegistry<T extends StarboxCommandContext> {
   public final ProvidersRegistry<T> addProviders(
       @NonNull StarboxContextualProvider<?, T>... providers) {
     return this.addProviders(Arrays.asList(providers));
-  }
-
-  /**
-   * Registers all providers inside a package.
-   *
-   * @param packageName the package to register the providers from
-   * @return this same instance of registry
-   */
-  @NonNull
-  public ProvidersRegistry<T> addAllIn(@NonNull String packageName) {
-    this.addProviders(new ProviderParser<T>(packageName).parseProviders());
-    return this;
   }
 
   /**
