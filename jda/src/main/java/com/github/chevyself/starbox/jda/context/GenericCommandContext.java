@@ -89,6 +89,11 @@ public class GenericCommandContext implements CommandContext {
   }
 
   @Override
+  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+    return this.getProvidersRegistry();
+  }
+
+  @Override
   public String toString() {
     return "GenericCommandContext{"
         + "jda="

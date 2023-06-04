@@ -43,4 +43,9 @@ public class CommandContext implements StarboxCommandContext {
     this.messagesProvider = messagesProvider;
     this.providersRegistry = providersRegistry;
   }
+
+  @Override
+  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+    return this.getProvidersRegistry();
+  }
 }
