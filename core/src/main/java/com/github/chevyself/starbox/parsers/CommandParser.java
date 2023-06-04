@@ -172,10 +172,7 @@ public interface CommandParser<
                 throw new CommandRegistrationException(
                     "Could not find a default constructor in class " + clazz.getName(), e);
               }
-              if (clazz.isAnnotationPresent(CommandCollection.class)
-                  || clazz.isAnnotationPresent(this.getAnnotationClass())) {
-                commands.addAll(this.parseCommands(instance));
-              }
+              commands.addAll(this.parseCommands(instance));
             });
     return commands;
   }
@@ -209,7 +206,7 @@ public interface CommandParser<
     List<T> children = this.parseMethodCommands(instance, clazz);
     T parent =
         override
-            .map(method -> this.parseCommand(instance, method))
+            .map(method -> this.parseCommand(instance, method, annotation))
             .orElseGet(() -> this.getParentCommandSupplier().apply(annotation));
     children.forEach(parent::addChild);
     return parent;
