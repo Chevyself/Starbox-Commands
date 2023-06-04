@@ -76,11 +76,6 @@ public class SlashCommandContext implements CommandContext {
   }
 
   @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return this.getProvidersRegistry();
-  }
-
-  @Override
   public @NonNull SlashCommandContext getChildren(@NonNull JdaCommand command) {
     return new SlashCommandContext(
         this.jda,

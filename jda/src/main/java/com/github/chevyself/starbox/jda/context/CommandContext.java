@@ -64,4 +64,9 @@ public interface CommandContext extends StarboxCommandContext {
    */
   @NonNull
   CommandContext getChildren(@NonNull JdaCommand command);
+
+  @Override
+  default @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+    return this.getProvidersRegistry();
+  }
 }
