@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.result.BukkitResult;
-import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,19 +117,16 @@ public abstract class StarboxBukkitCommand extends Command
    * {@link BukkitResult} components
    *
    * @param sender the executor of the command
-   * @param args the arguments used in the command execution
+   * @param parser the command line parser used in the command execution
    */
-  public void run(@NonNull CommandSender sender, @NonNull String[] args) {
-    FlagArgument.Parser parse = FlagArgument.parse(this.getOptions(), args);
+  public void run(@NonNull CommandSender sender, @NonNull CommandLineParser parser) {
     CommandContext context =
         new CommandContext(
+            parser,
             this,
             sender,
-            parse.getArgumentsString(),
-            parse.getArgumentsArray(),
             this.manager.getProvidersRegistry(),
-            this.manager.getMessagesProvider(),
-            parse.getFlags());
+            this.manager.getMessagesProvider());
     BukkitResult result =
         this.getMiddlewares().stream()
             .map(middleware -> middleware.next(context))
@@ -153,14 +150,14 @@ public abstract class StarboxBukkitCommand extends Command
    * {@link CommandManager} plugin
    *
    * @param sender the executor of the command
-   * @param args the arguments used in the command execution
+   * @param parser the command line parsed in the command execution
    */
-  public void runCheckSync(@NonNull CommandSender sender, @NonNull String[] args) {
+  public void runCheckSync(@NonNull CommandSender sender, @NonNull CommandLineParser parser) {
     if (this.async) {
       Bukkit.getScheduler()
-          .runTaskAsynchronously(this.manager.getPlugin(), () -> this.run(sender, args));
+          .runTaskAsynchronously(this.manager.getPlugin(), () -> this.run(sender, parser));
     } else {
-      this.run(sender, args);
+      this.run(sender, parser);
     }
   }
 
@@ -181,14 +178,22 @@ public abstract class StarboxBukkitCommand extends Command
   @Override
   public boolean execute(
       @NonNull CommandSender sender, @NonNull String alias, String @NonNull [] strings) {
-    if (strings.length >= 1) {
-      Optional<StarboxBukkitCommand> command = this.getChildren(strings[0]);
+    this.execute(sender, alias, CommandLineParser.parse(this.options, strings));
+    return true;
+  }
+
+  private void execute(
+      @NonNull CommandSender sender, @NonNull String alias, @NonNull CommandLineParser parser) {
+    List<String> arguments = parser.getArguments();
+    if (arguments.size() >= 1) {
+      Optional<StarboxBukkitCommand> command = this.getChildren(arguments.get(0));
       if (command.isPresent()) {
-        return command.get().execute(sender, alias, Arrays.copyOfRange(strings, 1, strings.length));
+        StarboxBukkitCommand child = command.get();
+        child.execute(sender, alias, parser.copyFrom(1, child.getOptions()));
+        return;
       }
     }
-    this.runCheckSync(sender, strings);
-    return true;
+    this.runCheckSync(sender, parser);
   }
 
   @Override

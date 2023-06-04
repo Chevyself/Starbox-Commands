@@ -32,9 +32,10 @@ public class MemberProvider
   @Override
   public Member fromString(@NonNull String string, @NonNull CommandContext context)
       throws ArgumentProviderException {
-    TextChannel channel = context.getRegistry().get(TextChannel.class, context);
+    TextChannel channel = context.getProvidersRegistry().get(TextChannel.class, context);
     Guild guild = channel.getGuild();
-    Member member = guild.getMember(context.getRegistry().get(string, User.class, context));
+    Member member =
+        guild.getMember(context.getProvidersRegistry().get(string, User.class, context));
     if (member != null) {
       return member;
     }

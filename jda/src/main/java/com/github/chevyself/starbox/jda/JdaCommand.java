@@ -97,7 +97,7 @@ public abstract class JdaCommand implements StarboxCommand<CommandContext, JdaCo
       Optional<JdaCommand> optionalCommand = this.getChildren(strings[0]);
       if (optionalCommand.isPresent()) {
         JdaCommand command = optionalCommand.get();
-        return command.execute(context.getChildren());
+        return command.execute(context.getChildren(command));
       }
     }
     return this.getMiddlewares().stream()

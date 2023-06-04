@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.system;
 
-import com.github.chevyself.starbox.flags.FlagArgument;
-import com.github.chevyself.starbox.flags.FlagArgument.Parser;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.context.sender.ConsoleCommandSender;
 import java.util.Arrays;
@@ -48,31 +47,17 @@ public class CommandListener extends Thread {
             this.manager.getCommand(name.substring(this.prefix.length()));
         if (optionalCommand.isPresent()) {
           SystemCommand command = optionalCommand.get();
-          Parser parse =
-              FlagArgument.parse(command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
+          CommandLineParser parser =
+              CommandLineParser.parse(
+                  command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
           SystemResult result =
               command.execute(
                   new CommandContext(
+                      parser,
                       command,
                       ConsoleCommandSender.INSTANCE,
-                      parse.getArgumentsArray(),
-                      parse.getArgumentsString(),
                       this.manager.getProvidersRegistry(),
-                      this.manager.getMessagesProvider(),
-                      parse.getFlags()));
-          /*
-          if (result != null) {
-            result
-                .getMessage()
-                .ifPresent(
-                    message -> {
-                      if (!message.isEmpty()) {
-                        System.out.println(message);
-                      }
-                    });
-
-          }
-          */
+                      this.manager.getMessagesProvider()));
         } else {
           System.out.println("Command " + name + " could not be found");
         }

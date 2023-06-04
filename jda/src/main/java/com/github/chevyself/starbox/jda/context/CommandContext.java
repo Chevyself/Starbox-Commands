@@ -50,7 +50,7 @@ public interface CommandContext extends StarboxCommandContext {
 
   @Override
   @NonNull
-  ProvidersRegistry<CommandContext> getRegistry();
+  ProvidersRegistry<CommandContext> getProvidersRegistry();
 
   @Override
   @NonNull
@@ -59,8 +59,9 @@ public interface CommandContext extends StarboxCommandContext {
   /**
    * Create a children context from this.
    *
+   * @param command the command for which the context is created
    * @return the new context
    */
   @NonNull
-  CommandContext getChildren();
+  CommandContext getChildren(@NonNull JdaCommand command);
 }

@@ -112,7 +112,7 @@ public class AnnotatedCommand extends JdaCommand
   }
 
   @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+  public @NonNull ProvidersRegistry<CommandContext> getProvidersRegistry() {
     return this.manager.getProvidersRegistry();
   }
 

@@ -105,7 +105,7 @@ public class ReflectSystemCommand extends AbstractSystemCommand
   }
 
   @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+  public @NonNull ProvidersRegistry<CommandContext> getProvidersRegistry() {
     return this.getManager().getProvidersRegistry();
   }
 

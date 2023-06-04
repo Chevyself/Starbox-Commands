@@ -15,7 +15,8 @@ public class QuickTest {
         new ProvidersRegistry<>(messagesProvider).addProvider(new CommandContextProvider());
     CommandManager manager =
         new CommandManager("-", registry, messagesProvider).addDefaultMiddlewares();
-    manager.registerAllIn("me.googas");
+    // manager.registerAllIn("me.googas");
+    manager.parseAndRegisterAll(new Commands());
     while (true) {}
   }
 }

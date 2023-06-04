@@ -16,10 +16,16 @@ import java.util.function.Function;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Command parsing implementation for the system. */
 public class SystemCommandParser implements CommandParser<Command, CommandContext, SystemCommand> {
 
   @NonNull @Getter private final CommandManager commandManager;
 
+  /**
+   * Create the command parser.
+   *
+   * @param commandManager the command manager for system commands
+   */
   public SystemCommandParser(@NonNull CommandManager commandManager) {
     this.commandManager = commandManager;
   }

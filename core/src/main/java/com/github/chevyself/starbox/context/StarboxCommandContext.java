@@ -1,6 +1,7 @@
 package com.github.chevyself.starbox.context;
 
 import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.FlagArgument;
 import com.github.chevyself.starbox.flags.StarboxFlag;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
@@ -20,9 +21,13 @@ public interface StarboxCommandContext {
   /**
    * Get all the flags that were used in this context.
    *
+   * @deprecated use {@link #getCommandLineParser()} and {@link CommandLineParser#getFlags()}
    * @return a collection of flags
    */
-  Collection<FlagArgument> getFlags();
+  @Deprecated
+  default Collection<FlagArgument> getFlags() {
+    return this.getCommandLineParser().getFlags();
+  }
 
   /**
    * Get a flag with its alias. This will first attempt to get a {@link FlagArgument} if it is not
@@ -36,7 +41,9 @@ public interface StarboxCommandContext {
   @NonNull
   default Optional<? extends StarboxFlag> getFlag(@NonNull String alias) {
     Optional<FlagArgument> optional =
-        this.getFlags().stream().filter(flag -> flag.hasAlias(alias)).findFirst();
+        this.getCommandLineParser().getFlags().stream()
+            .filter(flag -> flag.hasAlias(alias))
+            .findFirst();
     return optional.isPresent() ? optional : this.getCommand().getOption(alias);
   }
 
@@ -61,21 +68,23 @@ public interface StarboxCommandContext {
   <C extends StarboxCommandContext, T extends StarboxCommand<C, T>> T getCommand();
 
   /**
-   * Get if the command was executed using the given alias.
+   * Get if the command was executed with a flag using the given alias.
    *
    * @param alias the alias to check
-   * @return true if the command was executed with the given alias
+   * @return true if the command was executed with the flag
    */
   default boolean hasFlag(@NonNull String alias) {
-    return this.getFlags().stream().anyMatch(flag -> flag.hasAlias(alias));
+    return this.getCommandLineParser().getFlags().stream().anyMatch(flag -> flag.hasAlias(alias));
   }
 
   /**
    * Get the joined strings from a certain position.
    *
+   * @deprecated use {@link CommandLineParser#copyFrom(int)}
    * @param position the position to get the string from
    * @return an array of strings, empty if none
    */
+  @Deprecated
   @NonNull
   default String[] getStringsFrom(int position) {
     return Arrays.copyOfRange(this.getStrings(), position, this.getStrings().length);
@@ -92,26 +101,56 @@ public interface StarboxCommandContext {
   /**
    * a Get the joined strings of the command as a single string.
    *
+   * @deprecated use {@link CommandLineParser#getArgumentsString()}
    * @return the joined strings as a String
    */
+  @Deprecated
   @NonNull
-  String getString();
+  default String getString() {
+    return this.getCommandLineParser().getArgumentsString();
+  }
 
   /**
    * Get the joined strings of the command.
    *
+   * @deprecated use {@link CommandLineParser#getArguments()}
    * @return the joined strings as an array
    */
+  @Deprecated
   @NonNull
-  String[] getStrings();
+  default String[] getStrings() {
+    return this.getCommandLineParser().getArguments().toArray(new String[0]);
+  }
 
   /**
-   * Get the registry used in this context. This allows to get the arguments of the command.
+   * Get the providers' registry used in this context. This allows to get the arguments of the
+   * command.
    *
    * @return the providers registry
    */
   @NonNull
-  ProvidersRegistry<? extends StarboxCommandContext> getRegistry();
+  ProvidersRegistry<? extends StarboxCommandContext> getProvidersRegistry();
+
+  /**
+   * Get the providers' registry used in this context. This allows to get the arguments of the
+   * command.
+   *
+   * @deprecated use {@link #getProvidersRegistry()}
+   * @return the providers registry
+   */
+  @Deprecated
+  @NonNull
+  default ProvidersRegistry<? extends StarboxCommandContext> getRegistry() {
+    return this.getProvidersRegistry();
+  }
+
+  /**
+   * Get the command line parser used in this context.
+   *
+   * @return the command line parser
+   */
+  @NonNull
+  CommandLineParser getCommandLineParser();
 
   /**
    * Get the messages' provider used in this context.

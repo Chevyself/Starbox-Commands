@@ -13,7 +13,7 @@ import lombok.NonNull;
 
 /**
  * This represents the object where {@link StarboxCommand} are registered and queried for execution.
- * The implementation for this variates from module to module. This contains the principal methods
+ * The implementation for these variates from module to module. This contains the principal methods
  * which are intended for its implementation
  *
  * @param <C> the type of command context that is used to run the commands

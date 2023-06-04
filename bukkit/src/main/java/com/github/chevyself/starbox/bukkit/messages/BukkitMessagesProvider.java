@@ -16,7 +16,7 @@ import org.bukkit.plugin.Plugin;
 /** The default {@link MessagesProvider} for Bukkit. */
 public class BukkitMessagesProvider implements MessagesProvider {
 
-  @NonNull public static final String ERROR_PREFIX = "&e&o\u26A0 &r";
+  @NonNull public static final String ERROR_PREFIX = "&e&o⚠ &r";
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {

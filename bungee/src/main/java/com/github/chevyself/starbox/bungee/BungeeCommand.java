@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.annotations.Parent;
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.result.BungeeResult;
-import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.util.Strings;
 import java.util.ArrayList;
@@ -122,40 +122,37 @@ public abstract class BungeeCommand extends Command
    * CommandManager} plugin
    *
    * @param sender the executor of the command
-   * @param args the arguments used in the command execution
+   * @param parser the arguments used in the command execution
    */
-  public void runCheckSync(@NonNull CommandSender sender, @NonNull String[] args) {
+  public void runCheckSync(@NonNull CommandSender sender, @NonNull CommandLineParser parser) {
     if (this.async) {
       ProxyServer.getInstance()
           .getScheduler()
-          .runAsync(this.manager.getPlugin(), () -> this.run(sender, args));
+          .runAsync(this.manager.getPlugin(), () -> this.run(sender, parser));
     } else {
-      this.run(sender, args);
+      this.run(sender, parser);
     }
   }
 
   /**
-   * This method does the command execution after {@link #runCheckSync(CommandSender, String[])}
-   * finishes checking whether to run async or not.
+   * This method does the command execution after {@link #runCheckSync(CommandSender,
+   * CommandLineParser)} finishes checking whether to run async or not.
    *
    * <p>This calls {@link #execute(CommandContext)} and the {@link BungeeResult} will be sent to the
    * {@link CommandSender} if it is not null with {@link CommandSender#sendMessage(BaseComponent)}
    * and {@link BungeeResult} components
    *
    * @param sender the executor of the command
-   * @param args the arguments used in the command execution
+   * @param parser the arguments used in the command execution
    */
-  public void run(@NonNull CommandSender sender, @NonNull String[] args) {
-    FlagArgument.Parser parse = FlagArgument.parse(this.getOptions(), args);
+  public void run(@NonNull CommandSender sender, @NonNull CommandLineParser parser) {
     CommandContext context =
         new CommandContext(
+            parser,
             this,
             sender,
-            parse.getArgumentsArray(),
-            parse.getArgumentsString(),
             this.manager.getProvidersRegistry(),
-            this.manager.getMessagesProvider(),
-            parse.getFlags());
+            this.manager.getMessagesProvider());
     BungeeResult result =
         this.getMiddlewares().stream()
             .map(middleware -> middleware.next(context))
@@ -189,14 +186,20 @@ public abstract class BungeeCommand extends Command
 
   @Override
   public void execute(CommandSender sender, String[] strings) {
-    if (strings.length >= 1) {
-      Optional<BungeeCommand> optionalCommand = this.getChildren(strings[0]);
+    this.execute(sender, CommandLineParser.parse(this.options, strings));
+  }
+
+  private void execute(@NonNull CommandSender sender, @NonNull CommandLineParser parser) {
+    List<String> arguments = parser.getArguments();
+    if (arguments.size() >= 1) {
+      Optional<BungeeCommand> optionalCommand = this.getChildren(arguments.get(0));
       if (optionalCommand.isPresent()) {
-        optionalCommand.get().execute(sender, Arrays.copyOfRange(strings, 1, strings.length));
+        BungeeCommand command = optionalCommand.get();
+        command.execute(sender, parser.copyFrom(1, command.getOptions()));
         return;
       }
     }
-    this.runCheckSync(sender, strings);
+    this.runCheckSync(sender, parser);
   }
 
   @Override

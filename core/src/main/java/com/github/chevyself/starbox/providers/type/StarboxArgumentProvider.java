@@ -6,7 +6,7 @@ import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import lombok.NonNull;
 
 /**
- * This provider is used for {@link SingleArgument} as it only requires one input being the {@link
+ * This provider is used for {@link SingleArgument}. As it only requires one input being the {@link
  * String} and as it is a {@link StarboxContextualProvider} requires the {@link
  * StarboxCommandContext}
  *

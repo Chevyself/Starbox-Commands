@@ -1,6 +1,7 @@
 package com.github.chevyself.starbox;
 
 import com.github.chevyself.starbox.arguments.Argument;
+import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
 import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
@@ -38,15 +39,19 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
   @NonNull
   static Pair<String, Integer> getArgument(
       @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext context, int lastIndex) {
-    String[] strings = context.getStrings();
+    List<String> arguments = context.getCommandLineParser().getArguments();
     String string = null;
     int increase = 0;
-    if (strings.length - 1 < argument.getPosition() + lastIndex) {
+    if (arguments.size() - 1 < argument.getPosition() + lastIndex) {
       if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
         string = argument.getSuggestions(context).get(0);
       }
     } else {
-      return argument.getBehaviour().getStringProcessor().getString(argument, context, lastIndex);
+      if (argument.getBehaviour().equals(ArgumentBehaviour.CONTINUOUS)) {
+        string = String.join(" ", arguments.subList(argument.getPosition(), arguments.size()));
+      } else {
+        string = arguments.get(argument.getPosition() + lastIndex);
+      }
     }
     return new Pair<>(string, increase);
   }
@@ -72,7 +77,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
       Pair<Object, Integer> pair =
           this.getArguments()
               .get(i)
-              .process(this.getRegistry(), this.getMessagesProvider(), context, lastIndex);
+              .process(this.getProvidersRegistry(), this.getMessagesProvider(), context, lastIndex);
       objects[i] = pair.getA();
       lastIndex += pair.getB();
     }
@@ -84,7 +89,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    * position matches the queried position. Ignore the extra arguments as those don't have positions
    *
    * @param position the position to get the argument of
-   * @return the argument if exists, null otherwise
+   * @return the argument if exists, empty otherwise
    */
   @NonNull
   default Optional<SingleArgument<?>> getArgument(int position) {
@@ -109,7 +114,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
 
   /**
    * Get the instance of a class that contains a command. It is required to call the {@link
-   * Method#invoke(Object, Object...)} because non static methods cannot be called without it,
+   * Method#invoke(Object, Object...)} because non-static methods cannot be called without it,
    * static methods have no problem
    *
    * @return the class instance of a command method
@@ -132,7 +137,7 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    * @return the registry of providers for the command
    */
   @NonNull
-  ProvidersRegistry<C> getRegistry();
+  ProvidersRegistry<C> getProvidersRegistry();
 
   /**
    * Get the messages' provider for the command. Needed to send helpful messages to help the user

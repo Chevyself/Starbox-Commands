@@ -2,8 +2,6 @@ package com.github.chevyself.starbox.bukkit;
 
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
-import com.github.chevyself.starbox.annotations.Parent;
-import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.bukkit.annotations.Command;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
@@ -12,18 +10,13 @@ import com.github.chevyself.starbox.bukkit.middleware.CooldownMiddleware;
 import com.github.chevyself.starbox.bukkit.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.bukkit.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.bukkit.providers.registry.BukkitProvidersRegistry;
-import com.github.chevyself.starbox.bukkit.result.BukkitResult;
 import com.github.chevyself.starbox.bukkit.topic.PluginHelpTopic;
 import com.github.chevyself.starbox.bukkit.topic.StarboxCommandHelpTopicFactory;
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
 import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
-import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
-import com.github.chevyself.starbox.util.Strings;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
@@ -138,65 +131,6 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
     CommandManager.commandMap.register(this.plugin.getName(), command);
     this.commands.add(command);
     return this;
-  }
-
-  @Override
-  public @NonNull Collection<AnnotatedCommand> parseCommands(@NonNull Object object) {
-    List<AnnotatedCommand> commands = new ArrayList<>();
-    AnnotatedCommand parent = null;
-    final Class<?> clazz = object.getClass();
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        parent = this.parseCommand(object, method);
-        commands.add(parent);
-        break;
-      }
-    }
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Command.class) && !method.isAnnotationPresent(Parent.class)) {
-        final AnnotatedCommand cmd = this.parseCommand(object, method);
-        if (parent != null) {
-          parent.addChild(cmd);
-        } else {
-          commands.add(cmd);
-        }
-      }
-    }
-    return commands;
-  }
-
-  @Override
-  public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
-    if (!BukkitResult.class.isAssignableFrom(method.getReturnType())
-        && !method.getReturnType().equals(Void.TYPE)) {
-      throw new IllegalArgumentException(method + " must return void or " + BukkitResult.class);
-    }
-    if (!method.isAnnotationPresent(Command.class)) {
-      throw new IllegalArgumentException(method + " is not annotated with " + Command.class);
-    }
-    Command command = method.getAnnotation(Command.class);
-    List<Argument<?>> arguments =
-        Argument.parseArguments(method.getParameterTypes(), method.getParameterAnnotations());
-    return new AnnotatedCommand(
-        this,
-        command.aliases()[0],
-        command.aliases().length > 1
-            ? Arrays.asList(Arrays.copyOfRange(command.aliases(), 1, command.aliases().length))
-            : new ArrayList<>(),
-        command.permission(),
-        command.description(),
-        "/"
-            + Strings.buildUsageAliases(command.aliases())
-            + " "
-            + Argument.generateUsage(arguments),
-        Option.of(command.options()),
-        this.getMiddlewares(command),
-        command.async(),
-        CooldownManager.of(command.cooldown()).orElse(null),
-        method,
-        object,
-        arguments,
-        new ArrayList<>());
   }
 
   /**

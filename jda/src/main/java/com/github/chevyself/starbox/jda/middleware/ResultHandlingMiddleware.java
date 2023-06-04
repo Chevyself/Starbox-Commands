@@ -13,6 +13,7 @@ import com.github.chevyself.starbox.result.StarboxResult;
 import java.awt.Color;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -118,7 +119,7 @@ public class ResultHandlingMiddleware implements Middleware<CommandContext> {
       this.preCommand(
           ((GenericCommandContext) context).getEvent(),
           context.getCommand().getName(),
-          context.getStrings());
+          context.getCommandLineParser().getArguments());
     } else if (context instanceof SlashCommandContext) {
       ((SlashCommandContext) context).getEvent().deferReply(true);
     }
@@ -160,8 +161,10 @@ public class ResultHandlingMiddleware implements Middleware<CommandContext> {
         msg.delete().queueAfter(this.getToDeleteSuccess().toMillis(), TimeUnit.MILLISECONDS);
   }
 
-  public void preCommand(
-      @NonNull MessageReceivedEvent event, @NonNull String commandName, @NonNull String[] strings) {
+  private void preCommand(
+      @NonNull MessageReceivedEvent event,
+      @NonNull String commandName,
+      @NonNull List<String> strings) {
     if (this.isDeleteCommands() && event.getChannelType() != ChannelType.PRIVATE) {
       event.getMessage().delete().queue();
     }
@@ -218,7 +221,7 @@ public class ResultHandlingMiddleware implements Middleware<CommandContext> {
     return null;
   }
 
-  public void handle(@NonNull Throwable fail, @NonNull CommandContext context) {
+  private void handle(@NonNull Throwable fail, @NonNull CommandContext context) {
     if (!this.isSendErrors()) {
       return;
     }
@@ -239,7 +242,7 @@ public class ResultHandlingMiddleware implements Middleware<CommandContext> {
             failure -> {});
   }
 
-  public void handle(JdaResult jdaResult, @NonNull CommandContext context) {
+  private void handle(JdaResult jdaResult, @NonNull CommandContext context) {
     if (!(jdaResult instanceof Result))
       throw new IllegalArgumentException(
           jdaResult + " is a result instance which cannot be handled by this options");

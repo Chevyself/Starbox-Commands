@@ -17,7 +17,7 @@ Documentation and Installation
 Creating the Command Manager
 --------
 
-Each module has implemented `CommandManager`, thus, making the constructor of the class different in each. While in Bukkit and Bungee you need the `plugin`, in JDA you need the `JDA` object. The manager depends in two classes: the [ProvidersRegistry](./wiki/Providers-Registry) which handles argument providers and the [MessagesProvider](./wiki/Messages-Provider) which provides messages.
+Each module has implemented `CommandManager`, thus, making the constructor of the class different in each. While in Bukkit and Bungee you need the `plugin`, in JDA you need the `JDA` object. The manager depends on two classes: the [ProvidersRegistry](./wiki/Providers-Registry) which handles argument providers and the [MessagesProvider](./wiki/Messages-Provider) which provides messages.
 
 Bukkit and Bungee example:
 ```java
@@ -33,7 +33,7 @@ public class Main extends JavaPlugin {
 }
 ```
 
-The JDA module also depends in the `ListenerOptions` which handles commands pre-execution, any kind of error, prefixes and the result of slash commands. You could use the default behaviour using `GenericListenerOptions` or create your own class extending `ListenerOptions`.
+The JDA module also depends on the `ListenerOptions` which handles commands pre-execution, any kind of error, prefixes and the result of slash commands. You could use the default behaviour using `GenericListenerOptions` or create your own class extending `ListenerOptions`.
 
 JDA example:
 ```java

@@ -1,12 +1,10 @@
 package com.github.chevyself.starbox.jda.context;
 
-import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.jda.CommandManager;
 import com.github.chevyself.starbox.jda.JdaCommand;
 import com.github.chevyself.starbox.jda.messages.MessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -33,38 +31,32 @@ public class GuildCommandContext extends GenericCommandContext {
    * Create an instance.
    *
    * @param jda the jda instance in which the {@link CommandManager} is registered
+   * @param commandLineParser the parser that parsed the command from the command line
    * @param command the command for which this context was created
    * @param sender the sender of the command
-   * @param string the input strings joined
-   * @param args the strings send in the command
    * @param registry the registry of the command context
    * @param messagesProvider the messages' provider for this context
-   * @param flags the flags in the input of the command
    * @param event the event of the message that executes the command
    * @param channel the channel where the command was executed
    * @param message the message where the command was executed
    */
   public GuildCommandContext(
       @NonNull JDA jda,
+      @NonNull CommandLineParser commandLineParser,
       @NonNull JdaCommand command,
       @NonNull User sender,
-      @NonNull String string,
-      @NonNull String[] args,
       @NonNull ProvidersRegistry<CommandContext> registry,
       @NonNull MessagesProvider messagesProvider,
-      @NonNull List<FlagArgument> flags,
       @NonNull MessageReceivedEvent event,
       @NonNull MessageChannel channel,
       @NonNull Message message) {
     super(
         jda,
+        commandLineParser,
         command,
         sender,
-        string,
-        args,
         registry,
         messagesProvider,
-        flags,
         event,
         channel,
         message);
@@ -80,18 +72,15 @@ public class GuildCommandContext extends GenericCommandContext {
   }
 
   @Override
-  public @NonNull GuildCommandContext getChildren() {
-    String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
-    FlagArgument.Parser parse = FlagArgument.parse(command.getOptions(), copy);
+  public @NonNull GuildCommandContext getChildren(@NonNull JdaCommand child) {
+    CommandLineParser parse = CommandLineParser.parse(this.command.getOptions());
     return new GuildCommandContext(
         this.jda,
+        this.commandLineParser.copyFrom(1, child.getOptions()),
         this.command,
         this.sender,
-        parse.getArgumentsString(),
-        parse.getArgumentsArray(),
-        this.registry,
+        this.providersRegistry,
         this.messagesProvider,
-        parse.getFlags(),
         this.event,
         this.channel,
         this.message);

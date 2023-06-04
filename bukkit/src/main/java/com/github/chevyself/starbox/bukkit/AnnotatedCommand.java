@@ -13,7 +13,7 @@ import com.github.chevyself.starbox.bukkit.result.Result;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
-import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
@@ -100,17 +100,14 @@ public class AnnotatedCommand extends StarboxBukkitCommand
    */
   public @NonNull List<String> reflectTabComplete(
       @NonNull CommandSender sender, @NonNull String[] strings) {
-    FlagArgument.Parser parse = FlagArgument.parse(this.getOptions(), strings);
-    strings = parse.getArgumentsArray();
+    CommandLineParser parser = CommandLineParser.parse(this.getOptions(), strings);
     CommandContext context =
         new CommandContext(
+            parser,
             this,
             sender,
-            parse.getArgumentsString(),
-            strings,
             this.manager.getProvidersRegistry(),
-            this.manager.getMessagesProvider(),
-            parse.getFlags());
+            this.manager.getMessagesProvider());
     Optional<SingleArgument<?>> optionalArgument = this.getArgument(strings.length - 1);
     if (optionalArgument.isPresent()) {
       SingleArgument<?> argument = optionalArgument.get();
@@ -119,7 +116,7 @@ public class AnnotatedCommand extends StarboxBukkitCommand
             strings[strings.length - 1], argument.getSuggestions(context), new ArrayList<>());
       } else {
         List<StarboxContextualProvider<?, CommandContext>> providers =
-            this.getRegistry().getProviders(argument.getClazz());
+            this.getProvidersRegistry().getProviders(argument.getClazz());
         for (StarboxContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BukkitArgumentProvider) {
             return StringUtil.copyPartialMatches(
@@ -142,7 +139,7 @@ public class AnnotatedCommand extends StarboxBukkitCommand
   }
 
   @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+  public @NonNull ProvidersRegistry<CommandContext> getProvidersRegistry() {
     return this.manager.getProvidersRegistry();
   }
 

@@ -18,10 +18,16 @@ import java.util.function.Function;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Command parsing implementation for bungee. */
 public class BungeeCommandParser implements CommandParser<Command, CommandContext, BungeeCommand> {
 
   @NonNull @Getter private final CommandManager commandManager;
 
+  /**
+   * Create the command parser.
+   *
+   * @param commandManager the command manager for bungee commands
+   */
   public BungeeCommandParser(@NonNull CommandManager commandManager) {
     this.commandManager = commandManager;
   }

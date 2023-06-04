@@ -59,20 +59,27 @@ public interface CommandParser<
     if (clazz.isAnnotationPresent(this.getAnnotationClass())) {
       commands.add(this.parseParentCommand(object, clazz));
     } else {
-      final T parent = this.getParent(object, clazz);
-      for (final Method method : clazz.getDeclaredMethods()) {
-        if (method.isAnnotationPresent(this.getAnnotationClass())) {
-          final T command = this.parseCommand(object, method);
-          if (parent != null) {
-            parent.addChild(command);
-          } else {
-            commands.add(command);
-          }
+      commands.addAll(this.parseMethodCommands(object, clazz));
+    }
+    return commands;
+  }
+
+  @NonNull
+  default List<T> parseMethodCommands(@NonNull Object object, @NonNull Class<?> clazz) {
+    final List<T> commands = new ArrayList<>();
+    final T parent = this.getParent(object, clazz);
+    for (final Method method : clazz.getDeclaredMethods()) {
+      if (method.isAnnotationPresent(this.getAnnotationClass())) {
+        final T command = this.parseCommand(object, method);
+        if (parent != null) {
+          parent.addChild(command);
+        } else {
+          commands.add(command);
         }
       }
-      if (parent != null) {
-        commands.add(parent);
-      }
+    }
+    if (parent != null) {
+      commands.add(parent);
     }
     return commands;
   }
@@ -191,7 +198,7 @@ public interface CommandParser<
   default T parseParentCommand(@NonNull Object instance, @NonNull Class<?> clazz) {
     A annotation = clazz.getAnnotation(this.getAnnotationClass());
     Optional<Method> override = this.getOverride(clazz);
-    List<T> children = this.parseCommands(instance);
+    List<T> children = this.parseMethodCommands(instance, clazz);
     T parent =
         override
             .map(method -> this.parseCommand(instance, method))

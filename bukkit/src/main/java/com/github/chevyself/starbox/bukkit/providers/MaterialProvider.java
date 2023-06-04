@@ -15,6 +15,11 @@ public class MaterialProvider implements BukkitArgumentProvider<Material> {
 
   @NonNull private final MessagesProvider messagesProvider;
 
+  /**
+   * Create the provider.
+   *
+   * @param messagesProvider the messages provider if the material is invalid
+   */
   public MaterialProvider(@NonNull MessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }

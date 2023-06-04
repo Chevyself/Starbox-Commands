@@ -1,6 +1,6 @@
 package com.github.chevyself.starbox.jda.listener;
 
-import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.jda.CommandManager;
 import com.github.chevyself.starbox.jda.JdaCommand;
 import com.github.chevyself.starbox.jda.ListenerOptions;
@@ -77,17 +77,15 @@ public class CommandListener implements EventListener {
     String[] strings =
         event.getOptions().stream().map(OptionMapping::getAsString).toArray(String[]::new);
     JdaCommand command = this.getCommand(event.isFromGuild() ? event.getGuild() : null, name);
-    FlagArgument.Parser parse = FlagArgument.parse(command.getOptions(), false, strings);
+    CommandLineParser parser = CommandLineParser.parse(command.getOptions(), false, strings);
     CommandContext context =
         new SlashCommandContext(
             event.getJDA(),
+            parser,
             command,
             event.getUser(),
-            parse.getArgumentsString(),
-            parse.getArgumentsArray(),
             this.manager.getProvidersRegistry(),
             this.messagesProvider,
-            parse.getFlags(),
             event,
             event.getOptions(),
             event.getChannel());
@@ -134,30 +132,26 @@ public class CommandListener implements EventListener {
   private GenericCommandContext getCommandContext(
       @NonNull MessageReceivedEvent event, @NonNull String[] strings, @NonNull JdaCommand command) {
     strings = Arrays.copyOfRange(strings, 1, strings.length);
-    FlagArgument.Parser parse = FlagArgument.parse(command.getOptions(), strings);
+    CommandLineParser parser = CommandLineParser.parse(command.getOptions(), strings);
     if (event.isFromGuild()) {
       return new GuildCommandContext(
           manager.getJda(),
+          parser,
           command,
           event.getAuthor(),
-          parse.getArgumentsString(),
-          parse.getArgumentsArray(),
           this.manager.getProvidersRegistry(),
           this.messagesProvider,
-          parse.getFlags(),
           event,
           event.getChannel(),
           event.getMessage());
     } else {
       return new GenericCommandContext(
           manager.getJda(),
+          parser,
           command,
           event.getAuthor(),
-          parse.getArgumentsString(),
-          parse.getArgumentsArray(),
           this.manager.getProvidersRegistry(),
           this.messagesProvider,
-          parse.getFlags(),
           event,
           event.getChannel(),
           event.getMessage());

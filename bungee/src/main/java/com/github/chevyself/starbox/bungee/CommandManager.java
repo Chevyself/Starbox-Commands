@@ -2,8 +2,6 @@ package com.github.chevyself.starbox.bungee;
 
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommandManager;
-import com.github.chevyself.starbox.annotations.Parent;
-import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.bungee.annotations.Command;
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.messages.BungeeMessagesProvider;
@@ -12,13 +10,9 @@ import com.github.chevyself.starbox.bungee.middleware.CooldownMiddleware;
 import com.github.chevyself.starbox.bungee.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.bungee.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.bungee.providers.registry.BungeeProvidersRegistry;
-import com.github.chevyself.starbox.bungee.result.BungeeResult;
-import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
@@ -93,31 +87,6 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
     return this;
   }
 
-  @Override
-  public @NonNull Collection<AnnotatedCommand> parseCommands(@NonNull Object object) {
-    List<AnnotatedCommand> commands = new ArrayList<>();
-    AnnotatedCommand parent = null;
-    final Class<?> clazz = object.getClass();
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        parent = this.parseCommand(object, method);
-        commands.add(parent);
-        break;
-      }
-    }
-    for (final Method method : clazz.getDeclaredMethods()) {
-      if (!method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
-        final AnnotatedCommand cmd = this.parseCommand(object, method);
-        if (parent != null) {
-          parent.addChild(cmd);
-        } else {
-          commands.add(cmd);
-        }
-      }
-    }
-    return commands;
-  }
-
   /**
    * Adds the default middlewares.
    *
@@ -136,30 +105,6 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Bun
     this.addGlobalMiddlewares(
         new CooldownMiddleware(), new PermissionMiddleware(), new ResultHandlingMiddleware());
     return this;
-  }
-
-  @Override
-  public @NonNull AnnotatedCommand parseCommand(@NonNull Object object, @NonNull Method method) {
-    if (!BungeeResult.class.isAssignableFrom(method.getReturnType())
-        && !method.getReturnType().equals(Void.TYPE)) {
-      throw new IllegalArgumentException(method + " must return void or " + BungeeResult.class);
-    }
-    Command command = method.getAnnotation(Command.class);
-    List<Argument<?>> arguments = Argument.parseArguments(method);
-    return new AnnotatedCommand(
-        this,
-        plugin,
-        command.aliases()[0],
-        command.permission().isEmpty() ? null : command.permission(),
-        Option.of(command.options()),
-        this.getMiddlewares(command),
-        command.async(),
-        CooldownManager.of(command.cooldown()).orElse(null),
-        method,
-        object,
-        arguments,
-        new ArrayList<>(),
-        Arrays.copyOfRange(command.aliases(), 1, command.aliases().length));
   }
 
   @NonNull

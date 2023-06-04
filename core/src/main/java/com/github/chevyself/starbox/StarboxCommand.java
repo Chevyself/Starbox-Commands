@@ -66,6 +66,16 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    */
   boolean hasAlias(@NonNull String alias);
 
+  /**
+   * Get help for the command. This will generate a help message using {@link
+   * #generateUsage(StarboxCommand)}
+   *
+   * @param command the command to generate the help
+   * @param children the children of the command
+   * @param nameSupplier the function that will supply the name of the command
+   * @return the help message
+   * @param <T> the type of command
+   */
   static <T extends StarboxCommand<?, ?>> String genericHelp(
       @NonNull T command,
       @NonNull Collection<T> children,

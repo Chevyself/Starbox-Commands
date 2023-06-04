@@ -10,7 +10,6 @@ import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.util.Pair;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.StringJoiner;
 import lombok.Getter;
 import lombok.NonNull;
@@ -132,19 +131,5 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
       object = registry.fromString(string, this.getClazz(), context);
     }
     return new Pair<>(object, argumentString.getB());
-  }
-
-  @NonNull
-  private Optional<String> getStringArgument(@NonNull StarboxCommandContext context) {
-    String[] strings = context.getStrings();
-    String string = null;
-    if (strings.length - 1 < this.getPosition()) {
-      if (!this.isRequired() & this.getSuggestions(context).size() > 0) {
-        string = this.getSuggestions(context).get(0);
-      }
-    } else {
-      string = strings[this.getPosition()];
-    }
-    return Optional.ofNullable(string);
   }
 }

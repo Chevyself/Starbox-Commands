@@ -14,7 +14,7 @@ import com.github.chevyself.starbox.bungee.result.Result;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
-import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
@@ -98,17 +98,14 @@ public class AnnotatedCommand extends BungeeCommand
    */
   @NonNull
   public List<String> onReflectTabComplete(CommandSender sender, String[] strings) {
-    FlagArgument.Parser parse = FlagArgument.parse(this.getOptions(), strings);
-    strings = parse.getArgumentsArray();
+    CommandLineParser parser = CommandLineParser.parse(this.getOptions(), strings);
     CommandContext context =
         new CommandContext(
+            parser,
             this,
             sender,
-            parse.getArgumentsArray(),
-            parse.getArgumentsString(),
             this.manager.getProvidersRegistry(),
-            this.manager.getMessagesProvider(),
-            parse.getFlags());
+            this.manager.getMessagesProvider());
     Optional<SingleArgument<?>> optionalArgument = this.getArgument(strings.length - 1);
     if (optionalArgument.isPresent()) {
       SingleArgument<?> argument = optionalArgument.get();
@@ -116,7 +113,7 @@ public class AnnotatedCommand extends BungeeCommand
         return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
       } else {
         List<StarboxContextualProvider<?, CommandContext>> providers =
-            this.getRegistry().getProviders(argument.getClazz());
+            this.getProvidersRegistry().getProviders(argument.getClazz());
         for (StarboxContextualProvider<?, CommandContext> provider : providers) {
           if (provider instanceof BungeeArgumentProvider) {
             return Strings.copyPartials(
@@ -186,7 +183,7 @@ public class AnnotatedCommand extends BungeeCommand
   }
 
   @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
+  public @NonNull ProvidersRegistry<CommandContext> getProvidersRegistry() {
     return this.manager.getProvidersRegistry();
   }
 

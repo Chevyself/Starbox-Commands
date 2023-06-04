@@ -21,8 +21,11 @@ public enum ArgumentBehaviour {
    * The argument can be represented as a single or many words. In case that this needs more than
    * one word it requires quotation marks:
    *
-   * <p>Example: -message [message] Usage: -message "Hello wold"
+   * @deprecated use {@link #NORMAL} now all arguments can be represented as a single or many words
+   *     inside quotation marks
+   *     <p>Example: -message [message] Usage: -message "Hello world"
    */
+  @Deprecated
   MULTIPLE(
       ((argument, context, lastIndex) -> {
         JoinedString joined =
@@ -52,6 +55,7 @@ public enum ArgumentBehaviour {
   }
 
   /** This interface helps to process the string for an argument. */
+  @Deprecated
   public interface StringProcessor {
 
     /**

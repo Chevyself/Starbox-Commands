@@ -23,10 +23,16 @@ import java.util.function.Function;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Command parsing implementation for JDA. */
 public class JdaCommandParser implements CommandParser<Command, CommandContext, JdaCommand> {
 
   @NonNull @Getter private final CommandManager commandManager;
 
+  /**
+   * Create the command parser.
+   *
+   * @param commandManager the command manager for JDA commands
+   */
   public JdaCommandParser(@NonNull CommandManager commandManager) {
     this.commandManager = commandManager;
   }

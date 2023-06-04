@@ -3,18 +3,16 @@ package com.github.chevyself.starbox.system;
 import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.arguments.Argument;
-import com.github.chevyself.starbox.flags.FlagArgument;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.context.sender.CommandSender;
 import com.github.chevyself.starbox.util.Strings;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 
 /**
- * This is the direct implementation of {@link StarboxCommand} for the "System" module extending
+ * This is the direct implementation of {@link StarboxCommand} for the "System" module. Extending
  * this class allows to parseAndRegister commands in the {@link CommandManager} using {@link
  * CommandManager#register(SystemCommand)} the creation of a reflection command using {@link
  * CommandManager#parseCommands(Object)} returns a {@link ReflectSystemCommand}
@@ -35,7 +33,7 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
   SystemResult run(@NonNull CommandContext context);
 
   /**
-   * Get how the {@link CommandSender} may input the arguments to successfully run the command
+   * Get how the {@link CommandSender} may input the arguments to successfully run the command.
    *
    * @return the usage of the command in case it is a {@link ReflectSystemCommand} it will be
    *     auto-generated using {@link Strings#buildUsageAliases(String...)} and {@link
@@ -46,22 +44,18 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
 
   @Override
   default SystemResult execute(@NonNull CommandContext context) {
-    @NonNull String[] strings = context.getStrings();
-    if (strings.length >= 1) {
-      Optional<SystemCommand> optionalCommand = this.getChildren(strings[0]);
+    List<String> arguments = context.getCommandLineParser().getArguments();
+    if (arguments.size() >= 1) {
+      Optional<SystemCommand> optionalCommand = this.getChildren(arguments.get(0));
       if (optionalCommand.isPresent()) {
         SystemCommand subcommand = optionalCommand.get();
-        String[] copy = Arrays.copyOfRange(strings, 1, strings.length);
-        FlagArgument.Parser parse = FlagArgument.parse(subcommand.getOptions(), copy);
         return subcommand.execute(
             new CommandContext(
+                context.getCommandLineParser().copyFrom(1, subcommand.getOptions()),
                 this,
                 context.getSender(),
-                parse.getArgumentsArray(),
-                parse.getArgumentsString(),
-                context.getRegistry(),
-                context.getMessagesProvider(),
-                parse.getFlags()));
+                context.getProvidersRegistry(),
+                context.getMessagesProvider()));
       }
     }
     SystemResult result =
@@ -90,6 +84,11 @@ public interface SystemCommand extends StarboxCommand<CommandContext, SystemComm
   @NonNull
   Optional<CooldownManager> getCooldownManager();
 
+  /**
+   * Get the name of the command.
+   *
+   * @return the name of the command
+   */
   @NonNull
   String getName();
 }

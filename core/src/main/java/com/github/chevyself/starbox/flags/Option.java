@@ -2,6 +2,7 @@ package com.github.chevyself.starbox.flags;
 
 import com.github.chevyself.starbox.StarboxCommand;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -36,18 +37,10 @@ public class Option implements StarboxFlag {
   @NonNull
   public static Option create(
       @NonNull String description, String value, boolean valuable, @NonNull String... aliases) {
-    List<String> list = new ArrayList<>();
     if (aliases.length == 0) {
       throw new IllegalArgumentException("Array of aliases cannot be empty");
     }
-    for (String alias : aliases) {
-      if (alias.startsWith("-") || alias.startsWith("--")) {
-        list.add(alias);
-      } else {
-        list.add(list.isEmpty() ? "--" + alias : "-" + alias);
-      }
-    }
-    return new Option(list, description, valuable, value);
+    return new Option(Arrays.asList(aliases), description, valuable, value);
   }
 
   /**
@@ -59,7 +52,7 @@ public class Option implements StarboxFlag {
    * @return a new flag/option
    */
   public static Option create(
-      @NonNull String description, boolean valuable, @NonNull String aliases) {
+      @NonNull String description, boolean valuable, @NonNull String... aliases) {
     return Option.create(description, null, valuable, aliases);
   }
 

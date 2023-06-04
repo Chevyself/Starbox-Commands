@@ -5,6 +5,7 @@ import com.github.chevyself.starbox.system.SystemResult;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import lombok.NonNull;
 
+/** Middleware that handles the result of a command. */
 public class ResultHandlingMiddleware implements SystemMiddleware {
 
   @Override

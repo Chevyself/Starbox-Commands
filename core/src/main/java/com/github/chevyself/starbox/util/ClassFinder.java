@@ -234,6 +234,12 @@ public final class ClassFinder<T> {
     }
   }
 
+  /**
+   * Set the class loader supplier.
+   *
+   * @param classLoaderSupplier the class loader supplier.
+   * @return this instance.
+   */
   @NonNull
   public ClassFinder<T> setClassLoaderSupplier(@NonNull Supplier<ClassLoader> classLoaderSupplier) {
     this.classLoaderSupplier = classLoaderSupplier;

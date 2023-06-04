@@ -22,7 +22,7 @@ public class Commands {
       options = {@Flag(aliases = "message", value = "Hello world!")})
   public SystemResult a(
       CommandContext context,
-      @Required(name = "b", behaviour = ArgumentBehaviour.MULTIPLE) String b,
+      @Required(name = "b", behaviour = ArgumentBehaviour.CONTINUOUS) String b,
       @Required(name = "c", behaviour = ArgumentBehaviour.MULTIPLE) String c,
       @Required(name = "d") int number,
       @Required(name = "e") int number2,
