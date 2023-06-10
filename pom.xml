@@ -33,7 +33,10 @@
           <target>8</target>
         </configuration>
       </plugin>
-      <!-- Javadoc
+    </plugins>
+  </build>
+
+  <!-- Javadoc
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -47,9 +50,6 @@
           </execution>
         </executions>
       </plugin>  -->
-    </plugins>
-  </build>
-
   <dependencies>
     <!-- JUnit for tests -->
     <dependency>
@@ -74,6 +74,7 @@
     <module>core</module>
     <module>jda</module>
     <module>system</module>
+    <module>common-mc</module>
   </modules>
 
   <properties>
@@ -84,6 +85,7 @@
     <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <bungeecord-chat.version>1.19-R0.1-SNAPSHOT</bungeecord-chat.version>
   </properties>
 
   <repositories>

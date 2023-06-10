@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox.bungee.utils;
+package com.github.chevyself.starbox.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;

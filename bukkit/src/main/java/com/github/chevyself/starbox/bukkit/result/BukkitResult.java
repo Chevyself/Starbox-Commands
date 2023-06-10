@@ -2,7 +2,6 @@ package com.github.chevyself.starbox.bukkit.result;
 
 import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
-import com.github.chevyself.starbox.bukkit.utils.Components;
 import com.github.chevyself.starbox.result.StarboxResult;
 import java.util.List;
 import java.util.Optional;

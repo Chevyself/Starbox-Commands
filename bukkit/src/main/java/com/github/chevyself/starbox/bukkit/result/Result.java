@@ -1,7 +1,7 @@
 package com.github.chevyself.starbox.bukkit.result;
 
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
-import com.github.chevyself.starbox.bukkit.utils.Components;
+import com.github.chevyself.starbox.common.Components;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
