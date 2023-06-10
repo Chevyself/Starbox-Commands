@@ -1,6 +1,7 @@
 package com.github.chevyself.starbox.flags;
 
 import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.experimental.Command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -123,6 +124,11 @@ public class Option implements StarboxFlag {
     }
     builder.setLength(builder.length() - 1);
     return builder.toString();
+  }
+
+  @NonNull
+  public static List<Option> of(@NonNull Command annotation) {
+    return Option.of(annotation.flags());
   }
 
   @Override
