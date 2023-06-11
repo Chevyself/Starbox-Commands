@@ -54,6 +54,10 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    * @param messages the messages' provider for the messages sent in the default providers
    */
   public ProvidersRegistry(@NonNull MessagesProvider<T> messages) {
+    this.registerDefaults(messages);
+  }
+
+  public void registerDefaults(@NonNull MessagesProvider<T> messages) {
     this.addProvider(new BooleanProvider<>(messages))
         .addProvider(new DoubleProvider<>(messages))
         .addProvider(new FloatProvider<>(messages))
