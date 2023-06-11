@@ -13,7 +13,7 @@ import lombok.NonNull;
  * @param <O> the type of the object to provide
  * @param <T> the type of context that this requires to provide the object
  */
-public interface StarboxArgumentProvider<O, T extends StarboxCommandContext>
+public interface StarboxArgumentProvider<O, T extends StarboxCommandContext<T, ?>>
     extends StarboxContextualProvider<O, T> {
 
   /**

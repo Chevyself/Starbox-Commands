@@ -17,11 +17,12 @@ import com.github.chevyself.starbox.providers.StringProvider;
 import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
 import com.github.chevyself.starbox.providers.type.StarboxExtraArgumentProvider;
-import com.github.chevyself.starbox.providers.type.StarboxSimpleArgumentProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.NonNull;
 
 /**
@@ -35,8 +36,17 @@ import lombok.NonNull;
  */
 public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
 
-  /** The providers that must be given with a context. */
-  protected final List<StarboxContextualProvider<?, T>> providers = new ArrayList<>();
+  @NonNull private final List<StarboxArgumentProvider<?, T>> providers = new ArrayList<>();
+
+  @NonNull
+  private final List<StarboxExtraArgumentProvider<?, T>> extraProviders = new ArrayList<>();
+
+  @NonNull
+  private final Map<Class<?>, StarboxArgumentProvider<?, T>> providersCache = new HashMap<>();
+
+  @NonNull
+  private final Map<Class<?>, StarboxExtraArgumentProvider<?, T>> extraProvidersCache =
+      new HashMap<>();
 
   /**
    * Create the registry with the default providers.
@@ -64,7 +74,11 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    */
   @NonNull
   public ProvidersRegistry<T> addProvider(@NonNull StarboxContextualProvider<?, T> provider) {
-    this.providers.add(provider);
+    if (provider instanceof StarboxArgumentProvider<?, ?>) {
+      this.providers.add((StarboxArgumentProvider<?, T>) provider);
+    } else if (provider instanceof StarboxExtraArgumentProvider<?, ?>) {
+      this.extraProviders.add((StarboxExtraArgumentProvider<?, T>) provider);
+    }
     return this;
   }
 
@@ -96,43 +110,30 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
     return this.addProviders(Arrays.asList(providers));
   }
 
-  /**
-   * Get all the providers that provide the queried class.
-   *
-   * <p>For example if you have the provider
-   *
-   * <pre>{@code
-   * public class StringProvider&lt;T extends StarboxCommandContext&gt; implements StarboxArgumentProvider&lt;String, T&gt; {
-   *
-   *  &#64;Override
-   *   public @NonNull Class&lt;String&gt; getClazz() {
-   *     return String.class;
-   *   }
-   *
-   *   &#64;NonNull
-   *   &#64;Override
-   *   public String fromString(@NonNull String string, @NonNull T context) {
-   *     return string;
-   *   }
-   * }
-   * }</pre>
-   *
-   * <p>And you parseAndRegister it using {@link #addProvider(StarboxContextualProvider)}
-   *
-   * <p>You can get it with this method with {@link String#getClass()} ()}
-   *
-   * @param clazz the queried class
-   * @return a list of providers for the queried class
-   */
-  @NonNull
-  public List<StarboxContextualProvider<?, T>> getProviders(@NonNull Class<?> clazz) {
-    List<StarboxContextualProvider<?, T>> list = new ArrayList<>();
-    for (StarboxContextualProvider<?, T> provider : this.providers) {
-      if (provider.provides(clazz)) {
-        list.add(provider);
-      }
+  public StarboxArgumentProvider<?, T> getProvider(@NonNull Class<?> clazz) {
+    StarboxArgumentProvider<?, T> cached = this.providersCache.get(clazz);
+    if (cached == null) {
+      cached =
+          this.providers.stream()
+              .filter(provider -> provider.getClazz().isAssignableFrom(clazz))
+              .findFirst()
+              .orElse(null);
+      this.providersCache.put(clazz, cached);
     }
-    return list;
+    return cached;
+  }
+
+  public StarboxExtraArgumentProvider<?, T> getExtraProvider(@NonNull Class<?> clazz) {
+    StarboxExtraArgumentProvider<?, T> cached = this.extraProvidersCache.get(clazz);
+    if (cached == null) {
+      cached =
+          this.extraProviders.stream()
+              .filter(provider -> provider.getClazz().isAssignableFrom(clazz))
+              .findFirst()
+              .orElse(null);
+      this.extraProvidersCache.put(clazz, cached);
+    }
+    return cached;
   }
 
   /**
@@ -150,17 +151,21 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
    *     the object for some reason, see {@link
    *     StarboxExtraArgumentProvider#getObject(StarboxCommandContext)}
+   * @param <O> the type of object to get from the provider
    */
+  @SuppressWarnings("unchecked")
   @NonNull
-  public Object getObject(@NonNull Class<?> clazz, @NonNull T context)
+  public <O> Object getObject(@NonNull Class<O> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (StarboxContextualProvider<?, T> provider : this.getProviders(clazz)) {
-      if (provider instanceof StarboxExtraArgumentProvider) {
-        return ((StarboxExtraArgumentProvider<?, T>) provider).getObject(context);
-      }
+    StarboxExtraArgumentProvider<?, T> provider = this.getExtraProvider(clazz);
+    if (provider != null) {
+      return (O) provider.getObject(context);
+    } else {
+      throw new ArgumentProviderException(
+          String.format(
+              "Extra argument provider has not been registered for '%s', please ensure registration or the proper use of #provides(Class)",
+              clazz.getName()));
     }
-    throw new ArgumentProviderException(
-        StarboxExtraArgumentProvider.class + " was not found for " + clazz);
   }
 
   /**
@@ -179,51 +184,20 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
    *     the object for some reason, see {@link StarboxArgumentProvider#fromString(String,
    *     StarboxCommandContext)}
+   * @param <O> the type of object to get from the provider
    */
+  @SuppressWarnings("unchecked")
   @NonNull
-  public Object fromString(@NonNull String string, @NonNull Class<?> clazz, @NonNull T context)
+  public <O> O fromString(@NonNull String string, @NonNull Class<O> clazz, @NonNull T context)
       throws ArgumentProviderException {
-    for (StarboxContextualProvider<?, T> provider : this.getProviders(clazz)) {
-      if (provider instanceof StarboxArgumentProvider) {
-        return ((StarboxArgumentProvider<?, T>) provider).fromString(string, context);
-      }
+    StarboxArgumentProvider<?, T> provider = this.getProvider(clazz);
+    if (provider != null) {
+      return (O) provider.fromString(string, context);
+    } else {
+      throw new ArgumentProviderException(
+          String.format(
+              "Argument provider has not been registered for '%s', please ensure registration or the proper use of #provides(Class)",
+              clazz.getName()));
     }
-    throw new ArgumentProviderException(
-        StarboxArgumentProvider.class + " was not found for " + clazz);
-  }
-
-  /**
-   * This method uses {@link #getObject(Class, StarboxCommandContext)} and casts the returned object
-   * as it is safe to do so.
-   *
-   * @param clazz the clazz to get the provider from
-   * @param context the context of the command execution
-   * @param <O> the type of object to get from the provider
-   * @return the object returned by the provided
-   * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link
-   *     StarboxExtraArgumentProvider#getObject(StarboxCommandContext)}
-   */
-  @NonNull
-  public <O> O get(@NonNull Class<O> clazz, @NonNull T context) throws ArgumentProviderException {
-    return clazz.cast(this.getObject(clazz, context));
-  }
-
-  /**
-   * This method uses {@link #fromString(String, Class, StarboxCommandContext)} and casts the
-   * returned object as it is safe to do so.
-   *
-   * @param string the string to get the object from
-   * @param clazz the clazz to get the provider from
-   * @param context the context of the command execution
-   * @param <O> the type of object to get from the provider
-   * @return the object returned by the provider
-   * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
-   *     the object for some reason, see {@link StarboxArgumentProvider}
-   */
-  @NonNull
-  public <O> O get(@NonNull String string, @NonNull Class<O> clazz, @NonNull T context)
-      throws ArgumentProviderException {
-    return clazz.cast(this.fromString(string, clazz, context));
   }
 }
