@@ -1,12 +1,5 @@
 package com.github.chevyself.starbox.arguments;
 
-import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.util.JoinedString;
-import com.github.chevyself.starbox.util.Pair;
-import com.github.chevyself.starbox.util.Strings;
-import lombok.Getter;
-import lombok.NonNull;
-
 /** This is the behaviour of the argument. */
 public enum ArgumentBehaviour {
   /**

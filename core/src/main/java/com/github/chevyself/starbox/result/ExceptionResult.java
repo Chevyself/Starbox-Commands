@@ -1,14 +1,11 @@
 package com.github.chevyself.starbox.result;
 
-import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 
 public abstract class ExceptionResult implements StarboxResult {
 
-  @NonNull
-  @Getter
-  private final Throwable exception;
+  @NonNull @Getter private final Throwable exception;
 
   public ExceptionResult(@NonNull Throwable exception) {
     this.exception = exception;

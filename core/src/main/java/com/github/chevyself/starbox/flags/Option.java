@@ -1,7 +1,7 @@
 package com.github.chevyself.starbox.flags;
 
-import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.annotations.Command;
+import com.github.chevyself.starbox.commands.StarboxCommand;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

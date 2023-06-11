@@ -1,9 +1,9 @@
-package com.github.chevyself.starbox.providers.registry;
+package com.github.chevyself.starbox.registry;
 
-import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.arguments.ExtraArgument;
 import com.github.chevyself.starbox.arguments.SingleArgument;
+import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.MessagesProvider;

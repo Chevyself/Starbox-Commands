@@ -6,7 +6,7 @@ import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.objects.Mappable;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.util.Pair;
 import java.util.List;
 import java.util.Objects;

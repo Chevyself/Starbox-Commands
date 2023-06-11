@@ -4,8 +4,7 @@ import lombok.NonNull;
 
 public class SimpleResult implements StarboxResult {
 
-  @NonNull
-  private final String message;
+  @NonNull private final String message;
 
   public SimpleResult(@NonNull String message) {
     this.message = message;

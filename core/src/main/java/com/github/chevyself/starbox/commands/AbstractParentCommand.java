@@ -2,9 +2,9 @@ package com.github.chevyself.starbox.commands;
 
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
-import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
+import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.result.SimpleResult;
 import com.github.chevyself.starbox.result.StarboxResult;
 import java.util.ArrayList;
@@ -13,7 +13,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 
-public abstract class AbstractParentCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
+public abstract class AbstractParentCommand<
+        C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     implements StarboxCommand<C, T> {
 
   @NonNull private final List<String> aliases;
@@ -33,9 +34,12 @@ public abstract class AbstractParentCommand<C extends StarboxCommandContext<C, T
   }
 
   public AbstractParentCommand(
-      @NonNull Command annotation,
-      @NonNull CommandManager<C, T> commandManager) {
-    this(Arrays.asList(annotation.aliases()), commandManager.getMiddlewares(annotation), Option.of(annotation.flags()), new ArrayList<>());
+      @NonNull Command annotation, @NonNull CommandManager<C, T> commandManager) {
+    this(
+        Arrays.asList(annotation.aliases()),
+        commandManager.getMiddlewareRegistry().getMiddlewares(annotation),
+        Option.of(annotation.flags()),
+        new ArrayList<>());
   }
 
   @Override

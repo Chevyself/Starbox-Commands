@@ -7,8 +7,8 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.util.Pair;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -22,7 +22,8 @@ import lombok.NonNull;
  * @param <C> the type of context that is required to run the command
  * @param <T> the type of command that can be children
  */
-public interface ReflectCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
+public interface ReflectCommand<
+        C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     extends StarboxCommand<C, T> {
 
   /**

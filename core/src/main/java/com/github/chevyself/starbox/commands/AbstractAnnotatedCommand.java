@@ -2,14 +2,14 @@ package com.github.chevyself.starbox.commands;
 
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
-import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.middleware.Middleware;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.result.ArgumentExceptionResult;
 import com.github.chevyself.starbox.result.InternalExceptionResult;
 import com.github.chevyself.starbox.result.StarboxResult;
@@ -68,7 +68,7 @@ public abstract class AbstractAnnotatedCommand<
         commandManager.getProvidersRegistry(),
         commandManager.getMessagesProvider(),
         Arrays.asList(annotation.aliases()),
-        commandManager.getMiddlewares(annotation),
+        commandManager.getMiddlewareRegistry().getMiddlewares(annotation),
         Option.of(annotation),
         new ArrayList<>());
   }

@@ -1,13 +1,13 @@
 package com.github.chevyself.starbox.middleware;
 
-import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.result.ExceptionResult;
 import com.github.chevyself.starbox.result.SimpleResult;
 import com.github.chevyself.starbox.result.StarboxResult;
 import lombok.NonNull;
 
-public abstract class ResultHandlingMiddleware<C extends StarboxCommandContext<C, ?>> implements Middleware<C> {
+public abstract class ResultHandlingMiddleware<C extends StarboxCommandContext<C, ?>>
+    implements Middleware<C> {
 
   @Override
   public void next(@NonNull C context, StarboxResult result) {

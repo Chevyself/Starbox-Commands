@@ -25,7 +25,8 @@ import lombok.NonNull;
  * @param <C> the context that is required to run the command
  * @param <T> the type of commands that are allowed as children commands
  */
-public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
+public interface StarboxCommand<
+    C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   /**
    * Generates the usage of the command. Commands don't require a name, so, the base of the usage is
@@ -49,6 +50,38 @@ public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends
     return builder.toString();
   }
 
+  static String genericHelp(
+      @NonNull StarboxCommand<?, ?> command,
+      @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
+    StringBuilder builder = new StringBuilder();
+    builder
+        .append("usage: ")
+        .append(command.getName())
+        .append(" ")
+        .append(StarboxCommand.generateUsage(command));
+    if (children.size() > 0) {
+      builder.append("\nSubcommands:");
+      for (StarboxCommand<?, ?> child : children) {
+        builder
+            .append("\n + ")
+            .append(child.getName())
+            .append(" ")
+            .append(StarboxCommand.generateUsage(child));
+      }
+    }
+    return builder.toString();
+  }
+
+  /**
+   * Runs only the command. This is the actual implementation of the logic of the command
+   *
+   * @param context the context that is required to run the command
+   * @return the result of the command execution
+   */
+  default StarboxResult run(@NonNull C context) {
+    throw new UnsupportedOperationException("This command doesn't have a run implementation");
+  }
+
   /**
    * Executes the command. This will run all middlewares of the command.
    *
@@ -69,39 +102,10 @@ public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends
             .map(middleware -> middleware.next(context))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .findFirst().orElseGet(() -> this.run(context));
+            .findFirst()
+            .orElseGet(() -> this.run(context));
     this.getMiddlewares().forEach(middleware -> middleware.next(context, result));
     return result;
-  }
-
-  /**
-   * Runs only the command. This is the actual implementation of the logic of the command
-   *
-   * @param context the context that is required to run the command
-   * @return the result of the command execution
-   */
-  default StarboxResult run(@NonNull C context) {
-    throw new UnsupportedOperationException("This command doesn't have a run implementation");
-  }
-
-  static String genericHelp(@NonNull StarboxCommand<?, ?> command, @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
-    StringBuilder builder = new StringBuilder();
-    builder
-        .append("usage: ")
-        .append(command.getName())
-        .append(" ")
-        .append(StarboxCommand.generateUsage(command));
-    if (children.size() > 0) {
-      builder.append("\nSubcommands:");
-      for (StarboxCommand<?, ?> child : children) {
-        builder
-            .append("\n + ")
-            .append(child.getName())
-            .append(" ")
-            .append(StarboxCommand.generateUsage(child));
-      }
-    }
-    return builder.toString();
   }
 
   /**

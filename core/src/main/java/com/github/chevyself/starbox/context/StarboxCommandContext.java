@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.FlagArgument;
 import com.github.chevyself.starbox.flags.StarboxFlag;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import java.util.Optional;
 import lombok.NonNull;
 
@@ -14,7 +14,8 @@ import lombok.NonNull;
  * sender and the strings that represent the arguments, obviously, each implementation has a
  * different context but this gives an important idea .
  */
-public interface StarboxCommandContext<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
+public interface StarboxCommandContext<
+    C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   /**
    * Get a flag with its alias. This will first attempt to get a {@link FlagArgument} if it is not
@@ -81,7 +82,6 @@ public interface StarboxCommandContext<C extends StarboxCommandContext<C, T>, T 
    */
   @NonNull
   ProvidersRegistry<? extends StarboxCommandContext<C, T>> getProvidersRegistry();
-
 
   /**
    * Get the command line parser used in this context.

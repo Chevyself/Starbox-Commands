@@ -1,20 +1,18 @@
 package com.github.chevyself.starbox;
 
+import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.commands.CommandParserFactory;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.adapters.Adapter;
-import com.github.chevyself.starbox.annotations.Command;
-import com.github.chevyself.starbox.parsers.CommandParser;
-import com.github.chevyself.starbox.commands.CommandParserFactory;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.middleware.Middleware;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.parsers.CommandParser;
+import com.github.chevyself.starbox.registry.MiddlewareRegistry;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -24,40 +22,37 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
   @NonNull @Getter private final CommandParser<C, T> commandParser;
   @NonNull @Getter private final List<T> commands;
   @NonNull @Getter private final ProvidersRegistry<C> providersRegistry;
+  @NonNull @Getter private final MiddlewareRegistry<C> middlewareRegistry;
   @NonNull @Getter private final MessagesProvider<C> messagesProvider;
-  @NonNull @Getter private final List<Middleware<C>> globalMiddlewares;
-  @NonNull @Getter private final List<Middleware<C>> middlewares;
 
   private CommandManager(
       @NonNull Adapter<C, T> adapter,
       @NonNull List<T> commands,
       @NonNull CommandParserFactory<C, T> parserFactory,
       @NonNull ProvidersRegistry<C> providersRegistry,
-      @NonNull MessagesProvider<C> messagesProvider,
-      @NonNull List<Middleware<C>> globalMiddlewares,
-      @NonNull List<Middleware<C>> middlewares) {
+      @NonNull MiddlewareRegistry<C> middlewareRegistry,
+      @NonNull MessagesProvider<C> messagesProvider) {
     this.adapter = adapter;
     this.commandParser = parserFactory.create(this);
     this.commands = commands;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
-    this.globalMiddlewares = globalMiddlewares;
-    this.middlewares = middlewares;
+    this.middlewareRegistry = middlewareRegistry;
   }
 
   public CommandManager(
       @NonNull Adapter<C, T> adapter,
       @NonNull CommandParserFactory<C, T> parserFactory,
       @NonNull ProvidersRegistry<C> providersRegistry,
+      @NonNull MiddlewareRegistry<C> middlewareRegistry,
       @NonNull MessagesProvider<C> messagesProvider) {
     this(
         adapter,
         new ArrayList<>(),
         parserFactory,
         providersRegistry,
-        messagesProvider,
-        new ArrayList<>(),
-        new ArrayList<>());
+        middlewareRegistry,
+        messagesProvider);
   }
 
   /**
@@ -122,9 +117,9 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
    * @return this same command manager instance to allow chain method calls
    * @see #register(StarboxCommand)
    */
-  @SuppressWarnings("unchecked")
+  @SafeVarargs
   @NonNull
-  public CommandManager<C, T> registerAll(@NonNull T... commands) {
+  public final CommandManager<C, T> registerAll(@NonNull T... commands) {
     return this.registerAll(Arrays.asList(commands));
   }
 
@@ -133,30 +128,6 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
     this.commands.forEach(this.adapter::onUnregister);
     this.commands.clear();
     this.adapter.close();
-  }
-
-  /**
-   * Add a global {@link Middleware} to this manager.
-   *
-   * @param middleware the global middleware to add
-   * @return this same instance
-   */
-  @NonNull
-  public CommandManager<C, T> addGlobalMiddleware(@NonNull Middleware<C> middleware) {
-    this.globalMiddlewares.add(middleware);
-    return this;
-  }
-
-  /**
-   * Add a {@link Middleware} to this manager.
-   *
-   * @param middleware the middleware to add
-   * @return this same instance
-   */
-  @NonNull
-  public CommandManager<C, T> addMiddleware(@NonNull Middleware<C> middleware) {
-    this.middlewares.add(middleware);
-    return this;
   }
 
   /**
@@ -182,70 +153,6 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
   @NonNull
   public CommandManager<C, T> registerAllIn(@NonNull String packageName) {
     return this.registerAll(this.getCommandParser().parseAllCommandsIn(packageName));
-  }
-
-  /**
-   * Add many global {@link Middleware} to this manager.
-   *
-   * @param middlewares the array of global middlewares to add
-   * @return this same instance
-   */
-  @SuppressWarnings("unchecked")
-  @NonNull
-  public CommandManager<C, T> addGlobalMiddlewares(@NonNull Middleware<C>... middlewares) {
-    for (Middleware<C> middleware : middlewares) {
-      this.addGlobalMiddleware(middleware);
-    }
-    return this;
-  }
-
-  /**
-   * Add many {@link Middleware} to this manager.
-   *
-   * @param middlewares the array of middlewares to add
-   * @return this same instance
-   */
-  @SuppressWarnings("unchecked")
-  @NonNull
-  public CommandManager<C, T> addMiddlewares(@NonNull Middleware<C>... middlewares) {
-    for (Middleware<C> middleware : middlewares) {
-      this.addMiddleware(middleware);
-    }
-    return this;
-  }
-
-  public @NonNull List<Middleware<C>> getMiddlewares(@NonNull Command annotation) {
-    List<Middleware<C>> list = this.getGlobalMiddlewareAndExclude(annotation);
-    list.addAll(this.getIncludeMiddleware(annotation));
-    return list;
-  }
-
-  private @NonNull List<Middleware<C>> getGlobalMiddlewareAndExclude(Command annotation) {
-    return this.globalMiddlewares.stream()
-        .filter(
-            middleware -> {
-              for (Class<? extends Middleware<?>> clazz : annotation.exclude()) {
-                if (clazz.isAssignableFrom(middleware.getClass())) {
-                  return false;
-                }
-              }
-              return true;
-            })
-        .collect(Collectors.toList());
-  }
-
-  private @NonNull Collection<? extends Middleware<C>> getIncludeMiddleware(Command annotation) {
-    return middlewares.stream()
-        .filter(
-            middleware -> {
-              for (Class<? extends Middleware<?>> clazz : annotation.include()) {
-                if (clazz.isAssignableFrom(middleware.getClass())) {
-                  return true;
-                }
-              }
-              return false;
-            })
-        .collect(Collectors.toList());
   }
 
   @NonNull

@@ -16,7 +16,7 @@ public final class Strings {
   /** A string only containing uppercase letters. */
   @NonNull public static final String UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   /** A string only containing lowercase letters. */
-  @NonNull public static final String LOWERCASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+  @NonNull public static final String LOWERCASE_LETTERS = Strings.UPPERCASE_LETTERS.toLowerCase();
   /** A char array containing both uppercase and lowercase letters. */
   public static final char[] LETTERS =
       (Strings.UPPERCASE_LETTERS + Strings.LOWERCASE_LETTERS).toCharArray();
