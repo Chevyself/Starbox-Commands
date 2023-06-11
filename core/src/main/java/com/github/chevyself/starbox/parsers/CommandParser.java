@@ -1,6 +1,7 @@
 package com.github.chevyself.starbox.parsers;
 
 import com.github.chevyself.starbox.CommandManager;
+import com.github.chevyself.starbox.adapters.Adapter;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.annotations.CommandCollection;
 import com.github.chevyself.starbox.annotations.Parent;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
@@ -31,9 +31,12 @@ import lombok.NonNull;
 public abstract class CommandParser<
     C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
+  @NonNull @Getter protected final Adapter<C, T> adapter;
   @NonNull @Getter protected final CommandManager<C, T> commandManager;
 
-  public CommandParser(@NonNull CommandManager<C, T> commandManager) {
+  public CommandParser(
+      @NonNull Adapter<C, T> adapter, @NonNull CommandManager<C, T> commandManager) {
+    this.adapter = adapter;
     this.commandManager = commandManager;
   }
 

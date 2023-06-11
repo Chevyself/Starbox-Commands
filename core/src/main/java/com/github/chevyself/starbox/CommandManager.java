@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox;
 
 import com.github.chevyself.starbox.adapters.Adapter;
-import com.github.chevyself.starbox.commands.CommandParserFactory;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
@@ -28,12 +27,11 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
   private CommandManager(
       @NonNull Adapter<C, T> adapter,
       @NonNull List<T> commands,
-      @NonNull CommandParserFactory<C, T> parserFactory,
       @NonNull ProvidersRegistry<C> providersRegistry,
       @NonNull MiddlewareRegistry<C> middlewareRegistry,
       @NonNull MessagesProvider<C> messagesProvider) {
     this.adapter = adapter;
-    this.commandParser = parserFactory.create(this);
+    this.commandParser = adapter.createParser(this);
     this.commands = commands;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
@@ -42,17 +40,10 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
 
   public CommandManager(
       @NonNull Adapter<C, T> adapter,
-      @NonNull CommandParserFactory<C, T> parserFactory,
       @NonNull ProvidersRegistry<C> providersRegistry,
       @NonNull MiddlewareRegistry<C> middlewareRegistry,
       @NonNull MessagesProvider<C> messagesProvider) {
-    this(
-        adapter,
-        new ArrayList<>(),
-        parserFactory,
-        providersRegistry,
-        middlewareRegistry,
-        messagesProvider);
+    this(adapter, new ArrayList<>(), providersRegistry, middlewareRegistry, messagesProvider);
   }
 
   /**

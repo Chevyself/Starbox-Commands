@@ -21,8 +21,7 @@ import lombok.NonNull;
 
 public abstract class AbstractAnnotatedCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
-    extends AbstractCommand<C, T>
-    implements ReflectCommand<C, T> {
+    extends AbstractCommand<C, T> implements ReflectCommand<C, T> {
 
   @NonNull @Getter protected final Object object;
   @NonNull @Getter protected final Method method;
@@ -39,12 +38,7 @@ public abstract class AbstractAnnotatedCommand<
       @NonNull List<Middleware<C>> middlewares,
       @NonNull List<Option> options,
       @NonNull List<T> children) {
-    super(
-        commandManager,
-        aliases,
-        middlewares,
-        options,
-        children);
+    super(commandManager, aliases, middlewares, options, children);
     this.object = object;
     this.method = method;
     this.arguments = arguments;

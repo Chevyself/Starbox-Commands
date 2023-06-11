@@ -7,15 +7,15 @@ import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
-import com.github.chevyself.starbox.result.SimpleResult;
-import com.github.chevyself.starbox.result.StarboxResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 
-public abstract class AbstractCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> implements StarboxCommand<C, T> {
+public abstract class AbstractCommand<
+        C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
+    implements StarboxCommand<C, T> {
 
   @NonNull @Getter protected final List<String> aliases;
   @NonNull @Getter protected final List<Middleware<C>> middlewares;
@@ -40,8 +40,14 @@ public abstract class AbstractCommand<C extends StarboxCommandContext<C, T>, T e
     this.messagesProvider = commandManager.getMessagesProvider();
   }
 
-  protected AbstractCommand(@NonNull CommandManager<C, T> commandManager, @NonNull Command annotation) {
-    this(commandManager, Arrays.asList(annotation.aliases()), commandManager.getMiddlewareRegistry().getMiddlewares(annotation), Option.of(annotation.flags()), new ArrayList<>());
+  protected AbstractCommand(
+      @NonNull CommandManager<C, T> commandManager, @NonNull Command annotation) {
+    this(
+        commandManager,
+        Arrays.asList(annotation.aliases()),
+        commandManager.getMiddlewareRegistry().getMiddlewares(annotation),
+        Option.of(annotation.flags()),
+        new ArrayList<>());
   }
 
   @Override
