@@ -1,13 +1,15 @@
 package com.github.chevyself.starbox.system;
 
-import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.commands.StarboxCommand;
+import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.time.TimeUtil;
 import java.time.Duration;
 import lombok.NonNull;
 
 /** The default {@link MessagesProvider} for System commands. */
-public class SystemMessagesProvider implements MessagesProvider {
+public class SystemMessagesProvider implements MessagesProvider<CommandContext> {
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull CommandContext context) {
@@ -43,16 +45,5 @@ public class SystemMessagesProvider implements MessagesProvider {
   @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
     return "You are not allowed to run this command for another " + TimeUtil.toString(timeLeft);
-  }
-
-  @Override
-  public @NonNull String commandHelp(
-      @NonNull StarboxCommand<CommandContext, ?> command, CommandContext context) {
-    if (command instanceof SystemCommand) {
-      SystemCommand systemCommand = (SystemCommand) command;
-      return StarboxCommand.genericHelp(
-          systemCommand, systemCommand.getChildren(), SystemCommand::getName);
-    }
-    return "Unknown command";
   }
 }

@@ -2,9 +2,9 @@ package com.github.chevyself.starbox.system.context;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
-import com.github.chevyself.starbox.system.MessagesProvider;
-import com.github.chevyself.starbox.system.SystemCommand;
+import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.sender.CommandSender;
 import com.github.chevyself.starbox.system.context.sender.ConsoleCommandSender;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class CommandContext implements StarboxCommandContext<CommandContext, Sys
   @NonNull @Getter private final SystemCommand command;
   @NonNull @Getter private final CommandSender sender;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
-  @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final MessagesProvider<CommandContext> messagesProvider;
 
   /**
    * Create the command context.
@@ -38,11 +38,22 @@ public class CommandContext implements StarboxCommandContext<CommandContext, Sys
       @NonNull SystemCommand command,
       @NonNull CommandSender sender,
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
-      @NonNull MessagesProvider messagesProvider) {
+      @NonNull MessagesProvider<CommandContext> messagesProvider) {
     this.command = command;
     this.sender = sender;
     this.commandLineParser = commandLineParser;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
+  }
+
+  @Override
+  public @NonNull CommandContext getChildren(@NonNull SystemCommand subcommand) {
+    return new CommandContext(
+      this.commandLineParser.copyFrom(1, subcommand.getOptions()),
+      subcommand,
+      this.sender,
+      this.providersRegistry,
+      this.messagesProvider
+    );
   }
 }

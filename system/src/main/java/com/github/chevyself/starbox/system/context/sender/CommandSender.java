@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.system.context.sender;
 
-import com.github.chevyself.starbox.system.CommandManager;
-import com.github.chevyself.starbox.system.SystemCommand;
+import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 
 /**

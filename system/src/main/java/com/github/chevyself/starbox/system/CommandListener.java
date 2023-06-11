@@ -1,6 +1,8 @@
 package com.github.chevyself.starbox.system;
 
+import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.context.sender.ConsoleCommandSender;
 import java.util.Arrays;
@@ -18,7 +20,7 @@ import lombok.NonNull;
 public class CommandListener extends Thread {
 
   @NonNull private final Scanner scanner = new Scanner(System.in);
-  @NonNull private final CommandManager manager;
+  @NonNull private final CommandManager<CommandContext, SystemCommand> manager;
   @NonNull @Getter private final String prefix;
   private boolean closed = false;
 
@@ -28,7 +30,7 @@ public class CommandListener extends Thread {
    * @param manager the command manager to get the commands
    * @param prefix the prefix to differentiate messages from commands
    */
-  public CommandListener(@NonNull CommandManager manager, @NonNull String prefix) {
+  public CommandListener(@NonNull CommandManager<CommandContext, SystemCommand> manager, @NonNull String prefix) {
     this.manager = manager;
     this.prefix = prefix;
   }
@@ -50,8 +52,7 @@ public class CommandListener extends Thread {
           CommandLineParser parser =
               CommandLineParser.parse(
                   command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
-          SystemResult result =
-              command.execute(
+          command.execute(
                   new CommandContext(
                       parser,
                       command,

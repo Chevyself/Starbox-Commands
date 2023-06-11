@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.system.providers;
 
 import com.github.chevyself.starbox.providers.type.StarboxExtraArgumentProvider;
-import com.github.chevyself.starbox.system.CommandManager;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import lombok.NonNull;
 
