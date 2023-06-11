@@ -14,12 +14,9 @@ public abstract class AbstractAdapter<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     implements Adapter<C, T> {
 
-  @NonNull
-  protected MessagesProvider<C> messagesProvider;
-  @NonNull
-  protected ProvidersRegistry<C> providersRegistry;
-  @NonNull
-  protected MiddlewareRegistry<C> middlewareRegistry;
+  @NonNull protected MessagesProvider<C> messagesProvider;
+  @NonNull protected ProvidersRegistry<C> providersRegistry;
+  @NonNull protected MiddlewareRegistry<C> middlewareRegistry;
   protected CommandManager<C, T> commandManager;
   private boolean useDefaultMiddlewares;
   private boolean useDefaultProviders;
@@ -100,7 +97,5 @@ public abstract class AbstractAdapter<
     this.providersRegistry.registerDefaults(this.messagesProvider);
   }
 
-  protected void registerDefaultMiddlewares() {
-
-  }
+  protected void registerDefaultMiddlewares() {}
 }

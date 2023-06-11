@@ -6,7 +6,8 @@ import java.time.Duration;
 import lombok.NonNull;
 
 /** The default {@link MessagesProvider} for System commands. */
-public class GenericMessagesProvider<C extends StarboxCommandContext<C, ?>> implements MessagesProvider<C> {
+public class GenericMessagesProvider<C extends StarboxCommandContext<C, ?>>
+    implements MessagesProvider<C> {
 
   @Override
   public @NonNull String invalidLong(@NonNull String string, @NonNull C context) {
