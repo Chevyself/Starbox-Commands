@@ -14,7 +14,7 @@ import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.exceptions.MiddlewareParsingException;
 import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
-import com.github.chevyself.starbox.result.StarboxResult;
+import com.github.chevyself.starbox.result.Result;
 import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -228,14 +228,14 @@ public abstract class CommandParser<
   /**
    * Check if the return type of the command method is valid. This will throw a {@link
    * CommandRegistrationException} if the return type is not valid. Each module has its own
-   * extension of {@link com.github.chevyself.starbox.result.StarboxResult} which can be used as the
+   * extension of {@link Result} which can be used as the
    * return type of the command method, you could also use {@link Void} as the return type.
    *
    * @param method the method to check
    */
   public void checkReturnType(@NonNull Method method) {
     Class<?> returnType = method.getReturnType();
-    if (!returnType.equals(Void.TYPE) && !StarboxResult.class.isAssignableFrom(returnType)) {
+    if (!returnType.equals(Void.TYPE) && !Result.class.isAssignableFrom(returnType)) {
       throw new CommandRegistrationException(
           "The method "
               + method.getName()

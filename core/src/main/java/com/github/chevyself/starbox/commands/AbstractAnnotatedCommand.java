@@ -8,7 +8,7 @@ import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.result.ArgumentExceptionResult;
 import com.github.chevyself.starbox.result.InternalExceptionResult;
-import com.github.chevyself.starbox.result.StarboxResult;
+import com.github.chevyself.starbox.result.Result;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -28,18 +28,18 @@ public abstract class AbstractAnnotatedCommand<
       @NonNull Command annotation,
       @NonNull Object object,
       @NonNull Method method) {
-    super(commandManager, annotation);
+    super(commandManager, annotation, commandManager.getCommandMetadataParser().parse(method));
     this.object = object;
     this.method = method;
     this.arguments = Argument.parseArguments(method);
   }
 
   @Override
-  public StarboxResult run(@NonNull C context) {
+  public Result run(@NonNull C context) {
     try {
       Object object = this.method.invoke(this.getObject(), this.getObjects(context));
-      if (object instanceof StarboxResult) {
-        return (StarboxResult) object;
+      if (object instanceof Result) {
+        return (Result) object;
       } else {
         return null;
       }

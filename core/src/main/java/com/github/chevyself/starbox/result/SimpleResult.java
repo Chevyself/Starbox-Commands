@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.result;
 
 import lombok.NonNull;
 
-public class SimpleResult implements StarboxResult {
+public class SimpleResult implements Result {
 
   @NonNull private final String message;
 

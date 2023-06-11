@@ -3,7 +3,7 @@ package com.github.chevyself.starbox.result;
 import lombok.Getter;
 import lombok.NonNull;
 
-public abstract class ExceptionResult implements StarboxResult {
+public abstract class ExceptionResult implements Result {
 
   @NonNull @Getter protected final Throwable exception;
 

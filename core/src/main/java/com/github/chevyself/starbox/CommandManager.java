@@ -4,6 +4,7 @@ import com.github.chevyself.starbox.adapters.Adapter;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
@@ -19,6 +20,7 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
 
   @NonNull @Getter private final Adapter<C, T> adapter;
   @NonNull @Getter private final CommandParser<C, T> commandParser;
+  @NonNull @Getter private final CommandMetadataParser commandMetadataParser;
   @NonNull @Getter private final List<T> commands;
   @NonNull @Getter private final ProvidersRegistry<C> providersRegistry;
   @NonNull @Getter private final MiddlewareRegistry<C> middlewareRegistry;
@@ -29,21 +31,30 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
       @NonNull List<T> commands,
       @NonNull ProvidersRegistry<C> providersRegistry,
       @NonNull MiddlewareRegistry<C> middlewareRegistry,
-      @NonNull MessagesProvider<C> messagesProvider) {
+      @NonNull MessagesProvider<C> messagesProvider,
+      @NonNull CommandMetadataParser metadataParser) {
     this.adapter = adapter;
     this.commandParser = adapter.createParser(this);
     this.commands = commands;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
     this.middlewareRegistry = middlewareRegistry;
+    this.commandMetadataParser = metadataParser;
   }
 
   public CommandManager(
       @NonNull Adapter<C, T> adapter,
       @NonNull ProvidersRegistry<C> providersRegistry,
       @NonNull MiddlewareRegistry<C> middlewareRegistry,
-      @NonNull MessagesProvider<C> messagesProvider) {
-    this(adapter, new ArrayList<>(), providersRegistry, middlewareRegistry, messagesProvider);
+      @NonNull MessagesProvider<C> messagesProvider,
+      @NonNull CommandMetadataParser commandMetadataParser) {
+    this(
+        adapter,
+        new ArrayList<>(),
+        providersRegistry,
+        middlewareRegistry,
+        messagesProvider,
+        commandMetadataParser);
   }
 
   /**

@@ -4,14 +4,14 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.result.ArgumentExceptionResult;
 import com.github.chevyself.starbox.result.InternalExceptionResult;
 import com.github.chevyself.starbox.result.SimpleResult;
-import com.github.chevyself.starbox.result.StarboxResult;
+import com.github.chevyself.starbox.result.Result;
 import lombok.NonNull;
 
 public abstract class ResultHandlingMiddleware<C extends StarboxCommandContext<C, ?>>
     implements Middleware<C> {
 
   @Override
-  public void next(@NonNull C context, StarboxResult result) {
+  public void next(@NonNull C context, Result result) {
     if (result instanceof SimpleResult) {
       this.onSimple(context, (SimpleResult) result);
     } else if (result instanceof InternalExceptionResult) {

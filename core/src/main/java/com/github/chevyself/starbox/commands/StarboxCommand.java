@@ -5,9 +5,10 @@ import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.metadata.CommandMetadata;
 import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
-import com.github.chevyself.starbox.result.StarboxResult;
+import com.github.chevyself.starbox.result.Result;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +83,7 @@ public interface StarboxCommand<
    * @param context the context that is required to run the command
    * @return the result of the command execution
    */
-  StarboxResult run(@NonNull C context);
+  Result run(@NonNull C context);
 
   /**
    * Executes the command. This will run all middlewares of the command.
@@ -90,7 +91,7 @@ public interface StarboxCommand<
    * @param context the context that is required to execute the command
    * @return the result of the command execution
    */
-  default StarboxResult execute(@NonNull C context) {
+  default Result execute(@NonNull C context) {
     List<String> arguments = context.getCommandLineParser().getArguments();
     if (arguments.size() >= 1) {
       Optional<T> optionalCommand = this.getChildren(arguments.get(0));
@@ -99,7 +100,7 @@ public interface StarboxCommand<
         return subcommand.execute(context.getChildren(subcommand));
       }
     }
-    StarboxResult result =
+    Result result =
         this.getMiddlewares().stream()
             .map(middleware -> middleware.next(context))
             .filter(Optional::isPresent)
@@ -236,4 +237,7 @@ public interface StarboxCommand<
 
   @NonNull
   List<String> getAliases();
+
+  @NonNull
+  CommandMetadata getMetadata();
 }

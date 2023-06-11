@@ -5,6 +5,7 @@ import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.GenericMessagesProvider;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import lombok.Getter;
@@ -17,8 +18,9 @@ public class CommandManagerBuilder<
   @NonNull @Getter private MessagesProvider<C> messagesProvider;
   @NonNull @Getter private ProvidersRegistry<C> providersRegistry;
   @NonNull @Getter private MiddlewareRegistry<C> middlewareRegistry;
-  private boolean useDefaultMiddlewares;
-  private boolean useDefaultProviders;
+  @Getter private boolean useDefaultMiddlewares;
+  @Getter private boolean useDefaultProviders;
+  @Getter private CommandMetadataParser commandMetadataParser;
   private CommandManager<C, T> built;
 
   public CommandManagerBuilder(@NonNull Adapter<C, T> adapter) {
@@ -28,6 +30,7 @@ public class CommandManagerBuilder<
     this.middlewareRegistry = new MiddlewareRegistry<>();
     this.useDefaultMiddlewares = true;
     this.useDefaultProviders = true;
+    this.commandMetadataParser = null;
   }
 
   public @NonNull CommandManagerBuilder<C, T> setProvidersRegistry(
@@ -48,6 +51,12 @@ public class CommandManagerBuilder<
       @NonNull MessagesProvider<C> messagesProvider) {
     this.checkNotInitialized();
     this.messagesProvider = messagesProvider;
+    return this;
+  }
+
+  public CommandManagerBuilder<C, T> setCommandMetadataParser(
+      CommandMetadataParser commandMetadataParser) {
+    this.commandMetadataParser = commandMetadataParser;
     return this;
   }
 
@@ -78,9 +87,17 @@ public class CommandManagerBuilder<
         this.providersRegistry.registerDefaults(this.messagesProvider);
         this.adapter.registerDefaultProviders(this, this.providersRegistry);
       }
+      CommandMetadataParser commandMetadataParser =
+          this.commandMetadataParser == null
+              ? this.adapter.getDefaultCommandMetadataParser()
+              : this.commandMetadataParser;
       this.built =
           new CommandManager<>(
-              this.adapter, this.providersRegistry, this.middlewareRegistry, this.messagesProvider);
+              this.adapter,
+              this.providersRegistry,
+              this.middlewareRegistry,
+              this.messagesProvider,
+              commandMetadataParser);
       this.adapter.onBuilt(this.built);
     }
     return this.built;

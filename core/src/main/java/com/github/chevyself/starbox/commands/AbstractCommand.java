@@ -5,6 +5,7 @@ import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.metadata.CommandMetadata;
 import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public abstract class AbstractCommand<
   @NonNull @Getter protected final List<String> aliases;
   @NonNull @Getter protected final List<Middleware<C>> middlewares;
   @NonNull @Getter protected final List<Option> options;
+  @NonNull @Getter protected final CommandMetadata metadata;
   @NonNull @Getter protected final List<T> children;
   @NonNull @Getter protected final ProvidersRegistry<C> providersRegistry;
   @NonNull @Getter protected final MessagesProvider<C> messagesProvider;
@@ -30,23 +32,28 @@ public abstract class AbstractCommand<
       @NonNull List<String> aliases,
       @NonNull List<Middleware<C>> middlewares,
       @NonNull List<Option> options,
+      @NonNull CommandMetadata metadata,
       @NonNull List<T> children) {
     this.commandManager = commandManager;
     this.aliases = aliases;
     this.middlewares = middlewares;
     this.options = options;
+    this.metadata = metadata;
     this.children = children;
     this.providersRegistry = commandManager.getProvidersRegistry();
     this.messagesProvider = commandManager.getMessagesProvider();
   }
 
   protected AbstractCommand(
-      @NonNull CommandManager<C, T> commandManager, @NonNull Command annotation) {
+      @NonNull CommandManager<C, T> commandManager,
+      @NonNull Command annotation,
+      @NonNull CommandMetadata metadata) {
     this(
         commandManager,
         Arrays.asList(annotation.aliases()),
         commandManager.getMiddlewareRegistry().getMiddlewares(annotation),
         Option.of(annotation.flags()),
+        metadata,
         new ArrayList<>());
   }
 

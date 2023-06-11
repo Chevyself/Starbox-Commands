@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.result.CooldownResult;
 import com.github.chevyself.starbox.result.SimpleResult;
-import com.github.chevyself.starbox.result.StarboxResult;
+import com.github.chevyself.starbox.result.Result;
 import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,8 +28,8 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
   }
 
   @Override
-  public @NonNull Optional<StarboxResult> next(@NonNull C context) {
-    StarboxResult result = null;
+  public @NonNull Optional<Result> next(@NonNull C context) {
+    Result result = null;
     Optional<Map<WeakReference<?>, LocalDateTime>> commandMap = this.getCommandMap(context);
     if (commandMap.isPresent()) {
       Object sender = context.getSender();
@@ -48,7 +48,7 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
   }
 
   @Override
-  public void next(@NonNull StarboxCommandContext context, StarboxResult result) {
+  public void next(@NonNull StarboxCommandContext context, Result result) {
     if (result instanceof CooldownResult) {
       Duration duration = ((CooldownResult) result).getCooldown();
       if (!duration.isZero()) {

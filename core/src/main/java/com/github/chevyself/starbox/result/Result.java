@@ -1,3 +1,3 @@
 package com.github.chevyself.starbox.result;
 
-public interface StarboxResult {}
+public interface Result {}
