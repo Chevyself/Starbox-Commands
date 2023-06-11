@@ -15,21 +15,21 @@ public class CommandManagerBuilder<
     C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   @NonNull private final Adapter<C, T> adapter;
-  @NonNull @Getter private MessagesProvider<C> messagesProvider;
   @NonNull @Getter private ProvidersRegistry<C> providersRegistry;
   @NonNull @Getter private MiddlewareRegistry<C> middlewareRegistry;
   @Getter private boolean useDefaultMiddlewares;
   @Getter private boolean useDefaultProviders;
+  @Getter private MessagesProvider<C> messagesProvider;
   @Getter private CommandMetadataParser commandMetadataParser;
   private CommandManager<C, T> built;
 
   public CommandManagerBuilder(@NonNull Adapter<C, T> adapter) {
     this.adapter = adapter;
-    this.messagesProvider = new GenericMessagesProvider<>();
     this.providersRegistry = new ProvidersRegistry<>();
     this.middlewareRegistry = new MiddlewareRegistry<>();
     this.useDefaultMiddlewares = true;
     this.useDefaultProviders = true;
+    this.messagesProvider = null;
     this.commandMetadataParser = null;
   }
 
@@ -80,6 +80,9 @@ public class CommandManagerBuilder<
 
   public CommandManager<C, T> build() {
     if (built == null) {
+      if (messagesProvider == null) {
+        this.messagesProvider = adapter.getDefaultMessaesProvider();
+      }
       if (useDefaultMiddlewares) {
         this.adapter.registerDefaultMiddlewares(this, this.middlewareRegistry);
       }
@@ -87,10 +90,9 @@ public class CommandManagerBuilder<
         this.providersRegistry.registerDefaults(this.messagesProvider);
         this.adapter.registerDefaultProviders(this, this.providersRegistry);
       }
-      CommandMetadataParser commandMetadataParser =
-          this.commandMetadataParser == null
-              ? this.adapter.getDefaultCommandMetadataParser()
-              : this.commandMetadataParser;
+      if (this.commandMetadataParser == null) {
+        this.commandMetadataParser = this.adapter.getDefaultCommandMetadataParser();
+      }
       this.built =
           new CommandManager<>(
               this.adapter,

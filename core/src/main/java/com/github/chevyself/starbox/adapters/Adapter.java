@@ -4,6 +4,7 @@ import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.registry.MiddlewareRegistry;
@@ -31,4 +32,6 @@ public interface Adapter<C extends StarboxCommandContext<C, T>, T extends Starbo
 
   @NonNull
   CommandMetadataParser getDefaultCommandMetadataParser();
+
+  MessagesProvider<C> getDefaultMessaesProvider();
 }
