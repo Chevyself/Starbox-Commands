@@ -15,50 +15,15 @@ import lombok.NonNull;
 
 public abstract class AbstractParentCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
-    implements StarboxCommand<C, T> {
+    extends AbstractCommand<C, T> {
 
-  @NonNull private final List<String> aliases;
-  @NonNull @Getter private final List<Middleware<C>> middlewares;
-  @NonNull @Getter private final List<Option> options;
-  @NonNull @Getter private final List<T> children;
-
-  public AbstractParentCommand(
-      @NonNull List<String> aliases,
-      @NonNull List<Middleware<C>> middlewares,
-      @NonNull List<Option> options,
-      @NonNull List<T> children) {
-    this.aliases = aliases;
-    this.middlewares = middlewares;
-    this.options = options;
-    this.children = children;
-  }
-
-  public AbstractParentCommand(
-      @NonNull Command annotation, @NonNull CommandManager<C, T> commandManager) {
-    this(
-        Arrays.asList(annotation.aliases()),
-        commandManager.getMiddlewareRegistry().getMiddlewares(annotation),
-        Option.of(annotation.flags()),
-        new ArrayList<>());
+  public AbstractParentCommand(@NonNull CommandManager<C, T> commandManager,
+      @NonNull Command annotation) {
+    super(commandManager, annotation);
   }
 
   @Override
   public StarboxResult run(@NonNull C context) {
     return new SimpleResult(StarboxCommand.genericHelp(this, this.getChildren()));
-  }
-
-  @Override
-  public boolean hasAlias(@NonNull String alias) {
-    for (String commandAlias : aliases) {
-      if (commandAlias.equalsIgnoreCase(alias)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public @NonNull String getName() {
-    return aliases.get(0);
   }
 }

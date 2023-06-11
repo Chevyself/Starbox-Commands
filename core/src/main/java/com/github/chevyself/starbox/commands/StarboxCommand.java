@@ -1,14 +1,18 @@
 package com.github.chevyself.starbox.commands;
 
+import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.middleware.Middleware;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.result.StarboxResult;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 
 /**
@@ -78,9 +82,7 @@ public interface StarboxCommand<
    * @param context the context that is required to run the command
    * @return the result of the command execution
    */
-  default StarboxResult run(@NonNull C context) {
-    throw new UnsupportedOperationException("This command doesn't have a run implementation");
-  }
+  StarboxResult run(@NonNull C context);
 
   /**
    * Executes the command. This will run all middlewares of the command.
@@ -152,7 +154,9 @@ public interface StarboxCommand<
   }
 
   @NonNull
-  String getName();
+  default String getName() {
+    return this.getAliases().get(0);
+  }
 
   /**
    * Get a children command by an alias.
@@ -215,4 +219,21 @@ public interface StarboxCommand<
    */
   @NonNull
   Collection<T> getChildren();
+
+  @NonNull
+  default List<String> getChildrenNames() {
+    return this.getChildren().stream().map(StarboxCommand::getName).collect(Collectors.toList());
+  }
+
+  @NonNull
+  CommandManager<C, T> getCommandManager();
+
+  @NonNull
+  ProvidersRegistry<C> getProvidersRegistry();
+
+  @NonNull
+  MessagesProvider<C> getMessagesProvider();
+
+  @NonNull
+  List<String> getAliases();
 }

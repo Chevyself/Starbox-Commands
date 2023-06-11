@@ -15,27 +15,21 @@ import com.github.chevyself.starbox.result.InternalExceptionResult;
 import com.github.chevyself.starbox.result.StarboxResult;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 
 public abstract class AbstractAnnotatedCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
+    extends AbstractCommand<C, T>
     implements ReflectCommand<C, T> {
 
-  @NonNull @Getter private final Object object;
-  @NonNull @Getter private final Method method;
-  @NonNull @Getter private final List<Argument<?>> arguments;
-  @NonNull @Getter private final ProvidersRegistry<C> providersRegistry;
-  @NonNull @Getter private final MessagesProvider<C> messagesProvider;
-  @NonNull @Getter private final List<String> aliases;
-  @NonNull @Getter private final List<Middleware<C>> middlewares;
-  @NonNull @Getter private final List<Option> options;
-  @NonNull @Getter private final List<T> children;
+  @NonNull @Getter protected final Object object;
+  @NonNull @Getter protected final Method method;
+  @NonNull @Getter protected final List<Argument<?>> arguments;
 
   private AbstractAnnotatedCommand(
+      @NonNull CommandManager<C, T> commandManager,
       @NonNull Object object,
       @NonNull Method method,
       @NonNull List<Argument<?>> arguments,
@@ -45,32 +39,26 @@ public abstract class AbstractAnnotatedCommand<
       @NonNull List<Middleware<C>> middlewares,
       @NonNull List<Option> options,
       @NonNull List<T> children) {
+    super(
+        commandManager,
+        aliases,
+        middlewares,
+        options,
+        children);
     this.object = object;
     this.method = method;
     this.arguments = arguments;
-    this.providersRegistry = providersRegistry;
-    this.messagesProvider = messagesProvider;
-    this.aliases = aliases;
-    this.middlewares = middlewares;
-    this.options = options;
-    this.children = children;
   }
 
   protected AbstractAnnotatedCommand(
+      @NonNull CommandManager<C, T> commandManager,
       @NonNull Command annotation,
       @NonNull Object object,
-      @NonNull Method method,
-      @NonNull CommandManager<C, T> commandManager) {
-    this(
-        object,
-        method,
-        Argument.parseArguments(method),
-        commandManager.getProvidersRegistry(),
-        commandManager.getMessagesProvider(),
-        Arrays.asList(annotation.aliases()),
-        commandManager.getMiddlewareRegistry().getMiddlewares(annotation),
-        Option.of(annotation),
-        new ArrayList<>());
+      @NonNull Method method) {
+    super(commandManager, annotation);
+    this.object = object;
+    this.method = method;
+    this.arguments = Argument.parseArguments(method);
   }
 
   @Override
@@ -87,20 +75,5 @@ public abstract class AbstractAnnotatedCommand<
     } catch (MissingArgumentException | ArgumentProviderException e) {
       return new ArgumentExceptionResult(e);
     }
-  }
-
-  @Override
-  public @NonNull String getName() {
-    return aliases.get(0);
-  }
-
-  @Override
-  public boolean hasAlias(@NonNull String alias) {
-    for (String commandAlias : aliases) {
-      if (commandAlias.equalsIgnoreCase(alias)) {
-        return true;
-      }
-    }
-    return false;
   }
 }
