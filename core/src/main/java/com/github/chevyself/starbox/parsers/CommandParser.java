@@ -1,9 +1,10 @@
 package com.github.chevyself.starbox.parsers;
 
 import com.github.chevyself.starbox.CommandManager;
+import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.commands.ReflectCommand;
-import com.github.chevyself.starbox.commands.Command;
+import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.annotations.CommandCollection;
 import com.github.chevyself.starbox.annotations.Parent;
 import com.github.chevyself.starbox.annotations.ParentOverride;
@@ -28,7 +29,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 public abstract class CommandParser<
-    C extends StarboxCommandContext<C, T>, T extends Command<C, T>> {
+    C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   @NonNull @Getter protected final CommandManager<C, T> commandManager;
 
@@ -47,7 +48,7 @@ public abstract class CommandParser<
   public List<T> parseAllCommandsFrom(@NonNull Object object) {
     final Class<?> clazz = object.getClass();
     final List<T> commands = new ArrayList<>();
-    if (clazz.isAnnotationPresent(com.github.chevyself.starbox.annotations.Command.class)) {
+    if (clazz.isAnnotationPresent(Command.class)) {
       commands.add(this.parseAsParentCommand(object, clazz));
     } else {
       commands.addAll(this.parseCommandsCollection(object, clazz));
@@ -60,7 +61,7 @@ public abstract class CommandParser<
     final List<T> commands = new ArrayList<>();
     final T parent = this.getAnnotatedParent(object, clazz);
     for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(com.github.chevyself.starbox.annotations.Command.class)) {
+      if (method.isAnnotationPresent(Command.class)) {
         final T command = this.parseMethodCommand(object, method);
         if (parent != null) {
           parent.addChild(command);
@@ -85,8 +86,7 @@ public abstract class CommandParser<
    */
   private T getAnnotatedParent(@NonNull Object object, @NonNull Class<?> clazz) {
     for (final Method method : clazz.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(
-          com.github.chevyself.starbox.annotations.Command.class)) {
+      if (method.isAnnotationPresent(Parent.class) && method.isAnnotationPresent(Command.class)) {
         return this.parseMethodCommand(object, method);
       }
     }
@@ -104,12 +104,11 @@ public abstract class CommandParser<
   @NonNull
   private T parseMethodCommand(@NonNull Object object, @NonNull Method method) {
     this.checkReturnType(method);
-    if (!method.isAnnotationPresent(com.github.chevyself.starbox.annotations.Command.class)) {
+    if (!method.isAnnotationPresent(Command.class)) {
       throw new CommandRegistrationException(
           "The method " + method.getName() + " is not annotated with @Command");
     }
-    return this.parseCommand(object, method, method.getAnnotation(
-        com.github.chevyself.starbox.annotations.Command.class));
+    return this.parseCommand(object, method, method.getAnnotation(Command.class));
   }
 
   /**
@@ -137,8 +136,7 @@ public abstract class CommandParser<
   public List<T> parseAllCommandsIn(@NonNull String packageName) {
     List<T> commands = new ArrayList<>();
     this.createClassFinder(null, packageName)
-        .setPredicate(ClassFinder.checkForAnyAnnotations(
-            com.github.chevyself.starbox.annotations.Command.class, CommandCollection.class))
+        .setPredicate(ClassFinder.checkForAnyAnnotations(Command.class, CommandCollection.class))
         .find()
         .forEach(
             clazz -> {
@@ -184,8 +182,7 @@ public abstract class CommandParser<
    */
   @NonNull
   private T parseAsParentCommand(@NonNull Object instance, @NonNull Class<?> clazz) {
-    com.github.chevyself.starbox.annotations.Command annotation = clazz.getAnnotation(
-        com.github.chevyself.starbox.annotations.Command.class);
+    Command annotation = clazz.getAnnotation(Command.class);
     Optional<Method> override = this.getParentOverride(clazz);
     List<T> children = this.parseCommandsCollection(instance, clazz);
     T parent =
@@ -203,7 +200,7 @@ public abstract class CommandParser<
    * @return the function that will be used to create the default parent command
    */
   @NonNull
-  public abstract Function<com.github.chevyself.starbox.annotations.Command, T> getParentCommandSupplier();
+  public abstract Function<Command, T> getParentCommandSupplier();
 
   /**
    * Get the method that overrides the default parent command logic.
@@ -253,7 +250,7 @@ public abstract class CommandParser<
    */
   @NonNull
   public abstract T parseCommand(
-      @NonNull Object object, @NonNull Method method, @NonNull com.github.chevyself.starbox.annotations.Command annotation);
+      @NonNull Object object, @NonNull Method method, @NonNull Command annotation);
 
   /**
    * Parse the middlewares in the package and return them as a list.

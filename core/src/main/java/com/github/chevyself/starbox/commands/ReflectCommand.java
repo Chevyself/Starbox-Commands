@@ -22,8 +22,8 @@ import lombok.NonNull;
  * @param <C> the type of context that is required to run the command
  * @param <T> the type of command that can be children
  */
-public interface ReflectCommand<C extends StarboxCommandContext<C, T>, T extends Command<C, T>>
-    extends Command<C, T> {
+public interface ReflectCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
+    extends StarboxCommand<C, T> {
 
   /**
    * Get the string that will be used to get the object to pass to the command method as a parameter

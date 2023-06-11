@@ -25,7 +25,7 @@ import lombok.NonNull;
  * @param <C> the context that is required to run the command
  * @param <T> the type of commands that are allowed as children commands
  */
-public interface Command<C extends StarboxCommandContext<C, T>, T extends Command<C, T>> {
+public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   /**
    * Generates the usage of the command. Commands don't require a name, so, the base of the usage is
@@ -37,7 +37,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
    * @return the usage of the command
    */
   @NonNull
-  static String generateUsage(Command<?, ?> command) {
+  static String generateUsage(StarboxCommand<?, ?> command) {
     StringBuilder builder = new StringBuilder();
     builder.append(Option.generateUsage(command.getOptions()));
     if (command instanceof ReflectCommand) {
@@ -84,21 +84,21 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
     throw new UnsupportedOperationException("This command doesn't have a run implementation");
   }
 
-  static String genericHelp(@NonNull Command<?, ?> command, @NonNull Collection<? extends Command<?, ?>> children) {
+  static String genericHelp(@NonNull StarboxCommand<?, ?> command, @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
     StringBuilder builder = new StringBuilder();
     builder
         .append("usage: ")
         .append(command.getName())
         .append(" ")
-        .append(Command.generateUsage(command));
+        .append(StarboxCommand.generateUsage(command));
     if (children.size() > 0) {
       builder.append("\nSubcommands:");
-      for (Command<?, ?> child : children) {
+      for (StarboxCommand<?, ?> child : children) {
         builder
             .append("\n + ")
             .append(child.getName())
             .append(" ")
-            .append(Command.generateUsage(child));
+            .append(StarboxCommand.generateUsage(child));
       }
     }
     return builder.toString();
@@ -116,7 +116,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
 
   /**
    * Get help for the command. This will generate a help message using {@link
-   * #generateUsage(Command)}
+   * #generateUsage(StarboxCommand)}
    *
    * @param command the command to generate the help
    * @param children the children of the command
@@ -124,7 +124,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
    * @return the help message
    * @param <T> the type of command
    */
-  static <T extends Command<?, ?>> String genericHelp(
+  static <T extends StarboxCommand<?, ?>> String genericHelp(
       @NonNull T command,
       @NonNull Collection<T> children,
       @NonNull Function<T, String> nameSupplier) {
@@ -133,7 +133,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
         .append("usage: ")
         .append(nameSupplier.apply(command))
         .append(" ")
-        .append(Command.generateUsage(command));
+        .append(StarboxCommand.generateUsage(command));
     if (children.size() > 0) {
       builder.append("\nSubcommands:");
       for (T child : children) {
@@ -141,7 +141,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
             .append("\n + ")
             .append(nameSupplier.apply(child))
             .append(" ")
-            .append(Command.generateUsage(child));
+            .append(StarboxCommand.generateUsage(child));
       }
     }
     return builder.toString();
@@ -155,7 +155,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
    *
    * @param alias the alias to match the command
    * @return a {@link Optional} instance wrapping the nullable children
-   * @see Command#hasAlias(String)
+   * @see StarboxCommand#hasAlias(String)
    */
   @NonNull
   default Optional<T> getChildren(@NonNull String alias) {
@@ -169,7 +169,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
    * @return this same command instance to allow chain methods
    */
   @NonNull
-  default Command<C, T> addChild(@NonNull T command) {
+  default StarboxCommand<C, T> addChild(@NonNull T command) {
     this.getChildren().add(command);
     return this;
   }
@@ -205,7 +205,7 @@ public interface Command<C extends StarboxCommandContext<C, T>, T extends Comman
 
   /**
    * Get the collection of registered children in this parent. All the children added in this
-   * collection add from {@link #addChild(Command)}
+   * collection add from {@link #addChild(StarboxCommand)}
    *
    * @return the collection of children
    */

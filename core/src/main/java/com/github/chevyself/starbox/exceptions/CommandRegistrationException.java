@@ -1,12 +1,12 @@
 package com.github.chevyself.starbox.exceptions;
 
-import com.github.chevyself.starbox.commands.Command;
+import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.exceptions.type.StarboxRuntimeException;
 import lombok.NonNull;
 
 /**
  * This command is thrown by the {@link StarboxCommandManager} when it cannot parseAndRegister an
- * {@link Command}.
+ * {@link StarboxCommand}.
  */
 public class CommandRegistrationException extends StarboxRuntimeException {
 
