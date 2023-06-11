@@ -3,7 +3,7 @@ package com.github.chevyself.starbox.system.context;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.sender.CommandSender;
 import com.github.chevyself.starbox.system.context.sender.ConsoleCommandSender;
@@ -49,11 +49,10 @@ public class CommandContext implements StarboxCommandContext<CommandContext, Sys
   @Override
   public @NonNull CommandContext getChildren(@NonNull SystemCommand subcommand) {
     return new CommandContext(
-      this.commandLineParser.copyFrom(1, subcommand.getOptions()),
-      subcommand,
-      this.sender,
-      this.providersRegistry,
-      this.messagesProvider
-    );
+        this.commandLineParser.copyFrom(1, subcommand.getOptions()),
+        subcommand,
+        this.sender,
+        this.providersRegistry,
+        this.messagesProvider);
   }
 }

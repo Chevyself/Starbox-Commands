@@ -12,6 +12,4 @@ import com.github.chevyself.starbox.system.context.CommandContext;
  * <p>To parse {@link ReflectSystemCommand} is required to use the annotation {@link Command} if you
  * would like to create an extension the method to override is {@link #run(CommandContext)}
  */
-public interface SystemCommand extends StarboxCommand<CommandContext, SystemCommand> {
-
-}
+public interface SystemCommand extends StarboxCommand<CommandContext, SystemCommand> {}

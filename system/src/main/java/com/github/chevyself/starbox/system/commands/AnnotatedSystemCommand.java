@@ -7,11 +7,13 @@ import com.github.chevyself.starbox.system.context.CommandContext;
 import java.lang.reflect.Method;
 import lombok.NonNull;
 
-public class AnnotatedSystemCommand extends AbstractAnnotatedCommand<CommandContext, SystemCommand> implements SystemCommand {
+public class AnnotatedSystemCommand extends AbstractAnnotatedCommand<CommandContext, SystemCommand>
+    implements SystemCommand {
 
   public AnnotatedSystemCommand(
       @NonNull Command annotation,
-      @NonNull Object object, @NonNull Method method,
+      @NonNull Object object,
+      @NonNull Method method,
       @NonNull CommandManager<CommandContext, SystemCommand> commandManager) {
     super(annotation, object, method, commandManager);
   }

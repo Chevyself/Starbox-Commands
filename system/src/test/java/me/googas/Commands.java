@@ -8,7 +8,7 @@ import com.github.chevyself.starbox.flags.Flag;
 import com.github.chevyself.starbox.result.SimpleResult;
 import com.github.chevyself.starbox.result.StarboxResult;
 import com.github.chevyself.starbox.system.context.CommandContext;
-import com.github.chevyself.starbox.time.annotations.TimeAmount;
+import java.time.Duration;
 import java.util.Locale;
 
 @SuppressWarnings("JavaDoc")
@@ -56,21 +56,21 @@ public class Commands {
   public StarboxResult message(
       CommandContext context, @Free(behaviour = ArgumentBehaviour.CONTINUOUS) String message) {
     String string = message == null || message.isEmpty() ? "No message was sent" : message;
-    return new SimpleResult(context.hasFlag("capitalize") ? string.toUpperCase(Locale.ROOT) : string);
+    return new SimpleResult(
+        context.hasFlag("capitalize") ? string.toUpperCase(Locale.ROOT) : string);
   }
 
-  @Command(
-      aliases = "hello",
-      flags = @Flag(aliases = "message", value = "World!"))
+  @Command(aliases = "hello", flags = @Flag(aliases = "message", value = "World!"))
   public StarboxResult hello(CommandContext context) {
     return new SimpleResult(context.getFlagValue("message").orElse("IDK :("));
   }
 
   @Command(aliases = "trollface")
-  public void trollface(
+  public StarboxResult trollface(
       @Required(name = "message") String message, @Required(name = "number") int number) {
     for (int i = 0; i < number; i++) {
       System.out.println(message);
     }
+    return new SimpleCooldownResult("Trolled", Duration.ofSeconds(10));
   }
 }

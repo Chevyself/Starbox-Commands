@@ -24,8 +24,8 @@ public class SystemCommandParser extends CommandParser<CommandContext, SystemCom
   }
 
   @Override
-  public @NonNull SystemCommand parseCommand(@NonNull Object object, @NonNull Method method,
-      @NonNull Command annotation) {
+  public @NonNull SystemCommand parseCommand(
+      @NonNull Object object, @NonNull Method method, @NonNull Command annotation) {
     return new AnnotatedSystemCommand(annotation, object, method, commandManager);
   }
 }

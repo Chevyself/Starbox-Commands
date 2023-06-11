@@ -30,7 +30,8 @@ public class CommandListener extends Thread {
    * @param manager the command manager to get the commands
    * @param prefix the prefix to differentiate messages from commands
    */
-  public CommandListener(@NonNull CommandManager<CommandContext, SystemCommand> manager, @NonNull String prefix) {
+  public CommandListener(
+      @NonNull CommandManager<CommandContext, SystemCommand> manager, @NonNull String prefix) {
     this.manager = manager;
     this.prefix = prefix;
   }
@@ -53,12 +54,12 @@ public class CommandListener extends Thread {
               CommandLineParser.parse(
                   command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
           command.execute(
-                  new CommandContext(
-                      parser,
-                      command,
-                      ConsoleCommandSender.INSTANCE,
-                      this.manager.getProvidersRegistry(),
-                      this.manager.getMessagesProvider()));
+              new CommandContext(
+                  parser,
+                  command,
+                  ConsoleCommandSender.INSTANCE,
+                  this.manager.getProvidersRegistry(),
+                  this.manager.getMessagesProvider()));
         } else {
           System.out.println("Command " + name + " could not be found");
         }
