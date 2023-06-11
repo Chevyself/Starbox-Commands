@@ -106,7 +106,5 @@ public interface StarboxCommandContext<C extends StarboxCommandContext<C, T>, T 
    * @return the context to execute the child command
    */
   @NonNull
-  default C getChildren(@NonNull T subcommand) {
-    throw new UnsupportedOperationException();
-  }
+  C getChildren(@NonNull T subcommand);
 }

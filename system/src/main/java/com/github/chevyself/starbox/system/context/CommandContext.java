@@ -15,7 +15,7 @@ import lombok.NonNull;
  * {@link StarboxCommandContext} the {@link #sender} is the static instance of {@link
  * ConsoleCommandSender#INSTANCE}
  */
-public class CommandContext implements StarboxCommandContext {
+public class CommandContext implements StarboxCommandContext<CommandContext, SystemCommand> {
 
   @NonNull @Getter private final CommandLineParser commandLineParser;
   @NonNull @Getter private final SystemCommand command;
@@ -44,10 +44,5 @@ public class CommandContext implements StarboxCommandContext {
     this.commandLineParser = commandLineParser;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;
-  }
-
-  @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return this.getProvidersRegistry();
   }
 }
