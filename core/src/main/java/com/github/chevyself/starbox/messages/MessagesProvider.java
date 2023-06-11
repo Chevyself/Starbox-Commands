@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.messages;
 
-import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import java.time.Duration;
@@ -11,7 +10,7 @@ import lombok.NonNull;
  *
  * @param <C> the command context
  */
-public interface StarboxMessagesProvider<C extends StarboxCommandContext<C, ?>> {
+public interface MessagesProvider<C extends StarboxCommandContext<C, ?>> {
 
   /**
    * The message sent when a {@link String} is not valid as a {@link Long}.
@@ -77,24 +76,6 @@ public interface StarboxMessagesProvider<C extends StarboxCommandContext<C, ?>> 
   String missingArgument(
       @NonNull String name, @NonNull String description, int position, C context);
 
-  /**
-   * Get the message sent when the user is still on cooldown.
-   *
-   * @param context the context of the command
-   * @param timeLeft the time left for the user in the getMillis
-   * @return the built string
-   */
   @NonNull
-  String cooldown(@NonNull C context, @NonNull Duration timeLeft);
-
-  /**
-   * Generates the help message for a command.
-   *
-   * @see StarboxCommand#generateUsage(StarboxCommand)
-   * @param command the command to generate the help for
-   * @param context the context of the command
-   * @return the help message
-   */
-  @NonNull
-  String commandHelp(@NonNull StarboxCommand<C, ?> command, C context);
+  String cooldown(@NonNull C context, @NonNull Duration duration);
 }

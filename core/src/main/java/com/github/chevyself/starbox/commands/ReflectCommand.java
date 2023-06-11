@@ -6,7 +6,7 @@ import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
-import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
 import com.github.chevyself.starbox.util.Pair;
@@ -144,5 +144,5 @@ public interface ReflectCommand<C extends StarboxCommandContext<C, T>, T extends
    * @return the messages provider
    */
   @NonNull
-  StarboxMessagesProvider<C> getMessagesProvider();
+  MessagesProvider<C> getMessagesProvider();
 }

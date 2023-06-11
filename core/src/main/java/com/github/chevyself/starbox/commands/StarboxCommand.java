@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.commands;
 
-import com.github.chevyself.starbox.StarboxCooldownManager;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
@@ -85,6 +84,26 @@ public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends
     throw new UnsupportedOperationException("This command doesn't have a run implementation");
   }
 
+  static String genericHelp(@NonNull StarboxCommand<?, ?> command, @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
+    StringBuilder builder = new StringBuilder();
+    builder
+        .append("usage: ")
+        .append(command.getName())
+        .append(" ")
+        .append(StarboxCommand.generateUsage(command));
+    if (children.size() > 0) {
+      builder.append("\nSubcommands:");
+      for (StarboxCommand<?, ?> child : children) {
+        builder
+            .append("\n + ")
+            .append(child.getName())
+            .append(" ")
+            .append(StarboxCommand.generateUsage(child));
+      }
+    }
+    return builder.toString();
+  }
+
   /**
    * Check if the command can the command be recognized by the given alias. This is used because
    * commands have names and aliases, instead of asking for the name and aliases of the command just
@@ -128,6 +147,9 @@ public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends
     return builder.toString();
   }
 
+  @NonNull
+  String getName();
+
   /**
    * Get a children command by an alias.
    *
@@ -151,14 +173,6 @@ public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends
     this.getChildren().add(command);
     return this;
   }
-
-  /**
-   * Get the manager for the cooldown of this command.
-   *
-   * @return the manager
-   */
-  @NonNull
-  Optional<? extends StarboxCooldownManager<C>> getCooldownManager();
 
   /**
    * Get the Middlewares that will run before the command.

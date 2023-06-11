@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.providers;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
-import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
 import lombok.NonNull;
 
@@ -14,7 +14,7 @@ import lombok.NonNull;
 public final class FloatProvider<T extends StarboxCommandContext<T, ?>>
     implements StarboxArgumentProvider<Float, T> {
 
-  private final StarboxMessagesProvider<T> messagesProvider;
+  private final MessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance.
@@ -22,7 +22,7 @@ public final class FloatProvider<T extends StarboxCommandContext<T, ?>>
    * @param messagesProvider to send the error message in case that the {@link Float} could not be
    *     parsed
    */
-  public FloatProvider(StarboxMessagesProvider<T> messagesProvider) {
+  public FloatProvider(MessagesProvider<T> messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

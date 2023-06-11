@@ -13,6 +13,7 @@ import com.github.chevyself.starbox.exceptions.ArgumentProviderRegistrationExcep
 import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.exceptions.MiddlewareParsingException;
 import com.github.chevyself.starbox.providers.type.StarboxContextualProvider;
+import com.github.chevyself.starbox.result.StarboxResult;
 import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -229,7 +230,15 @@ public abstract class CommandParser<
    *
    * @param method the method to check
    */
-  public abstract void checkReturnType(@NonNull Method method);
+  public void checkReturnType(@NonNull Method method) {
+    Class<?> returnType = method.getReturnType();
+    if (!returnType.equals(Void.TYPE) && !StarboxResult.class.isAssignableFrom(returnType)) {
+      throw new CommandRegistrationException(
+          "The method "
+              + method.getName()
+              + " has an invalid return type, it must be Void or a subclass of StarboxResult");
+    }
+  }
 
   /**
    * Parse the reflection command implementation from the provided object, method and annotation.

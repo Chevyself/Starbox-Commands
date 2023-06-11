@@ -12,7 +12,7 @@ public abstract class ResultHandlingMiddleware<C extends StarboxCommandContext<C
   @Override
   public void next(@NonNull C context, StarboxResult result) {
     if (result instanceof SimpleResult) {
-      this.onSimple(result);
+      this.onSimple((SimpleResult) result);
     } else if (result instanceof ExceptionResult) {
       this.onException(context, (ExceptionResult) result);
     }
@@ -20,5 +20,5 @@ public abstract class ResultHandlingMiddleware<C extends StarboxCommandContext<C
 
   public abstract void onException(@NonNull C context, @NonNull ExceptionResult result);
 
-  public abstract void onSimple(@NonNull StarboxResult result);
+  public abstract void onSimple(@NonNull SimpleResult result);
 }

@@ -6,7 +6,7 @@ import com.github.chevyself.starbox.adapters.Adapter;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.commands.CommandParserFactory;
-import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
   @NonNull @Getter private final CommandParser<C, T> commandParser;
   @NonNull @Getter private final List<T> commands;
   @NonNull @Getter private final ProvidersRegistry<C> providersRegistry;
-  @NonNull @Getter private final StarboxMessagesProvider<C> messagesProvider;
+  @NonNull @Getter private final MessagesProvider<C> messagesProvider;
   @NonNull @Getter private final List<Middleware<C>> globalMiddlewares;
   @NonNull @Getter private final List<Middleware<C>> middlewares;
 
@@ -33,7 +33,7 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
       @NonNull List<T> commands,
       @NonNull CommandParserFactory<C, T> parserFactory,
       @NonNull ProvidersRegistry<C> providersRegistry,
-      @NonNull StarboxMessagesProvider<C> messagesProvider,
+      @NonNull MessagesProvider<C> messagesProvider,
       @NonNull List<Middleware<C>> globalMiddlewares,
       @NonNull List<Middleware<C>> middlewares) {
     this.adapter = adapter;
@@ -48,12 +48,13 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
   public CommandManager(
       @NonNull Adapter<C, T> adapter,
       @NonNull CommandParserFactory<C, T> parserFactory,
-      @NonNull StarboxMessagesProvider<C> messagesProvider) {
+      @NonNull ProvidersRegistry<C> providersRegistry,
+      @NonNull MessagesProvider<C> messagesProvider) {
     this(
         adapter,
         new ArrayList<>(),
         parserFactory,
-        new ProvidersRegistry<>(),
+        providersRegistry,
         messagesProvider,
         new ArrayList<>(),
         new ArrayList<>());

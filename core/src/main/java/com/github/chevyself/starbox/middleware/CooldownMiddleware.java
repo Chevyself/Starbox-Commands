@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.middleware;
 
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.result.CooldownResult;
 import com.github.chevyself.starbox.result.SimpleResult;
 import com.github.chevyself.starbox.result.StarboxResult;
@@ -18,13 +18,13 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
     Middleware<C> {
 
   @NonNull
-  private final StarboxMessagesProvider<C> messagesProvider;
+  private final MessagesProvider<C> messagesProvider;
   @NonNull
   private final Map<WeakReference<StarboxCommand<?, ?>>, Map<WeakReference<?>, LocalDateTime>> cooldownMap;
 
 
   public CooldownMiddleware(
-      @NonNull StarboxMessagesProvider<C> messagesProvider) {
+      @NonNull MessagesProvider<C> messagesProvider) {
     this.messagesProvider = messagesProvider;
     this.cooldownMap = new HashMap<>();
   }

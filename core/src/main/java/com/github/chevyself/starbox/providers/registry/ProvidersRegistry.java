@@ -6,7 +6,7 @@ import com.github.chevyself.starbox.arguments.ExtraArgument;
 import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
-import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.providers.BooleanProvider;
 import com.github.chevyself.starbox.providers.DoubleProvider;
 import com.github.chevyself.starbox.providers.DurationProvider;
@@ -43,7 +43,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    *
    * @param messages the messages' provider for the messages sent in the default providers
    */
-  public ProvidersRegistry(@NonNull StarboxMessagesProvider<T> messages) {
+  public ProvidersRegistry(@NonNull MessagesProvider<T> messages) {
     this.addProvider(new BooleanProvider<>(messages))
         .addProvider(new DoubleProvider<>(messages))
         .addProvider(new FloatProvider<>(messages))

@@ -4,7 +4,7 @@ import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.FlagArgument;
 import com.github.chevyself.starbox.flags.StarboxFlag;
-import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import java.util.Optional;
 import lombok.NonNull;
@@ -97,7 +97,7 @@ public interface StarboxCommandContext<C extends StarboxCommandContext<C, T>, T 
    * @return the messages' provider used in this context
    */
   @NonNull
-  StarboxMessagesProvider<? extends StarboxCommandContext<C, T>> getMessagesProvider();
+  MessagesProvider<? extends StarboxCommandContext<C, T>> getMessagesProvider();
 
   /**
    * Get this context to execute a child command.
