@@ -2,6 +2,7 @@ package com.github.chevyself.starbox.arguments;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
+import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.util.Pair;
@@ -60,12 +61,10 @@ public final class ExtraArgument<O> implements Argument<O> {
   }
 
   @Override
-  public <T extends StarboxCommandContext> Pair<Object, Integer> process(
-      @NonNull ProvidersRegistry<T> registry,
-      @NonNull StarboxMessagesProvider<T> messages,
-      @NonNull T context,
-      int lastIndex)
-      throws ArgumentProviderException {
+  public <T extends StarboxCommandContext<T, ?>> Pair<Object, Integer> process(
+      @NonNull ProvidersRegistry<T> registry, @NonNull StarboxMessagesProvider<T> messages,
+      @NonNull T context, int lastIndex)
+      throws ArgumentProviderException, MissingArgumentException {
     return new Pair<>(registry.getObject(this.getClazz(), context), 0);
   }
 }

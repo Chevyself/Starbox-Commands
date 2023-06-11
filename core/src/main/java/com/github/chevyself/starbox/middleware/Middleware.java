@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox;
+package com.github.chevyself.starbox.middleware;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.result.StarboxResult;
@@ -24,7 +24,7 @@ public interface Middleware<T extends StarboxCommandContext> {
    * @return if the middleware returns a {@link StarboxResult} will not run the command
    */
   @NonNull
-  default Optional<? extends StarboxResult> next(@NonNull T context) {
+  default Optional<StarboxResult> next(@NonNull T context) {
     return Optional.empty();
   }
 

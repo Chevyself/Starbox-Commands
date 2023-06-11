@@ -316,9 +316,6 @@ public interface Argument<O> {
     if (string.startsWith("@")) {
       return Argument.parse(
           mappings, string.substring(1), suggestions, ArgumentBehaviour.CONTINUOUS, position);
-    } else if (string.startsWith("*")) {
-      return Argument.parse(
-          mappings, string.substring(1), suggestions, ArgumentBehaviour.MULTIPLE, position);
     } else {
       boolean required;
       if (string.startsWith("<") && string.endsWith(">")) {
@@ -398,7 +395,7 @@ public interface Argument<O> {
    * @throws ArgumentProviderException if the object of the argument cannot be provided
    * @throws MissingArgumentException if the argument is required and there's no input
    */
-  <T extends StarboxCommandContext> Pair<Object, Integer> process(
+  <T extends StarboxCommandContext<T, ?>> Pair<Object, Integer> process(
       @NonNull ProvidersRegistry<T> registry,
       @NonNull StarboxMessagesProvider<T> messages,
       @NonNull T context,

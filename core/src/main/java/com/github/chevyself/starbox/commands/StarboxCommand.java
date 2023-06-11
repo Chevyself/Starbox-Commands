@@ -1,8 +1,10 @@
-package com.github.chevyself.starbox;
+package com.github.chevyself.starbox.commands;
 
+import com.github.chevyself.starbox.StarboxCooldownManager;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
+import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.result.StarboxResult;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +26,7 @@ import lombok.NonNull;
  * @param <C> the context that is required to run the command
  * @param <T> the type of commands that are allowed as children commands
  */
-public interface StarboxCommand<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
+public interface StarboxCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   /**
    * Generates the usage of the command. Commands don't require a name, so, the base of the usage is
@@ -49,12 +51,39 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
   }
 
   /**
-   * Execute the command.
+   * Executes the command. This will run all middlewares of the command.
    *
    * @param context the context that is required to execute the command
    * @return the result of the command execution
    */
-  StarboxResult execute(@NonNull C context);
+  default StarboxResult execute(@NonNull C context) {
+    List<String> arguments = context.getCommandLineParser().getArguments();
+    if (arguments.size() >= 1) {
+      Optional<T> optionalCommand = this.getChildren(arguments.get(0));
+      if (optionalCommand.isPresent()) {
+        T subcommand = optionalCommand.get();
+        return subcommand.execute(context.getChildren(subcommand));
+      }
+    }
+    StarboxResult result =
+        this.getMiddlewares().stream()
+            .map(middleware -> middleware.next(context))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst().orElseGet(() -> this.run(context));
+    this.getMiddlewares().forEach(middleware -> middleware.next(context, result));
+    return result;
+  }
+
+  /**
+   * Runs only the command. This is the actual implementation of the logic of the command
+   *
+   * @param context the context that is required to run the command
+   * @return the result of the command execution
+   */
+  default StarboxResult run(@NonNull C context) {
+    throw new UnsupportedOperationException("This command doesn't have a run implementation");
+  }
 
   /**
    * Check if the command can the command be recognized by the given alias. This is used because
@@ -137,7 +166,7 @@ public interface StarboxCommand<C extends StarboxCommandContext, T extends Starb
    * @return the collection of middlewares
    */
   @NonNull
-  Collection<? extends Middleware<?>> getMiddlewares();
+  Collection<? extends Middleware<C>> getMiddlewares();
 
   /**
    * Get the options which this command may have.

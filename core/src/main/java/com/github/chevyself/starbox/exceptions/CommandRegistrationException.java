@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.exceptions;
 
-import com.github.chevyself.starbox.StarboxCommand;
-import com.github.chevyself.starbox.StarboxCommandManager;
+import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.exceptions.type.StarboxRuntimeException;
 import lombok.NonNull;
 

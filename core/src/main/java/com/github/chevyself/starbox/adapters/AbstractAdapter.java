@@ -1,12 +1,13 @@
-package com.github.chevyself.starbox.experimental;
+package com.github.chevyself.starbox.adapters;
 
-import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.CommandManager;
+import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import java.util.Objects;
 import lombok.NonNull;
 
 public abstract class AbstractAdapter<
-        C extends StarboxCommandContext, T extends StarboxCommand<C, T>>
+        C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     implements Adapter<C, T> {
 
   public CommandManager<C, T> commandManager;

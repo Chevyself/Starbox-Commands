@@ -1,6 +1,6 @@
 package com.github.chevyself.starbox.arguments;
 
-import com.github.chevyself.starbox.ReflectCommand;
+import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
@@ -110,7 +110,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
   }
 
   @Override
-  public <T extends StarboxCommandContext> Pair<Object, Integer> process(
+  public <T extends StarboxCommandContext<T, ?>> Pair<Object, Integer> process(
       @NonNull ProvidersRegistry<T> registry,
       @NonNull StarboxMessagesProvider<T> messages,
       @NonNull T context,

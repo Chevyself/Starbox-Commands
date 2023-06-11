@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox;
+package com.github.chevyself.starbox.commands;
 
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
@@ -9,9 +9,7 @@ import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
-import com.github.chevyself.starbox.result.StarboxResult;
 import com.github.chevyself.starbox.util.Pair;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +22,7 @@ import lombok.NonNull;
  * @param <C> the type of context that is required to run the command
  * @param <T> the type of command that can be children
  */
-public interface ReflectCommand<C extends StarboxCommandContext, T extends StarboxCommand<C, T>>
+public interface ReflectCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     extends StarboxCommand<C, T> {
 
   /**
@@ -147,22 +145,4 @@ public interface ReflectCommand<C extends StarboxCommandContext, T extends Starb
    */
   @NonNull
   StarboxMessagesProvider<C> getMessagesProvider();
-
-  /**
-   * Executes the command and gives a result of its execution.
-   *
-   * @param context the context of the command
-   * @return the result of the command execution
-   */
-  @Override
-  default StarboxResult execute(@NonNull C context) {
-    try {
-      return (StarboxResult) this.getMethod().invoke(this.getObject(), this.getObjects(context));
-    } catch (MissingArgumentException
-        | ArgumentProviderException
-        | IllegalAccessException
-        | InvocationTargetException e) {
-      return () -> Optional.of("Result in error: " + e.getMessage());
-    }
-  }
 }

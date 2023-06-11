@@ -1,6 +1,6 @@
-package com.github.chevyself.starbox.experimental;
+package com.github.chevyself.starbox.annotations;
 
-import com.github.chevyself.starbox.Middleware;
+import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.flags.Flag;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

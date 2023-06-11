@@ -1,10 +1,11 @@
-package com.github.chevyself.starbox.experimental;
+package com.github.chevyself.starbox.adapters;
 
-import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.CommandManager;
+import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import lombok.NonNull;
 
-public interface Adapter<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
+public interface Adapter<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   void onRegister(@NonNull T command);
 

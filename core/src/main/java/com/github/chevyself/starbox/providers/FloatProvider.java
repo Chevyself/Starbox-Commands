@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.providers;
 
-import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
@@ -12,7 +11,7 @@ import lombok.NonNull;
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public final class FloatProvider<T extends StarboxCommandContext>
+public final class FloatProvider<T extends StarboxCommandContext<T, ?>>
     implements StarboxArgumentProvider<Float, T> {
 
   private final StarboxMessagesProvider<T> messagesProvider;

@@ -1,6 +1,6 @@
 package com.github.chevyself.starbox.providers.registry;
 
-import com.github.chevyself.starbox.ReflectCommand;
+import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.arguments.ExtraArgument;
 import com.github.chevyself.starbox.arguments.SingleArgument;
@@ -33,7 +33,7 @@ import lombok.NonNull;
  * you can use {@link #getObject(Class, StarboxCommandContext)}, {@link #fromString(String, Class,
  * StarboxCommandContext)}.
  */
-public class ProvidersRegistry<T extends StarboxCommandContext> {
+public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
 
   /** The providers that must be given with a context. */
   protected final List<StarboxContextualProvider<?, T>> providers = new ArrayList<>();

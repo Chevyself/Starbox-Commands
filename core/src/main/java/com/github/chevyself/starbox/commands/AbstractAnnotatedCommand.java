@@ -1,14 +1,20 @@
-package com.github.chevyself.starbox.experimental;
+package com.github.chevyself.starbox.commands;
 
-import com.github.chevyself.starbox.Middleware;
-import com.github.chevyself.starbox.ReflectCommand;
-import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.CommandManager;
+import com.github.chevyself.starbox.annotations.Command;
+import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.StarboxCooldownManager;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
+import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
+import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.result.ArgumentExceptionResult;
+import com.github.chevyself.starbox.result.InternalExceptionResult;
+import com.github.chevyself.starbox.result.StarboxResult;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +24,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 public class AbstractAnnotatedCommand<
-        C extends StarboxCommandContext, T extends StarboxCommand<C, T>>
+        C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     implements ReflectCommand<C, T> {
 
   @NonNull @Getter private final Object object;
@@ -67,6 +73,22 @@ public class AbstractAnnotatedCommand<
         commandManager.getMiddlewares(annotation),
         Option.of(annotation),
         new ArrayList<>());
+  }
+
+  @Override
+  public StarboxResult run(@NonNull C context) {
+    try {
+      Object object = this.method.invoke(this.getObject(), this.getObjects(context));
+      if (object instanceof StarboxResult) {
+        return (StarboxResult) object;
+      } else {
+        return null;
+      }
+    } catch (final IllegalAccessException | InvocationTargetException e) {
+      return new InternalExceptionResult(e);
+    } catch (MissingArgumentException | ArgumentProviderException e) {
+      return new ArgumentExceptionResult(e);
+    }
   }
 
   @Override

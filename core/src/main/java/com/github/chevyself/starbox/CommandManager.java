@@ -1,9 +1,13 @@
-package com.github.chevyself.starbox.experimental;
+package com.github.chevyself.starbox;
 
-import com.github.chevyself.starbox.Middleware;
-import com.github.chevyself.starbox.StarboxCommand;
+import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
+import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.annotations.Command;
+import com.github.chevyself.starbox.parsers.CommandParser;
+import com.github.chevyself.starbox.commands.CommandParserFactory;
 import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +18,7 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
 
-public class CommandManager<C extends StarboxCommandContext, T extends StarboxCommand<C, T>> {
+public class CommandManager<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
   @NonNull @Getter private final Adapter<C, T> adapter;
   @NonNull @Getter private final CommandParser<C, T> commandParser;

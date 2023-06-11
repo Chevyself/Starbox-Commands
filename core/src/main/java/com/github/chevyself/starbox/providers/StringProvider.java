@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.providers;
 
-import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
 import lombok.NonNull;
