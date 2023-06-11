@@ -97,26 +97,6 @@ public final class Strings {
   }
 
   /**
-   * Build a {@link String} using an array of those. If you have the array: ["Hello", "world"] the
-   * resulting string will be: "Hello world"
-   *
-   * @param strings the array strings to build
-   * @return the built string using the array
-   */
-  @NonNull
-  public static String join(@NonNull String[] strings) {
-    StringBuilder builder = new StringBuilder();
-
-    for (String string : strings) {
-      builder.append(string).append(" ");
-    }
-    if (builder.length() >= 1) {
-      builder.deleteCharAt(builder.length() - 1);
-    }
-    return builder.toString();
-  }
-
-  /**
    * Copy the matching strings from a list to a new one.
    *
    * <p>If you have the next string to match: "Hello" and your list contains the elements:
@@ -199,7 +179,8 @@ public final class Strings {
   }
 
   /**
-   * Get the similarity between two string.
+   * Get the similarity between two string. 1f being that the two strings are the same and 0f being
+   * that they are completely different.
    *
    * @param longer the first string
    * @param shorter the second string
@@ -326,91 +307,6 @@ public final class Strings {
     byte[] bytes = new byte[length];
     random.nextBytes(bytes);
     return new String(bytes, charset);
-  }
-
-  /**
-   * Groups an iteration of strings. Grouping means that it will check for quotation marks, the
-   * strings that are inside those will be grouped as their own. From an array as:
-   *
-   * <p>["Hi!", "\"How", "is", "it", "going?\"", "Good"]
-   *
-   * <p>The groups will be:
-   *
-   * <p>["Hi!", "How is it going?", "Good"]
-   *
-   * @param strings the strings to group
-   * @return the list of grouped strings
-   */
-  @NonNull
-  public static List<JoinedString> group(@NonNull Iterable<String> strings) {
-    List<JoinedString> group = new ArrayList<>();
-    boolean building = false;
-    StringBuilder builder = new StringBuilder();
-    int index = 0;
-    for (String string : strings) {
-      String toAppend = null;
-      if (!building && Strings.isStart(string)) {
-        building = true;
-        builder.append(string).append(" ");
-      } else if (building && string.endsWith("\"")) {
-        building = false;
-        builder.append(string);
-        index++;
-        toAppend = builder.toString();
-        builder.setLength(0);
-      } else if (building) {
-        builder.append(string).append(" ");
-        index++;
-      } else {
-        toAppend = string;
-      }
-      if (toAppend != null) {
-        group.add(new JoinedString(Strings.removeQuotations(toAppend), index));
-        index = 0;
-      }
-    }
-    if (building) {
-      group.add(new JoinedString(builder.toString(), index));
-    }
-    return group;
-  }
-
-  /**
-   * Groups an array of strings.
-   *
-   * @see #group(Iterable)
-   * @param strings the strings to group
-   * @return the list of grouped strings
-   */
-  @NonNull
-  public static List<JoinedString> group(@NonNull String... strings) {
-    return Strings.group(Arrays.asList(strings));
-  }
-
-  /**
-   * Removes the starting and ending quotation marks from a string.
-   *
-   * <p>From: "Hello how are you" To: Hello how are you
-   *
-   * @param string the string to remove the quotation marks
-   * @return the string
-   */
-  @NonNull
-  public static String removeQuotations(@NonNull String string) {
-    return (string.length() > 1 && string.startsWith("\"") && string.endsWith("\""))
-        ? string.substring(1, string.length() - 1)
-        : string;
-  }
-
-  /**
-   * Check if a string starts with quotation marks.
-   *
-   * @param string the string to check
-   * @return true if the string starts with quotation marks and does not end with those. This
-   *     ignores if the string has only one character: "\""
-   */
-  public static boolean isStart(@NonNull String string) {
-    return string.startsWith("\"") && (!string.endsWith("\"") || string.length() == 1);
   }
 
   private static int editDistance(String longer, String shorter) {

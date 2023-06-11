@@ -119,7 +119,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
     if (cached == null) {
       cached =
           this.providers.stream()
-              .filter(provider -> provider.getClazz().isAssignableFrom(clazz))
+              .filter(provider -> provider.provides(clazz))
               .findFirst()
               .orElse(null);
       this.providersCache.put(clazz, cached);
@@ -132,7 +132,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
     if (cached == null) {
       cached =
           this.extraProviders.stream()
-              .filter(provider -> provider.getClazz().isAssignableFrom(clazz))
+              .filter(provider -> provider.provides(clazz))
               .findFirst()
               .orElse(null);
       this.extraProvidersCache.put(clazz, cached);
@@ -159,7 +159,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    */
   @SuppressWarnings("unchecked")
   @NonNull
-  public <O> Object getObject(@NonNull Class<O> clazz, @NonNull T context)
+  public <O> O getObject(@NonNull Class<O> clazz, @NonNull T context)
       throws ArgumentProviderException {
     StarboxExtraArgumentProvider<?, T> provider = this.getExtraProvider(clazz);
     if (provider != null) {

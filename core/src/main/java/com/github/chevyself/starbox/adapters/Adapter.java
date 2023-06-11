@@ -4,6 +4,7 @@ import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import lombok.NonNull;
 
@@ -16,9 +17,22 @@ public interface Adapter<C extends StarboxCommandContext<C, T>, T extends Starbo
   void close();
 
   @NonNull
-  CommandManager<C, T> initialize(
-      @NonNull ProvidersRegistry<C> providersRegistry,
-      @NonNull MessagesProvider<C> messagesProvider);
+  Adapter<C, T> setProvidersRegistry(@NonNull ProvidersRegistry<C> providersRegistry);
+
+  @NonNull
+  Adapter<C, T> setMiddlewareRegistry(@NonNull MiddlewareRegistry<C> middlewareRegistry);
+
+  @NonNull
+  Adapter<C, T> setMessagesProvider(@NonNull MessagesProvider<C> messagesProvider);
+
+  @NonNull
+  Adapter<C, T> useDefaultMiddlewares(boolean use);
+
+  @NonNull
+  Adapter<C, T> useDefaultProviders(boolean use);
+
+  @NonNull
+  CommandManager<C, T> initialize();
 
   @NonNull
   CommandManager<C, T> getCommandManager();

@@ -9,7 +9,7 @@ import lombok.NonNull;
  *
  * @param <T> the type of context that this requires to provide the object
  */
-public final class StringProvider<T extends StarboxCommandContext>
+public final class StringProvider<T extends StarboxCommandContext<T, ?>>
     implements StarboxArgumentProvider<String, T> {
 
   @Override
