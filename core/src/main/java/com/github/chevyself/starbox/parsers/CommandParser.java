@@ -188,7 +188,7 @@ public abstract class CommandParser<
     T parent =
         override
             .map(method -> this.parseCommand(instance, method, annotation))
-            .orElseGet(() -> this.getParentCommandSupplier().apply(annotation));
+            .orElseGet(() -> this.getParentCommandSupplier().supply(annotation, clazz));
     children.forEach(parent::addChild);
     return parent;
   }
@@ -200,7 +200,7 @@ public abstract class CommandParser<
    * @return the function that will be used to create the default parent command
    */
   @NonNull
-  public abstract Function<Command, T> getParentCommandSupplier();
+  public abstract ParentCommandSupplier<C, T> getParentCommandSupplier();
 
   /**
    * Get the method that overrides the default parent command logic.
