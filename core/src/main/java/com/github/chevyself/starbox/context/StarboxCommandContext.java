@@ -1,6 +1,6 @@
 package com.github.chevyself.starbox.context;
 
-import com.github.chevyself.starbox.commands.StarboxCommand;
+import com.github.chevyself.starbox.commands.Command;
 import com.github.chevyself.starbox.flags.CommandLineParser;
 import com.github.chevyself.starbox.flags.FlagArgument;
 import com.github.chevyself.starbox.flags.StarboxFlag;
@@ -14,12 +14,12 @@ import lombok.NonNull;
  * sender and the strings that represent the arguments, obviously, each implementation has a
  * different context but this gives an important idea .
  */
-public interface StarboxCommandContext<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
+public interface StarboxCommandContext<C extends StarboxCommandContext<C, T>, T extends Command<C, T>> {
 
   /**
    * Get a flag with its alias. This will first attempt to get a {@link FlagArgument} if it is not
    * present in this context it will try to get it from the command using {@link
-   * StarboxCommand#getOption(String)}. Flags will be matched using {@link
+   * Command#getOption(String)}. Flags will be matched using {@link
    * StarboxFlag#hasAlias(String)}
    *
    * @param alias the alias to match

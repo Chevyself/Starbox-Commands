@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.commands;
 
 import com.github.chevyself.starbox.CommandManager;
-import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
@@ -22,7 +21,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 public abstract class AbstractAnnotatedCommand<
-        C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
+        C extends StarboxCommandContext<C, T>, T extends Command<C, T>>
     implements ReflectCommand<C, T> {
 
   @NonNull @Getter private final Object object;
@@ -57,7 +56,7 @@ public abstract class AbstractAnnotatedCommand<
   }
 
   protected AbstractAnnotatedCommand(
-      @NonNull Command annotation,
+      @NonNull com.github.chevyself.starbox.annotations.Command annotation,
       @NonNull Object object,
       @NonNull Method method,
       @NonNull CommandManager<C, T> commandManager) {

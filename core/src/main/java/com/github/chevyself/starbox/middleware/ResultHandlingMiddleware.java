@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.middleware;
 
-import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.result.ExceptionResult;
 import com.github.chevyself.starbox.result.SimpleResult;

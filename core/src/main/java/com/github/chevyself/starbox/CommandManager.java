@@ -1,9 +1,8 @@
 package com.github.chevyself.starbox;
 
-import com.github.chevyself.starbox.commands.StarboxCommand;
+import com.github.chevyself.starbox.commands.Command;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.adapters.Adapter;
-import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.commands.CommandParserFactory;
 import com.github.chevyself.starbox.messages.MessagesProvider;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
 
-public class CommandManager<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
+public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Command<C, T>> {
 
   @NonNull @Getter private final Adapter<C, T> adapter;
   @NonNull @Getter private final CommandParser<C, T> commandParser;
@@ -102,7 +101,7 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
   }
 
   /**
-   * Registers the collection of commands. This will call {@link #register(StarboxCommand)} on loop
+   * Registers the collection of commands. This will call {@link #register(Command)} on loop
    *
    * @param commands the commands to be registered
    * @return this same command manager instance to allow chain method calls
@@ -120,7 +119,7 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
    *
    * @param commands the commands to be registered
    * @return this same command manager instance to allow chain method calls
-   * @see #register(StarboxCommand)
+   * @see #register(Command)
    */
   @SuppressWarnings("unchecked")
   @NonNull
@@ -214,13 +213,14 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
     return this;
   }
 
-  public @NonNull List<Middleware<C>> getMiddlewares(@NonNull Command annotation) {
+  public @NonNull List<Middleware<C>> getMiddlewares(@NonNull com.github.chevyself.starbox.annotations.Command annotation) {
     List<Middleware<C>> list = this.getGlobalMiddlewareAndExclude(annotation);
     list.addAll(this.getIncludeMiddleware(annotation));
     return list;
   }
 
-  private @NonNull List<Middleware<C>> getGlobalMiddlewareAndExclude(Command annotation) {
+  private @NonNull List<Middleware<C>> getGlobalMiddlewareAndExclude(
+      com.github.chevyself.starbox.annotations.Command annotation) {
     return this.globalMiddlewares.stream()
         .filter(
             middleware -> {
@@ -234,7 +234,8 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
         .collect(Collectors.toList());
   }
 
-  private @NonNull Collection<? extends Middleware<C>> getIncludeMiddleware(Command annotation) {
+  private @NonNull Collection<? extends Middleware<C>> getIncludeMiddleware(
+      com.github.chevyself.starbox.annotations.Command annotation) {
     return middlewares.stream()
         .filter(
             middleware -> {

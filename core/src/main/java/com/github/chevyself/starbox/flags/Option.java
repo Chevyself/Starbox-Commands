@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.flags;
 
-import com.github.chevyself.starbox.commands.StarboxCommand;
-import com.github.chevyself.starbox.annotations.Command;
+import com.github.chevyself.starbox.commands.Command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,7 +9,7 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
 
-/** Represents a {@link Flag} which have been parsed to be used in a {@link StarboxCommand}. */
+/** Represents a {@link Flag} which have been parsed to be used in a {@link Command}. */
 public class Option implements StarboxFlag {
 
   @NonNull @Getter private final List<String> aliases;
@@ -127,7 +126,7 @@ public class Option implements StarboxFlag {
   }
 
   @NonNull
-  public static List<Option> of(@NonNull Command annotation) {
+  public static List<Option> of(@NonNull com.github.chevyself.starbox.annotations.Command annotation) {
     return Option.of(annotation.flags());
   }
 
