@@ -35,7 +35,7 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
       Object sender = context.getSender();
       Map<WeakReference<?>, LocalDateTime> map = commandMap.get();
       Optional<LocalDateTime> cooldown = this.getCooldown(sender, map);
-      if (cooldown.isPresent() && !cooldown.get().isAfter(LocalDateTime.now())) {
+      if (cooldown.isPresent() && cooldown.get().isAfter(LocalDateTime.now())) {
         result =
             new SimpleResult(
                 messagesProvider.cooldown(

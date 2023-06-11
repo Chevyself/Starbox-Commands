@@ -8,4 +8,9 @@ public class ArgumentExceptionResult extends ExceptionResult {
   public ArgumentExceptionResult(@NonNull StarboxException exception) {
     super(exception);
   }
+
+  @Override
+  public @NonNull String getMessage() {
+    return this.exception.getMessage();
+  }
 }
