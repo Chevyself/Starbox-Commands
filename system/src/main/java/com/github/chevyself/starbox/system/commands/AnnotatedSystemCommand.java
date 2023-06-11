@@ -15,6 +15,6 @@ public class AnnotatedSystemCommand extends AbstractAnnotatedCommand<CommandCont
       @NonNull Object object,
       @NonNull Method method,
       @NonNull CommandManager<CommandContext, SystemCommand> commandManager) {
-    super(annotation, object, method, commandManager);
+    super(commandManager, annotation, object, method);
   }
 }

@@ -1,15 +1,18 @@
 package com.github.chevyself.starbox.system;
 
 import com.github.chevyself.starbox.CommandManager;
-import com.github.chevyself.starbox.adapters.AbstractAdapter;
+import com.github.chevyself.starbox.CommandManagerBuilder;
+import com.github.chevyself.starbox.adapters.Adapter;
 import com.github.chevyself.starbox.middleware.CooldownMiddleware;
+import com.github.chevyself.starbox.registry.MiddlewareRegistry;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.middleware.SystemResultHandlingMiddleware;
-import com.github.chevyself.starbox.system.providers.CommandContextProvider;
+import com.github.chevyself.starbox.system.providers.SystemCommandContextProvider;
 import lombok.NonNull;
 
-public class SystemAdapter extends AbstractAdapter<CommandContext, SystemCommand> {
+public class SystemAdapter implements Adapter<CommandContext, SystemCommand> {
 
   @NonNull private final String prefix;
   private CommandListener listener;
@@ -25,34 +28,32 @@ public class SystemAdapter extends AbstractAdapter<CommandContext, SystemCommand
   public void onUnregister(@NonNull SystemCommand command) {}
 
   @Override
-  public void close() {
-    this.commandManager.close();
+  public void close() {}
+
+  @Override
+  public void registerDefaultProviders(
+      @NonNull CommandManagerBuilder<CommandContext, SystemCommand> builder,
+      @NonNull ProvidersRegistry<CommandContext> registry) {
+    registry.addProvider(new SystemCommandContextProvider());
   }
 
   @Override
-  protected void registerDefaultProviders() {
-    super.registerDefaultProviders();
-    this.providersRegistry.addProvider(new CommandContextProvider());
+  public void registerDefaultMiddlewares(
+      @NonNull CommandManagerBuilder<CommandContext, SystemCommand> builder,
+      @NonNull MiddlewareRegistry<CommandContext> middlewares) {
+    middlewares.addGlobalMiddleware(new SystemResultHandlingMiddleware());
+    middlewares.addGlobalMiddleware(new CooldownMiddleware<>(builder.getMessagesProvider()));
   }
 
   @Override
-  protected void registerDefaultMiddlewares() {
-    super.registerDefaultMiddlewares();
-    middlewareRegistry.addGlobalMiddleware(new CooldownMiddleware<>(messagesProvider));
-    middlewareRegistry.addGlobalMiddleware(new SystemResultHandlingMiddleware());
-  }
-
-  @Override
-  public @NonNull CommandManager<CommandContext, SystemCommand> initialize() {
-    super.initialize();
-    listener = new CommandListener(commandManager, prefix);
+  public void onBuilt(@NonNull CommandManager<CommandContext, SystemCommand> built) {
+    listener = new CommandListener(built, prefix);
     listener.start();
-    return commandManager;
   }
 
   @Override
-  protected @NonNull CommandManager<CommandContext, SystemCommand> createCommandManager() {
-    return new CommandManager<>(
-        this, SystemCommandParser::new, providersRegistry, middlewareRegistry, messagesProvider);
+  public @NonNull SystemCommandParser createParser(
+      @NonNull CommandManager<CommandContext, SystemCommand> commandManager) {
+    return new SystemCommandParser(this, commandManager);
   }
 }

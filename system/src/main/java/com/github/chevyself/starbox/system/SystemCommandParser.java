@@ -3,24 +3,25 @@ package com.github.chevyself.starbox.system;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.parsers.CommandParser;
+import com.github.chevyself.starbox.parsers.ParentCommandSupplier;
 import com.github.chevyself.starbox.system.commands.AnnotatedSystemCommand;
 import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.commands.SystemParentCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import java.lang.reflect.Method;
-import java.util.function.Function;
 import lombok.NonNull;
 
 public class SystemCommandParser extends CommandParser<CommandContext, SystemCommand> {
 
   public SystemCommandParser(
+      @NonNull SystemAdapter adapter,
       @NonNull CommandManager<CommandContext, SystemCommand> commandManager) {
-    super(commandManager);
+    super(adapter, commandManager);
   }
 
   @Override
-  public @NonNull Function<Command, SystemCommand> getParentCommandSupplier() {
-    return annotation -> new SystemParentCommand(annotation, commandManager);
+  public @NonNull ParentCommandSupplier<CommandContext, SystemCommand> getParentCommandSupplier() {
+    return (annotation, clazz) -> new SystemParentCommand(annotation, commandManager);
   }
 
   @Override

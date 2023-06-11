@@ -12,6 +12,6 @@ public class SystemParentCommand extends AbstractParentCommand<CommandContext, S
   public SystemParentCommand(
       @NonNull Command annotation,
       @NonNull CommandManager<CommandContext, SystemCommand> commandManager) {
-    super(annotation, commandManager);
+    super(commandManager, annotation);
   }
 }
