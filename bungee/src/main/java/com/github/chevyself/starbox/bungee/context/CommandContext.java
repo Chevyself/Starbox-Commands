@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.bungee.context;
 
-import com.github.chevyself.starbox.bungee.BungeeCommand;
 import com.github.chevyself.starbox.bungee.commands.BungeeCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.CommandLineParser;

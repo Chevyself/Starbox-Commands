@@ -8,11 +8,11 @@ import lombok.NonNull;
 
 public interface BungeeCommand extends StarboxCommand<CommandContext, BungeeCommand> {
 
-  String getPermission();
-
   @NonNull
   BungeeCommandExecutor getExecutor();
 
   @NonNull
   BungeeAdapter getAdapter();
+
+  String getPermission();
 }

@@ -6,8 +6,8 @@ import com.github.chevyself.starbox.common.Components;
 import com.github.chevyself.starbox.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.result.ArgumentExceptionResult;
 import com.github.chevyself.starbox.result.InternalExceptionResult;
+import com.github.chevyself.starbox.result.Result;
 import com.github.chevyself.starbox.result.SimpleResult;
-import com.github.chevyself.starbox.result.StarboxResult;
 import lombok.NonNull;
 import net.md_5.bungee.api.chat.BaseComponent;
 
@@ -19,12 +19,13 @@ public class BungeeResultHandlingMiddleware extends ResultHandlingMiddleware<Com
     implements BungeeMiddleware {
 
   @Override
-  public void next(@NonNull CommandContext context, StarboxResult result) {
-    super.next(context, result);
+  public void next(@NonNull CommandContext context, Result result) {
     if (result instanceof BungeeResult && !((BungeeResult) result).getComponents().isEmpty()) {
       context
           .getSender()
           .sendMessage(((BungeeResult) result).getComponents().toArray(new BaseComponent[0]));
+    } else {
+      super.next(context, result);
     }
   }
 
