@@ -5,6 +5,7 @@ import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
+import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public final class CommandManagerBuilder<
   @Getter private boolean useDefaultProviders;
   @Getter private MessagesProvider<C> messagesProvider;
   @Getter private CommandMetadataParser commandMetadataParser;
+  private String base;
   private CommandManager<C, T> built;
 
   /**
@@ -64,6 +66,21 @@ public final class CommandManagerBuilder<
     this.useDefaultProviders = true;
     this.messagesProvider = null;
     this.commandMetadataParser = null;
+    this.base = null;
+  }
+
+  /**
+   * Set a base package to scan for commands, middlewares and providers. This will register all
+   * commands inside the base package and providers and middlewares inside '.providers' and
+   * '.middlewares' respectively.
+   *
+   * @param base the base package to scan
+   * @return this builder
+   */
+  @NonNull
+  public CommandManagerBuilder<C, T> setBase(String base) {
+    this.base = base;
+    return this;
   }
 
   /**
@@ -193,7 +210,21 @@ public final class CommandManagerBuilder<
               this.messagesProvider,
               commandMetadataParser);
       this.adapter.onBuilt(this.built);
+      this.registerBase();
     }
     return this.built;
+  }
+
+  private void registerBase() {
+    if (this.base != null) {
+      CommandParser<C, T> parser = this.built.getCommandParser();
+      parser
+          .parseAllMiddlewaresIn(this.base + ".middlewares")
+          .forEach(middleware -> this.middlewareRegistry.addMiddleware(middleware));
+      parser
+          .parseAllProvidersIn(this.base + ".providers")
+          .forEach(provider -> this.providersRegistry.addProvider(provider));
+      this.built.registerAll(parser.parseAllCommandsIn(this.base));
+    }
   }
 }
