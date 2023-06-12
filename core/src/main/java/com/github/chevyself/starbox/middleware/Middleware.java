@@ -10,8 +10,8 @@ import lombok.NonNull;
  * check, permissions check, etc. Anything that you want to run before or after a command can be
  * done using this.
  *
- * <p>If the middleware runs before the command and returns a {@link Result} the command will
- * not run
+ * <p>If the middleware runs before the command and returns a {@link Result} the command will not
+ * run
  *
  * @param <T> the context of the command
  */
@@ -35,4 +35,8 @@ public interface Middleware<T extends StarboxCommandContext> {
    * @param result result returned by the command
    */
   default void next(@NonNull T context, Result result) {}
+
+  default void close() {
+
+  }
 }

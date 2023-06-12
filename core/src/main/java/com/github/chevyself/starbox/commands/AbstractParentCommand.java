@@ -4,8 +4,8 @@ import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.metadata.CommandMetadata;
-import com.github.chevyself.starbox.result.SimpleResult;
 import com.github.chevyself.starbox.result.Result;
+import com.github.chevyself.starbox.result.SimpleResult;
 import lombok.NonNull;
 
 public abstract class AbstractParentCommand<

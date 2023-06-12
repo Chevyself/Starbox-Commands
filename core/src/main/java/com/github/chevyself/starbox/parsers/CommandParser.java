@@ -228,8 +228,8 @@ public abstract class CommandParser<
   /**
    * Check if the return type of the command method is valid. This will throw a {@link
    * CommandRegistrationException} if the return type is not valid. Each module has its own
-   * extension of {@link Result} which can be used as the
-   * return type of the command method, you could also use {@link Void} as the return type.
+   * extension of {@link Result} which can be used as the return type of the command method, you
+   * could also use {@link Void} as the return type.
    *
    * @param method the method to check
    */

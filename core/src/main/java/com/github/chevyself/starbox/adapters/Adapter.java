@@ -33,5 +33,6 @@ public interface Adapter<C extends StarboxCommandContext<C, T>, T extends Starbo
   @NonNull
   CommandMetadataParser getDefaultCommandMetadataParser();
 
+  @NonNull
   MessagesProvider<C> getDefaultMessaesProvider();
 }

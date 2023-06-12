@@ -80,7 +80,8 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
   public ProvidersRegistry<T> addProvider(@NonNull StarboxContextualProvider<?, T> provider) {
     if (provider instanceof StarboxArgumentProvider<?, ?>) {
       this.providers.add((StarboxArgumentProvider<?, T>) provider);
-    } else if (provider instanceof StarboxExtraArgumentProvider<?, ?>) {
+    }
+    if (provider instanceof StarboxExtraArgumentProvider<?, ?>) {
       this.extraProviders.add((StarboxExtraArgumentProvider<?, T>) provider);
     }
     return this;

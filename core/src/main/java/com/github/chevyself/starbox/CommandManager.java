@@ -130,6 +130,7 @@ public class CommandManager<C extends StarboxCommandContext<C, T>, T extends Sta
     this.commands.forEach(this.adapter::onUnregister);
     this.commands.clear();
     this.adapter.close();
+    this.middlewareRegistry.close();
   }
 
   /**

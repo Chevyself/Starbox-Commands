@@ -3,7 +3,6 @@ package com.github.chevyself.starbox;
 import com.github.chevyself.starbox.adapters.Adapter;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.messages.GenericMessagesProvider;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import com.github.chevyself.starbox.registry.MiddlewareRegistry;

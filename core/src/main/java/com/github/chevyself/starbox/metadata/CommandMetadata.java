@@ -22,8 +22,7 @@ public class CommandMetadata {
   }
 
   @SuppressWarnings("unchecked")
-  @NonNull
   public <T> T get(@NonNull String key) {
-    return Objects.requireNonNull((T) map.get(key), "Could not find object with key " + key);
+    return (T) map.get(key);
   }
 }

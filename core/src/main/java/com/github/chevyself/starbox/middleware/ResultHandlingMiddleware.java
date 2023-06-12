@@ -3,8 +3,8 @@ package com.github.chevyself.starbox.middleware;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.result.ArgumentExceptionResult;
 import com.github.chevyself.starbox.result.InternalExceptionResult;
-import com.github.chevyself.starbox.result.SimpleResult;
 import com.github.chevyself.starbox.result.Result;
+import com.github.chevyself.starbox.result.SimpleResult;
 import lombok.NonNull;
 
 public abstract class ResultHandlingMiddleware<C extends StarboxCommandContext<C, ?>>

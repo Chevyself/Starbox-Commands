@@ -112,4 +112,11 @@ public class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
             })
         .collect(Collectors.toList());
   }
+
+  public void close() {
+    this.middlewares.forEach(Middleware::close);
+    this.globalMiddlewares.forEach(Middleware::close);
+    this.globalMiddlewares.clear();
+    this.middlewares.clear();
+  }
 }
