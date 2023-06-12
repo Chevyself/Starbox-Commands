@@ -19,26 +19,6 @@ public interface JdaMessagesProvider extends MessagesProvider<CommandContext> {
   String commandNotFound(@NonNull @Deprecated String command, @NonNull CommandContext context);
 
   /**
-   * Get the footer for embeds.
-   *
-   * @param context the context of the command
-   * @return The footer in case {@link ListenerOptions} embed messages is true
-   */
-  @NonNull
-  String footer(CommandContext context);
-
-  /**
-   * Get the response when a result is not done as an embed.
-   *
-   * @param title the title of the response
-   * @param message the message of the response
-   * @param context the context of the command
-   * @return the message when the result has a message
-   */
-  @NonNull
-  String response(@NonNull String title, @NonNull String message, CommandContext context);
-
-  /**
    * Get the message for when a user is not allowed to use a command.
    *
    * @param context the context of the command
@@ -56,15 +36,6 @@ public interface JdaMessagesProvider extends MessagesProvider<CommandContext> {
    */
   @NonNull
   String guildOnly(@NonNull CommandContext context);
-
-  /**
-   * Get the url to use as thumbnail.
-   *
-   * @param context the context of the command
-   * @return the url to use as thumbnail
-   */
-  @NonNull
-  String thumbnailUrl(CommandContext context);
 
   /**
    * The message sent when a string is not a valid user.

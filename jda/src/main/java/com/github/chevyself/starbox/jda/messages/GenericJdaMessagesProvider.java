@@ -13,50 +13,9 @@ import lombok.NonNull;
 public class GenericJdaMessagesProvider extends GenericMessagesProvider<CommandContext>
     implements JdaMessagesProvider {
 
-  @NonNull
-  @Override
-  public String invalidLong(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid long";
-  }
-
-  @NonNull
-  @Override
-  public String invalidInteger(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid integer";
-  }
-
-  @NonNull
-  @Override
-  public String invalidDouble(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid double";
-  }
-
-  @NonNull
-  @Override
-  public String invalidBoolean(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not a valid boolean";
-  }
-
-  @NonNull
-  @Override
-  public String invalidDuration(@NonNull String string, @NonNull CommandContext context) {
-    return string + " is not valid time";
-  }
-
   @Override
   public @NonNull String commandNotFound(@NonNull String command, @NonNull CommandContext context) {
     return "Command not found";
-  }
-
-  @Override
-  public @NonNull String footer(CommandContext context) {
-    return "";
-  }
-
-  @Override
-  public @NonNull String response(
-      @NonNull String title, @NonNull String message, CommandContext context) {
-    return Strings.format("{0} -> {1}", title, message);
   }
 
   @Override
@@ -70,23 +29,8 @@ public class GenericJdaMessagesProvider extends GenericMessagesProvider<CommandC
   }
 
   @Override
-  public @NonNull String missingArgument(
-      @NonNull String name,
-      @NonNull String description,
-      int position,
-      @NonNull CommandContext commandContext) {
-    return Strings.format(
-        "Missing argument: {0} -> {1}, position: {2}", name, description, position);
-  }
-
-  @Override
   public @NonNull String cooldown(@NonNull CommandContext context, @NonNull Duration timeLeft) {
     return "You are on cooldown! please wait " + TimeUtil.toString(timeLeft);
-  }
-
-  @Override
-  public @NonNull String thumbnailUrl(CommandContext context) {
-    return "";
   }
 
   @Override
