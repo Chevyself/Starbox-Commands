@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
 
-/**
- * This is used to represent a class or method as a command.
- */
+/** This is used to represent a class or method as a command. */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Command {
@@ -64,9 +62,7 @@ public @interface Command {
   @NonNull
   Class<? extends Middleware<?>>[] include() default {};
 
-  /**
-   * Utility class to help the parsing of the {@link Command} annotation.
-   */
+  /** Utility class to help the parsing of the {@link Command} annotation. */
   class Supplier {
 
     /**

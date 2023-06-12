@@ -5,8 +5,8 @@ import java.util.Map;
 import lombok.NonNull;
 
 /**
- * Represents the metadata of a command. This is used to store information which developers
- * may want to access for providers, contexts, middlewares, etc.
+ * Represents the metadata of a command. This is used to store information which developers may want
+ * to access for providers, contexts, middlewares, etc.
  */
 public class CommandMetadata {
 

@@ -11,8 +11,7 @@ import lombok.NonNull;
  *
  * @param <C> the context
  */
-public final class DoubleProvider<C extends StarboxCommandContext<C, ?>>
-    extends MessagedProvider<C>
+public final class DoubleProvider<C extends StarboxCommandContext<C, ?>> extends MessagedProvider<C>
     implements StarboxArgumentProvider<Double, C> {
 
   /**

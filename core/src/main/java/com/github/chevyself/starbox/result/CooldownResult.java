@@ -3,9 +3,7 @@ package com.github.chevyself.starbox.result;
 import java.time.Duration;
 import lombok.NonNull;
 
-/**
- * Implementing classes represent a result from a command execution which sets a cooldown.
- */
+/** Implementing classes represent a result from a command execution which sets a cooldown. */
 public interface CooldownResult extends Result {
 
   /**

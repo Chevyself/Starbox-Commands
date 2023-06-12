@@ -7,6 +7,9 @@ import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxContextualProvider;
+import com.github.chevyself.starbox.providers.StarboxExtraArgumentProvider;
 import com.github.chevyself.starbox.providers.type.BooleanProvider;
 import com.github.chevyself.starbox.providers.type.DoubleProvider;
 import com.github.chevyself.starbox.providers.type.DurationProvider;
@@ -14,9 +17,6 @@ import com.github.chevyself.starbox.providers.type.FloatProvider;
 import com.github.chevyself.starbox.providers.type.IntegerProvider;
 import com.github.chevyself.starbox.providers.type.LongProvider;
 import com.github.chevyself.starbox.providers.type.StringProvider;
-import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
-import com.github.chevyself.starbox.providers.StarboxContextualProvider;
-import com.github.chevyself.starbox.providers.StarboxExtraArgumentProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,11 +30,12 @@ import lombok.NonNull;
  * parameters to be executed with the help of its {@link Argument}.
  *
  * <p>This class allows injection as the providers are used to get the objects that will be used in
- * the command method. The methods to get the objects are {@link #getObject(Class, StarboxCommandContext)}
- * and {@link #fromString(String, Class, StarboxCommandContext)}.
+ * the command method. The methods to get the objects are {@link #getObject(Class,
+ * StarboxCommandContext)} and {@link #fromString(String, Class, StarboxCommandContext)}.
  *
- * <p>To avoid exceptions you must ensure that the method {@link StarboxContextualProvider#provides(Class)}
- * is well implemented. Also, make sure it doesn't overlap other providers.
+ * <p>To avoid exceptions you must ensure that the method {@link
+ * StarboxContextualProvider#provides(Class)} is well implemented. Also, make sure it doesn't
+ * overlap other providers.
  *
  * <p>To add new providers use {@link #addProvider(StarboxContextualProvider)}
  */
@@ -80,9 +81,9 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
   public ProvidersRegistry() {}
 
   /**
-   * Registers a provider in the providers' registry. This will register
-   * the provider in the {@link #providers} list if it's a {@link StarboxArgumentProvider} and in
-   * the {@link #extraProviders} list if it's a {@link StarboxExtraArgumentProvider}.
+   * Registers a provider in the providers' registry. This will register the provider in the {@link
+   * #providers} list if it's a {@link StarboxArgumentProvider} and in the {@link #extraProviders}
+   * list if it's a {@link StarboxExtraArgumentProvider}.
    *
    * @param provider the provider to register
    * @return this same instance of registry
@@ -127,9 +128,9 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
   }
 
   /**
-   * Get the provider that provides the given class. If there's a provider
-   * for the class, to avoid checking {@link StarboxContextualProvider#provides(Class)}
-   * which can get expensive, the provider is cached in {@link #providersCache}.
+   * Get the provider that provides the given class. If there's a provider for the class, to avoid
+   * checking {@link StarboxContextualProvider#provides(Class)} which can get expensive, the
+   * provider is cached in {@link #providersCache}.
    *
    * @param clazz the class to get the provider for
    * @return the provider that provides the given class or null if there's no provider for the class
@@ -148,9 +149,9 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
   }
 
   /**
-   * Get the provider that provides the given class. If there's a provider
-   * for the class, to avoid checking {@link StarboxContextualProvider#provides(Class)}
-   * which can get expensive, the provider is cached in {@link #extraProvidersCache}.
+   * Get the provider that provides the given class. If there's a provider for the class, to avoid
+   * checking {@link StarboxContextualProvider#provides(Class)} which can get expensive, the
+   * provider is cached in {@link #extraProvidersCache}.
    *
    * @param clazz the class to get the provider for
    * @return the provider that provides the given class or null if there's no provider for the class
@@ -169,13 +170,13 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
   }
 
   /**
-   * Get the object to use as parameter in the invocation of a command. This object is provided from an
-   * {@link ExtraArgument}
+   * Get the object to use as parameter in the invocation of a command. This object is provided from
+   * an {@link ExtraArgument}
    *
    * <p>We will get the provider using {@link #getExtraProvider(Class)}
    *
-   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast, so make
-   * sure to implement it correctly
+   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast, so make sure to
+   * implement it correctly
    *
    * @param clazz the clazz to get the provider from
    * @param context the context of the command execution
@@ -183,8 +184,8 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    * @throws ArgumentProviderException if the provider is not found or the provider cannot provide
    *     the object for some reason, see {@link
    *     StarboxExtraArgumentProvider#getObject(StarboxCommandContext)}
-   * @throws ClassCastException if the provider has the method {@link StarboxExtraArgumentProvider#provides(Class)}}
-   * implemented incorrectly
+   * @throws ClassCastException if the provider has the method {@link
+   *     StarboxExtraArgumentProvider#provides(Class)}} implemented incorrectly
    * @param <O> the type of object to get from the provider
    */
   @SuppressWarnings("unchecked")
@@ -208,8 +209,8 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    *
    * <p>We will get the provider using {@link #getProvider(Class)}
    *
-   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast, so make
-   * sure to implement it correctly
+   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast, so make sure to
+   * implement it correctly
    *
    * @param string the string to get the object from
    * @param clazz the clazz to get the provider from
@@ -235,9 +236,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
     }
   }
 
-  /**
-   * Closes the registry. This will empty all the collections and caches.
-   */
+  /** Closes the registry. This will empty all the collections and caches. */
   public void close() {
     this.providers.clear();
     this.extraProviders.clear();

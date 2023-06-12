@@ -14,22 +14,21 @@ import lombok.NonNull;
  * <p>True:
  *
  * <ul>
- *   <li>true</li>
- *   <li>1</li>
+ *   <li>true
+ *   <li>1
  * </ul>
  *
  * <p>False:
  *
  * <ul>
- *   <li>false</li>
- *   <li>0</li>
+ *   <li>false
+ *   <li>0
  * </ul>
  *
  * @param <C> the context
  */
 public final class BooleanProvider<C extends StarboxCommandContext<C, ?>>
-    extends MessagedProvider<C>
-    implements StarboxArgumentProvider<Boolean, C> {
+    extends MessagedProvider<C> implements StarboxArgumentProvider<Boolean, C> {
 
   /**
    * Create an instance.

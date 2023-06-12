@@ -29,8 +29,8 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /**
- * Extending classes are responsible for parsing the commands. This includes creating commands
- * from methods and classes.
+ * Extending classes are responsible for parsing the commands. This includes creating commands from
+ * methods and classes.
  *
  * @param <C> the command context
  * @param <T> the command type
@@ -54,9 +54,9 @@ public abstract class CommandParser<
   }
 
   /**
-   * Parse a {@link ReflectCommand} from the provided object. If the class contains
-   * the annotation {@link Command} this will parse using {@link #parseAsParentCommand(Object, Class)}
-   * else {@link #parseCommandsCollection(Object, Class)}
+   * Parse a {@link ReflectCommand} from the provided object. If the class contains the annotation
+   * {@link Command} this will parse using {@link #parseAsParentCommand(Object, Class)} else {@link
+   * #parseCommandsCollection(Object, Class)}
    *
    * @param object the object to get the commands from
    * @return the collection of parsed commands.
@@ -120,8 +120,8 @@ public abstract class CommandParser<
   }
 
   /**
-   * Parse a {@link ReflectCommand} using the method where it will be executed and the object instance
-   * that must be used to execute the method.
+   * Parse a {@link ReflectCommand} using the method where it will be executed and the object
+   * instance that must be used to execute the method.
    *
    * @param object the object instance required for the method invocation
    * @param method the method used to execute the command
@@ -148,16 +148,18 @@ public abstract class CommandParser<
    *       com.github.chevyself.starbox.annotations.CommandCollection}, then the method {@link
    *       #parseAllCommandsFrom(Object)} will be called to get the commands from the object
    *       instance.
-   *   <li>If the class is annotated with the {@link Command}, then a parent
-   *       command will be created ({@link #parseAsParentCommand(Object, Class)}): if the class contains a method with the annotation {@link
-   *       com.github.chevyself.starbox.annotations.ParentOverride} the default parent command logic
-   *       will be overridden, this method is treated as any other command method, without the need of {@link Command} as it will
-   *       take the annotation from the class. If there's no method with such annotation, then a message with the usage of the subcommands will be
-   *       sent.
+   *   <li>If the class is annotated with the {@link Command}, then a parent command will be created
+   *       ({@link #parseAsParentCommand(Object, Class)}): if the class contains a method with the
+   *       annotation {@link com.github.chevyself.starbox.annotations.ParentOverride} the default
+   *       parent command logic will be overridden, this method is treated as any other command
+   *       method, without the need of {@link Command} as it will take the annotation from the
+   *       class. If there's no method with such annotation, then a message with the usage of the
+   *       subcommands will be sent.
    * </ul>
    *
    * @param packageName the package name to get the commands from
-   * @throws CommandRegistrationException if there's no default constructor for the class to be initialized, or it failed to be instantiated
+   * @throws CommandRegistrationException if there's no default constructor for the class to be
+   *     initialized, or it failed to be instantiated
    * @return this same instance
    */
   @NonNull
@@ -269,7 +271,8 @@ public abstract class CommandParser<
   }
 
   /**
-   * Parse the {@link ReflectCommand} implementation from the provided object, method and annotation.
+   * Parse the {@link ReflectCommand} implementation from the provided object, method and
+   * annotation.
    *
    * @param object the object instance required for the command execution
    * @param method the method used to execute the command
@@ -310,8 +313,8 @@ public abstract class CommandParser<
   }
 
   /**
-   * Parse the providers in the package and return them as a list. Please note that this method depends
-   * on raw types and unchecked casts
+   * Parse the providers in the package and return them as a list. Please note that this method
+   * depends on raw types and unchecked casts
    *
    * @param packageName the package name to get the middlewares from
    * @return the list of providers
@@ -338,8 +341,6 @@ public abstract class CommandParser<
         .collect(Collectors.toList());
   }
 
-  /**
-   * Closes the parser.
-   */
+  /** Closes the parser. */
   public void close() {}
 }

@@ -11,9 +11,9 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /**
- * Contains the global and command-specific {@link Middleware}. This can be used in
- * the {@link com.github.chevyself.starbox.CommandManager} to be provided in commands
- * using {@link #getMiddlewares(Command)},
+ * Contains the global and command-specific {@link Middleware}. This can be used in the {@link
+ * com.github.chevyself.starbox.CommandManager} to be provided in commands using {@link
+ * #getMiddlewares(Command)},
  *
  * @param <C> the type of context
  */
@@ -34,9 +34,7 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
     this.middlewares = middlewares;
   }
 
-  /**
-   * Create an empty registry.
-   */
+  /** Create an empty registry. */
   public MiddlewareRegistry() {
     this(new ArrayList<>(), new ArrayList<>());
   }
@@ -96,9 +94,9 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
   }
 
   /**
-   * Get the middlewares for a command. This will get all the global middlewares unless
-   * they are excluded in the {@link Command#exclude()} annotation. Then, it will get all the
-   * middlewares that are included in the {@link Command#include()} annotation.
+   * Get the middlewares for a command. This will get all the global middlewares unless they are
+   * excluded in the {@link Command#exclude()} annotation. Then, it will get all the middlewares
+   * that are included in the {@link Command#include()} annotation.
    *
    * @param annotation the command annotation
    * @return the list of middlewares
@@ -110,7 +108,8 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
   }
 
   /**
-   * Get all the global middlewares except the ones that are excluded in the {@link Command#exclude()}.
+   * Get all the global middlewares except the ones that are excluded in the {@link
+   * Command#exclude()}.
    *
    * @param annotation the command annotation
    * @return the list of middlewares
@@ -149,9 +148,7 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
         .collect(Collectors.toList());
   }
 
-  /**
-   * Closes the registry and all the middlewares.
-   */
+  /** Closes the registry and all the middlewares. */
   public void close() {
     this.middlewares.forEach(Middleware::close);
     this.globalMiddlewares.forEach(Middleware::close);

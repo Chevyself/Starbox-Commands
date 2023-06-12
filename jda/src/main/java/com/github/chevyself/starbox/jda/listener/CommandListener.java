@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.jda.listener;
 
 import com.github.chevyself.starbox.CommandManager;
-import com.github.chevyself.starbox.parsers.CommandLineParser;
 import com.github.chevyself.starbox.jda.JdaAdapter;
 import com.github.chevyself.starbox.jda.ListenerOptions;
 import com.github.chevyself.starbox.jda.commands.JdaCommand;
@@ -11,6 +10,7 @@ import com.github.chevyself.starbox.jda.context.GenericCommandContext;
 import com.github.chevyself.starbox.jda.context.GuildCommandContext;
 import com.github.chevyself.starbox.jda.context.SlashCommandContext;
 import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import java.util.Arrays;
 import lombok.Getter;
 import lombok.NonNull;

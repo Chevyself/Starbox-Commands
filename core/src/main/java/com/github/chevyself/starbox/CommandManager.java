@@ -18,8 +18,7 @@ import lombok.NonNull;
 
 /**
  * Represents the command manager. This class is the main class of the framework, it contains the
- * registered commands, the registries for {@link
- * StarboxContextualProvider} and {@link
+ * registered commands, the registries for {@link StarboxContextualProvider} and {@link
  * com.github.chevyself.starbox.middleware.Middleware}, the {@link MessagesProvider}, the {@link
  * CommandParser} the {@link CommandMetadataParser} and the {@link Adapter}.
  *

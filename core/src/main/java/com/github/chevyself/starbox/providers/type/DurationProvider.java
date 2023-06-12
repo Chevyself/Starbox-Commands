@@ -13,18 +13,15 @@ import lombok.NonNull;
  *
  * @param <C> the context
  */
-public class DurationProvider<C extends StarboxCommandContext<C, ?>>
-    extends MessagedProvider<C>
+public class DurationProvider<C extends StarboxCommandContext<C, ?>> extends MessagedProvider<C>
     implements StarboxArgumentProvider<Duration, C> {
-
 
   /**
    * Create an instance.
    *
    * @param messagesProvider to message if the {@link String} is invalid
    */
-  public DurationProvider(
-      MessagesProvider<C> messagesProvider) {
+  public DurationProvider(MessagesProvider<C> messagesProvider) {
     super(messagesProvider);
   }
 

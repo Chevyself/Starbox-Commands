@@ -37,7 +37,9 @@ public interface ReflectCommand<
    */
   @NonNull
   static Pair<String, Integer> getArgument(
-      @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext<?, ?> context, int lastIndex) {
+      @NonNull SingleArgument<?> argument,
+      @NonNull StarboxCommandContext<?, ?> context,
+      int lastIndex) {
     List<String> arguments = context.getCommandLineParser().getArguments();
     String string = null;
     int increase = 0;

@@ -3,9 +3,7 @@ package com.github.chevyself.starbox.result.type;
 import lombok.Getter;
 import lombok.NonNull;
 
-/**
- * Represents that the command execution resulted in an exception.
- */
+/** Represents that the command execution resulted in an exception. */
 public abstract class ExceptionResult extends SimpleResult {
 
   @NonNull @Getter protected final Throwable exception;

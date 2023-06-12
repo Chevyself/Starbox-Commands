@@ -12,9 +12,7 @@ import lombok.NonNull;
  * @param <C> the context
  */
 public final class IntegerProvider<C extends StarboxCommandContext<C, ?>>
-    extends MessagedProvider<C>
-    implements StarboxArgumentProvider<Integer, C> {
-
+    extends MessagedProvider<C> implements StarboxArgumentProvider<Integer, C> {
 
   /**
    * Create an instance.

@@ -1,8 +1,8 @@
 package com.github.chevyself.starbox.jda.context;
 
-import com.github.chevyself.starbox.parsers.CommandLineParser;
 import com.github.chevyself.starbox.jda.commands.JdaCommand;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import java.util.Optional;
 import lombok.Getter;

@@ -36,8 +36,6 @@ public interface Middleware<C extends StarboxCommandContext<C, ?>> {
    */
   default void next(@NonNull C context, Result result) {}
 
-  /**
-   * Closes the middleware.
-   */
+  /** Closes the middleware. */
   default void close() {}
 }

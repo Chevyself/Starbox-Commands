@@ -1,4 +1,2 @@
-/**
- * This package contains command classes.
- */
+/** This package contains command classes. */
 package com.github.chevyself.starbox.commands;

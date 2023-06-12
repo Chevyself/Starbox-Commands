@@ -5,9 +5,7 @@ import java.time.Duration;
 import lombok.Getter;
 import lombok.NonNull;
 
-/**
- * A simple implementation of {@link CooldownResult} and {@link SimpleResult}.
- */
+/** A simple implementation of {@link CooldownResult} and {@link SimpleResult}. */
 public class SimpleCooldownResult extends SimpleResult implements CooldownResult {
 
   @NonNull @Getter private final Duration cooldown;

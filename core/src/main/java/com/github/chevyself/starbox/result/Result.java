@@ -5,9 +5,7 @@ import com.github.chevyself.starbox.result.type.SimpleResult;
 import java.time.Duration;
 import lombok.NonNull;
 
-/**
- * Implementing classes represent a result from a command execution.
- */
+/** Implementing classes represent a result from a command execution. */
 public interface Result {
 
   /**

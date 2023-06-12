@@ -5,8 +5,8 @@ import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import lombok.NonNull;
 
 /**
- * Thrown when a {@link StarboxContextualProvider} could
- * not be registered in the {@link ProvidersRegistry}.
+ * Thrown when a {@link StarboxContextualProvider} could not be registered in the {@link
+ * ProvidersRegistry}.
  */
 public class ArgumentProviderRegistrationException extends CommandRegistrationException {
 

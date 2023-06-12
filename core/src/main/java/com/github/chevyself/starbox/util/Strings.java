@@ -373,19 +373,11 @@ public final class Strings {
       @NonNull StarboxCommand<?, ?> command,
       @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
     StringBuilder builder = new StringBuilder();
-    builder
-        .append("usage: ")
-        .append(command.getName())
-        .append(" ")
-        .append(generateUsage(command));
+    builder.append("usage: ").append(command.getName()).append(" ").append(generateUsage(command));
     if (children.size() > 0) {
       builder.append("\nSubcommands:");
       for (StarboxCommand<?, ?> child : children) {
-        builder
-            .append("\n + ")
-            .append(child.getName())
-            .append(" ")
-            .append(generateUsage(child));
+        builder.append("\n + ").append(child.getName()).append(" ").append(generateUsage(child));
       }
     }
     return builder.toString();

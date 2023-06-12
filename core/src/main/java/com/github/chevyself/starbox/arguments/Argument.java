@@ -18,8 +18,8 @@ import java.util.Map;
 import lombok.NonNull;
 
 /**
- * This class represents an argument of a command. An argument can change the output of a command, this type is used for commands that are parsed
- * using reflection.
+ * This class represents an argument of a command. An argument can change the output of a command,
+ * this type is used for commands that are parsed using reflection.
  *
  * <p>There's two types of arguments:
  *
@@ -29,15 +29,18 @@ import lombok.NonNull;
  *       #isEmpty(Annotation[])} if this method returns true it will be considered as an {@link
  *       ExtraArgument}
  *   <li>{@link SingleArgument} this argument expects a user input unless it is annotated with
- *       {@link Free} or {@link Required}. It has a place inside the command usage: [prefix][command] [argument]...
+ *       {@link Free} or {@link Required}. It has a place inside the command usage:
+ *       [prefix][command] [argument]...
  *       <p>This kind of argument has two different {@link ArgumentBehaviour}
- *
  * </ul>
- *     <p>To know how arguments are parsed you can check {@link #parseArguments(Method)} or {@link
- *     #parseArguments(Class[], Annotation[][])} and to know how a single argument is parsed see
- *     {@link #parseArgument(Class, Annotation[], int)}
- *     <p>Here's an example:
- *     <pre>{@code
+ *
+ * <p>To know how arguments are parsed you can check {@link #parseArguments(Method)} or {@link
+ * #parseArguments(Class[], Annotation[][])} and to know how a single argument is parsed see {@link
+ * #parseArgument(Class, Annotation[], int)}
+ *
+ * <p>Here's an example:
+ *
+ * <pre>{@code
  *  public class ArgumentsSample {
  *
  *     public static void main(String[] args) throws NoSuchMethodException {
@@ -61,7 +64,9 @@ import lombok.NonNull;
  *     }
  * }
  * }</pre>
- *     <p>To know how to create usage messages check: {@link #generateUsage(List)}
+ *
+ * <p>To know how to create usage messages check: {@link #generateUsage(List)}
+ *
  * @param <O> the type of the class that the argument has to supply
  */
 public interface Argument<O> {

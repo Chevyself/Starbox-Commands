@@ -75,8 +75,7 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
   }
 
   @NonNull
-  private Map<WeakReference<?>, LocalDateTime> getCommandMapOrCreate(
-      C context) {
+  private Map<WeakReference<?>, LocalDateTime> getCommandMapOrCreate(C context) {
     return this.getCommandMap(context)
         .orElseGet(
             () -> {
@@ -101,8 +100,7 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
   }
 
   @NonNull
-  private Optional<Map<WeakReference<?>, LocalDateTime>> getCommandMap(
-      @NonNull C context) {
+  private Optional<Map<WeakReference<?>, LocalDateTime>> getCommandMap(@NonNull C context) {
     return cooldownMap.entrySet().stream()
         .filter(entry -> context.getCommand().equals(entry.getKey().get()))
         .map(Map.Entry::getValue)

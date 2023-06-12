@@ -1,18 +1,18 @@
 package com.github.chevyself.starbox.context;
 
 import com.github.chevyself.starbox.commands.StarboxCommand;
-import com.github.chevyself.starbox.parsers.CommandLineParser;
 import com.github.chevyself.starbox.flags.FlagArgument;
 import com.github.chevyself.starbox.flags.StarboxFlag;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import java.util.Optional;
 import lombok.NonNull;
 
 /**
  * The context of the execution of a command. The principal variables that a context requires is the
- * sender and the strings that represent the arguments, which are given by the {@link #getCommandLineParser()}. Each platform has a
- * different context.
+ * sender and the strings that represent the arguments, which are given by the {@link
+ * #getCommandLineParser()}. Each platform has a different context.
  */
 public interface StarboxCommandContext<
     C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
@@ -81,7 +81,7 @@ public interface StarboxCommandContext<
    * @return the providers registry
    */
   @NonNull
-  ProvidersRegistry<? extends StarboxCommandContext<C, T>> getProvidersRegistry();
+  ProvidersRegistry<C> getProvidersRegistry();
 
   /**
    * Get the command line parser used in this context.
@@ -97,7 +97,7 @@ public interface StarboxCommandContext<
    * @return the messages' provider used in this context
    */
   @NonNull
-  MessagesProvider<? extends StarboxCommandContext<C, T>> getMessagesProvider();
+  MessagesProvider<C> getMessagesProvider();
 
   /**
    * Get this context to execute a child command.

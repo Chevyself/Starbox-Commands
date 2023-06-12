@@ -16,4 +16,7 @@ public class JdaCommandMetadataParser implements CommandMetadataParser {
     }
     return metadata;
   }
+
+  @Override
+  public void close() {}
 }
