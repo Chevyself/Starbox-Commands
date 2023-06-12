@@ -1,10 +1,15 @@
-package com.github.chevyself.starbox.providers;
+package com.github.chevyself.starbox.providers.type;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
-import com.github.chevyself.starbox.providers.type.StarboxExtraArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxExtraArgumentProvider;
 import lombok.NonNull;
 
+/**
+ * Provides commands with {@link StarboxCommandContext}.
+ *
+ * @param <T> the context
+ */
 public abstract class CommandContextProvider<C extends StarboxCommandContext<C, ?>>
     implements StarboxExtraArgumentProvider<C, C> {
 

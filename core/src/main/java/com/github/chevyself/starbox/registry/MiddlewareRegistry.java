@@ -10,17 +10,33 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NonNull;
 
-public class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
+/**
+ * Contains the global and command-specific {@link Middleware}. This can be used in
+ * the {@link com.github.chevyself.starbox.CommandManager} to be provided in commands
+ * using {@link #getMiddlewares(Command)},
+ *
+ * @param <C> the type of context
+ */
+public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
 
   @NonNull @Getter private final List<Middleware<C>> globalMiddlewares;
   @NonNull @Getter private final List<Middleware<C>> middlewares;
 
+  /**
+   * Create the registry.
+   *
+   * @param globalMiddlewares the global middlewares
+   * @param middlewares the specific middlewares
+   */
   public MiddlewareRegistry(
       @NonNull List<Middleware<C>> globalMiddlewares, @NonNull List<Middleware<C>> middlewares) {
     this.globalMiddlewares = globalMiddlewares;
     this.middlewares = middlewares;
   }
 
+  /**
+   * Create an empty registry.
+   */
   public MiddlewareRegistry() {
     this(new ArrayList<>(), new ArrayList<>());
   }
@@ -79,12 +95,26 @@ public class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
     return this;
   }
 
+  /**
+   * Get the middlewares for a command. This will get all the global middlewares unless
+   * they are excluded in the {@link Command#exclude()} annotation. Then, it will get all the
+   * middlewares that are included in the {@link Command#include()} annotation.
+   *
+   * @param annotation the command annotation
+   * @return the list of middlewares
+   */
   public @NonNull List<Middleware<C>> getMiddlewares(@NonNull Command annotation) {
     List<Middleware<C>> list = this.getGlobalMiddlewareAndExclude(annotation);
     list.addAll(this.getIncludeMiddleware(annotation));
     return list;
   }
 
+  /**
+   * Get all the global middlewares except the ones that are excluded in the {@link Command#exclude()}.
+   *
+   * @param annotation the command annotation
+   * @return the list of middlewares
+   */
   private @NonNull List<Middleware<C>> getGlobalMiddlewareAndExclude(Command annotation) {
     return this.globalMiddlewares.stream()
         .filter(
@@ -99,6 +129,12 @@ public class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Get all the middlewares that are included in the {@link Command#include()}.
+   *
+   * @param annotation the command annotation
+   * @return the list of middlewares
+   */
   private @NonNull Collection<? extends Middleware<C>> getIncludeMiddleware(Command annotation) {
     return middlewares.stream()
         .filter(
@@ -113,6 +149,9 @@ public class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Closes the registry and all the middlewares.
+   */
   public void close() {
     this.middlewares.forEach(Middleware::close);
     this.globalMiddlewares.forEach(Middleware::close);

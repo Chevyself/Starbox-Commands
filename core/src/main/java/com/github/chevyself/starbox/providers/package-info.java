@@ -1,6 +1,5 @@
 /**
- * This package contains the default providers, the registry and the interfaces that can be
- * implemented to parseAndRegister in {@link
+ * This package contains the interfaces that can be implemented to be registered in {@link
  * com.github.chevyself.starbox.registry.ProvidersRegistry}
  */
 package com.github.chevyself.starbox.providers;

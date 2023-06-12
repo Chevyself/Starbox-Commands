@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox.providers.type;
+package com.github.chevyself.starbox.providers;
 
 import com.github.chevyself.starbox.arguments.ExtraArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;

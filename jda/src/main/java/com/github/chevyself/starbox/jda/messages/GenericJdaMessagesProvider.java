@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.jda.messages;
 
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import com.github.chevyself.starbox.messages.GenericMessagesProvider;
-import com.github.chevyself.starbox.time.TimeUtil;
+import com.github.chevyself.starbox.util.time.TimeUtil;
 import java.time.Duration;
 import lombok.NonNull;
 

@@ -76,6 +76,13 @@ public interface MessagesProvider<C extends StarboxCommandContext<C, ?>> {
   String missingArgument(
       @NonNull String name, @NonNull String description, int position, C context);
 
+  /**
+   * Get the message to display if the sender is on cooldown.
+   *
+   * @param context the context of the command
+   * @param duration the duration of the cooldown
+   * @return the message to tell that the sender is on cooldown
+   */
   @NonNull
   String cooldown(@NonNull C context, @NonNull Duration duration);
 }

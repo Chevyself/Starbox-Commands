@@ -6,7 +6,7 @@ import com.github.chevyself.starbox.bungee.tab.BungeeReflectTabCompleter;
 import com.github.chevyself.starbox.bungee.tab.BungeeTabCompleter;
 import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.common.Aliases;
-import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import lombok.NonNull;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;

@@ -18,10 +18,10 @@ import java.util.Map;
 import lombok.NonNull;
 
 /**
- * An argument can change the output of a command and this type is used for commands that are parsed
+ * This class represents an argument of a command. An argument can change the output of a command, this type is used for commands that are parsed
  * using reflection.
  *
- * <p>There's three main types of arguments:
+ * <p>There's two types of arguments:
  *
  * <ul>
  *   <li>{@link ExtraArgument} which is not exactly given by the user but by the context of the
@@ -29,11 +29,10 @@ import lombok.NonNull;
  *       #isEmpty(Annotation[])} if this method returns true it will be considered as an {@link
  *       ExtraArgument}
  *   <li>{@link SingleArgument} this argument expects a user input unless it is annotated with
- *       {@link Free}. It has a place inside the command usage: [prefix][command] [argument]...
- *       <p>This kind of argument has three different behaviours
+ *       {@link Free} or {@link Required}. It has a place inside the command usage: [prefix][command] [argument]...
+ *       <p>This kind of argument has two different {@link ArgumentBehaviour}
  *
- * @see ArgumentBehaviour
- *     </ul>
+ * </ul>
  *     <p>To know how arguments are parsed you can check {@link #parseArguments(Method)} or {@link
  *     #parseArguments(Class[], Annotation[][])} and to know how a single argument is parsed see
  *     {@link #parseArgument(Class, Annotation[], int)}
@@ -43,7 +42,7 @@ import lombok.NonNull;
  *
  *     public static void main(String[] args) throws NoSuchMethodException {
  *         // Parsing from the AMethod of this same class
- *         List<Argument<?>> arguments = Argument.p@arseArguments(ArgumentsSample.class.getMethod("AMethod", StarboxCommandContext.class, String.class, String.class, String[].class));
+ *         List<Argument<?>> arguments = Argument.parseArguments(ArgumentsSample.class.getMethod("AMethod", StarboxCommandContext.class, String.class, String.class, String[].class));
  *         for (Argument<?> argument : arguments) {
  *             System.out.println("argument = " + argument);
  *         }

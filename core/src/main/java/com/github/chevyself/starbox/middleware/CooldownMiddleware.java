@@ -14,6 +14,11 @@ import java.util.Map;
 import java.util.Optional;
 import lombok.NonNull;
 
+/**
+ * Implementation for middleware that checks for cooldowns.
+ *
+ * @param <C> the context of the command
+ */
 public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implements Middleware<C> {
 
   @NonNull private final MessagesProvider<C> messagesProvider;
@@ -22,6 +27,11 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
   private final Map<WeakReference<StarboxCommand<?, ?>>, Map<WeakReference<?>, LocalDateTime>>
       cooldownMap;
 
+  /**
+   * Create the middleware.
+   *
+   * @param messagesProvider the messages provider to get the cooldown message
+   */
   public CooldownMiddleware(@NonNull MessagesProvider<C> messagesProvider) {
     this.messagesProvider = messagesProvider;
     this.cooldownMap = new HashMap<>();
@@ -47,8 +57,14 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
     return Optional.ofNullable(result);
   }
 
+  /**
+   * Adds cooldown if the command returns a {@link CooldownResult}.
+   *
+   * @param context the context that ran the command
+   * @param result result returned by the command
+   */
   @Override
-  public void next(@NonNull StarboxCommandContext context, Result result) {
+  public void next(@NonNull C context, Result result) {
     if (result instanceof CooldownResult) {
       Duration duration = ((CooldownResult) result).getCooldown();
       if (!duration.isZero()) {
@@ -60,7 +76,7 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
 
   @NonNull
   private Map<WeakReference<?>, LocalDateTime> getCommandMapOrCreate(
-      StarboxCommandContext context) {
+      C context) {
     return this.getCommandMap(context)
         .orElseGet(
             () -> {
@@ -86,7 +102,7 @@ public class CooldownMiddleware<C extends StarboxCommandContext<C, ?>> implement
 
   @NonNull
   private Optional<Map<WeakReference<?>, LocalDateTime>> getCommandMap(
-      @NonNull StarboxCommandContext context) {
+      @NonNull C context) {
     return cooldownMap.entrySet().stream()
         .filter(entry -> context.getCommand().equals(entry.getKey().get()))
         .map(Map.Entry::getValue)

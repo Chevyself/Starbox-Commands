@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox.time.formatter;
+package com.github.chevyself.starbox.util.time.formatter;
 
 import java.time.Duration;
 import lombok.NonNull;

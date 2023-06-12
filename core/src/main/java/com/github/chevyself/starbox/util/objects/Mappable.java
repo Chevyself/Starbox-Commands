@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox.objects;
+package com.github.chevyself.starbox.util.objects;
 
 import com.github.chevyself.starbox.arguments.SingleArgument;
 import lombok.NonNull;

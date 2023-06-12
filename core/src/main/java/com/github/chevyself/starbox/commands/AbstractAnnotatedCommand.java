@@ -15,6 +15,12 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 
+/**
+ * Abstract implementation for {@link ReflectCommand}.
+ *
+ * @param <C> the context
+ * @param <T> the command
+ */
 public abstract class AbstractAnnotatedCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     extends AbstractCommand<C, T> implements ReflectCommand<C, T> {
@@ -23,6 +29,14 @@ public abstract class AbstractAnnotatedCommand<
   @NonNull @Getter protected final Method method;
   @NonNull @Getter protected final List<Argument<?>> arguments;
 
+  /**
+   * Create a new annotated command.
+   *
+   * @param commandManager the command manager
+   * @param annotation the annotation
+   * @param object the object to invoke
+   * @param method the method to invoke
+   */
   protected AbstractAnnotatedCommand(
       @NonNull CommandManager<C, T> commandManager,
       @NonNull Command annotation,

@@ -1,5 +1,9 @@
 package com.github.chevyself.starbox.util;
 
+import com.github.chevyself.starbox.arguments.Argument;
+import com.github.chevyself.starbox.commands.ReflectCommand;
+import com.github.chevyself.starbox.commands.StarboxCommand;
+import com.github.chevyself.starbox.flags.Option;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import lombok.NonNull;
 
 /** Static utilities for {@link String}. */
@@ -24,22 +29,24 @@ public final class Strings {
   public static final char[] UPPERCASE = Strings.UPPERCASE_LETTERS.toCharArray();
   /** A char array containing lowercase letters. */
   public static final char[] LOWERCASE = Strings.LOWERCASE_LETTERS.toCharArray();
+  /** Null representation. */
+  @NonNull public static final String NULL = "null";
 
   /**
    * This method is made to save resources from {@link #format(String, Map)}, {@link #format(String,
    * Object...)} to not go in a loop. In case that the message is null it will just give a string
-   * with the characters "Null"
+   * with the characters "null"
    *
    * @param message the message to format
-   * @return "Null" if the message is null else the message
+   * @return {@link #NULL} if the message is null else the message
    */
   @NonNull
   public static String format(String message) {
-    return message == null ? "Null" : message;
+    return message == null ? Strings.NULL : message;
   }
 
   /**
-   * Build a message which has placeholders in the next fashion:
+   * Build a message which has placeholders as the following:
    *
    * <p>"This message has a {0}"
    *
@@ -56,18 +63,18 @@ public final class Strings {
     if (message != null) {
       for (int i = 0; i < strings.length; i++) {
         message =
-            message.replace("{" + i + "}", strings[i] == null ? "Null" : strings[i].toString());
+            message.replace(
+                "{" + i + "}", strings[i] == null ? Strings.NULL : strings[i].toString());
       }
     } else {
-      message = "Null";
+      message = Strings.NULL;
     }
     return message;
   }
 
   /**
-   * Build a message using more readable placeholders. Instead of using a method such as {@link
-   * #format(String, Object...)} this uses a map with the placeholder and the given object to
-   * replace it:
+   * Build a message using more readable placeholders. This uses a map with the placeholder and the
+   * given object to replace it:
    *
    * <p>"This message has a %placeholder%"
    *
@@ -82,16 +89,15 @@ public final class Strings {
   @NonNull
   public static String format(String message, @NonNull Map<String, String> placeholders) {
     if (message == null) {
-      return "Null";
+      return Strings.NULL;
     }
     AtomicReference<String> atomicMessage = new AtomicReference<>(message);
     for (String placeholder : placeholders.keySet()) {
       String value = placeholders.get(placeholder);
-      if (value != null) {
-        atomicMessage.set(atomicMessage.get().replace("%" + placeholder + "%", value));
-      } else {
-        atomicMessage.set(atomicMessage.get().replace("%" + placeholder + "%", "null"));
-      }
+      atomicMessage.set(
+          atomicMessage
+              .get()
+              .replace("%" + placeholder + "%", value == null ? Strings.NULL : value));
     }
     return atomicMessage.get();
   }
@@ -188,8 +194,8 @@ public final class Strings {
    *     strings are the same
    */
   public static float similarity(@NonNull String longer, @NonNull String shorter) {
-    String temp = longer;
     if (longer.length() < shorter.length()) {
+      String temp = longer;
       longer = shorter;
       shorter = temp;
     }
@@ -214,7 +220,7 @@ public final class Strings {
   }
 
   /**
-   * Make a pretty strings from a {@link Collection}. This will check if the collection is empty if
+   * Make a pretty strings from a {@link Collection}. This will check if the collection is empty, if
    * it is the case, the parameter empty will be returned else this will simply {@link
    * Object#toString()} the collection and replace the characters '[]' to nothing
    *
@@ -309,9 +315,14 @@ public final class Strings {
     return new String(bytes, charset);
   }
 
+  /**
+   * Check the edit distance of two strings. This uses the Wagner-Fischer algorithm.
+   *
+   * @param longer the first string
+   * @param shorter the second string
+   * @return the edit distance between the two strings
+   */
   private static int editDistance(String longer, String shorter) {
-    longer = longer.toLowerCase();
-    shorter = shorter.toLowerCase();
     int[] costs = new int[shorter.length() + 1];
     for (int i = 0; i <= longer.length(); i++) {
       int lastValue = i;
@@ -334,5 +345,82 @@ public final class Strings {
       }
     }
     return costs[shorter.length()];
+  }
+
+  /**
+   * Generates the usage of the command. Commands don't require a name, so, the base of the usage is
+   * just the flags and arguments in case it is a {@link ReflectCommand}.
+   *
+   * @see Option#generateUsage(Collection)
+   * @see Argument#generateUsage(List)
+   * @param command the command to generate the help
+   * @return the usage of the command
+   */
+  @NonNull
+  public static String generateUsage(StarboxCommand<?, ?> command) {
+    StringBuilder builder = new StringBuilder();
+    builder.append(Option.generateUsage(command.getOptions()));
+    if (command instanceof ReflectCommand) {
+      ReflectCommand<?, ?> reflectCommand = (ReflectCommand<?, ?>) command;
+      if (reflectCommand.getArguments().size() > 0) {
+        builder.append(Argument.generateUsage(reflectCommand.getArguments()));
+      }
+    }
+    return builder.toString();
+  }
+
+  public static String genericHelp(
+      @NonNull StarboxCommand<?, ?> command,
+      @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
+    StringBuilder builder = new StringBuilder();
+    builder
+        .append("usage: ")
+        .append(command.getName())
+        .append(" ")
+        .append(generateUsage(command));
+    if (children.size() > 0) {
+      builder.append("\nSubcommands:");
+      for (StarboxCommand<?, ?> child : children) {
+        builder
+            .append("\n + ")
+            .append(child.getName())
+            .append(" ")
+            .append(generateUsage(child));
+      }
+    }
+    return builder.toString();
+  }
+
+  /**
+   * Get help for the command. This will generate a help message using {@link
+   * #generateUsage(StarboxCommand)}
+   *
+   * @param command the command to generate the help
+   * @param children the children of the command
+   * @param nameSupplier the function that will supply the name of the command
+   * @return the help message
+   * @param <T> the type of command
+   */
+  public static <T extends StarboxCommand<?, ?>> String genericHelp(
+      @NonNull T command,
+      @NonNull Collection<T> children,
+      @NonNull Function<T, String> nameSupplier) {
+    StringBuilder builder = new StringBuilder();
+    builder
+        .append("usage: ")
+        .append(nameSupplier.apply(command))
+        .append(" ")
+        .append(generateUsage(command));
+    if (children.size() > 0) {
+      builder.append("\nSubcommands:");
+      for (T child : children) {
+        builder
+            .append("\n + ")
+            .append(nameSupplier.apply(child))
+            .append(" ")
+            .append(generateUsage(child));
+      }
+    }
+    return builder.toString();
   }
 }

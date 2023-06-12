@@ -3,7 +3,7 @@ package com.github.chevyself.starbox.bukkit.tab;
 import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.common.tab.ReflectTabCompleter;
-import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import lombok.NonNull;
 import org.bukkit.command.CommandSender;
 

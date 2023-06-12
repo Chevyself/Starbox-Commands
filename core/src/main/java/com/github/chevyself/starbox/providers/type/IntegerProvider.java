@@ -1,29 +1,28 @@
-package com.github.chevyself.starbox.providers;
+package com.github.chevyself.starbox.providers.type;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import lombok.NonNull;
 
 /**
- * Provides the {@link StarboxCommandManager} with a {@link Integer}.
+ * Provides commands with {@link Integer}.
  *
- * @param <T> the type of context that this requires to provide the object
+ * @param <C> the context
  */
-public final class IntegerProvider<T extends StarboxCommandContext<T, ?>>
-    implements StarboxArgumentProvider<Integer, T> {
+public final class IntegerProvider<C extends StarboxCommandContext<C, ?>>
+    extends MessagedProvider<C>
+    implements StarboxArgumentProvider<Integer, C> {
 
-  private final MessagesProvider<T> messagesProvider;
 
   /**
    * Create an instance.
    *
-   * @param messagesProvider to send the error message in case that the {@link Integer} could not be
-   *     parsed
+   * @param messagesProvider to message if the {@link String} is invalid
    */
-  public IntegerProvider(MessagesProvider<T> messagesProvider) {
-    this.messagesProvider = messagesProvider;
+  public IntegerProvider(MessagesProvider<C> messagesProvider) {
+    super(messagesProvider);
   }
 
   @Override
@@ -33,7 +32,7 @@ public final class IntegerProvider<T extends StarboxCommandContext<T, ?>>
 
   @NonNull
   @Override
-  public Integer fromString(@NonNull String string, @NonNull T context)
+  public Integer fromString(@NonNull String string, @NonNull C context)
       throws ArgumentProviderException {
     try {
       return Integer.parseInt(string);

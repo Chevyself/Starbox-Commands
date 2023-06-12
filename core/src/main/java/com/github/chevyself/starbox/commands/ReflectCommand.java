@@ -7,7 +7,7 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.util.Pair;
 import java.lang.reflect.Method;
@@ -37,7 +37,7 @@ public interface ReflectCommand<
    */
   @NonNull
   static Pair<String, Integer> getArgument(
-      @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext context, int lastIndex) {
+      @NonNull SingleArgument<?> argument, @NonNull StarboxCommandContext<?, ?> context, int lastIndex) {
     List<String> arguments = context.getCommandLineParser().getArguments();
     String string = null;
     int increase = 0;

@@ -1,7 +1,7 @@
 package com.github.chevyself.starbox.jda.listener;
 
 import com.github.chevyself.starbox.CommandManager;
-import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import com.github.chevyself.starbox.jda.JdaAdapter;
 import com.github.chevyself.starbox.jda.ListenerOptions;
 import com.github.chevyself.starbox.jda.commands.JdaCommand;

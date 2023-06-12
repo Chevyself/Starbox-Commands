@@ -13,9 +13,9 @@ import lombok.NonNull;
  * <p>If the middleware runs before the command and returns a {@link Result} the command will not
  * run
  *
- * @param <T> the context of the command
+ * @param <C> the context of the command
  */
-public interface Middleware<T extends StarboxCommandContext> {
+public interface Middleware<C extends StarboxCommandContext<C, ?>> {
 
   /**
    * Runs the middleware before the command.
@@ -24,7 +24,7 @@ public interface Middleware<T extends StarboxCommandContext> {
    * @return if the middleware returns a {@link Result} will not run the command
    */
   @NonNull
-  default Optional<Result> next(@NonNull T context) {
+  default Optional<Result> next(@NonNull C context) {
     return Optional.empty();
   }
 
@@ -34,7 +34,10 @@ public interface Middleware<T extends StarboxCommandContext> {
    * @param context the context that ran the command
    * @param result result returned by the command
    */
-  default void next(@NonNull T context, Result result) {}
+  default void next(@NonNull C context, Result result) {}
 
+  /**
+   * Closes the middleware.
+   */
   default void close() {}
 }

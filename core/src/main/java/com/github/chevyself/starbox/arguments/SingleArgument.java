@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.objects.Mappable;
+import com.github.chevyself.starbox.util.objects.Mappable;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.util.Pair;
 import java.util.List;
@@ -71,7 +71,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
    * @return the list of suggestions
    */
   @NonNull
-  public List<String> getSuggestions(@NonNull StarboxCommandContext context) {
+  public List<String> getSuggestions(@NonNull StarboxCommandContext<?, ?> context) {
     return this.suggestions;
   }
 

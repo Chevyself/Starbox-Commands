@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.commands;
 
 import com.github.chevyself.starbox.CommandManager;
-import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.Option;
 import com.github.chevyself.starbox.messages.MessagesProvider;
@@ -12,7 +11,6 @@ import com.github.chevyself.starbox.result.Result;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 
@@ -32,50 +30,6 @@ import lombok.NonNull;
  */
 public interface StarboxCommand<
     C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
-
-  /**
-   * Generates the usage of the command. Commands don't require a name, so, the base of the usage is
-   * just the flags and arguments in case it is a {@link ReflectCommand}.
-   *
-   * @see Option#generateUsage(Collection)
-   * @see Argument#generateUsage(List)
-   * @param command the command to generate the help
-   * @return the usage of the command
-   */
-  @NonNull
-  static String generateUsage(StarboxCommand<?, ?> command) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(Option.generateUsage(command.getOptions()));
-    if (command instanceof ReflectCommand) {
-      ReflectCommand<?, ?> reflectCommand = (ReflectCommand<?, ?>) command;
-      if (reflectCommand.getArguments().size() > 0) {
-        builder.append(Argument.generateUsage(reflectCommand.getArguments()));
-      }
-    }
-    return builder.toString();
-  }
-
-  static String genericHelp(
-      @NonNull StarboxCommand<?, ?> command,
-      @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
-    StringBuilder builder = new StringBuilder();
-    builder
-        .append("usage: ")
-        .append(command.getName())
-        .append(" ")
-        .append(StarboxCommand.generateUsage(command));
-    if (children.size() > 0) {
-      builder.append("\nSubcommands:");
-      for (StarboxCommand<?, ?> child : children) {
-        builder
-            .append("\n + ")
-            .append(child.getName())
-            .append(" ")
-            .append(StarboxCommand.generateUsage(child));
-      }
-    }
-    return builder.toString();
-  }
 
   /**
    * Runs only the command. This is the actual implementation of the logic of the command
@@ -122,38 +76,10 @@ public interface StarboxCommand<
   boolean hasAlias(@NonNull String alias);
 
   /**
-   * Get help for the command. This will generate a help message using {@link
-   * #generateUsage(StarboxCommand)}
+   * Get the name of the command. This will get the first alias of the command.
    *
-   * @param command the command to generate the help
-   * @param children the children of the command
-   * @param nameSupplier the function that will supply the name of the command
-   * @return the help message
-   * @param <T> the type of command
+   * @return the name of the command
    */
-  static <T extends StarboxCommand<?, ?>> String genericHelp(
-      @NonNull T command,
-      @NonNull Collection<T> children,
-      @NonNull Function<T, String> nameSupplier) {
-    StringBuilder builder = new StringBuilder();
-    builder
-        .append("usage: ")
-        .append(nameSupplier.apply(command))
-        .append(" ")
-        .append(StarboxCommand.generateUsage(command));
-    if (children.size() > 0) {
-      builder.append("\nSubcommands:");
-      for (T child : children) {
-        builder
-            .append("\n + ")
-            .append(nameSupplier.apply(child))
-            .append(" ")
-            .append(StarboxCommand.generateUsage(child));
-      }
-    }
-    return builder.toString();
-  }
-
   @NonNull
   default String getName() {
     return this.getAliases().get(0);
@@ -221,23 +147,53 @@ public interface StarboxCommand<
   @NonNull
   Collection<T> getChildren();
 
+  /**
+   * Get the names of the children of this command.
+   *
+   * @return the list of names of the children
+   */
   @NonNull
   default List<String> getChildrenNames() {
     return this.getChildren().stream().map(StarboxCommand::getName).collect(Collectors.toList());
   }
 
+  /**
+   * Get the command manager that is running this command.
+   *
+   * @return the command manager
+   */
   @NonNull
   CommandManager<C, T> getCommandManager();
 
+  /**
+   * Get the providers registry for this command.
+   *
+   * @return the providers registry
+   */
   @NonNull
   ProvidersRegistry<C> getProvidersRegistry();
 
+  /**
+   * Get the messages provider for this command.
+   *
+   * @return the messages provider
+   */
   @NonNull
   MessagesProvider<C> getMessagesProvider();
 
+  /**
+   * Get the aliases of the command. This is used to recognize the command.
+   *
+   * @return the list of aliases
+   */
   @NonNull
   List<String> getAliases();
 
+  /**
+   * Get the metadata of the command.
+   *
+   * @return the metadata
+   */
   @NonNull
   CommandMetadata getMetadata();
 }

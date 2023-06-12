@@ -1,29 +1,27 @@
-package com.github.chevyself.starbox.providers;
+package com.github.chevyself.starbox.providers.type;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import lombok.NonNull;
 
 /**
- * Provides the {@link StarboxCommandManager} with a {@link Double}.
+ * Provides commands with {@link Double}.
  *
- * @param <T> the type of context that this requires to provide the object
+ * @param <C> the context
  */
-public final class DoubleProvider<T extends StarboxCommandContext<T, ?>>
-    implements StarboxArgumentProvider<Double, T> {
-
-  private final MessagesProvider<T> messagesProvider;
+public final class DoubleProvider<C extends StarboxCommandContext<C, ?>>
+    extends MessagedProvider<C>
+    implements StarboxArgumentProvider<Double, C> {
 
   /**
    * Create an instance.
    *
-   * @param messagesProvider to send the error message in case that the {@link Double} could not be
-   *     parsed
+   * @param messagesProvider to message if the {@link String} is invalid
    */
-  public DoubleProvider(MessagesProvider<T> messagesProvider) {
-    this.messagesProvider = messagesProvider;
+  public DoubleProvider(MessagesProvider<C> messagesProvider) {
+    super(messagesProvider);
   }
 
   @Override
@@ -33,7 +31,7 @@ public final class DoubleProvider<T extends StarboxCommandContext<T, ?>>
 
   @NonNull
   @Override
-  public Double fromString(@NonNull String string, @NonNull T context)
+  public Double fromString(@NonNull String string, @NonNull C context)
       throws ArgumentProviderException {
     try {
       return Double.parseDouble(string);

@@ -1,29 +1,27 @@
-package com.github.chevyself.starbox.providers;
+package com.github.chevyself.starbox.providers.type;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import lombok.NonNull;
 
 /**
- * Provides the {@link StarboxCommandManager} with a {@link Long}.
+ * Provides commands with {@link Long}.
  *
- * @param <T> the type of context that this requires to provide the object
+ * @param <C> the context
  */
-public final class LongProvider<T extends StarboxCommandContext<T, ?>>
-    implements StarboxArgumentProvider<Long, T> {
-
-  private final MessagesProvider<T> messagesProvider;
+public final class LongProvider<C extends StarboxCommandContext<C, ?>>
+    extends MessagedProvider<C>
+    implements StarboxArgumentProvider<Long, C> {
 
   /**
    * Create an instance.
    *
-   * @param messagesProvider to send the error message in case that the {@link Long} could not be
-   *     parsed
+   * @param messagesProvider to message if the {@link String} is invalid
    */
-  public LongProvider(MessagesProvider<T> messagesProvider) {
-    this.messagesProvider = messagesProvider;
+  public LongProvider(MessagesProvider<C> messagesProvider) {
+    super(messagesProvider);
   }
 
   @Override
@@ -33,7 +31,7 @@ public final class LongProvider<T extends StarboxCommandContext<T, ?>>
 
   @NonNull
   @Override
-  public Long fromString(@NonNull String string, @NonNull T context)
+  public Long fromString(@NonNull String string, @NonNull C context)
       throws ArgumentProviderException {
     try {
       return Long.parseLong(string);

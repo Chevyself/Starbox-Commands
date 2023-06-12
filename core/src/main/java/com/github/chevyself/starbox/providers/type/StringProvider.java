@@ -1,13 +1,13 @@
-package com.github.chevyself.starbox.providers;
+package com.github.chevyself.starbox.providers.type;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import lombok.NonNull;
 
 /**
- * Provides the {@link StarboxCommandManager} with {@link String}.
+ * Provides commands with {@link String}.
  *
- * @param <T> the type of context that this requires to provide the object
+ * @param <T> the context
  */
 public final class StringProvider<T extends StarboxCommandContext<T, ?>>
     implements StarboxArgumentProvider<String, T> {

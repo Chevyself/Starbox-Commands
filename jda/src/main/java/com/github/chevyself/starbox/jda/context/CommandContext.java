@@ -16,6 +16,7 @@ public interface CommandContext extends StarboxCommandContext<CommandContext, Jd
 
   @SuppressWarnings("unchecked")
   @Override
+  @NonNull
   JdaCommand getCommand();
 
   /**

@@ -1,7 +1,7 @@
 package com.github.chevyself.starbox.common.tab;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import java.util.List;
 import lombok.NonNull;
 

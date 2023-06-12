@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.bukkit.providers;
 
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.providers.type.BukkitExtraArgumentProvider;
-import com.github.chevyself.starbox.providers.CommandContextProvider;
+import com.github.chevyself.starbox.providers.type.CommandContextProvider;
 import lombok.NonNull;
 
 /** Provides the {@link CommandManager} with the object {@link CommandContext}. */

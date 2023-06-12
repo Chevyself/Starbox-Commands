@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.tab.BukkitReflectTabCompleter;
 import com.github.chevyself.starbox.bukkit.tab.BukkitTabCompleter;
 import com.github.chevyself.starbox.commands.ReflectCommand;
-import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;

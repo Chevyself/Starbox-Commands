@@ -1,16 +1,31 @@
 package com.github.chevyself.starbox.messages;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.time.TimeUtil;
+import com.github.chevyself.starbox.util.time.TimeUtil;
 import java.time.Duration;
 import lombok.NonNull;
 
+/**
+ * A message provider with generic messages which may be formatted.
+ *
+ * @param <C> the type of the command context
+ */
 public abstract class FormattedMessagesProvider<C extends StarboxCommandContext<C, ?>>
     implements MessagesProvider<C> {
 
+  /**
+   * Get the formatting for an element.
+   *
+   * @return the formatting for an element
+   */
   @NonNull
   public abstract String element();
 
+  /**
+   * Get the formatting for text.
+   *
+   * @return the formatting for text
+   */
   @NonNull
   public abstract String text();
 

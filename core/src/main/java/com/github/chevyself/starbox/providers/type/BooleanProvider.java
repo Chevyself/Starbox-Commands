@@ -1,29 +1,43 @@
-package com.github.chevyself.starbox.providers;
+package com.github.chevyself.starbox.providers.type;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.type.StarboxArgumentProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import lombok.NonNull;
 
 /**
- * Provides the {@link StarboxCommandManager} with a {@link Boolean}.
+ * Provides commands with {@link Boolean}.
  *
- * @param <T> the type of context that this requires to provide the object
+ * <p>This parses strings as:
+ *
+ * <p>True:
+ *
+ * <ul>
+ *   <li>true</li>
+ *   <li>1</li>
+ * </ul>
+ *
+ * <p>False:
+ *
+ * <ul>
+ *   <li>false</li>
+ *   <li>0</li>
+ * </ul>
+ *
+ * @param <C> the context
  */
-public final class BooleanProvider<T extends StarboxCommandContext<T, ?>>
-    implements StarboxArgumentProvider<Boolean, T> {
-
-  private final MessagesProvider<T> messagesProvider;
+public final class BooleanProvider<C extends StarboxCommandContext<C, ?>>
+    extends MessagedProvider<C>
+    implements StarboxArgumentProvider<Boolean, C> {
 
   /**
    * Create an instance.
    *
-   * @param messagesProvider to send the error message in case that the {@link Boolean} could not be
-   *     parsed
+   * @param messagesProvider to message if the {@link String} is invalid
    */
-  public BooleanProvider(MessagesProvider<T> messagesProvider) {
-    this.messagesProvider = messagesProvider;
+  public BooleanProvider(MessagesProvider<C> messagesProvider) {
+    super(messagesProvider);
   }
 
   @Override
@@ -33,7 +47,7 @@ public final class BooleanProvider<T extends StarboxCommandContext<T, ?>>
 
   @NonNull
   @Override
-  public Boolean fromString(@NonNull String string, @NonNull T context)
+  public Boolean fromString(@NonNull String string, @NonNull C context)
       throws ArgumentProviderException {
     boolean result;
     if (string.equalsIgnoreCase("true")) {

@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox.time;
+package com.github.chevyself.starbox.util.time;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;

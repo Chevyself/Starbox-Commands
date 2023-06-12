@@ -14,6 +14,12 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 
+/**
+ * Abstract implementation for {@link StarboxCommand}.
+ *
+ * @param <C> the type of context
+ * @param <T> the type of children
+ */
 public abstract class AbstractCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     implements StarboxCommand<C, T> {
@@ -27,6 +33,16 @@ public abstract class AbstractCommand<
   @NonNull @Getter protected final MessagesProvider<C> messagesProvider;
   @NonNull @Getter private final CommandManager<C, T> commandManager;
 
+  /**
+   * Create a new command.
+   *
+   * @param commandManager the command manager
+   * @param aliases the aliases fo the command
+   * @param middlewares the middlewares
+   * @param options the options
+   * @param metadata the metadata
+   * @param children the children
+   */
   protected AbstractCommand(
       @NonNull CommandManager<C, T> commandManager,
       @NonNull List<String> aliases,
@@ -44,6 +60,13 @@ public abstract class AbstractCommand<
     this.messagesProvider = commandManager.getMessagesProvider();
   }
 
+  /**
+   * Create a new abstract command.
+   *
+   * @param commandManager the command manager
+   * @param annotation the annotation
+   * @param metadata the metadata
+   */
   protected AbstractCommand(
       @NonNull CommandManager<C, T> commandManager,
       @NonNull Command annotation,

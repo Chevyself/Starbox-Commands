@@ -1,5 +1,7 @@
-package com.github.chevyself.starbox.flags;
+package com.github.chevyself.starbox.parsers;
 
+import com.github.chevyself.starbox.flags.FlagArgument;
+import com.github.chevyself.starbox.flags.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.bukkit.context;
 
 import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import lombok.Getter;

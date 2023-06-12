@@ -3,7 +3,7 @@ package com.github.chevyself.starbox.bungee.tab;
 import com.github.chevyself.starbox.bungee.commands.BungeeCommand;
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.common.tab.ReflectTabCompleter;
-import com.github.chevyself.starbox.flags.CommandLineParser;
+import com.github.chevyself.starbox.parsers.CommandLineParser;
 import lombok.NonNull;
 import net.md_5.bungee.api.CommandSender;
 
