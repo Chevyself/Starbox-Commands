@@ -5,8 +5,8 @@ import com.github.chevyself.starbox.annotations.Free;
 import com.github.chevyself.starbox.annotations.Required;
 import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
 import com.github.chevyself.starbox.flags.Flag;
+import com.github.chevyself.starbox.result.Result;
 import com.github.chevyself.starbox.result.SimpleResult;
-import com.github.chevyself.starbox.result.StarboxResult;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import java.time.Duration;
 import java.util.Locale;
@@ -20,7 +20,7 @@ public class Commands {
   @Command(
       aliases = "a",
       flags = {@Flag(aliases = "message", value = "Hello world!")})
-  public StarboxResult a(
+  public Result a(
       CommandContext context,
       @Required(name = "b", behaviour = ArgumentBehaviour.CONTINUOUS) String b,
       @Required(name = "c", behaviour = ArgumentBehaviour.CONTINUOUS) String c,
@@ -53,7 +53,7 @@ public class Commands {
             value = "false",
             valuable = false)
       })
-  public StarboxResult message(
+  public Result message(
       CommandContext context, @Free(behaviour = ArgumentBehaviour.CONTINUOUS) String message) {
     String string = message == null || message.isEmpty() ? "No message was sent" : message;
     return new SimpleResult(
@@ -61,12 +61,12 @@ public class Commands {
   }
 
   @Command(aliases = "hello", flags = @Flag(aliases = "message", value = "World!"))
-  public StarboxResult hello(CommandContext context) {
+  public Result hello(CommandContext context) {
     return new SimpleResult(context.getFlagValue("message").orElse("IDK :("));
   }
 
   @Command(aliases = "trollface")
-  public StarboxResult trollface(
+  public Result trollface(
       @Required(name = "message") String message, @Required(name = "number") int number) {
     for (int i = 0; i < number; i++) {
       System.out.println(message);
