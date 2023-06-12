@@ -61,6 +61,7 @@ public final class CommandManager<
   @NonNull
   public CommandManager<C, T> register(@NonNull T command) {
     this.commands.add(command);
+    this.adapter.onRegister(command);
     return this;
   }
 

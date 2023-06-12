@@ -3,6 +3,7 @@ package com.github.chevyself.starbox.bukkit.middleware;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
 import com.github.chevyself.starbox.common.ComponentResult;
+import com.github.chevyself.starbox.common.Components;
 import com.github.chevyself.starbox.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.result.Result;
 import com.github.chevyself.starbox.result.type.SimpleResult;
@@ -22,6 +23,6 @@ public class BukkitResultHandlingMiddleware extends ResultHandlingMiddleware<Com
 
   @Override
   public void onSimple(@NonNull CommandContext context, @NonNull SimpleResult result) {
-    context.getSender().sendMessage(result.getMessage());
+    BukkitUtils.send(context.getSender(), Components.getComponent(result.getMessage()));
   }
 }

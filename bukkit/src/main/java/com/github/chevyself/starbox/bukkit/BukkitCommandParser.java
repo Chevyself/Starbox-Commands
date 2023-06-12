@@ -10,6 +10,7 @@ import com.github.chevyself.starbox.common.Async;
 import com.github.chevyself.starbox.common.CommandPermission;
 import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.parsers.ParentCommandSupplier;
+import com.github.chevyself.starbox.util.ClassFinder;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import lombok.NonNull;
@@ -20,6 +21,14 @@ public class BukkitCommandParser extends CommandParser<CommandContext, BukkitCom
       @NonNull BukkitAdapter adapter,
       @NonNull CommandManager<CommandContext, BukkitCommand> commandManager) {
     super(adapter, commandManager);
+  }
+
+  @Override
+  public @NonNull <O> ClassFinder<O> createClassFinder(
+      Class<O> clazz, @NonNull String packageName) {
+    return super.createClassFinder(clazz, packageName)
+        .setClassLoaderSupplier(
+            () -> ((BukkitAdapter) this.adapter).getPlugin().getClass().getClassLoader());
   }
 
   @Override

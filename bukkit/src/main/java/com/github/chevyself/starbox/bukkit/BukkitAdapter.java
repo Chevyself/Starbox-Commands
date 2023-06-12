@@ -142,7 +142,7 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
 
   private void registerHelpFactory(@NonNull BukkitMessagesProvider messagesProvider) {
     BukkitAdapter.helpMap.registerHelpTopicFactory(
-        BukkitCommand.class, new StarboxCommandHelpTopicFactory(messagesProvider));
+        BukkitCommandExecutor.class, new StarboxCommandHelpTopicFactory(messagesProvider));
   }
 
   @Override

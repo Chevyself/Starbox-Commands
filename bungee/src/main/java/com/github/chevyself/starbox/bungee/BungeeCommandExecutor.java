@@ -37,9 +37,9 @@ public class BungeeCommandExecutor extends Command implements TabExecutor {
     if (this.async) {
       ProxyServer.getInstance()
           .getScheduler()
-          .runAsync(command.getAdapter().getPlugin(), () -> command.run(context));
+          .runAsync(command.getAdapter().getPlugin(), () -> command.execute(context));
     } else {
-      command.run(context);
+      command.execute(context);
     }
   }
 

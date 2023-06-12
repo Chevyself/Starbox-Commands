@@ -32,7 +32,7 @@ public abstract class GenericTabCompleter<
           .map(
               child ->
                   this.tabComplete(
-                      command, sender, strings[0], Arrays.copyOfRange(strings, 1, strings.length)))
+                      child, sender, strings[0], Arrays.copyOfRange(strings, 1, strings.length)))
           .orElseGet(ArrayList::new);
     }
     return new ArrayList<>();

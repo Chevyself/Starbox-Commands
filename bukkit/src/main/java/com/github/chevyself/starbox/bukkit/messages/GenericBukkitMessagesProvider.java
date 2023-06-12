@@ -2,6 +2,7 @@ package com.github.chevyself.starbox.bukkit.messages;
 
 import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
+import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
 import com.github.chevyself.starbox.common.DecoratedMessagesProvider;
 import com.github.chevyself.starbox.util.Strings;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class GenericBukkitMessagesProvider extends DecoratedMessagesProvider<Com
         plugin.getDescription().getDescription() == null
             ? "No description given"
             : plugin.getDescription().getDescription();
-    return Strings.format(
+    return BukkitUtils.format(
         "&6Version: &f{0} \n &6Description: &f{1} \n &7Commands (use /help <command>): {2}",
         plugin.getDescription().getVersion(), description, commands);
   }
@@ -52,7 +53,7 @@ public class GenericBukkitMessagesProvider extends DecoratedMessagesProvider<Com
   public @NonNull String helpTopicCommand(@NonNull BukkitCommand command) {
     List<String> aliases = new ArrayList<>(command.getAliases());
     aliases.add(command.getName());
-    return Strings.format(
+    return BukkitUtils.format(
         "\n&6/{0}: &f{1}",
         Strings.buildUsageAliases(aliases), command.getExecutor().getDescription());
   }
@@ -84,13 +85,13 @@ public class GenericBukkitMessagesProvider extends DecoratedMessagesProvider<Com
     if (!command.getChildren().isEmpty()) {
       builder.append("\n&6Children: &r").append(builtChildren);
     }
-    return Strings.format(builder.toString());
+    return BukkitUtils.format(builder.toString());
   }
 
   @Override
   public @NonNull String childCommand(
       @NonNull BukkitCommand command, @NonNull BukkitCommand parent) {
-    return Strings.format(
+    return BukkitUtils.format(
         "\n&6/{0} {1}: &f{2}",
         parent.getName(), command.getName(), command.getExecutor().getDescription());
   }

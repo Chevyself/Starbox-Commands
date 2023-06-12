@@ -12,9 +12,8 @@ import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 
-public class BukkitCommandExecutor extends Command implements TabCompleter {
+public class BukkitCommandExecutor extends Command {
 
   @NonNull
   private static final BukkitReflectTabCompleter reflectCompleter = new BukkitReflectTabCompleter();
@@ -37,6 +36,17 @@ public class BukkitCommandExecutor extends Command implements TabCompleter {
   }
 
   @Override
+  public List<String> tabComplete(
+      @NonNull CommandSender sender, @NonNull String name, String @NonNull [] args)
+      throws IllegalArgumentException {
+    if (this.command instanceof ReflectCommand) {
+      return BukkitCommandExecutor.reflectCompleter.tabComplete(this.command, sender, name, args);
+    } else {
+      return BukkitCommandExecutor.genericCompleter.tabComplete(this.command, sender, name, args);
+    }
+  }
+
+  @Override
   public boolean execute(
       @NonNull CommandSender sender, @NonNull String label, @NonNull String[] strings) {
     CommandLineParser parser = CommandLineParser.parse(command.getOptions(), strings);
@@ -45,23 +55,10 @@ public class BukkitCommandExecutor extends Command implements TabCompleter {
             parser, command, sender, command.getProvidersRegistry(), command.getMessagesProvider());
     if (this.async) {
       Bukkit.getScheduler()
-          .runTaskAsynchronously(command.getAdapter().getPlugin(), () -> command.run(context));
+          .runTaskAsynchronously(command.getAdapter().getPlugin(), () -> command.execute(context));
     } else {
-      command.run(context);
+      command.execute(context);
     }
     return true;
-  }
-
-  @Override
-  public List<String> onTabComplete(
-      @NonNull CommandSender sender,
-      @NonNull Command command,
-      @NonNull String name,
-      @NonNull String[] args) {
-    if (this.command instanceof ReflectCommand) {
-      return BukkitCommandExecutor.reflectCompleter.tabComplete(this.command, sender, name, args);
-    } else {
-      return BukkitCommandExecutor.genericCompleter.tabComplete(this.command, sender, name, args);
-    }
   }
 }

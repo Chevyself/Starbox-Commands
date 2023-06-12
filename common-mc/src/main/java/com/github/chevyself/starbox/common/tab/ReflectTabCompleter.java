@@ -72,7 +72,7 @@ public abstract class ReflectTabCompleter<
           .map(
               child ->
                   this.tabComplete(
-                      command, sender, name, Arrays.copyOfRange(strings, 1, strings.length)))
+                      child, sender, strings[0], Arrays.copyOfRange(strings, 1, strings.length)))
           .orElseGet(() -> this.reflectTabComplete(command, sender, strings));
     }
     return this.reflectTabComplete(command, sender, strings);
