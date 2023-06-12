@@ -7,9 +7,7 @@ import lombok.NonNull;
 
 public class SimpleCooldownResult extends SimpleResult implements CooldownResult {
 
-  @NonNull
-  @Getter
-  private final Duration cooldown;
+  @NonNull @Getter private final Duration cooldown;
 
   public SimpleCooldownResult(@NonNull String message, @NonNull Duration cooldown) {
     super(message);

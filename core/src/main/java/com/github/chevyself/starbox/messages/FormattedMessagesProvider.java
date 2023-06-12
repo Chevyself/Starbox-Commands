@@ -59,6 +59,7 @@ public abstract class FormattedMessagesProvider<C extends StarboxCommandContext<
   @Override
   public @NonNull String cooldown(@NonNull C context, @NonNull Duration timeLeft) {
     return String.format(
-        "%sYou are not allowed to run this command for another %s%s", this.text(), this.element(), TimeUtil.toString(timeLeft));
+        "%sYou are not allowed to run this command for another %s%s",
+        this.text(), this.element(), TimeUtil.toString(timeLeft));
   }
 }

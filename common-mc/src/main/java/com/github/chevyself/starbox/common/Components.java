@@ -1,5 +1,6 @@
 package com.github.chevyself.starbox.common;
 
+import com.github.chevyself.starbox.result.Result;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,16 @@ public class Components {
           .put('n', component -> component.setUnderlined(true))
           .put('o', component -> component.setItalic(true))
           .build();
+
+  @NonNull
+  public static Result asResult(@NonNull String plain) {
+    return new ComponentResult(Components.getComponent(plain));
+  }
+
+  @NonNull
+  public static Result asResult(@NonNull BaseComponent[] components) {
+    return new ComponentResult(components);
+  }
 
   /**
    * Parse the JSON string into an array of {@link BaseComponent}. This will check that the String

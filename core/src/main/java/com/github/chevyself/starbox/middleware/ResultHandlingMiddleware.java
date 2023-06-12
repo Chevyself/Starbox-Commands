@@ -1,9 +1,8 @@
 package com.github.chevyself.starbox.middleware;
 
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.result.type.ArgumentExceptionResult;
-import com.github.chevyself.starbox.result.type.InternalExceptionResult;
 import com.github.chevyself.starbox.result.Result;
+import com.github.chevyself.starbox.result.type.InternalExceptionResult;
 import com.github.chevyself.starbox.result.type.SimpleResult;
 import lombok.NonNull;
 

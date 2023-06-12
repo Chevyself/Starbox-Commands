@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.jda.messages;
 
-import com.github.chevyself.starbox.jda.ListenerOptions;
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import lombok.NonNull;

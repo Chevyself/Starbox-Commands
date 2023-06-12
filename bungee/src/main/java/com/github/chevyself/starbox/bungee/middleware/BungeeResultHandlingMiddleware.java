@@ -2,6 +2,7 @@ package com.github.chevyself.starbox.bungee.middleware;
 
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.result.BungeeResult;
+import com.github.chevyself.starbox.common.ComponentResult;
 import com.github.chevyself.starbox.common.Components;
 import com.github.chevyself.starbox.middleware.ResultHandlingMiddleware;
 import com.github.chevyself.starbox.result.Result;
@@ -18,10 +19,11 @@ public class BungeeResultHandlingMiddleware extends ResultHandlingMiddleware<Com
 
   @Override
   public void next(@NonNull CommandContext context, Result result) {
-    if (result instanceof BungeeResult && !((BungeeResult) result).getComponents().isEmpty()) {
+    if (result instanceof ComponentResult
+        && !((ComponentResult) result).getComponents().isEmpty()) {
       context
           .getSender()
-          .sendMessage(((BungeeResult) result).getComponents().toArray(new BaseComponent[0]));
+          .sendMessage(((ComponentResult) result).getComponents().toArray(new BaseComponent[0]));
     } else {
       super.next(context, result);
     }
