@@ -4,10 +4,8 @@ import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.result.BungeeResult;
 import com.github.chevyself.starbox.common.Components;
 import com.github.chevyself.starbox.middleware.ResultHandlingMiddleware;
-import com.github.chevyself.starbox.result.ArgumentExceptionResult;
-import com.github.chevyself.starbox.result.InternalExceptionResult;
 import com.github.chevyself.starbox.result.Result;
-import com.github.chevyself.starbox.result.SimpleResult;
+import com.github.chevyself.starbox.result.type.SimpleResult;
 import lombok.NonNull;
 import net.md_5.bungee.api.chat.BaseComponent;
 
@@ -27,18 +25,6 @@ public class BungeeResultHandlingMiddleware extends ResultHandlingMiddleware<Com
     } else {
       super.next(context, result);
     }
-  }
-
-  @Override
-  public void onException(
-      @NonNull CommandContext context, @NonNull InternalExceptionResult result) {
-    context.getSender().sendMessage(Components.getComponent(result.getMessage()));
-  }
-
-  @Override
-  public void onException(
-      @NonNull CommandContext context, @NonNull ArgumentExceptionResult result) {
-    context.getSender().sendMessage(Components.getComponent(result.getMessage()));
   }
 
   @Override

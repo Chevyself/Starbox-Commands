@@ -1,4 +1,4 @@
-package com.github.chevyself.starbox.result;
+package com.github.chevyself.starbox.result.type;
 
 import lombok.NonNull;
 

@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.result.CooldownResult;
 import com.github.chevyself.starbox.result.Result;
-import com.github.chevyself.starbox.result.SimpleResult;
+import com.github.chevyself.starbox.result.type.SimpleResult;
 import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.LocalDateTime;

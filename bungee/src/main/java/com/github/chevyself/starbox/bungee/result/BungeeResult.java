@@ -3,7 +3,7 @@ package com.github.chevyself.starbox.bungee.result;
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.utils.BungeeUtils;
 import com.github.chevyself.starbox.common.Components;
-import com.github.chevyself.starbox.result.SimpleResult;
+import com.github.chevyself.starbox.result.type.SimpleResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

@@ -6,7 +6,7 @@ import com.github.chevyself.starbox.annotations.Required;
 import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
 import com.github.chevyself.starbox.flags.Flag;
 import com.github.chevyself.starbox.result.Result;
-import com.github.chevyself.starbox.result.SimpleResult;
+import com.github.chevyself.starbox.result.type.SimpleResult;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import java.time.Duration;
 import java.util.Locale;

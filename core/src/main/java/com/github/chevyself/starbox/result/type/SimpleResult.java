@@ -1,5 +1,6 @@
-package com.github.chevyself.starbox.result;
+package com.github.chevyself.starbox.result.type;
 
+import com.github.chevyself.starbox.result.Result;
 import lombok.NonNull;
 
 public class SimpleResult implements Result {
