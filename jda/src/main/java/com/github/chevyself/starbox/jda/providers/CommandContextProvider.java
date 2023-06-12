@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.jda.providers;
 
-import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import com.github.chevyself.starbox.jda.context.GenericCommandContext;
 import com.github.chevyself.starbox.jda.providers.type.JdaExtraArgumentProvider;

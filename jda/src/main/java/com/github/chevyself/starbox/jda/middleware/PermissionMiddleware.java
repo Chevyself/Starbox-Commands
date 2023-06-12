@@ -1,9 +1,11 @@
 package com.github.chevyself.starbox.jda.middleware;
 
-import com.github.chevyself.starbox.jda.annotations.Command;
+import com.github.chevyself.starbox.jda.commands.JdaCommand;
 import com.github.chevyself.starbox.jda.context.CommandContext;
-import com.github.chevyself.starbox.jda.result.Result;
-import com.github.chevyself.starbox.jda.result.ResultType;
+import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
+import com.github.chevyself.starbox.result.Result;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import lombok.NonNull;
@@ -20,7 +22,13 @@ import net.dv8tion.jda.api.entities.Member;
  */
 public class PermissionMiddleware implements JdaMiddleware {
 
-  @NonNull private static final String key = "permission";
+  @NonNull private final JdaMessagesProvider messagesProvider;
+  @NonNull private final Map<WeakReference<JdaCommand>, Permission> cached;
+
+  public PermissionMiddleware(@NonNull JdaMessagesProvider messagesProvider) {
+    this.messagesProvider = messagesProvider;
+    this.cached = new HashMap<>();
+  }
 
   @Override
   public @NonNull Optional<Result> next(@NonNull CommandContext context) {
@@ -31,30 +39,33 @@ public class PermissionMiddleware implements JdaMiddleware {
     if (permission != Permission.UNKNOWN) {
       if (optional.isPresent()) {
         if (!optional.get().hasPermission(permission)) {
-          result =
-              Result.forType(ResultType.PERMISSION)
-                  .setDescription(context.getMessagesProvider().notAllowed(context))
-                  .build();
+          result = Result.of(messagesProvider.notAllowed(context));
         }
       } else {
-        result =
-            Result.forType(ResultType.ERROR)
-                .setDescription(context.getMessagesProvider().guildOnly(context))
-                .build();
+        result = Result.of(messagesProvider.notAllowed(context));
       }
     }
     return Optional.ofNullable(result);
   }
 
-  @NonNull
   private Permission getPermission(@NonNull CommandContext context) {
-    Map<String, String> map = context.getCommand().getMap();
-    if (map.containsKey(PermissionMiddleware.key)) {
-      try {
-        return Permission.valueOf(map.get(PermissionMiddleware.key).toUpperCase());
-      } catch (IllegalArgumentException ignored) {
-      }
-    }
-    return Permission.UNKNOWN;
+    return this.getCached(context)
+        .orElseGet(
+            () -> {
+              Object object = context.getCommand().getMetadata().get("permission");
+              if (object instanceof Permission) {
+                this.cached.put(new WeakReference<>(context.getCommand()), (Permission) object);
+                return (Permission) object;
+              }
+              return null;
+            });
+  }
+
+  @NonNull
+  private Optional<Permission> getCached(@NonNull CommandContext context) {
+    return this.cached.entrySet().stream()
+        .filter(entry -> context.getCommand().equals(entry.getKey().get()))
+        .map(Map.Entry::getValue)
+        .findFirst();
   }
 }

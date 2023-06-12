@@ -1,9 +1,8 @@
 package com.github.chevyself.starbox.jda.providers;
 
-import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.jda.context.CommandContext;
-import com.github.chevyself.starbox.jda.messages.MessagesProvider;
+import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
 import com.github.chevyself.starbox.jda.providers.type.JdaArgumentProvider;
 import com.github.chevyself.starbox.jda.providers.type.JdaExtraArgumentProvider;
 import lombok.NonNull;
@@ -15,14 +14,14 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 public class TextChannelProvider
     implements JdaArgumentProvider<TextChannel>, JdaExtraArgumentProvider<TextChannel> {
 
-  private final MessagesProvider messagesProvider;
+  private final JdaMessagesProvider messagesProvider;
 
   /**
    * Create an instance.
    *
    * @param messagesProvider to send the error message in case that the long could not be parsed
    */
-  public TextChannelProvider(MessagesProvider messagesProvider) {
+  public TextChannelProvider(JdaMessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

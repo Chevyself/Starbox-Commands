@@ -1,10 +1,9 @@
 package com.github.chevyself.starbox.jda.context;
 
 import com.github.chevyself.starbox.flags.CommandLineParser;
-import com.github.chevyself.starbox.jda.CommandManager;
-import com.github.chevyself.starbox.jda.JdaCommand;
-import com.github.chevyself.starbox.jda.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.jda.commands.JdaCommand;
+import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NonNull;
@@ -46,7 +45,7 @@ public class GuildCommandContext extends GenericCommandContext {
       @NonNull JdaCommand command,
       @NonNull User sender,
       @NonNull ProvidersRegistry<CommandContext> registry,
-      @NonNull MessagesProvider messagesProvider,
+      @NonNull MessagesProvider<CommandContext> messagesProvider,
       @NonNull MessageReceivedEvent event,
       @NonNull MessageChannel channel,
       @NonNull Message message) {
@@ -77,7 +76,7 @@ public class GuildCommandContext extends GenericCommandContext {
     return new GuildCommandContext(
         this.jda,
         this.commandLineParser.copyFrom(1, child.getOptions()),
-        this.command,
+        child,
         this.sender,
         this.providersRegistry,
         this.messagesProvider,

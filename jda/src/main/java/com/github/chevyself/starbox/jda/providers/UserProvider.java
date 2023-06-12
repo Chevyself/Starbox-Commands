@@ -1,8 +1,8 @@
 package com.github.chevyself.starbox.jda.providers;
 
-import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.jda.context.CommandContext;
+import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
 import com.github.chevyself.starbox.jda.providers.type.JdaArgumentProvider;
 import com.github.chevyself.starbox.jda.providers.type.JdaExtraArgumentProvider;
 import java.util.List;
@@ -11,6 +11,17 @@ import net.dv8tion.jda.api.entities.User;
 
 /** Provides the {@link StarboxCommandManager} with a {@link User}. */
 public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgumentProvider<User> {
+
+  private final JdaMessagesProvider messagesProvider;
+
+  /**
+   * Create an instance.
+   *
+   * @param messagesProvider to send the error message in case that the long could not be parsed
+   */
+  public UserProvider(JdaMessagesProvider messagesProvider) {
+    this.messagesProvider = messagesProvider;
+  }
 
   /**
    * Returns the id from a user's mention. This will separate characters that are digits to get the
@@ -59,8 +70,7 @@ public class UserProvider implements JdaArgumentProvider<User>, JdaExtraArgument
     if (user != null) {
       return user;
     } else {
-      throw new ArgumentProviderException(
-          context.getMessagesProvider().invalidUser(string, context));
+      throw new ArgumentProviderException(messagesProvider.invalidUser(string, context));
     }
   }
 }
