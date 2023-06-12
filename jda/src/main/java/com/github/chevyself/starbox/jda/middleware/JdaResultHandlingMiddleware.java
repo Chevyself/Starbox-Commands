@@ -29,14 +29,14 @@ public class JdaResultHandlingMiddleware extends ResultHandlingMiddleware<Comman
   }
 
   @Override
-  public void onException(@NonNull CommandContext context,
-      @NonNull InternalExceptionResult result) {
+  public void onException(
+      @NonNull CommandContext context, @NonNull InternalExceptionResult result) {
     this.sendMessage(context, result.getMessage());
   }
 
   @Override
-  public void onException(@NonNull CommandContext context,
-      @NonNull ArgumentExceptionResult result) {
+  public void onException(
+      @NonNull CommandContext context, @NonNull ArgumentExceptionResult result) {
     this.sendMessage(context, result.getMessage());
   }
 

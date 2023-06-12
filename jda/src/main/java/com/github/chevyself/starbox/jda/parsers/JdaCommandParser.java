@@ -23,7 +23,9 @@ public class JdaCommandParser extends CommandParser<CommandContext, JdaCommand> 
 
   @Override
   public @NonNull ParentCommandSupplier<CommandContext, JdaCommand> getParentCommandSupplier() {
-    return (annotation, clazz) -> new JdaParentCommand(commandManager, annotation, CommandHelp.Supplier.getDescription(clazz));
+    return (annotation, clazz) ->
+        new JdaParentCommand(
+            commandManager, annotation, CommandHelp.Supplier.getDescription(clazz));
   }
 
   @Override

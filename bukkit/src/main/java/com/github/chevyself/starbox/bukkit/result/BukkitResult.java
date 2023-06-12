@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.bukkit.result;
 
 import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
-import com.github.chevyself.starbox.result.StarboxResult;
+import com.github.chevyself.starbox.result.Result;
 import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
@@ -10,7 +10,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /**
- * This is the implementation for {@link StarboxResult} to be used in the execution of {@link
+ * This is the implementation for {@link Result} to be used in the execution of {@link
  * StarboxBukkitCommand}. This includes a {@link List} of {@link BaseComponent} which will be sent
  * to the {@link org.bukkit.command.CommandSender} upon the command execution.
  *
@@ -25,7 +25,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
  * href="https://minecraft.tools/en/tellraw.php">minecraft-tools</a> or the <a
  * href="https://ci.md-5.net/job/BungeeCord/ws/chat/target/apidocs/overview-summary.html">bungee-api-chat</a>.
  */
-public interface BukkitResult extends StarboxResult {
+public interface BukkitResult extends Result {
 
   /**
    * Get the components to be sent to the {@link org.bukkit.command.CommandSender}.

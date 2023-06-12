@@ -2,7 +2,6 @@ package com.github.chevyself.starbox.metadata;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import lombok.NonNull;
 
 public class CommandMetadata {

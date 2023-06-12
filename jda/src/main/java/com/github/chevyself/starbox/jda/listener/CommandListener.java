@@ -96,7 +96,9 @@ public class CommandListener implements EventListener {
 
   @NonNull
   private JdaCommand getCommand(Guild guild, @NonNull String name) {
-    return this.adapter.getCommand(guild, name).orElse(new UnknownCommand(this.manager, name, this.messagesProvider));
+    return this.adapter
+        .getCommand(guild, name)
+        .orElse(new UnknownCommand(this.manager, name, this.messagesProvider));
   }
 
   /**

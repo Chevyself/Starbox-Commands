@@ -4,7 +4,7 @@ import com.github.chevyself.starbox.Middleware;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.result.BukkitResult;
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
-import com.github.chevyself.starbox.result.StarboxResult;
+import com.github.chevyself.starbox.result.Result;
 import lombok.NonNull;
 
 /**
@@ -14,7 +14,7 @@ import lombok.NonNull;
 public class ResultHandlingMiddleware implements Middleware<CommandContext> {
 
   @Override
-  public void next(@NonNull CommandContext context, StarboxResult result) {
+  public void next(@NonNull CommandContext context, Result result) {
     if (result instanceof BukkitResult) {
       BukkitUtils.send(context.getSender(), ((BukkitResult) result).getComponents());
     }

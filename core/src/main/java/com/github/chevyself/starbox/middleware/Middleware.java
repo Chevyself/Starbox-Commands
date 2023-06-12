@@ -36,7 +36,5 @@ public interface Middleware<T extends StarboxCommandContext> {
    */
   default void next(@NonNull T context, Result result) {}
 
-  default void close() {
-
-  }
+  default void close() {}
 }

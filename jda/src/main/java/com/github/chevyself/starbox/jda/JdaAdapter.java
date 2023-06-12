@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.NonNull;
 import net.dv8tion.jda.api.JDA;
@@ -54,9 +53,8 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
     if (guild != null) {
       Set<JdaCommand> commands = this.guildCommands.get(guild.getIdLong());
       if (commands != null) {
-        Optional<JdaCommand> optional = commands.stream()
-            .filter(command -> command.getAliases().contains(alias))
-            .findFirst();
+        Optional<JdaCommand> optional =
+            commands.stream().filter(command -> command.getAliases().contains(alias)).findFirst();
         if (optional.isPresent()) {
           return optional;
         }
@@ -100,10 +98,10 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
           .addProvider(new TextChannelProvider(messages))
           .addProvider(new UserProvider(messages));
     } else {
-      System.out.println("Failed to add some providers as the messages provider from the builder is not a JdaMessagesProvider");
+      System.out.println(
+          "Failed to add some providers as the messages provider from the builder is not a JdaMessagesProvider");
     }
     registry.addProvider(new CommandContextProvider());
-
   }
 
   @Override
@@ -115,7 +113,8 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
       JdaMessagesProvider jdaMessagesProvider = (JdaMessagesProvider) messagesProvider;
       middlewares.addGlobalMiddleware(new PermissionMiddleware(jdaMessagesProvider));
     } else {
-      System.out.println("Failed to add some middlewares as the messages provider from the builder is not a JdaMessagesProvider");
+      System.out.println(
+          "Failed to add some middlewares as the messages provider from the builder is not a JdaMessagesProvider");
     }
     middlewares.addGlobalMiddleware(new JdaResultHandlingMiddleware());
   }
@@ -124,7 +123,14 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
   public void onBuilt(@NonNull CommandManager<CommandContext, JdaCommand> built) {
     this.commandManager = built;
     MessagesProvider<CommandContext> messagesProvider = built.getMessagesProvider();
-    this.listener = new CommandListener(built, messagesProvider instanceof JdaMessagesProvider ? (JdaMessagesProvider) messagesProvider : new GenericJdaMessagesProvider(), this, this.listenerOptions);
+    this.listener =
+        new CommandListener(
+            built,
+            messagesProvider instanceof JdaMessagesProvider
+                ? (JdaMessagesProvider) messagesProvider
+                : new GenericJdaMessagesProvider(),
+            this,
+            this.listenerOptions);
     this.jda.addEventListener(this.listener);
   }
 
