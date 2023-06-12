@@ -1,7 +1,8 @@
 package com.github.chevyself.starbox.bukkit.topic;
 
-import com.github.chevyself.starbox.bukkit.CommandManager;
-import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
+import com.github.chevyself.starbox.CommandManager;
+import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
+import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,7 +17,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class PluginHelpTopic extends HelpTopic {
 
-  @NonNull @Getter private final CommandManager manager;
+  @NonNull @Getter private final CommandManager<CommandContext, BukkitCommand> manager;
   @NonNull @Getter private final BukkitMessagesProvider provider;
 
   /**
@@ -30,7 +31,7 @@ public class PluginHelpTopic extends HelpTopic {
    */
   public PluginHelpTopic(
       @NonNull Plugin plugin,
-      @NonNull CommandManager manager,
+      @NonNull CommandManager<CommandContext, BukkitCommand> manager,
       @NonNull BukkitMessagesProvider provider) {
     this.manager = manager;
     this.provider = provider;
@@ -52,7 +53,7 @@ public class PluginHelpTopic extends HelpTopic {
   @NonNull
   private String getCommands() {
     StringBuilder builder = new StringBuilder();
-    for (StarboxBukkitCommand command : this.manager.getCommands()) {
+    for (BukkitCommand command : this.manager.getCommands()) {
       builder.append(this.provider.helpTopicCommand(command));
     }
     return builder.toString();

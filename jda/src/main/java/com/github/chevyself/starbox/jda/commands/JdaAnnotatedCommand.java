@@ -5,7 +5,6 @@ import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.commands.AbstractAnnotatedCommand;
-import com.github.chevyself.starbox.jda.annotations.CommandHelp;
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -30,7 +29,7 @@ public class JdaAnnotatedCommand extends AbstractAnnotatedCommand<CommandContext
       @NonNull Object object,
       @NonNull Method method) {
     super(commandManager, annotation, object, method);
-    this.description = CommandHelp.Supplier.getDescription(method);
+    this.description = Command.Supplier.getDescription(method);
   }
 
   private static OptionData toOptionData(@NonNull Argument<?> argument) {

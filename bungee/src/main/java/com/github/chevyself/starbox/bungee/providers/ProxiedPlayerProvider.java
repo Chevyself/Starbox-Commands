@@ -27,15 +27,6 @@ public class ProxiedPlayerProvider
   }
 
   @Override
-  public @NonNull List<String> getSuggestions(CommandContext context) {
-    List<String> names = new ArrayList<>();
-    for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
-      names.add(player.getName());
-    }
-    return names;
-  }
-
-  @Override
   public @NonNull Class<ProxiedPlayer> getClazz() {
     return ProxiedPlayer.class;
   }
@@ -59,5 +50,15 @@ public class ProxiedPlayerProvider
     } else {
       throw new ArgumentProviderException(this.messagesProvider.onlyPlayers(context));
     }
+  }
+
+  @Override
+  public @NonNull List<String> getSuggestions(
+      @NonNull String string, @NonNull CommandContext context) {
+    List<String> names = new ArrayList<>();
+    for (ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) {
+      names.add(player.getName());
+    }
+    return names;
   }
 }

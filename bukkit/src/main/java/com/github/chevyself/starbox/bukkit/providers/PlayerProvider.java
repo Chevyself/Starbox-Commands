@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.bukkit.providers;
 
-import com.github.chevyself.starbox.bukkit.CommandManager;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import com.github.chevyself.starbox.bukkit.providers.type.BukkitArgumentProvider;
@@ -66,7 +65,7 @@ public class PlayerProvider
     if (context.getSender() instanceof Player) {
       return (Player) context.getSender();
     } else {
-      throw new ArgumentProviderException(this.messagesProvider.playersOnly(context));
+      throw new ArgumentProviderException(this.messagesProvider.onlyPlayers(context));
     }
   }
 }

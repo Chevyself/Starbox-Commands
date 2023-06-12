@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.bungee.middleware;
 
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.messages.BungeeMessagesProvider;
-import com.github.chevyself.starbox.bungee.result.BungeeResult;
+import com.github.chevyself.starbox.common.Components;
 import com.github.chevyself.starbox.result.Result;
 import java.util.Optional;
 import lombok.NonNull;
@@ -19,11 +19,12 @@ public class PermissionMiddleware implements BungeeMiddleware {
   @Override
   public @NonNull Optional<Result> next(@NonNull CommandContext context) {
     final String permission = context.getCommand().getPermission();
+    Result result = null;
     if (permission != null && !permission.isEmpty()) {
       if (!context.getSender().hasPermission(permission)) {
-        return Optional.of(BungeeResult.of(messagesProvider.notAllowed(context)));
+        result = Components.asResult(messagesProvider.notAllowed(context));
       }
     }
-    return Optional.empty();
+    return Optional.ofNullable(result);
   }
 }

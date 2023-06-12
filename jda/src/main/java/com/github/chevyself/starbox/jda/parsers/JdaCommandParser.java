@@ -3,7 +3,6 @@ package com.github.chevyself.starbox.jda.parsers;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.jda.JdaAdapter;
-import com.github.chevyself.starbox.jda.annotations.CommandHelp;
 import com.github.chevyself.starbox.jda.commands.JdaAnnotatedCommand;
 import com.github.chevyself.starbox.jda.commands.JdaCommand;
 import com.github.chevyself.starbox.jda.commands.JdaParentCommand;
@@ -24,8 +23,7 @@ public class JdaCommandParser extends CommandParser<CommandContext, JdaCommand> 
   @Override
   public @NonNull ParentCommandSupplier<CommandContext, JdaCommand> getParentCommandSupplier() {
     return (annotation, clazz) ->
-        new JdaParentCommand(
-            commandManager, annotation, CommandHelp.Supplier.getDescription(clazz));
+        new JdaParentCommand(commandManager, annotation, Command.Supplier.getDescription(clazz));
   }
 
   @Override

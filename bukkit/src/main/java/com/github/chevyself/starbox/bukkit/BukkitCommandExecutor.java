@@ -2,8 +2,12 @@ package com.github.chevyself.starbox.bukkit;
 
 import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
+import com.github.chevyself.starbox.bukkit.tab.BukkitReflectTabCompleter;
+import com.github.chevyself.starbox.bukkit.tab.BukkitTabCompleter;
+import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.flags.CommandLineParser;
 import java.util.List;
+import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -12,10 +16,15 @@ import org.bukkit.command.TabCompleter;
 
 public class BukkitCommandExecutor extends Command implements TabCompleter {
 
-  @NonNull private final BukkitCommand command;
+  @NonNull
+  private static final BukkitReflectTabCompleter reflectCompleter = new BukkitReflectTabCompleter();
+
+  @NonNull private static final BukkitTabCompleter genericCompleter = new BukkitTabCompleter();
+
+  @NonNull @Getter private final BukkitCommand command;
   private final boolean async;
 
-  protected BukkitCommandExecutor(
+  public BukkitCommandExecutor(
       String name,
       String description,
       String usageMessage,
@@ -49,21 +58,10 @@ public class BukkitCommandExecutor extends Command implements TabCompleter {
       @NonNull Command command,
       @NonNull String name,
       @NonNull String[] args) {
-    if (this.getPermission() != null && !sender.hasPermission(this.getPermission())) {
-      return new ArrayList<>();
+    if (this.command instanceof ReflectCommand) {
+      return BukkitCommandExecutor.reflectCompleter.tabComplete(this.command, sender, name, args);
+    } else {
+      return BukkitCommandExecutor.genericCompleter.tabComplete(this.command, sender, name, args);
     }
-    if (strings.length == 1) {
-      return StringUtil.copyPartialMatches(
-          strings[strings.length - 1], this.getChildrenNames(), new ArrayList<>());
-    } else if (strings.length >= 2) {
-      final Optional<StarboxBukkitCommand> optionalCommand = this.getChildren(strings[0]);
-      return optionalCommand
-          .map(
-              starboxBukkitCommand ->
-                  starboxBukkitCommand.tabComplete(
-                      sender, alias, Arrays.copyOfRange(strings, 1, strings.length)))
-          .orElseGet(ArrayList::new);
-    }
-    return new ArrayList<>();
   }
 }

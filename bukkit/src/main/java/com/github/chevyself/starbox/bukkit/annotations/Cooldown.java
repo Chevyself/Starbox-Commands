@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.bukkit.annotations;
 
-import com.github.chevyself.starbox.bukkit.CooldownManager;
 import com.github.chevyself.starbox.time.annotations.TimeAmount;
 import lombok.NonNull;
 

@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.bukkit.providers;
 
-import com.github.chevyself.starbox.bukkit.CommandManager;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import com.github.chevyself.starbox.bukkit.providers.type.BukkitArgumentProvider;

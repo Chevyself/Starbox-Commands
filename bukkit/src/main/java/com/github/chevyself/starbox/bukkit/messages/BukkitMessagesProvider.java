@@ -1,13 +1,13 @@
 package com.github.chevyself.starbox.bukkit.messages;
 
-import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
+import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
-import com.github.chevyself.starbox.messages.StarboxMessagesProvider;
+import com.github.chevyself.starbox.messages.MessagesProvider;
 import lombok.NonNull;
 import org.bukkit.plugin.Plugin;
 
 /** Provides the messages for bukkit responses. */
-public interface BukkitMessagesProvider extends StarboxMessagesProvider<CommandContext> {
+public interface BukkitMessagesProvider extends MessagesProvider<CommandContext> {
 
   /**
    * The message sent when a player is not found.
@@ -26,7 +26,7 @@ public interface BukkitMessagesProvider extends StarboxMessagesProvider<CommandC
    * @return the message to send
    */
   @NonNull
-  String playersOnly(@NonNull CommandContext context);
+  String onlyPlayers(@NonNull CommandContext context);
 
   /**
    * The message sent when the user that executed the command is not allowed to use it.
@@ -65,7 +65,7 @@ public interface BukkitMessagesProvider extends StarboxMessagesProvider<CommandC
    *     topic
    */
   @NonNull
-  String helpTopicCommand(@NonNull StarboxBukkitCommand command);
+  String helpTopicCommand(@NonNull BukkitCommand command);
 
   /**
    * The short text for a command help topic.
@@ -74,7 +74,7 @@ public interface BukkitMessagesProvider extends StarboxMessagesProvider<CommandC
    * @return the short text
    */
   @NonNull
-  String commandShortText(@NonNull StarboxBukkitCommand command);
+  String commandShortText(@NonNull BukkitCommand command);
 
   /**
    * The name of the command in the help topic.
@@ -85,7 +85,7 @@ public interface BukkitMessagesProvider extends StarboxMessagesProvider<CommandC
    * @return the command
    */
   @NonNull
-  String commandName(StarboxBukkitCommand command, String parentName);
+  String commandName(BukkitCommand command, String parentName);
 
   /**
    * Get the full text of a help topic for a parent command.
@@ -95,7 +95,7 @@ public interface BukkitMessagesProvider extends StarboxMessagesProvider<CommandC
    * @return the full text of the help topic
    */
   @NonNull
-  String commandFullText(@NonNull StarboxBukkitCommand command, @NonNull String buildChildren);
+  String commandFullText(@NonNull BukkitCommand command, @NonNull String buildChildren);
 
   /**
    * A simple description for a child command for its parents help topic.
@@ -105,7 +105,7 @@ public interface BukkitMessagesProvider extends StarboxMessagesProvider<CommandC
    * @return the child command description
    */
   @NonNull
-  String childCommand(@NonNull StarboxBukkitCommand command, @NonNull StarboxBukkitCommand parent);
+  String childCommand(@NonNull BukkitCommand command, @NonNull BukkitCommand parent);
 
   /**
    * The message to tell the users that materials have a name, and it cannot be empty.

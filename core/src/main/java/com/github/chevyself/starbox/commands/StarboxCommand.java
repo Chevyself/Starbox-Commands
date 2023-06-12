@@ -168,7 +168,7 @@ public interface StarboxCommand<
    */
   @NonNull
   default Optional<T> getChild(@NonNull String alias) {
-    return this.getChild().stream().filter(child -> child.hasAlias(alias)).findFirst();
+    return this.getChildren().stream().filter(child -> child.hasAlias(alias)).findFirst();
   }
 
   /**
@@ -179,7 +179,7 @@ public interface StarboxCommand<
    */
   @NonNull
   default StarboxCommand<C, T> addChild(@NonNull T command) {
-    this.getChild().add(command);
+    this.getChildren().add(command);
     return this;
   }
 
@@ -219,11 +219,11 @@ public interface StarboxCommand<
    * @return the collection of children
    */
   @NonNull
-  Collection<T> getChild();
+  Collection<T> getChildren();
 
   @NonNull
   default List<String> getChildrenNames() {
-    return this.getChild().stream().map(StarboxCommand::getName).collect(Collectors.toList());
+    return this.getChildren().stream().map(StarboxCommand::getName).collect(Collectors.toList());
   }
 
   @NonNull

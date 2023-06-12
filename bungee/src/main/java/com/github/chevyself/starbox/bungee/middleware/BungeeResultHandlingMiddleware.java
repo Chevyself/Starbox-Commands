@@ -1,7 +1,6 @@
 package com.github.chevyself.starbox.bungee.middleware;
 
 import com.github.chevyself.starbox.bungee.context.CommandContext;
-import com.github.chevyself.starbox.bungee.result.BungeeResult;
 import com.github.chevyself.starbox.common.ComponentResult;
 import com.github.chevyself.starbox.common.Components;
 import com.github.chevyself.starbox.middleware.ResultHandlingMiddleware;

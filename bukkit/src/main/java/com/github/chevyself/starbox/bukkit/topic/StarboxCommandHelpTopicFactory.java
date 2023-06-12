@@ -1,8 +1,6 @@
 package com.github.chevyself.starbox.bukkit.topic;
 
-import com.github.chevyself.starbox.StarboxCommand;
-import com.github.chevyself.starbox.bukkit.CommandManager;
-import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
+import com.github.chevyself.starbox.bukkit.BukkitCommandExecutor;
 import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import lombok.NonNull;
 import org.bukkit.help.HelpTopic;
@@ -13,7 +11,7 @@ import org.bukkit.help.HelpTopicFactory;
  * using {@link CommandManager#register(StarboxBukkitCommand)} adds a {@link
  * StarboxCommandHelpTopic} to the {@link org.bukkit.help.HelpMap}
  */
-public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<StarboxBukkitCommand> {
+public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<BukkitCommandExecutor> {
 
   @NonNull private final BukkitMessagesProvider provider;
 
@@ -28,7 +26,7 @@ public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<StarboxB
   }
 
   @Override
-  public @NonNull HelpTopic createTopic(@NonNull StarboxBukkitCommand command) {
-    return new StarboxCommandHelpTopic(command, null, this.provider);
+  public @NonNull HelpTopic createTopic(@NonNull BukkitCommandExecutor command) {
+    return new StarboxCommandHelpTopic(command.getCommand(), null, this.provider);
   }
 }
