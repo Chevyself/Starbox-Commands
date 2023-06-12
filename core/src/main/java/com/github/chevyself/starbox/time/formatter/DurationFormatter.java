@@ -11,7 +11,7 @@ import lombok.NonNull;
  *
  * @see HhMmSsFormatter
  */
-public interface TimeFormatter {
+public interface DurationFormatter {
 
   /**
    * Format the given time into a readable {@link String}.

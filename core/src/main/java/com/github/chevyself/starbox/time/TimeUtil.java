@@ -1,6 +1,5 @@
 package com.github.chevyself.starbox.time;
 
-import com.github.chevyself.starbox.time.annotations.TimeAmount;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -110,23 +109,6 @@ public class TimeUtil {
       throw new IllegalArgumentException("Could not match a ChronoUnit for " + c);
     }
     return unit;
-  }
-
-  /**
-   * Get duration from the annotation {@link TimeAmount}. If {@link TimeAmount#value()} is empty,
-   * {@link TimeAmount#amount()} and {@link TimeAmount#unit()} is used, else, {@link
-   * #durationOf(String)} will be used with {@link TimeAmount#value()}
-   *
-   * @param timeAmount the annotation to get the duration from
-   * @return the parsed duration
-   */
-  @NonNull
-  public static Duration durationOf(@NonNull TimeAmount timeAmount) {
-    if (timeAmount.value().isEmpty()) {
-      return Duration.of(timeAmount.amount(), timeAmount.unit());
-    } else {
-      return TimeUtil.durationOf(timeAmount.value());
-    }
   }
 
   /**

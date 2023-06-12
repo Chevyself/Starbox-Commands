@@ -11,7 +11,7 @@ import lombok.NonNull;
  *
  * <p>The formatted {@link String} will be: "24:12:59"
  */
-public class HhMmSsFormatter implements TimeFormatter {
+public class HhMmSsFormatter implements DurationFormatter {
 
   @NonNull @Getter private static final HhMmSsFormatter formatter = new HhMmSsFormatter();
 
