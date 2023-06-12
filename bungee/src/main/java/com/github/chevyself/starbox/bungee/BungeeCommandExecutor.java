@@ -2,11 +2,11 @@ package com.github.chevyself.starbox.bungee;
 
 import com.github.chevyself.starbox.bungee.commands.BungeeCommand;
 import com.github.chevyself.starbox.bungee.context.CommandContext;
+import com.github.chevyself.starbox.bungee.tab.BungeeReflectTabCompleter;
+import com.github.chevyself.starbox.bungee.tab.BungeeTabCompleter;
+import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.common.Aliases;
 import com.github.chevyself.starbox.flags.CommandLineParser;
-import com.github.chevyself.starbox.util.Strings;
-import java.util.ArrayList;
-import java.util.Arrays;
 import lombok.NonNull;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -15,6 +15,10 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 
 public class BungeeCommandExecutor extends Command implements TabExecutor {
 
+  @NonNull
+  private static final BungeeReflectTabCompleter reflectCompleter = new BungeeReflectTabCompleter();
+
+  @NonNull private static final BungeeTabCompleter genericCompleter = new BungeeTabCompleter();
   @NonNull private final BungeeCommand command;
   private final boolean async;
 
@@ -41,21 +45,12 @@ public class BungeeCommandExecutor extends Command implements TabExecutor {
 
   @Override
   public Iterable<String> onTabComplete(CommandSender sender, String[] strings) {
-    if (this.getPermission() != null && !sender.hasPermission(this.getPermission())) {
-      return new ArrayList<>();
+    if (this.command instanceof ReflectCommand) {
+      return BungeeCommandExecutor.reflectCompleter.tabComplete(
+          this.command, sender, this.getName(), strings);
+    } else {
+      return BungeeCommandExecutor.genericCompleter.tabComplete(
+          this.command, sender, this.getName(), strings);
     }
-    if (strings.length == 1) {
-      return Strings.copyPartials(strings[strings.length - 1], command.getChildrenNames());
-    } else if (strings.length >= 2) {
-      return command
-          .getChildren(strings[0])
-          .map(
-              command ->
-                  command
-                      .getExecutor()
-                      .onTabComplete(sender, Arrays.copyOfRange(strings, 1, strings.length)))
-          .orElseGet(ArrayList::new);
-    }
-    return new ArrayList<>();
   }
 }

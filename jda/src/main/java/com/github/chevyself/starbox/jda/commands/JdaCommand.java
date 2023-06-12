@@ -15,9 +15,7 @@ public interface JdaCommand extends StarboxCommand<CommandContext, JdaCommand> {
   @NonNull
   default SlashCommandData toCommandData() {
     SlashCommandData commandData = Commands.slash(this.getName(), this.getDescription());
-    this.getChildren().stream()
-        .map(JdaCommand::toSubcommandData)
-        .forEach(commandData::addSubcommands);
+    this.getChild().stream().map(JdaCommand::toSubcommandData).forEach(commandData::addSubcommands);
     return commandData;
   }
 

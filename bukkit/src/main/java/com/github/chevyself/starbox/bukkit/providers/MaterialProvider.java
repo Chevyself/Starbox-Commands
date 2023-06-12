@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.bukkit.providers;
 
 import com.github.chevyself.starbox.bukkit.CommandManager;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
-import com.github.chevyself.starbox.bukkit.messages.MessagesProvider;
+import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import com.github.chevyself.starbox.bukkit.providers.type.BukkitArgumentProvider;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import java.util.ArrayList;
@@ -13,14 +13,14 @@ import org.bukkit.Material;
 /** Provides the {@link CommandManager} with the object {@link Material}. */
 public class MaterialProvider implements BukkitArgumentProvider<Material> {
 
-  @NonNull private final MessagesProvider messagesProvider;
+  @NonNull private final BukkitMessagesProvider messagesProvider;
 
   /**
    * Create the provider.
    *
    * @param messagesProvider the messages provider if the material is invalid
    */
-  public MaterialProvider(@NonNull MessagesProvider messagesProvider) {
+  public MaterialProvider(@NonNull BukkitMessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }
 

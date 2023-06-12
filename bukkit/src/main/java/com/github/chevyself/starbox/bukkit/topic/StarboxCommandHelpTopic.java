@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.bukkit.topic;
 
 import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
-import com.github.chevyself.starbox.bukkit.messages.MessagesProvider;
+import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.NonNull;
@@ -17,9 +17,9 @@ import org.bukkit.help.HelpTopic;
  * Command {@link HelpTopic} is basically the messages that appear in the command '/help
  * <command_name>'. This helps to create a {@link HelpTopic} for {@link StarboxCommandHelpTopic}
  *
- * <p>To know how this is formatted check {@link MessagesProvider} and also the constructor {@link
- * #StarboxCommandHelpTopic(StarboxBukkitCommand, StarboxCommandHelpTopic, MessagesProvider)} has
- * more detailed information about the {@link HelpTopic} {}
+ * <p>To know how this is formatted check {@link BukkitMessagesProvider} and also the constructor
+ * {@link #StarboxCommandHelpTopic(StarboxBukkitCommand, StarboxCommandHelpTopic,
+ * BukkitMessagesProvider)} has more detailed information about the {@link HelpTopic} {}
  */
 class StarboxCommandHelpTopic extends HelpTopic {
 
@@ -27,18 +27,18 @@ class StarboxCommandHelpTopic extends HelpTopic {
   /** This instance of {@link HelpMap} is used to parseAndRegister topics for children commands. */
   @NonNull private static final HelpMap helpMap = StarboxCommandHelpTopic.server.getHelpMap();
 
-  @NonNull @Getter @Setter private MessagesProvider provider;
+  @NonNull @Getter @Setter private BukkitMessagesProvider provider;
 
   /**
-   * Create the topic. The topic is created with {@link MessagesProvider}:
+   * Create the topic. The topic is created with {@link BukkitMessagesProvider}:
    *
    * <ul>
-   *   <li>The name of the command = {@link MessagesProvider#commandName(StarboxBukkitCommand,
+   *   <li>The name of the command = {@link BukkitMessagesProvider#commandName(StarboxBukkitCommand,
    *       String)}
    *   <li>The short text/summary of the command = {@link
-   *       MessagesProvider#commandShortText(StarboxBukkitCommand)}
+   *       BukkitMessagesProvider#commandShortText(StarboxBukkitCommand)}
    *   <li>The full description of the command = {@link
-   *       MessagesProvider#commandFullText(StarboxBukkitCommand, String, String, String)}
+   *       BukkitMessagesProvider#commandFullText(StarboxBukkitCommand, String, String, String)}
    * </ul>
    *
    * <p>For each children inside the command {@link StarboxCommand#getChildren()} another {@link
@@ -51,7 +51,7 @@ class StarboxCommandHelpTopic extends HelpTopic {
   StarboxCommandHelpTopic(
       @NonNull StarboxBukkitCommand command,
       StarboxCommandHelpTopic parent,
-      @NonNull MessagesProvider provider) {
+      @NonNull BukkitMessagesProvider provider) {
     this.provider = provider;
     this.amendedPermission = StarboxCommandHelpTopic.getAmendedPermission(command);
     this.name = provider.commandName(command, parent == null ? null : parent.getName());
@@ -76,7 +76,7 @@ class StarboxCommandHelpTopic extends HelpTopic {
 
   /**
    * Build the children help. This will use a {@link StringBuilder} and append {@link
-   * MessagesProvider#childCommand(StarboxBukkitCommand, StarboxBukkitCommand)}
+   * BukkitMessagesProvider#childCommand(StarboxBukkitCommand, StarboxBukkitCommand)}
    *
    * @param command the parent to get the children help from
    * @return the help of the children command as string

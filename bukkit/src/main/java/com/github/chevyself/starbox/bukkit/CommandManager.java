@@ -5,7 +5,7 @@ import com.github.chevyself.starbox.StarboxCommandManager;
 import com.github.chevyself.starbox.bukkit.annotations.Command;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
-import com.github.chevyself.starbox.bukkit.messages.MessagesProvider;
+import com.github.chevyself.starbox.bukkit.messages.GenericBukkitMessagesProvider;
 import com.github.chevyself.starbox.bukkit.middleware.CooldownMiddleware;
 import com.github.chevyself.starbox.bukkit.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.bukkit.middleware.ResultHandlingMiddleware;
@@ -38,9 +38,10 @@ import org.bukkit.plugin.Plugin;
  * related to the commands, a {@link ProvidersRegistry} you can use {@link BukkitProvidersRegistry}
  * which includes some providers that are intended for Bukkit use you can even extend it to add more
  * in the constructor or use {@link ProvidersRegistry#addProvider(StarboxContextualProvider)}, you
- * also need a {@link MessagesProvider} which is mostly used to display error commands or create the
- * {@link org.bukkit.help.HelpTopic} for the commands registered in this manager to be added inside
- * the built-in bukkit command "/help" the default implementation is {@link BukkitMessagesProvider}:
+ * also need a {@link BukkitMessagesProvider} which is mostly used to display error commands or
+ * create the {@link org.bukkit.help.HelpTopic} for the commands registered in this manager to be
+ * added inside the built-in bukkit command "/help" the default implementation is {@link
+ * GenericBukkitMessagesProvider}:
  *
  * <pre>{@code
  * CommandManager manager =
@@ -74,7 +75,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   @NonNull @Getter private final List<StarboxBukkitCommand> commands = new ArrayList<>();
   @NonNull @Getter private final Plugin plugin;
   @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
-  @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final BukkitMessagesProvider messagesProvider;
   @NonNull @Getter private final List<Middleware<CommandContext>> globalMiddlewares;
   @NonNull @Getter private final List<Middleware<CommandContext>> middlewares;
   @NonNull @Getter private final BukkitCommandParser parser;
@@ -92,7 +93,7 @@ public class CommandManager implements StarboxCommandManager<CommandContext, Sta
   public CommandManager(
       @NonNull Plugin plugin,
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
-      @NonNull MessagesProvider messagesProvider) {
+      @NonNull BukkitMessagesProvider messagesProvider) {
     this.plugin = plugin;
     this.providersRegistry = providersRegistry;
     this.messagesProvider = messagesProvider;

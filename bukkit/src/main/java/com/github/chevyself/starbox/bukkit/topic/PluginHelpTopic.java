@@ -2,7 +2,7 @@ package com.github.chevyself.starbox.bukkit.topic;
 
 import com.github.chevyself.starbox.bukkit.CommandManager;
 import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
-import com.github.chevyself.starbox.bukkit.messages.MessagesProvider;
+import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.command.CommandSender;
@@ -17,7 +17,7 @@ import org.bukkit.plugin.Plugin;
 public class PluginHelpTopic extends HelpTopic {
 
   @NonNull @Getter private final CommandManager manager;
-  @NonNull @Getter private final MessagesProvider provider;
+  @NonNull @Getter private final BukkitMessagesProvider provider;
 
   /**
    * Create the instance of the help topic.
@@ -25,11 +25,13 @@ public class PluginHelpTopic extends HelpTopic {
    * @param plugin the plugin that is using the framework
    * @param manager the command manager that the plugin uses
    * @param provider the messages' provider to format the messages see {@link
-   *     MessagesProvider#helpTopicShort(Plugin)}, {@link MessagesProvider#helpTopicFull(String,
-   *     String, Plugin)}
+   *     BukkitMessagesProvider#helpTopicShort(Plugin)}, {@link
+   *     BukkitMessagesProvider#helpTopicFull(String, String, Plugin)}
    */
   public PluginHelpTopic(
-      @NonNull Plugin plugin, @NonNull CommandManager manager, @NonNull MessagesProvider provider) {
+      @NonNull Plugin plugin,
+      @NonNull CommandManager manager,
+      @NonNull BukkitMessagesProvider provider) {
     this.manager = manager;
     this.provider = provider;
     this.amendedPermission = plugin.getName().replace(" ", "_") + ".help";
@@ -39,12 +41,13 @@ public class PluginHelpTopic extends HelpTopic {
   }
 
   /**
-   * Gets the message to include in {@link MessagesProvider#helpTopicFull(String, String, Plugin)},
-   * Using a {@link StringBuilder} getting all the commands registered in {@link #manager} and
-   * adding its {@link MessagesProvider#helpTopicCommand(StarboxBukkitCommand)} to the builder.
+   * Gets the message to include in {@link BukkitMessagesProvider#helpTopicFull(String, String,
+   * Plugin)}, Using a {@link StringBuilder} getting all the commands registered in {@link #manager}
+   * and adding its {@link BukkitMessagesProvider#helpTopicCommand(StarboxBukkitCommand)} to the
+   * builder.
    *
    * @return the message that includes the commands for {@link
-   *     MessagesProvider#helpTopicFull(String, String, Plugin)}}
+   *     BukkitMessagesProvider#helpTopicFull(String, String, Plugin)}}
    */
   @NonNull
   private String getCommands() {

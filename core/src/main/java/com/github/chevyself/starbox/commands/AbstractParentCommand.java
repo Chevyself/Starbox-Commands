@@ -19,6 +19,6 @@ public abstract class AbstractParentCommand<
 
   @Override
   public Result run(@NonNull C context) {
-    return new SimpleResult(StarboxCommand.genericHelp(this, this.getChildren()));
+    return new SimpleResult(StarboxCommand.genericHelp(this, this.getChild()));
   }
 }

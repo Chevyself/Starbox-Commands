@@ -18,17 +18,22 @@ import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import lombok.Getter;
 import lombok.NonNull;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginManager;
 
 public class BungeeAdapter implements Adapter<CommandContext, BungeeCommand> {
 
   @NonNull @Getter private final Plugin plugin;
+  @NonNull @Getter private final PluginManager pluginManager;
 
   public BungeeAdapter(@NonNull Plugin plugin) {
     this.plugin = plugin;
+    this.pluginManager = plugin.getProxy().getPluginManager();
   }
 
   @Override
-  public void onRegister(@NonNull BungeeCommand command) {}
+  public void onRegister(@NonNull BungeeCommand command) {
+    this.pluginManager.registerCommand(this.plugin, command.getExecutor());
+  }
 
   @Override
   public void onUnregister(@NonNull BungeeCommand command) {}

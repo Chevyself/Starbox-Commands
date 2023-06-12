@@ -1,23 +1,23 @@
 package com.github.chevyself.starbox.bukkit.context;
 
-import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
-import com.github.chevyself.starbox.bukkit.messages.MessagesProvider;
+import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.flags.CommandLineParser;
-import com.github.chevyself.starbox.providers.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
 import org.bukkit.command.CommandSender;
 
 /** The context of a Bukkit command. */
-public class CommandContext implements StarboxCommandContext {
+public class CommandContext implements StarboxCommandContext<CommandContext, BukkitCommand> {
 
   @NonNull @Getter private final CommandLineParser commandLineParser;
-  @NonNull @Getter private final StarboxBukkitCommand command;
+  @NonNull @Getter private final BukkitCommand command;
   @NonNull @Getter private final CommandSender sender;
   @NonNull @Getter @Delegate private final ProvidersRegistry<CommandContext> providersRegistry;
-  @NonNull @Getter private final MessagesProvider messagesProvider;
+  @NonNull @Getter private final MessagesProvider<CommandContext> messagesProvider;
 
   /**
    * Create a Bukkit context.
@@ -33,10 +33,10 @@ public class CommandContext implements StarboxCommandContext {
    */
   public CommandContext(
       @NonNull CommandLineParser parser,
-      @NonNull StarboxBukkitCommand command,
+      @NonNull BukkitCommand command,
       @NonNull CommandSender sender,
       @NonNull ProvidersRegistry<CommandContext> providersRegistry,
-      @NonNull MessagesProvider messagesProvider) {
+      @NonNull MessagesProvider<CommandContext> messagesProvider) {
     this.commandLineParser = parser;
     this.command = command;
     this.sender = sender;
@@ -45,7 +45,12 @@ public class CommandContext implements StarboxCommandContext {
   }
 
   @Override
-  public @NonNull ProvidersRegistry<CommandContext> getRegistry() {
-    return this.getProvidersRegistry();
+  public @NonNull CommandContext getChildren(@NonNull BukkitCommand subcommand) {
+    return new CommandContext(
+        this.commandLineParser.copyFrom(1, command.getOptions()),
+        subcommand,
+        this.sender,
+        this.providersRegistry,
+        this.messagesProvider);
   }
 }

@@ -85,8 +85,7 @@ public class BukkitCommandParser
             return false;
           }
 
-          @Override
-          public @NonNull Collection<StarboxBukkitCommand> getChildren() {
+          public @NonNull Collection<StarboxBukkitCommand> getChild() {
             return children;
           }
         };

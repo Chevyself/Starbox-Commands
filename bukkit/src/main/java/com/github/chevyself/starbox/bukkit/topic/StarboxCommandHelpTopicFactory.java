@@ -3,7 +3,7 @@ package com.github.chevyself.starbox.bukkit.topic;
 import com.github.chevyself.starbox.StarboxCommand;
 import com.github.chevyself.starbox.bukkit.CommandManager;
 import com.github.chevyself.starbox.bukkit.StarboxBukkitCommand;
-import com.github.chevyself.starbox.bukkit.messages.MessagesProvider;
+import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import lombok.NonNull;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.help.HelpTopicFactory;
@@ -15,7 +15,7 @@ import org.bukkit.help.HelpTopicFactory;
  */
 public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<StarboxBukkitCommand> {
 
-  @NonNull private final MessagesProvider provider;
+  @NonNull private final BukkitMessagesProvider provider;
 
   /**
    * Create the factory.
@@ -23,7 +23,7 @@ public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<StarboxB
    * @param provider the messages' provider to format the help topics see {@link
    *     StarboxCommandHelpTopic}
    */
-  public StarboxCommandHelpTopicFactory(@NonNull MessagesProvider provider) {
+  public StarboxCommandHelpTopicFactory(@NonNull BukkitMessagesProvider provider) {
     this.provider = provider;
   }
 

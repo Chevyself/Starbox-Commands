@@ -1,7 +1,7 @@
 package com.github.chevyself.starbox.bukkit.providers.registry;
 
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
-import com.github.chevyself.starbox.bukkit.messages.MessagesProvider;
+import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
 import com.github.chevyself.starbox.bukkit.providers.CommandContextProvider;
 import com.github.chevyself.starbox.bukkit.providers.CommandSenderArgumentProvider;
 import com.github.chevyself.starbox.bukkit.providers.MaterialProvider;
@@ -18,7 +18,7 @@ public class BukkitProvidersRegistry extends ProvidersRegistry<CommandContext> {
    *
    * @param messages the messages providers for the messages sent in the provider
    */
-  public BukkitProvidersRegistry(@NonNull MessagesProvider messages) {
+  public BukkitProvidersRegistry(@NonNull BukkitMessagesProvider messages) {
     super(messages);
     this.addProvider(new CommandContextProvider())
         .addProvider(new CommandSenderArgumentProvider())

@@ -94,7 +94,7 @@ public interface StarboxCommand<
   default Result execute(@NonNull C context) {
     List<String> arguments = context.getCommandLineParser().getArguments();
     if (arguments.size() >= 1) {
-      Optional<T> optionalCommand = this.getChildren(arguments.get(0));
+      Optional<T> optionalCommand = this.getChild(arguments.get(0));
       if (optionalCommand.isPresent()) {
         T subcommand = optionalCommand.get();
         return subcommand.execute(context.getChildren(subcommand));
@@ -167,8 +167,8 @@ public interface StarboxCommand<
    * @see StarboxCommand#hasAlias(String)
    */
   @NonNull
-  default Optional<T> getChildren(@NonNull String alias) {
-    return this.getChildren().stream().filter(child -> child.hasAlias(alias)).findFirst();
+  default Optional<T> getChild(@NonNull String alias) {
+    return this.getChild().stream().filter(child -> child.hasAlias(alias)).findFirst();
   }
 
   /**
@@ -179,7 +179,7 @@ public interface StarboxCommand<
    */
   @NonNull
   default StarboxCommand<C, T> addChild(@NonNull T command) {
-    this.getChildren().add(command);
+    this.getChild().add(command);
     return this;
   }
 
@@ -219,11 +219,11 @@ public interface StarboxCommand<
    * @return the collection of children
    */
   @NonNull
-  Collection<T> getChildren();
+  Collection<T> getChild();
 
   @NonNull
   default List<String> getChildrenNames() {
-    return this.getChildren().stream().map(StarboxCommand::getName).collect(Collectors.toList());
+    return this.getChild().stream().map(StarboxCommand::getName).collect(Collectors.toList());
   }
 
   @NonNull
