@@ -14,16 +14,23 @@
 
   <dependencies>
     <dependency>
-      <groupId>net.md-5</groupId>
-      <artifactId>bungeecord-chat</artifactId>
-      <version>${bungeecord-chat.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>com.github.chevyself.starbox</groupId>
       <artifactId>core</artifactId>
       <version>1.0.0_beta</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>net.md-5</groupId>
+      <artifactId>bungeecord-chat</artifactId>
+      <version>${bungeecord-chat.version}</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>bungeecord-repo</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
 </project>
