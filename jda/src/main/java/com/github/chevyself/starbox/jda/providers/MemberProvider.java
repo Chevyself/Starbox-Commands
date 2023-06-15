@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
-/** Provides the {@link StarboxCommandManager} with a {@link Member}. */
+/** Provides the {@link com.github.chevyself.starbox.CommandManager} with a {@link Member}. */
 public class MemberProvider
     implements JdaArgumentProvider<Member>, JdaExtraArgumentProvider<Member> {
 

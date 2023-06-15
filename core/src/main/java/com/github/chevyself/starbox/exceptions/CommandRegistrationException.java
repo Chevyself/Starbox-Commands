@@ -5,8 +5,8 @@ import com.github.chevyself.starbox.exceptions.type.StarboxRuntimeException;
 import lombok.NonNull;
 
 /**
- * This command is thrown by the {@link StarboxCommandManager} when it cannot parseAndRegister an
- * {@link StarboxCommand}.
+ * This command is thrown by the {@link com.github.chevyself.starbox.CommandManager} when it cannot
+ * register an {@link StarboxCommand}.
  */
 public class CommandRegistrationException extends StarboxRuntimeException {
 

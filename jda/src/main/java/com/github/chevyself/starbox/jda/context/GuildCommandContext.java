@@ -29,7 +29,8 @@ public class GuildCommandContext extends GenericCommandContext {
   /**
    * Create an instance.
    *
-   * @param jda the jda instance in which the {@link CommandManager} is registered
+   * @param jda the jda instance in which the {@link com.github.chevyself.starbox.jda.JdaAdapter} is
+   *     registered
    * @param commandLineParser the parser that parsed the command from the command line
    * @param command the command for which this context was created
    * @param sender the sender of the command

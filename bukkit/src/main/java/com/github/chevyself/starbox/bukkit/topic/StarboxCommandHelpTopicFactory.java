@@ -7,9 +7,8 @@ import org.bukkit.help.HelpTopic;
 import org.bukkit.help.HelpTopicFactory;
 
 /**
- * This {@link HelpTopicFactory} is used for every time that a {@link StarboxCommand} is registered
- * using {@link CommandManager#register(StarboxBukkitCommand)} adds a {@link
- * StarboxCommandHelpTopic} to the {@link org.bukkit.help.HelpMap}
+ * Help map factory for {@link BukkitCommandExecutor}. This is used to create help topics for {@link
+ * com.github.chevyself.starbox.bukkit.commands.BukkitCommand}.
  */
 public class StarboxCommandHelpTopicFactory implements HelpTopicFactory<BukkitCommandExecutor> {
 

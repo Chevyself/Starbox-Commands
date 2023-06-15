@@ -176,7 +176,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    *
    * <p>We will get the provider using {@link #getExtraProvider(Class)}
    *
-   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast, so make sure to
+   * <p>{@link StarboxContextualProvider#provides(Class)} makes it safe to cast, so make sure to
    * implement it correctly
    *
    * @param clazz the clazz to get the provider from
@@ -210,7 +210,7 @@ public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
    *
    * <p>We will get the provider using {@link #getProvider(Class)}
    *
-   * <p>{@link StarboxSimpleArgumentProvider#provides(Class)} makes it safe to cast, so make sure to
+   * <p>{@link StarboxContextualProvider#provides(Class)} makes it safe to cast, so make sure to
    * implement it correctly
    *
    * @param string the string to get the object from

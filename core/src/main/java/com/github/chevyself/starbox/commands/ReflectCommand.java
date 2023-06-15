@@ -58,10 +58,10 @@ public interface ReflectCommand<
   }
 
   /**
-   * Get the objects that should be used in the parameters to invoke {@link #getMethod()}. For each
-   * {@link StarboxCommandContext#getStrings()} it will try to get one object.
+   * Get the objects that should be used in the parameters to invoke {@link #getMethod()}. The
+   * parameters are parsed using {@link com.github.chevyself.starbox.parsers.CommandLineParser}
    *
-   * @param context the context to get the parameters {@link StarboxCommandContext#getStrings()}
+   * @param context the context to get the parameters
    * @return the objects to use as parameters in the {@link #getMethod()}
    * @throws ArgumentProviderException if the argument could not be provided, see {@link
    *     ArgumentProviderException}

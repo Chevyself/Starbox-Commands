@@ -7,7 +7,7 @@ import com.github.chevyself.starbox.jda.providers.type.JdaArgumentProvider;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Role;
 
-/** Provides the {@link StarboxCommandManager} with a {@link Role}. */
+/** Provides the {@link com.github.chevyself.starbox.CommandManager} with a {@link Role}. */
 public class RoleProvider implements JdaArgumentProvider<Role> {
 
   private final JdaMessagesProvider messagesProvider;

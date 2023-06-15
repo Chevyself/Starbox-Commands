@@ -181,7 +181,7 @@ public final class CommandManagerBuilder<
    *   <li>Register the default providers if {@link #useDefaultProviders} is true
    *   <li>Set the {@link CommandMetadataParser} to the default one if none is set
    *   <li>Build the {@link CommandManager}
-   *       <ul>
+   * </ul>
    *
    * @return the built {@link CommandManager}
    */

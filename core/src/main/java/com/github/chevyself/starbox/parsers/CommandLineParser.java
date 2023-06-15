@@ -88,36 +88,6 @@ public final class CommandLineParser {
    * Parse the flags from the command line.
    *
    * @param options the list of options to check the flags
-   * @param build whether the parsing should build the arguments inside quotation marks
-   * @param strings the command line as a single string
-   * @return the parser that got the flags
-   * @see CommandLineParser#parse
-   */
-  @NonNull
-  public static CommandLineParser parse(
-      @NonNull Collection<? extends Option> options, boolean build, @NonNull String strings) {
-    return CommandLineParser.parse(options, build, strings.split(" "));
-  }
-
-  /**
-   * Parse the flags from the command line.
-   *
-   * @param options the list of options to check the flags
-   * @param build whether the parsing should build the arguments inside quotation marks
-   * @param strings the command line as an array of strings
-   * @return the parser that got the flags
-   * @see CommandLineParser#parse
-   */
-  @NonNull
-  public static CommandLineParser parse(
-      @NonNull Collection<? extends Option> options, boolean build, @NonNull String... strings) {
-    return new CommandLineParser(strings, options).parse();
-  }
-
-  /**
-   * Parse the flags from the command line.
-   *
-   * @param options the list of options to check the flags
    * @param strings the command line as a single string
    * @return the parser that got the flags
    * @see CommandLineParser#parse
@@ -125,7 +95,7 @@ public final class CommandLineParser {
   @NonNull
   public static CommandLineParser parse(
       @NonNull Collection<? extends Option> options, @NonNull String strings) {
-    return CommandLineParser.parse(options, true, strings);
+    return CommandLineParser.parse(options, strings.split(" "));
   }
 
   /**
@@ -134,12 +104,12 @@ public final class CommandLineParser {
    * @param options the list of options to check the flags
    * @param strings the command line as an array of strings
    * @return the parser that got the flags
-   * @see CommandLineParser#parse(boolean)
+   * @see CommandLineParser#parse
    */
   @NonNull
   public static CommandLineParser parse(
       @NonNull Collection<? extends Option> options, @NonNull String... strings) {
-    return CommandLineParser.parse(options, true, strings);
+    return new CommandLineParser(strings, options).parse();
   }
 
   private static String getValue(String value, @NonNull Option option) {

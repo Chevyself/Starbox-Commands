@@ -25,11 +25,8 @@ public class CommandContext implements StarboxCommandContext<CommandContext, Buk
    * @param parser the parser that parsed the command from the command line
    * @param command the command for which this context was created
    * @param sender the sender that executed the command
-   * @param string the input strings joined
-   * @param strings the strings from the command execution
    * @param providersRegistry the registry for the command context to use
    * @param messagesProvider the messages' provider used in this context
-   * @param flags the flags in the input of the command
    */
   public CommandContext(
       @NonNull CommandLineParser parser,

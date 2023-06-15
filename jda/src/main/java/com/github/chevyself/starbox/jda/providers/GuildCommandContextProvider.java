@@ -7,7 +7,10 @@ import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
 import com.github.chevyself.starbox.jda.providers.type.JdaExtraArgumentProvider;
 import lombok.NonNull;
 
-/** Provides the {@link StarboxCommandManager} with a {@link GuildCommandContext}. */
+/**
+ * Provides the {@link com.github.chevyself.starbox.CommandManager} with a {@link
+ * GuildCommandContext}.
+ */
 public class GuildCommandContextProvider implements JdaExtraArgumentProvider<GuildCommandContext> {
 
   private final JdaMessagesProvider messagesProvider;

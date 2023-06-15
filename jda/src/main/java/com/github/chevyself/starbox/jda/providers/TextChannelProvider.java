@@ -6,11 +6,10 @@ import com.github.chevyself.starbox.jda.messages.JdaMessagesProvider;
 import com.github.chevyself.starbox.jda.providers.type.JdaArgumentProvider;
 import com.github.chevyself.starbox.jda.providers.type.JdaExtraArgumentProvider;
 import lombok.NonNull;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
-/** Provides the {@link StarboxCommandManager} with a {@link User}. */
+/** Provides the {@link com.github.chevyself.starbox.CommandManager} with a {@link TextChannel}. */
 public class TextChannelProvider
     implements JdaArgumentProvider<TextChannel>, JdaExtraArgumentProvider<TextChannel> {
 

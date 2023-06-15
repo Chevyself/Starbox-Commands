@@ -15,7 +15,7 @@ import lombok.NonNull;
  * This object is a {@link Thread} with a {@link Scanner} which waits for {@link System#in}. This
  * checks that the line starts with the prefix if it does then it will check that the name matches a
  * {@link SystemCommand} in {@link CommandManager#getCommand(String)} if it does it will execute the
- * command and the {@link SystemResult} if it is not empty will be printed in the console
+ * command
  */
 public class CommandListener extends Thread {
 

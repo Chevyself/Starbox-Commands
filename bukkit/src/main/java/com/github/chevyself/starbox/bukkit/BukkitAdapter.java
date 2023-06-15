@@ -131,7 +131,6 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
    * PluginHelpTopic} but basically this will make possible to do: "/help [plugin-name]"
    *
    * @param commandManager the manager that holds the commands
-   * @param messagesProvider the messages provider
    */
   public void registerPlugin(
       @NonNull CommandManager<CommandContext, BukkitCommand> commandManager) {

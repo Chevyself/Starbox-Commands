@@ -10,6 +10,20 @@
 
   <build>
     <plugins>
+      <!-- Javadoc  -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>aggregate-jar</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>
       <!-- Format to google -->
       <plugin>
         <groupId>com.coveo</groupId>
@@ -35,21 +49,6 @@
       </plugin>
     </plugins>
   </build>
-
-  <!-- Javadoc
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc-plugin.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>aggregate-jar</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>  -->
   <dependencies>
     <!-- JUnit for tests -->
     <dependency>

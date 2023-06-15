@@ -15,10 +15,9 @@ import net.dv8tion.jda.api.entities.Member;
 /**
  * Permission middleware. This checks the permission of the sender before executing a command.
  *
- * <p>To use this middleware you must enter in the {@link Command} map the entry with the key
- * 'permission' and as a value it must be the name of a valid permission in {@link Permission} if
- * the command is executed outside a {@link net.dv8tion.jda.api.entities.Guild} an error message
- * will be displayed as it will not run
+ * <p>To use this middleware you must use the {@link
+ * com.github.chevyself.starbox.jda.annotations.CommandPermission} annotation in the method or class
+ * of the command.
  */
 public class PermissionMiddleware implements JdaMiddleware {
 

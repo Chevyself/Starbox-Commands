@@ -8,7 +8,7 @@ import com.github.chevyself.starbox.jda.providers.type.JdaExtraArgumentProvider;
 import lombok.NonNull;
 import net.dv8tion.jda.api.entities.Guild;
 
-/** Provides the {@link StarboxCommandManager} with a {@link Guild}. */
+/** Provides the {@link com.github.chevyself.starbox.CommandManager} with a {@link Guild}. */
 public class GuildProvider implements JdaExtraArgumentProvider<Guild> {
 
   private final JdaMessagesProvider messagesProvider;

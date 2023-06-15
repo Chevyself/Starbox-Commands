@@ -8,7 +8,7 @@ import lombok.NonNull;
 /**
  * Provides commands with {@link StarboxCommandContext}.
  *
- * @param <T> the context
+ * @param <C> the context
  */
 public abstract class CommandContextProvider<C extends StarboxCommandContext<C, ?>>
     implements StarboxExtraArgumentProvider<C, C> {

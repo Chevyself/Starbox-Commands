@@ -27,7 +27,6 @@ public class CommandContext implements StarboxCommandContext<CommandContext, Bun
    * @param sender the sender of the command
    * @param providersRegistry the registry used in the context
    * @param messagesProvider the messages' provider for this context
-   * @param flags the flags in the input of the command
    */
   public CommandContext(
       @NonNull CommandLineParser commandLineParser,

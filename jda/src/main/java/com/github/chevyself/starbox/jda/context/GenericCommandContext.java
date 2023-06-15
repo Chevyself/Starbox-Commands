@@ -29,10 +29,8 @@ public class GenericCommandContext implements CommandContext {
   /**
    * Create an instance.
    *
-   * @param string the input strings joined
-   * @param args the strings send in the command
-   * @param flags the flags in the input of the command
-   * @param jda the jda instance in which the {@link CommandManager} is registered
+   * @param jda the jda instance in which the {@link com.github.chevyself.starbox.jda.JdaAdapter} is
+   *     registered
    * @param commandLineParser the parser that parsed the command from the command line
    * @param command the command for which this context was created
    * @param sender the sender of the command

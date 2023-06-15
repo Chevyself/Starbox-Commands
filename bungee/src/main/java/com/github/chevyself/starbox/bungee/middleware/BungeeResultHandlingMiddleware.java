@@ -10,7 +10,7 @@ import lombok.NonNull;
 import net.md_5.bungee.api.chat.BaseComponent;
 
 /**
- * This middleware sends the components of the {@link BungeeResult} to the {@link
+ * This middleware sends the components of the {@link Result} to the {@link
  * net.md_5.bungee.api.CommandSender}.
  */
 public class BungeeResultHandlingMiddleware extends ResultHandlingMiddleware<CommandContext>

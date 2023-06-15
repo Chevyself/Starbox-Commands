@@ -13,6 +13,9 @@ import lombok.NonNull;
  * The context of the execution of a command. The principal variables that a context requires is the
  * sender and the strings that represent the arguments, which are given by the {@link
  * #getCommandLineParser()}. Each platform has a different context.
+ *
+ * @param <C> the type of context
+ * @param <T> the type of the command
  */
 public interface StarboxCommandContext<
     C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
@@ -49,8 +52,6 @@ public interface StarboxCommandContext<
   /**
    * Get the command that is going to be executed using this context.
    *
-   * @param <C> the type of context that it accepts
-   * @param <T> the type of the command
    * @return the command
    */
   @NonNull

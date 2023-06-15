@@ -36,7 +36,7 @@ public class CommandListener implements EventListener {
    *
    * @param manager the command manager
    * @param messagesProvider the provider of messages
-   * @param adapter
+   * @param adapter the jda adapter
    * @param listenerOptions the options of the manager
    */
   public CommandListener(
@@ -79,7 +79,7 @@ public class CommandListener implements EventListener {
     String[] strings =
         event.getOptions().stream().map(OptionMapping::getAsString).toArray(String[]::new);
     JdaCommand command = this.getCommand(event.isFromGuild() ? event.getGuild() : null, name);
-    CommandLineParser parser = CommandLineParser.parse(command.getOptions(), false, strings);
+    CommandLineParser parser = CommandLineParser.parse(command.getOptions(), strings);
     CommandContext context =
         new SlashCommandContext(
             event.getJDA(),

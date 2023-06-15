@@ -5,7 +5,10 @@ import com.github.chevyself.starbox.bukkit.providers.type.BukkitExtraArgumentPro
 import com.github.chevyself.starbox.providers.type.CommandContextProvider;
 import lombok.NonNull;
 
-/** Provides the {@link CommandManager} with the object {@link CommandContext}. */
+/**
+ * Provides the {@link com.github.chevyself.starbox.CommandManager} with the object {@link
+ * CommandContext}.
+ */
 public class BukkitCommandContextProvider extends CommandContextProvider<CommandContext>
     implements BukkitExtraArgumentProvider<CommandContext> {
 

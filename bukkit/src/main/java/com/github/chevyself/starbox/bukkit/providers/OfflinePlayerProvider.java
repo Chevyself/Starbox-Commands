@@ -10,7 +10,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-/** Provides the {@link CommandManager} with the object {@link OfflinePlayer}. */
+/**
+ * Provides the {@link com.github.chevyself.starbox.CommandManager} with the object {@link
+ * OfflinePlayer}.
+ */
 public class OfflinePlayerProvider implements BukkitArgumentProvider<OfflinePlayer> {
 
   @Override

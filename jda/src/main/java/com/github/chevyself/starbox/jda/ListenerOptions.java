@@ -14,10 +14,6 @@ import net.dv8tion.jda.api.entities.Guild;
  *   <li>Deleting the result command
  *   <li>Embedding messages
  * </ul>
- *
- * <p>The direct implementation for this class is {@link GenericListenerOptions} which allows the
- * customization described above but if you create an implementation of this class you might be able
- * to customize it even further
  */
 public interface ListenerOptions {
 

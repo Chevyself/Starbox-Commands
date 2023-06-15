@@ -12,7 +12,8 @@ public interface JdaMessagesProvider extends MessagesProvider<CommandContext> {
    *
    * @param command is the input string that's not found as a command
    * @param context the context of the command
-   * @return The message when a command is not found in {@link CommandManager}
+   * @return The message when a command is not found in {@link
+   *     com.github.chevyself.starbox.CommandManager}
    */
   @NonNull
   String commandNotFound(@NonNull @Deprecated String command, @NonNull CommandContext context);

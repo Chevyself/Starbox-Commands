@@ -9,7 +9,10 @@ import java.util.List;
 import lombok.NonNull;
 import org.bukkit.Material;
 
-/** Provides the {@link CommandManager} with the object {@link Material}. */
+/**
+ * Provides the {@link com.github.chevyself.starbox.CommandManager} with the object {@link
+ * Material}.
+ */
 public class MaterialProvider implements BukkitArgumentProvider<Material> {
 
   @NonNull private final BukkitMessagesProvider messagesProvider;
