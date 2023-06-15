@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
 import lombok.NonNull;
 
 /**
@@ -41,9 +42,9 @@ import lombok.NonNull;
  */
 public class ProvidersRegistry<T extends StarboxCommandContext<T, ?>> {
 
-  @NonNull private final List<StarboxArgumentProvider<?, T>> providers = new ArrayList<>();
+  @NonNull @Getter private final List<StarboxArgumentProvider<?, T>> providers = new ArrayList<>();
 
-  @NonNull
+  @NonNull @Getter
   private final List<StarboxExtraArgumentProvider<?, T>> extraProviders = new ArrayList<>();
 
   @NonNull
