@@ -54,11 +54,11 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
   }
 
   @NonNull @Getter private final Plugin plugin;
-  private final boolean registerPluginHelp;
+  private final boolean registerCommandHelp;
 
-  public BukkitAdapter(@NonNull Plugin plugin, boolean registerPluginHelp) {
+  public BukkitAdapter(@NonNull Plugin plugin, boolean registerCommandHelp) {
     this.plugin = plugin;
-    this.registerPluginHelp = registerPluginHelp;
+    this.registerCommandHelp = registerCommandHelp;
   }
 
   @Override
@@ -114,15 +114,14 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
   @Override
   public void onBuilt(@NonNull CommandManager<CommandContext, BukkitCommand> built) {
     MessagesProvider<CommandContext> provider = built.getMessagesProvider();
-    if (registerPluginHelp) {
+    if (registerCommandHelp) {
       if (provider instanceof BukkitMessagesProvider) {
-        this.registerPlugin(built, (BukkitMessagesProvider) provider);
         this.registerHelpFactory((BukkitMessagesProvider) provider);
       } else {
         this.plugin
             .getLogger()
             .severe(
-                "Failed to register the plugin help map, as the MessagesProvider is not a BukkitMessagesProvider");
+                "Failed to register the commands help map, as the MessagesProvider is not a BukkitMessagesProvider");
       }
     }
   }
@@ -131,13 +130,22 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
    * Registers {@link #plugin} inside the {@link HelpMap}. You can learn more about this in {@link
    * PluginHelpTopic} but basically this will make possible to do: "/help [plugin-name]"
    *
-   * @return this same instance
+   * @param commandManager the manager that holds the commands
+   * @param messagesProvider the messages provider
    */
-  private void registerPlugin(
-      @NonNull CommandManager<CommandContext, BukkitCommand> commandManager,
-      @NonNull BukkitMessagesProvider messagesProvider) {
-    BukkitAdapter.helpMap.addTopic(
-        new PluginHelpTopic(this.plugin, commandManager, messagesProvider));
+  public void registerPlugin(
+      @NonNull CommandManager<CommandContext, BukkitCommand> commandManager) {
+    MessagesProvider<CommandContext> messagesProvider = commandManager.getMessagesProvider();
+    if (messagesProvider instanceof BukkitMessagesProvider) {
+      BukkitAdapter.helpMap.addTopic(
+          new PluginHelpTopic(
+              this.plugin, commandManager, (BukkitMessagesProvider) messagesProvider));
+    } else {
+      this.plugin
+          .getLogger()
+          .severe(
+              "Failed to register the plugin help topic as the MessagesProvider is not a BukkitMessagesProvider");
+    }
   }
 
   private void registerHelpFactory(@NonNull BukkitMessagesProvider messagesProvider) {
