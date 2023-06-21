@@ -52,7 +52,7 @@ public class Components {
 
   /**
    * Parse the JSON string into an array of {@link BaseComponent}. This will check that the String
-   * is JSON with {@link #isJson(String)} if it is then it will use {@link
+   * is JSON with {@link JsonUtils#isJson(String)} if it is then it will use {@link
    * ComponentSerializer#parse(String)} to get the array else it will return an array of {@link
    * BaseComponent} with a single entry of {@link TextComponent}
    *
@@ -61,7 +61,7 @@ public class Components {
    */
   @NonNull
   public static BaseComponent[] getComponent(@NonNull String string) {
-    if (Components.isJson(string)) {
+    if (JsonUtils.isJson(string)) {
       return ComponentSerializer.parse(string);
     } else {
       return Components.deserializePlain('&', string);
@@ -143,18 +143,6 @@ public class Components {
       modifier.modify(current);
     }
     return current;
-  }
-
-  /**
-   * Checks if a string is json. This method will return true if the string starts with "[" or "{"
-   * and ends with "]" or "}"
-   *
-   * @param string the string to check
-   * @return true if the string is json
-   */
-  private static boolean isJson(@NonNull String string) {
-    return string.startsWith("{") && string.endsWith("}")
-        || string.startsWith("[") && string.endsWith("]");
   }
 
   @NonNull
