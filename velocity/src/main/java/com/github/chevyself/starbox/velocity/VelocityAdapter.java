@@ -12,15 +12,21 @@ import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.velocity.commands.VelocityCommand;
 import com.github.chevyself.starbox.velocity.context.CommandContext;
+import com.github.chevyself.starbox.velocity.messages.VelocityMessagesProvider;
+import com.github.chevyself.starbox.velocity.middleware.VelocityResultHandlingMiddleware;
+import com.github.chevyself.starbox.velocity.providers.PlayerProvider;
 import com.velocitypowered.api.proxy.ProxyServer;
+import java.util.logging.Logger;
 import lombok.NonNull;
 
 public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand> {
 
   @NonNull private final ProxyServer proxyServer;
+  @NonNull private final Logger logger;
 
-  public VelocityAdapter(@NonNull ProxyServer proxyServer) {
+  public VelocityAdapter(@NonNull ProxyServer proxyServer, @NonNull Logger logger) {
     this.proxyServer = proxyServer;
+    this.logger = logger;
   }
 
   @Override
@@ -40,12 +46,23 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
   @Override
   public void registerDefaultProviders(
       @NonNull CommandManagerBuilder<CommandContext, VelocityCommand> builder,
-      @NonNull ProvidersRegistry<CommandContext> registry) {}
+      @NonNull ProvidersRegistry<CommandContext> registry) {
+    MessagesProvider<CommandContext> messagesProvider = builder.getMessagesProvider();
+    if (messagesProvider instanceof VelocityMessagesProvider) {
+      VelocityMessagesProvider provider = (VelocityMessagesProvider) messagesProvider;
+      registry.addProvider(new PlayerProvider(provider, proxyServer));
+    } else {
+      this.logger.severe(
+          "Failed to register some providers, as the MessagesProvider is not a VelocityMessagesProvider");
+    }
+  }
 
   @Override
   public void registerDefaultMiddlewares(
       @NonNull CommandManagerBuilder<CommandContext, VelocityCommand> builder,
-      @NonNull MiddlewareRegistry<CommandContext> middlewares) {}
+      @NonNull MiddlewareRegistry<CommandContext> middlewares) {
+    middlewares.addMiddleware(new VelocityResultHandlingMiddleware());
+  }
 
   @Override
   public void onBuilt(@NonNull CommandManager<CommandContext, VelocityCommand> built) {}
