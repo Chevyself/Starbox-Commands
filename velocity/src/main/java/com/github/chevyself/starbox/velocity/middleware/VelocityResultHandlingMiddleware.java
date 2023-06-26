@@ -7,6 +7,7 @@ import com.github.chevyself.starbox.velocity.context.CommandContext;
 import com.github.chevyself.starbox.velocity.result.ComponentResult;
 import lombok.NonNull;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class VelocityResultHandlingMiddleware extends ResultHandlingMiddleware<CommandContext> {
 
@@ -23,6 +24,8 @@ public class VelocityResultHandlingMiddleware extends ResultHandlingMiddleware<C
 
   @Override
   public void onSimple(@NonNull CommandContext context, @NonNull SimpleResult result) {
-    context.getSender().sendMessage(Component.text(result.getMessage()));
+    context
+        .getSender()
+        .sendMessage(LegacyComponentSerializer.legacy('&').deserialize(result.getMessage()));
   }
 }
