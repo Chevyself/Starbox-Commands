@@ -219,7 +219,7 @@ public abstract class CommandParser<
         override
             .map(method -> this.parseCommand(instance, method, annotation))
             .orElseGet(() -> this.getParentCommandSupplier().supply(annotation, clazz));
-    children.forEach(parent::addChild);
+    parent.addChildren(children);
     return parent;
   }
 
