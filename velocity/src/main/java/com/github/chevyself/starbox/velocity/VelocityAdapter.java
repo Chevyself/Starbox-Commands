@@ -61,7 +61,7 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
   public void registerDefaultMiddlewares(
       @NonNull CommandManagerBuilder<CommandContext, VelocityCommand> builder,
       @NonNull MiddlewareRegistry<CommandContext> middlewares) {
-    middlewares.addMiddleware(new VelocityResultHandlingMiddleware());
+    middlewares.addGlobalMiddleware(new VelocityResultHandlingMiddleware());
   }
 
   @Override
