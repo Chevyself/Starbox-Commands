@@ -110,6 +110,32 @@ public interface StarboxCommand<
   }
 
   /**
+   * Add many children that can be used to run in this.
+   *
+   * @param commands the children command to add
+   * @return this same command instance to allow chain methods
+   */
+  @NonNull
+  default StarboxCommand<C, T> addChildren(@NonNull T... commands) {
+    for (T command : commands) {
+      this.addChild(command);
+    }
+    return this;
+  }
+
+  /**
+   * Add many children that can be used to run in this.
+   *
+   * @param commands the children command to add
+   * @return this same command instance to allow chain methods
+   */
+  @NonNull
+  default StarboxCommand<C, T> addChildren(@NonNull Collection<T> commands) {
+    commands.forEach(this::addChild);
+    return this;
+  }
+
+  /**
    * Get the Middlewares that will run before the command.
    *
    * @return the collection of middlewares
