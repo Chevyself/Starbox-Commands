@@ -3,7 +3,6 @@ package com.github.chevyself.starbox.velocity;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.adapters.Adapter;
-import com.github.chevyself.starbox.common.DecoratedMessagesProvider;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import com.github.chevyself.starbox.parsers.CommandParser;
@@ -12,9 +11,11 @@ import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.velocity.commands.VelocityCommand;
 import com.github.chevyself.starbox.velocity.context.CommandContext;
+import com.github.chevyself.starbox.velocity.messages.GenericVelocityMessagesProvider;
 import com.github.chevyself.starbox.velocity.messages.VelocityMessagesProvider;
 import com.github.chevyself.starbox.velocity.middleware.VelocityResultHandlingMiddleware;
 import com.github.chevyself.starbox.velocity.providers.PlayerProvider;
+import com.github.chevyself.starbox.velocity.providers.VelocityCommandContextProvider;
 import com.velocitypowered.api.proxy.ProxyServer;
 import java.util.logging.Logger;
 import lombok.NonNull;
@@ -50,11 +51,12 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
     MessagesProvider<CommandContext> messagesProvider = builder.getMessagesProvider();
     if (messagesProvider instanceof VelocityMessagesProvider) {
       VelocityMessagesProvider provider = (VelocityMessagesProvider) messagesProvider;
-      registry.addProvider(new PlayerProvider(provider, proxyServer));
+      registry.addProvider(new PlayerProvider(provider, this.proxyServer));
     } else {
       this.logger.severe(
           "Failed to register some providers, as the MessagesProvider is not a VelocityMessagesProvider");
     }
+    registry.addProvider(new VelocityCommandContextProvider());
   }
 
   @Override
@@ -80,6 +82,6 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
 
   @Override
   public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
-    return new DecoratedMessagesProvider<>();
+    return new GenericVelocityMessagesProvider();
   }
 }
