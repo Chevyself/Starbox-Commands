@@ -2,6 +2,7 @@ package com.github.chevyself.starbox.adapters;
 
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
+import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
@@ -35,4 +36,6 @@ public interface Adapter<C extends StarboxCommandContext<C, T>, T extends Starbo
 
   @NonNull
   MessagesProvider<C> getDefaultMessaesProvider();
+
+  T adapt(CommandBuilder<C, T> ctCommandBuilder);
 }

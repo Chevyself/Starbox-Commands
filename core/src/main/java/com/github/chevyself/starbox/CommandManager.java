@@ -1,6 +1,7 @@
 package com.github.chevyself.starbox;
 
 import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
@@ -62,6 +63,12 @@ public final class CommandManager<
   public CommandManager<C, T> register(@NonNull T command) {
     this.commands.add(command);
     this.adapter.onRegister(command);
+    return this;
+  }
+
+  @NonNull
+  public CommandManager<C, T> register(@NonNull CommandBuilder<C, T> builder) {
+    this.register(builder.build(this));
     return this;
   }
 

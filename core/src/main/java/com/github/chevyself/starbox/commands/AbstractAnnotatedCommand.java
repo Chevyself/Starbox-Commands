@@ -47,20 +47,4 @@ public abstract class AbstractAnnotatedCommand<
     this.method = method;
     this.arguments = Argument.parseArguments(method);
   }
-
-  @Override
-  public Result run(@NonNull C context) {
-    try {
-      Object object = this.method.invoke(this.getObject(), this.getObjects(context));
-      if (object instanceof Result) {
-        return (Result) object;
-      } else {
-        return null;
-      }
-    } catch (final IllegalAccessException | InvocationTargetException e) {
-      return new InternalExceptionResult(e);
-    } catch (MissingArgumentException | ArgumentProviderException e) {
-      return new ArgumentExceptionResult(e);
-    }
-  }
 }

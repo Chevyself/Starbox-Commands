@@ -9,7 +9,11 @@ import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.result.Result;
+import com.github.chevyself.starbox.result.type.ArgumentExceptionResult;
+import com.github.chevyself.starbox.result.type.InternalExceptionResult;
 import com.github.chevyself.starbox.util.Pair;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
@@ -24,38 +28,7 @@ import lombok.NonNull;
  */
 public interface ReflectCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
-    extends StarboxCommand<C, T> {
-
-  /**
-   * Get the string that will be used to get the object to pass to the command method as a parameter
-   * (Check {@link StarboxArgumentProvider}).
-   *
-   * @param argument the argument that requires the object
-   * @param context the context of the command execution
-   * @param lastIndex where do arguments originate
-   * @return the obtained string and the amount to increase the last index
-   */
-  @NonNull
-  static Pair<String, Integer> getArgument(
-      @NonNull SingleArgument<?> argument,
-      @NonNull StarboxCommandContext<?, ?> context,
-      int lastIndex) {
-    List<String> arguments = context.getCommandLineParser().getArguments();
-    String string = null;
-    int increase = 0;
-    if (arguments.size() - 1 < argument.getPosition() + lastIndex) {
-      if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
-        string = argument.getSuggestions(context).get(0);
-      }
-    } else {
-      if (argument.getBehaviour().equals(ArgumentBehaviour.CONTINUOUS)) {
-        string = String.join(" ", arguments.subList(argument.getPosition(), arguments.size()));
-      } else {
-        string = arguments.get(argument.getPosition() + lastIndex);
-      }
-    }
-    return new Pair<>(string, increase);
-  }
+    extends ArgumentedStarboxCommand<C, T> {
 
   /**
    * Get the objects that should be used in the parameters to invoke {@link #getMethod()}. The
@@ -85,23 +58,20 @@ public interface ReflectCommand<
     return objects;
   }
 
-  /**
-   * Get the argument of certain position. A basic loop checking if the {@link SingleArgument}
-   * position matches the queried position. Ignore the extra arguments as those don't have positions
-   *
-   * @param position the position to get the argument of
-   * @return the argument if exists, empty otherwise
-   */
-  @NonNull
-  default Optional<SingleArgument<?>> getArgument(int position) {
-    SingleArgument<?> singleArgument = null;
-    for (Argument<?> argument : this.getArguments()) {
-      if (argument instanceof SingleArgument
-          && ((SingleArgument<?>) argument).getPosition() == position) {
-        singleArgument = (SingleArgument<?>) argument;
+  @Override
+  default Result run(@NonNull C context) {
+    try {
+      Object object = this.getMethod().invoke(this.getObject(), this.getObjects(context));
+      if (object instanceof Result) {
+        return (Result) object;
+      } else {
+        return null;
       }
+    } catch (final IllegalAccessException | InvocationTargetException e) {
+      return new InternalExceptionResult(e);
+    } catch (MissingArgumentException | ArgumentProviderException e) {
+      return new ArgumentExceptionResult(e);
     }
-    return Optional.ofNullable(singleArgument);
   }
 
   /**
@@ -122,30 +92,4 @@ public interface ReflectCommand<
    */
   @NonNull
   Object getObject();
-
-  /**
-   * Get the {@link List} of the arguments for the command. It is used in {@link #getArgument(int)}
-   * therefore in {@link #getObjects(StarboxCommandContext)}
-   *
-   * @return the {@link List} of {@link Argument}
-   */
-  @NonNull
-  List<Argument<?>> getArguments();
-
-  /**
-   * Get the registry of providers. Needed to get the objects to pass in the method invoke.
-   *
-   * @return the registry of providers for the command
-   */
-  @NonNull
-  ProvidersRegistry<C> getProvidersRegistry();
-
-  /**
-   * Get the messages' provider for the command. Needed to send helpful messages to help the user
-   * execute the command correctly
-   *
-   * @return the messages provider
-   */
-  @NonNull
-  MessagesProvider<C> getMessagesProvider();
 }

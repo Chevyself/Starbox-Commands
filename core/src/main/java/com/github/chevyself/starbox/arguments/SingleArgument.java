@@ -5,6 +5,7 @@ import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
+import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.util.Pair;
 import com.github.chevyself.starbox.util.objects.Mappable;
@@ -117,7 +118,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
       int lastIndex)
       throws ArgumentProviderException, MissingArgumentException {
     Object object;
-    Pair<String, Integer> argumentString = ReflectCommand.getArgument(this, context, lastIndex);
+    Pair<String, Integer> argumentString = SingleArgument.getArgument(this, context, lastIndex);
     String string = argumentString.getA();
     if (string == null) {
       if (this.isRequired()) {
@@ -131,5 +132,36 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
       object = registry.fromString(string, this.getClazz(), context);
     }
     return new Pair<>(object, argumentString.getB());
+  }
+
+  /**
+   * Get the string that will be used to get the object to pass to the command method as a parameter
+   * (Check {@link StarboxArgumentProvider}).
+   *
+   * @param argument the argument that requires the object
+   * @param context the context of the command execution
+   * @param lastIndex where do arguments originate
+   * @return the obtained string and the amount to increase the last index
+   */
+  @NonNull
+  static Pair<String, Integer> getArgument(
+      @NonNull SingleArgument<?> argument,
+      @NonNull StarboxCommandContext<?, ?> context,
+      int lastIndex) {
+    List<String> arguments = context.getCommandLineParser().getArguments();
+    String string = null;
+    int increase = 0;
+    if (arguments.size() - 1 < argument.getPosition() + lastIndex) {
+      if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
+        string = argument.getSuggestions(context).get(0);
+      }
+    } else {
+      if (argument.getBehaviour().equals(ArgumentBehaviour.CONTINUOUS)) {
+        string = String.join(" ", arguments.subList(argument.getPosition(), arguments.size()));
+      } else {
+        string = arguments.get(argument.getPosition() + lastIndex);
+      }
+    }
+    return new Pair<>(string, increase);
   }
 }
