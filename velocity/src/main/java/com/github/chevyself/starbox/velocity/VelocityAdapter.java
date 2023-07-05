@@ -13,6 +13,7 @@ import com.github.chevyself.starbox.velocity.commands.VelocityCommand;
 import com.github.chevyself.starbox.velocity.context.CommandContext;
 import com.github.chevyself.starbox.velocity.messages.GenericVelocityMessagesProvider;
 import com.github.chevyself.starbox.velocity.messages.VelocityMessagesProvider;
+import com.github.chevyself.starbox.velocity.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.velocity.middleware.VelocityResultHandlingMiddleware;
 import com.github.chevyself.starbox.velocity.providers.PlayerProvider;
 import com.github.chevyself.starbox.velocity.providers.VelocityCommandContextProvider;
@@ -63,6 +64,14 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
   public void registerDefaultMiddlewares(
       @NonNull CommandManagerBuilder<CommandContext, VelocityCommand> builder,
       @NonNull MiddlewareRegistry<CommandContext> middlewares) {
+    MessagesProvider<CommandContext> messagesProvider = builder.getMessagesProvider();
+    if (messagesProvider instanceof VelocityMessagesProvider) {
+      VelocityMessagesProvider messages = (VelocityMessagesProvider) messagesProvider;
+      middlewares.addGlobalMiddleware(new PermissionMiddleware(messages));
+    } else {
+      this.logger.severe(
+          "Failed to register some middlewares, as the MessagesProvider is not a VelocityMessagesProvider");
+    }
     middlewares.addGlobalMiddleware(new VelocityResultHandlingMiddleware());
   }
 
