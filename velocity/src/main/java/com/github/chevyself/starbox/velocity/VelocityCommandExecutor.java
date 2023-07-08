@@ -53,4 +53,12 @@ public class VelocityCommandExecutor implements SimpleCommand {
     return this.tabCompleter.tabComplete(
         this.command, invocation.source(), invocation.alias(), invocation.arguments());
   }
+
+  @Override
+  public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
+    return CompletableFuture.supplyAsync(
+        () ->
+            this.tabCompleter.tabComplete(
+                this.command, invocation.source(), invocation.alias(), invocation.arguments()));
+  }
 }
