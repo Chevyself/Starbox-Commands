@@ -2,9 +2,7 @@ package com.github.chevyself.starbox.bukkit;
 
 import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
-import com.github.chevyself.starbox.bukkit.tab.BukkitReflectTabCompleter;
 import com.github.chevyself.starbox.bukkit.tab.BukkitTabCompleter;
-import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.parsers.CommandLineParser;
 import java.util.List;
 import lombok.Getter;
@@ -15,10 +13,9 @@ import org.bukkit.command.CommandSender;
 
 public class BukkitCommandExecutor extends Command {
 
-  @NonNull
-  private static final BukkitReflectTabCompleter reflectCompleter = new BukkitReflectTabCompleter();
+  @NonNull private static final BukkitTabCompleter reflectCompleter = new BukkitTabCompleter();
 
-  @NonNull private static final BukkitTabCompleter genericCompleter = new BukkitTabCompleter();
+  @NonNull private static final BukkitTabCompleter tabCompleter = new BukkitTabCompleter();
 
   @NonNull @Getter private final BukkitCommand command;
   private final boolean async;
@@ -39,11 +36,7 @@ public class BukkitCommandExecutor extends Command {
   public List<String> tabComplete(
       @NonNull CommandSender sender, @NonNull String name, String @NonNull [] args)
       throws IllegalArgumentException {
-    if (this.command instanceof ReflectCommand) {
-      return BukkitCommandExecutor.reflectCompleter.tabComplete(this.command, sender, name, args);
-    } else {
-      return BukkitCommandExecutor.genericCompleter.tabComplete(this.command, sender, name, args);
-    }
+    return BukkitCommandExecutor.tabCompleter.tabComplete(command, sender, name, args);
   }
 
   @Override
