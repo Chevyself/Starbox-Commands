@@ -41,7 +41,7 @@ public class VelocityCommandExecutor implements SimpleCommand {
   }
 
   @Override
-  public List<String> suggest(Invocation invocation) {
+  public List<String> suggest(@NonNull Invocation invocation) {
     return VelocityCommandExecutor.tabCompleter.tabComplete(
         this.command, invocation.source(), invocation.alias(), invocation.arguments());
   }

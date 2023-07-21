@@ -65,12 +65,14 @@ public abstract class GenericTabCompleter<
     if (permission != null && !this.hasPermission(sender, permission)) {
       return new ArrayList<>();
     }
-    if (strings.length == 1) {
+    if (strings.length == 1 || strings.length == 0) {
       List<String> children =
-          Strings.copyPartials(strings[strings.length - 1], command.getChildrenNames());
+          strings.length == 0
+              ? command.getChildrenNames()
+              : Strings.copyPartials(strings[0], command.getChildrenNames());
       children.addAll(this.reflectTabComplete(command, sender, strings));
       return children;
-    } else if (strings.length >= 2) {
+    } else {
       return command
           .getChild(strings[0])
           .map(
@@ -79,6 +81,5 @@ public abstract class GenericTabCompleter<
                       child, sender, strings[0], Arrays.copyOfRange(strings, 1, strings.length)))
           .orElseGet(() -> this.reflectTabComplete(command, sender, strings));
     }
-    return this.reflectTabComplete(command, sender, strings);
   }
 }
