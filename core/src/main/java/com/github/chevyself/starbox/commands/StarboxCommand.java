@@ -47,7 +47,7 @@ public interface StarboxCommand<
    */
   default Result execute(@NonNull C context) {
     List<String> arguments = context.getCommandLineParser().getArguments();
-    if (arguments.size() >= 1) {
+    if (!arguments.isEmpty()) {
       Optional<T> optionalCommand = this.getChild(arguments.get(0));
       if (optionalCommand.isPresent()) {
         T subcommand = optionalCommand.get();
