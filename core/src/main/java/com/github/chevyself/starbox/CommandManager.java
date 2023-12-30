@@ -1,6 +1,7 @@
 package com.github.chevyself.starbox;
 
 import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
@@ -158,5 +159,10 @@ public final class CommandManager<
   @NonNull
   public Optional<T> getCommand(@NonNull String alias) {
     return this.commands.stream().filter(command -> command.hasAlias(alias)).findFirst();
+  }
+
+  @NonNull
+  public CommandBuilder<C, T> literal(@NonNull String name) {
+    return new CommandBuilder<>(this, name);
   }
 }

@@ -3,12 +3,14 @@ package com.github.chevyself.starbox.bungee;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.bungee.commands.BungeeBuiltCommand;
 import com.github.chevyself.starbox.bungee.commands.BungeeCommand;
 import com.github.chevyself.starbox.bungee.context.CommandContext;
 import com.github.chevyself.starbox.bungee.messages.BungeeMessagesProvider;
 import com.github.chevyself.starbox.bungee.providers.CommandContextProvider;
 import com.github.chevyself.starbox.bungee.providers.CommandSenderProvider;
 import com.github.chevyself.starbox.bungee.providers.ProxiedPlayerProvider;
+import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.messages.GenericMessagesProvider;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
@@ -80,5 +82,11 @@ public class BungeeAdapter implements Adapter<CommandContext, BungeeCommand> {
   @Override
   public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
     return new GenericMessagesProvider<>();
+  }
+
+  @Override
+  public @NonNull BungeeCommand adapt(
+      @NonNull CommandBuilder<CommandContext, BungeeCommand> builder) {
+    return new BungeeBuiltCommand(builder, this);
   }
 }

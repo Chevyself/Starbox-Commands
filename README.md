@@ -9,7 +9,7 @@ Starbox utilizes object injection to invoke methods, which rely on providers: `A
 
 If you prefer an alternative approach to reflection, you can implement the interface provided by each module and register it using `CommandManager#regiser(StarboxCommand)`.
 
----
+ ---
 
 Contents
 --------

@@ -4,12 +4,6 @@ import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
-import com.github.chevyself.starbox.exceptions.MissingArgumentException;
-import com.github.chevyself.starbox.result.Result;
-import com.github.chevyself.starbox.result.type.ArgumentExceptionResult;
-import com.github.chevyself.starbox.result.type.InternalExceptionResult;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import lombok.Getter;
@@ -46,21 +40,5 @@ public abstract class AbstractAnnotatedCommand<
     this.object = object;
     this.method = method;
     this.arguments = Argument.parseArguments(method);
-  }
-
-  @Override
-  public Result run(@NonNull C context) {
-    try {
-      Object object = this.method.invoke(this.getObject(), this.getObjects(context));
-      if (object instanceof Result) {
-        return (Result) object;
-      } else {
-        return null;
-      }
-    } catch (final IllegalAccessException | InvocationTargetException e) {
-      return new InternalExceptionResult(e);
-    } catch (MissingArgumentException | ArgumentProviderException e) {
-      return new ArgumentExceptionResult(e);
-    }
   }
 }

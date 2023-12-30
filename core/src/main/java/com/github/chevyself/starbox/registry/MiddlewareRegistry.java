@@ -102,8 +102,22 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
    * @return the list of middlewares
    */
   public @NonNull List<Middleware<C>> getMiddlewares(@NonNull Command annotation) {
-    List<Middleware<C>> list = this.getGlobalMiddlewareAndExclude(annotation);
-    list.addAll(this.getIncludeMiddleware(annotation));
+    return this.getMiddlewares(annotation.exclude(), annotation.include());
+  }
+
+  /**
+   * Get the middlewares for a command. This will get all the global middlewares except the ones
+   * that are excluded in the [exclude]. Then, it will get all the middlewares that are included in
+   * the [include].
+   *
+   * @param exclude the global middlewares to exclude
+   * @param include the global middlewares to include
+   * @return the list of middlewares
+   */
+  public @NonNull List<Middleware<C>> getMiddlewares(
+      @NonNull Class<?>[] exclude, @NonNull Class<?>[] include) {
+    List<Middleware<C>> list = this.getGlobalMiddlewareAndExclude(exclude);
+    list.addAll(this.getIncludeMiddleware(include));
     return list;
   }
 
@@ -115,10 +129,21 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
    * @return the list of middlewares
    */
   private @NonNull List<Middleware<C>> getGlobalMiddlewareAndExclude(Command annotation) {
+    return this.getGlobalMiddlewareAndExclude(annotation.exclude());
+  }
+
+  /**
+   * Get all the global middlewares except the ones that are excluded in the {@param exclude}.
+   *
+   * @param exclude the global middlewares to exclude
+   * @return the list of middlewares
+   */
+  @NonNull
+  private List<Middleware<C>> getGlobalMiddlewareAndExclude(@NonNull Class<?>[] exclude) {
     return this.globalMiddlewares.stream()
         .filter(
             middleware -> {
-              for (Class<? extends Middleware<?>> clazz : annotation.exclude()) {
+              for (Class<?> clazz : exclude) {
                 if (clazz.isAssignableFrom(middleware.getClass())) {
                   return false;
                 }
@@ -135,10 +160,20 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
    * @return the list of middlewares
    */
   private @NonNull Collection<? extends Middleware<C>> getIncludeMiddleware(Command annotation) {
+    return this.getIncludeMiddleware(annotation.include());
+  }
+
+  /**
+   * Get all the middlewares that are included in the {@param include}.
+   *
+   * @param include the middlewares to include
+   * @return the list of middlewares
+   */
+  private @NonNull List<? extends Middleware<C>> getIncludeMiddleware(@NonNull Class<?>[] include) {
     return middlewares.stream()
         .filter(
             middleware -> {
-              for (Class<? extends Middleware<?>> clazz : annotation.include()) {
+              for (Class<?> clazz : include) {
                 if (clazz.isAssignableFrom(middleware.getClass())) {
                   return true;
                 }
@@ -154,5 +189,10 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
     this.globalMiddlewares.forEach(Middleware::close);
     this.globalMiddlewares.clear();
     this.middlewares.clear();
+  }
+
+  public @NonNull List<Middleware<C>> getMiddlewares(
+      @NonNull List<? extends Class<?>> exclude, @NonNull List<? extends Class<?>> include) {
+    return this.getMiddlewares(exclude.toArray(new Class[0]), include.toArray(new Class[0]));
   }
 }

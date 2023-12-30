@@ -49,4 +49,8 @@ public class CommandMetadata {
   public <T> T get(@NonNull String key) {
     return (T) map.get(key);
   }
+
+  public boolean has(@NonNull String key) {
+    return map.containsKey(key);
+  }
 }
