@@ -1,22 +1,14 @@
 package com.github.chevyself.starbox.commands;
 
-import com.github.chevyself.starbox.arguments.Argument;
-import com.github.chevyself.starbox.arguments.ArgumentBehaviour;
-import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
 import com.github.chevyself.starbox.exceptions.MissingArgumentException;
-import com.github.chevyself.starbox.messages.MessagesProvider;
-import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
-import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.result.Result;
 import com.github.chevyself.starbox.result.type.ArgumentExceptionResult;
 import com.github.chevyself.starbox.result.type.InternalExceptionResult;
 import com.github.chevyself.starbox.util.Pair;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Optional;
 import lombok.NonNull;
 
 /**

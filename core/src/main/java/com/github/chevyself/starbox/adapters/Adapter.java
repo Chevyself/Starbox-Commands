@@ -37,5 +37,6 @@ public interface Adapter<C extends StarboxCommandContext<C, T>, T extends Starbo
   @NonNull
   MessagesProvider<C> getDefaultMessaesProvider();
 
-  T adapt(CommandBuilder<C, T> ctCommandBuilder);
+  @NonNull
+  T adapt(@NonNull CommandBuilder<C, T> builder);
 }

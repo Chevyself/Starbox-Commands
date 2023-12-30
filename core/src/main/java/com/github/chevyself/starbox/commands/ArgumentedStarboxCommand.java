@@ -3,23 +3,20 @@ package com.github.chevyself.starbox.commands;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.arguments.SingleArgument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
-import com.github.chevyself.starbox.exceptions.ArgumentProviderException;
-import com.github.chevyself.starbox.exceptions.MissingArgumentException;
-import com.github.chevyself.starbox.util.Pair;
 import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 
-public interface ArgumentedStarboxCommand<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> extends StarboxCommand<C, T> {
+public interface ArgumentedStarboxCommand<
+        C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
+    extends StarboxCommand<C, T> {
   /**
-   * Get the {@link List} of the arguments for the command. It is used in {@link #getArgument(int)}
-   * therefore in {@link #getObjects(StarboxCommandContext)}
+   * Get the {@link List} of the arguments for the command.
    *
    * @return the {@link List} of {@link Argument}
    */
   @NonNull
   List<Argument<?>> getArguments();
-
 
   /**
    * Get the argument of certain position. A basic loop checking if the {@link SingleArgument}

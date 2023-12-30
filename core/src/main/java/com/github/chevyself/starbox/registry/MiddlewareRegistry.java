@@ -107,14 +107,15 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
 
   /**
    * Get the middlewares for a command. This will get all the global middlewares except the ones
-   * that are excluded in the {@param exclude}. Then, it will get all the middlewares that are
-   * included in the {@param include}.
+   * that are excluded in the [exclude]. Then, it will get all the middlewares that are included in
+   * the [include].
    *
    * @param exclude the global middlewares to exclude
    * @param include the global middlewares to include
    * @return the list of middlewares
    */
-  public @NonNull List<Middleware<C>> getMiddlewares(@NonNull Class<?>[] exclude, @NonNull Class<?>[] include) {
+  public @NonNull List<Middleware<C>> getMiddlewares(
+      @NonNull Class<?>[] exclude, @NonNull Class<?>[] include) {
     List<Middleware<C>> list = this.getGlobalMiddlewareAndExclude(exclude);
     list.addAll(this.getIncludeMiddleware(include));
     return list;
@@ -191,9 +192,7 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
   }
 
   public @NonNull List<Middleware<C>> getMiddlewares(
-      @NonNull List<? extends Class<?>> exclude,
-      @NonNull List<? extends Class<?>> include) {
-    return this.getMiddlewares(
-        exclude.toArray(new Class[0]), include.toArray(new Class[0]));
+      @NonNull List<? extends Class<?>> exclude, @NonNull List<? extends Class<?>> include) {
+    return this.getMiddlewares(exclude.toArray(new Class[0]), include.toArray(new Class[0]));
   }
 }

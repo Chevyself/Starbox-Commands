@@ -12,34 +12,27 @@ import com.github.chevyself.starbox.middleware.Middleware;
 import com.github.chevyself.starbox.result.Result;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
 public class CommandBuilder<C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
-  @NonNull
-  private final List<String> aliases;
-  @NonNull
-  private final List<Class<? extends Middleware<C>>> include;
-  @NonNull
-  private final List<Class<? extends Middleware<C>>> exclude;
-  @NonNull
-  private final List<Option> options;
-  @NonNull
-  private final List<T> children;
-  @NonNull
-  private final List<CommandBuilder<C, T>> extraChildren;
-  @NonNull
-  private final List<Argument<?>> arguments;
-  @NonNull
-  private CommandMetadata metadata;
-  @NonNull
-  private BiFunction<C, ArgumentsMap, Result> executor;
+  @NonNull private final CommandManager<C, T> commandManager;
+  @NonNull private final List<String> aliases;
+  @NonNull private final List<Class<? extends Middleware<C>>> include;
+  @NonNull private final List<Class<? extends Middleware<C>>> exclude;
+  @NonNull private final List<Option> options;
+  @NonNull private final List<T> children;
+  @NonNull private final List<CommandBuilder<C, T>> extraChildren;
+  @NonNull private final List<Argument<?>> arguments;
+  @NonNull private CommandMetadata metadata;
+  @NonNull private BiFunction<C, ArgumentsMap, Result> executor;
 
-  public CommandBuilder(@NonNull String name) {
+  public CommandBuilder(@NonNull CommandManager<C, T> commandManager, @NonNull String name) {
+    this.commandManager = commandManager;
     this.aliases = new ArrayList<>();
     this.include = new ArrayList<>();
     this.exclude = new ArrayList<>();
@@ -65,8 +58,25 @@ public class CommandBuilder<C extends StarboxCommandContext<C, T>, T extends Sta
   }
 
   @NonNull
-  public CommandBuilder<C, T> argument(@NonNull ArgumentBuilder builder) {
+  public CommandBuilder<C, T> argument(@NonNull ArgumentBuilder<?> builder) {
     return this.argument(builder.build(this.nextArgumentIndex()));
+  }
+
+  @NonNull
+  public CommandBuilder<C, T> extra(@NonNull Class<?> clazz) {
+    return this.argument(new ArgumentBuilder<>(clazz).setExtra(true));
+  }
+
+  @NonNull
+  public CommandBuilder<C, T> child(@NonNull CommandBuilder<C, T> child) {
+    this.extraChildren.add(child);
+    return this;
+  }
+
+  @NonNull
+  public CommandBuilder<C, T> withMetadata(@NonNull Consumer<CommandMetadata> consumer) {
+    consumer.accept(this.metadata);
+    return this;
   }
 
   private int nextArgumentIndex() {
@@ -79,22 +89,12 @@ public class CommandBuilder<C extends StarboxCommandContext<C, T>, T extends Sta
     return index;
   }
 
-  @NonNull
-  public CommandBuilder<C, T>  child(@NonNull CommandBuilder<C, T> child) {
-    this.extraChildren.add(child);
-    return this;
-  }
-
-  public void register(@NonNull CommandManager<C, T> commandManager) {
-    commandManager.register(this.build(commandManager));
+  public void register() {
+    this.commandManager.register(this.build());
   }
 
   @NonNull
-  public T build(@NonNull CommandManager<C, T> commandManager) {
-    return commandManager.getCommandParser().getAdapter().adapt(this);
-  }
-
-  public static <C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> CommandBuilder<C, T> literal(@NonNull String name) {
-    return new CommandBuilder<>(name);
+  public T build() {
+    return this.commandManager.getAdapter().adapt(this);
   }
 }

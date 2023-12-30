@@ -66,12 +66,6 @@ public final class CommandManager<
     return this;
   }
 
-  @NonNull
-  public CommandManager<C, T> register(@NonNull CommandBuilder<C, T> builder) {
-    this.register(builder.build(this));
-    return this;
-  }
-
   /**
    * Parses the command from the object and registers it. This will call {@link
    * CommandParser#parseAllCommandsFrom(Object)} and then {@link #registerAll(Collection)}.
@@ -165,5 +159,10 @@ public final class CommandManager<
   @NonNull
   public Optional<T> getCommand(@NonNull String alias) {
     return this.commands.stream().filter(command -> command.hasAlias(alias)).findFirst();
+  }
+
+  @NonNull
+  public CommandBuilder<C, T> literal(@NonNull String name) {
+    return new CommandBuilder<>(this, name);
   }
 }

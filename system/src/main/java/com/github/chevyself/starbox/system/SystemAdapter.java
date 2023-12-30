@@ -3,6 +3,7 @@ package com.github.chevyself.starbox.system;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.messages.GenericMessagesProvider;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.middleware.CooldownMiddleware;
@@ -10,6 +11,7 @@ import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import com.github.chevyself.starbox.parsers.EmptyCommandMetadataParser;
 import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.system.commands.SystemBuiltCommand;
 import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.middleware.SystemResultHandlingMiddleware;
@@ -69,5 +71,11 @@ public class SystemAdapter implements Adapter<CommandContext, SystemCommand> {
   @Override
   public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
     return new GenericMessagesProvider<>();
+  }
+
+  @Override
+  public @NonNull SystemCommand adapt(
+      @NonNull CommandBuilder<CommandContext, SystemCommand> builder) {
+    return new SystemBuiltCommand(builder);
   }
 }

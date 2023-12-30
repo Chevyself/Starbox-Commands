@@ -3,6 +3,7 @@ package com.github.chevyself.starbox.velocity;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.common.DecoratedMessagesProvider;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
@@ -10,6 +11,7 @@ import com.github.chevyself.starbox.parsers.CommandParser;
 import com.github.chevyself.starbox.parsers.EmptyCommandMetadataParser;
 import com.github.chevyself.starbox.registry.MiddlewareRegistry;
 import com.github.chevyself.starbox.registry.ProvidersRegistry;
+import com.github.chevyself.starbox.velocity.commands.VelocityBuiltCommand;
 import com.github.chevyself.starbox.velocity.commands.VelocityCommand;
 import com.github.chevyself.starbox.velocity.context.CommandContext;
 import com.github.chevyself.starbox.velocity.messages.VelocityMessagesProvider;
@@ -81,5 +83,11 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
   @Override
   public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
     return new DecoratedMessagesProvider<>();
+  }
+
+  @Override
+  public @NonNull VelocityCommand adapt(
+      @NonNull CommandBuilder<CommandContext, VelocityCommand> builder) {
+    return new VelocityBuiltCommand(builder);
   }
 }

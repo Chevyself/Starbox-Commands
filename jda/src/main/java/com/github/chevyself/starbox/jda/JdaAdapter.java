@@ -3,6 +3,8 @@ package com.github.chevyself.starbox.jda;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.commands.CommandBuilder;
+import com.github.chevyself.starbox.jda.commands.JdaBuiltCommand;
 import com.github.chevyself.starbox.jda.commands.JdaCommand;
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import com.github.chevyself.starbox.jda.listener.CommandListener;
@@ -148,5 +150,10 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
   @Override
   public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
     return new GenericJdaMessagesProvider();
+  }
+
+  @Override
+  public @NonNull JdaCommand adapt(@NonNull CommandBuilder<CommandContext, JdaCommand> builder) {
+    return new JdaBuiltCommand(builder);
   }
 }

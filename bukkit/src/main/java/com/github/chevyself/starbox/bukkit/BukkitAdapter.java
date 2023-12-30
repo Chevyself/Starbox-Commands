@@ -17,6 +17,7 @@ import com.github.chevyself.starbox.bukkit.providers.PlayerProvider;
 import com.github.chevyself.starbox.bukkit.topic.PluginHelpTopic;
 import com.github.chevyself.starbox.bukkit.topic.StarboxCommandHelpTopicFactory;
 import com.github.chevyself.starbox.bukkit.utils.BukkitUtils;
+import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
@@ -166,5 +167,11 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
   @Override
   public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
     return new GenericBukkitMessagesProvider();
+  }
+
+  @Override
+  public @NonNull BukkitCommand adapt(
+      @NonNull CommandBuilder<CommandContext, BukkitCommand> builder) {
+    return null;
   }
 }
