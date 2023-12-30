@@ -23,4 +23,13 @@ public interface VelocityMessagesProvider extends MessagesProvider<CommandContex
    */
   @NonNull
   String invalidPlayer(@NonNull String string, @NonNull CommandContext context);
+
+  /**
+   * The message sent when the user that executed the command is not allowed to use it.
+   *
+   * @param context the context of the command
+   * @return the message to send
+   */
+  @NonNull
+  String notAllowed(@NonNull CommandContext context);
 }

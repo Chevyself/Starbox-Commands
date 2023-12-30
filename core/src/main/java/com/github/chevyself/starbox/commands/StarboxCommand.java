@@ -47,7 +47,7 @@ public interface StarboxCommand<
    */
   default Result execute(@NonNull C context) {
     List<String> arguments = context.getCommandLineParser().getArguments();
-    if (arguments.size() >= 1) {
+    if (!arguments.isEmpty()) {
       Optional<T> optionalCommand = this.getChild(arguments.get(0));
       if (optionalCommand.isPresent()) {
         T subcommand = optionalCommand.get();
@@ -115,10 +115,39 @@ public interface StarboxCommand<
    * @param commands the children command to add
    * @return this same command instance to allow chain methods
    */
+  @SuppressWarnings("unchecked")
   @NonNull
   default StarboxCommand<C, T> addChildren(@NonNull T... commands) {
     for (T command : commands) {
       this.addChild(command);
+    }
+    return this;
+  }
+
+  /**
+   * Parse the commands from an object and add them as children.
+   *
+   * @see com.github.chevyself.starbox.parsers.CommandParser#parseAllCommandsFrom(Object)
+   * @param object the object to parse the commands from
+   * @return this same command instance to allow chain methods
+   */
+  @NonNull
+  default StarboxCommand<C, T> parseAndAddChildren(@NonNull Object object) {
+    return this.addChildren(
+        this.getCommandManager().getCommandParser().parseAllCommandsFrom(object));
+  }
+
+  /**
+   * Parse the commands from an array of objects and add them as children.
+   *
+   * @see com.github.chevyself.starbox.parsers.CommandParser#parseAllCommandsFrom(Object)
+   * @param objects the objects to parse the commands from
+   * @return this same command instance to allow chain methods
+   */
+  @NonNull
+  default StarboxCommand<C, T> parseAndAddChildren(@NonNull Object... objects) {
+    for (Object object : objects) {
+      this.parseAndAddChildren(object);
     }
     return this;
   }

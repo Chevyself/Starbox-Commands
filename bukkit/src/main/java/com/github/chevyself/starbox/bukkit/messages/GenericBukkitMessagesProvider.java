@@ -24,7 +24,7 @@ public class GenericBukkitMessagesProvider extends DecoratedMessagesProvider<Com
   @Override
   public @NonNull String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
     return String.format(
-        "%s%s %sis not a valid player", this.errorPrefix(), this.element(), this.text());
+        "%s%s%s %sis not a valid player", this.errorPrefix(), this.element(), string, this.text());
   }
 
   @Override

@@ -14,9 +14,12 @@ import com.github.chevyself.starbox.registry.ProvidersRegistry;
 import com.github.chevyself.starbox.velocity.commands.VelocityBuiltCommand;
 import com.github.chevyself.starbox.velocity.commands.VelocityCommand;
 import com.github.chevyself.starbox.velocity.context.CommandContext;
+import com.github.chevyself.starbox.velocity.messages.GenericVelocityMessagesProvider;
 import com.github.chevyself.starbox.velocity.messages.VelocityMessagesProvider;
+import com.github.chevyself.starbox.velocity.middleware.PermissionMiddleware;
 import com.github.chevyself.starbox.velocity.middleware.VelocityResultHandlingMiddleware;
 import com.github.chevyself.starbox.velocity.providers.PlayerProvider;
+import com.github.chevyself.starbox.velocity.providers.VelocityCommandContextProvider;
 import com.velocitypowered.api.proxy.ProxyServer;
 import java.util.logging.Logger;
 import lombok.NonNull;
@@ -52,17 +55,26 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
     MessagesProvider<CommandContext> messagesProvider = builder.getMessagesProvider();
     if (messagesProvider instanceof VelocityMessagesProvider) {
       VelocityMessagesProvider provider = (VelocityMessagesProvider) messagesProvider;
-      registry.addProvider(new PlayerProvider(provider, proxyServer));
+      registry.addProvider(new PlayerProvider(provider, this.proxyServer));
     } else {
       this.logger.severe(
           "Failed to register some providers, as the MessagesProvider is not a VelocityMessagesProvider");
     }
+    registry.addProvider(new VelocityCommandContextProvider());
   }
 
   @Override
   public void registerDefaultMiddlewares(
       @NonNull CommandManagerBuilder<CommandContext, VelocityCommand> builder,
       @NonNull MiddlewareRegistry<CommandContext> middlewares) {
+    MessagesProvider<CommandContext> messagesProvider = builder.getMessagesProvider();
+    if (messagesProvider instanceof VelocityMessagesProvider) {
+      VelocityMessagesProvider messages = (VelocityMessagesProvider) messagesProvider;
+      middlewares.addGlobalMiddleware(new PermissionMiddleware(messages));
+    } else {
+      this.logger.severe(
+          "Failed to register some middlewares, as the MessagesProvider is not a VelocityMessagesProvider");
+    }
     middlewares.addGlobalMiddleware(new VelocityResultHandlingMiddleware());
   }
 
@@ -82,7 +94,7 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
 
   @Override
   public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
-    return new DecoratedMessagesProvider<>();
+    return new GenericVelocityMessagesProvider();
   }
 
   @Override

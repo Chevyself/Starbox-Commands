@@ -7,6 +7,13 @@ import lombok.NonNull;
 public class GenericVelocityMessagesProvider extends DecoratedMessagesProvider<CommandContext>
     implements VelocityMessagesProvider {
 
+  @NonNull
+  @Override
+  public String notAllowed(@NonNull CommandContext context) {
+    return String.format(
+        "%s%sYou are not allowed to use this command", this.errorPrefix(), this.text());
+  }
+
   @Override
   public @NonNull String onlyPlayers(@NonNull CommandContext context) {
     return String.format("%s%sOnly players can use this command", this.errorPrefix(), this.text());
@@ -15,6 +22,6 @@ public class GenericVelocityMessagesProvider extends DecoratedMessagesProvider<C
   @Override
   public @NonNull String invalidPlayer(@NonNull String string, @NonNull CommandContext context) {
     return String.format(
-        "%s%s %sis not a valid player", this.errorPrefix(), this.element(), this.text());
+        "%s%s%s %sis not a valid player", this.errorPrefix(), this.element(), string, this.text());
   }
 }
