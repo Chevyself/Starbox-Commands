@@ -5,6 +5,7 @@ import com.github.chevyself.starbox.result.type.SimpleResult;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import lombok.NonNull;
 
+/** Middleware that handles {@link SimpleResult}s for the System platform. */
 public class SystemResultHandlingMiddleware extends ResultHandlingMiddleware<CommandContext>
     implements SystemMiddleware {
 

@@ -151,7 +151,7 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
     String string = null;
     int increase = 0;
     if (arguments.size() - 1 < argument.getPosition() + lastIndex) {
-      if (!argument.isRequired() & argument.getSuggestions(context).size() > 0) {
+      if (!argument.isRequired() & !argument.getSuggestions(context).isEmpty()) {
         string = argument.getSuggestions(context).get(0);
       }
     } else {

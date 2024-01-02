@@ -23,9 +23,10 @@ import lombok.NonNull;
  *
  * @param <O> the type of the class that the argument has to supply
  */
+@Getter
 public final class ExtraArgument<O> implements Argument<O> {
 
-  @NonNull @Getter private final Class<O> clazz;
+  @NonNull private final Class<O> clazz;
 
   /**
    * Create a new extra argument instance.

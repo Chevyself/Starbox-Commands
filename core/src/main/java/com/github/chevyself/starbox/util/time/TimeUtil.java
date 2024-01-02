@@ -68,7 +68,7 @@ public class TimeUtil {
       char c = string.charAt(i);
       if (Character.isDigit(c) || c == '.') {
         if (state == 2) {
-          millis += TimeUtil.unitOf(string.charAt(last)).getDuration().toMillis() * value;
+          millis += (long) (TimeUtil.unitOf(string.charAt(last)).getDuration().toMillis() * value);
           last = i;
         }
         state = 1;
@@ -80,7 +80,7 @@ public class TimeUtil {
         state = 2;
       }
     }
-    millis += TimeUtil.unitOf(string.charAt(last)).getDuration().toMillis() * value;
+    millis += (long) (TimeUtil.unitOf(string.charAt(last)).getDuration().toMillis() * value);
     return Duration.ofMillis(millis);
   }
 

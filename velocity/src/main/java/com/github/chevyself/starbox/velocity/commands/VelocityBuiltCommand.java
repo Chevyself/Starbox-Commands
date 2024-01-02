@@ -7,6 +7,7 @@ import com.github.chevyself.starbox.velocity.context.CommandContext;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Extension of built command that is used for the Velocity platform. */
 @Getter
 public class VelocityBuiltCommand extends AbstractBuiltCommand<CommandContext, VelocityCommand>
     implements VelocityCommand {
@@ -15,6 +16,11 @@ public class VelocityBuiltCommand extends AbstractBuiltCommand<CommandContext, V
   private final String permission;
   private final boolean async;
 
+  /**
+   * Create the built command.
+   *
+   * @param builder the builder
+   */
   public VelocityBuiltCommand(@NonNull CommandBuilder<CommandContext, VelocityCommand> builder) {
     super(builder);
     this.executor = new VelocityCommandExecutor(this);

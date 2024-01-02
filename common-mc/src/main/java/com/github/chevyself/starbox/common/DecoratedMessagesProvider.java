@@ -5,9 +5,19 @@ import com.github.chevyself.starbox.messages.FormattedMessagesProvider;
 import java.time.Duration;
 import lombok.NonNull;
 
+/**
+ * Extension of {@link FormattedMessagesProvider} that adds a prefix to error messages.
+ *
+ * @param <C> the command context type
+ */
 public class DecoratedMessagesProvider<C extends StarboxCommandContext<C, ?>>
     extends FormattedMessagesProvider<C> {
 
+  /**
+   * Get the prefix that will be added to error messages.
+   *
+   * @return the prefix
+   */
   public @NonNull String errorPrefix() {
     return "&e&o⚠ &r";
   }

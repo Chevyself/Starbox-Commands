@@ -17,10 +17,11 @@ import lombok.NonNull;
  *
  * @param <C> the type of context
  */
+@Getter
 public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
 
-  @NonNull @Getter private final List<Middleware<C>> globalMiddlewares;
-  @NonNull @Getter private final List<Middleware<C>> middlewares;
+  @NonNull private final List<Middleware<C>> globalMiddlewares;
+  @NonNull private final List<Middleware<C>> middlewares;
 
   /**
    * Create the registry.
@@ -191,6 +192,13 @@ public final class MiddlewareRegistry<C extends StarboxCommandContext<C, ?>> {
     this.middlewares.clear();
   }
 
+  /**
+   * Get the middlewares based on the list to include and exclude.
+   *
+   * @param exclude the list of global middlewares to exclude
+   * @param include the list of middlewares to include
+   * @return the list of middlewares
+   */
   public @NonNull List<Middleware<C>> getMiddlewares(
       @NonNull List<? extends Class<?>> exclude, @NonNull List<? extends Class<?>> include) {
     return this.getMiddlewares(exclude.toArray(new Class[0]), include.toArray(new Class[0]));

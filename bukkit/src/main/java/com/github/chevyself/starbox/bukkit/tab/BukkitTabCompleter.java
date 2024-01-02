@@ -7,6 +7,7 @@ import com.github.chevyself.starbox.parsers.CommandLineParser;
 import lombok.NonNull;
 import org.bukkit.command.CommandSender;
 
+/** Extends the generic tab completer for the bukkit platform. */
 public class BukkitTabCompleter
     extends GenericTabCompleter<CommandContext, BukkitCommand, CommandSender> {
 

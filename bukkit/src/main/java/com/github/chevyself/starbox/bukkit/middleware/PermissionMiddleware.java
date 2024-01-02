@@ -15,6 +15,11 @@ public class PermissionMiddleware implements BukkitMiddleware {
 
   @NonNull private final BukkitMessagesProvider messagesProvider;
 
+  /**
+   * Create the middleware.
+   *
+   * @param messagesProvider the messages provider
+   */
   public PermissionMiddleware(@NonNull BukkitMessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }

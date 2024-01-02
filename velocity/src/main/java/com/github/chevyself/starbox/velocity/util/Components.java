@@ -9,10 +9,17 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
-public class Components {
+/** Static utilities for {@link Component}. */
+public final class Components {
 
+  /**
+   * Convert an array of {@link Component} to a plain string.
+   *
+   * @param components the components to convert
+   * @return the plain string
+   */
   @NonNull
-  public static String toString(List<Component> components) {
+  public static String toString(@NonNull List<Component> components) {
     StringBuilder builder = new StringBuilder();
     for (Component component : components) {
       builder.append(LegacyComponentSerializer.legacyAmpersand().serialize(component));
@@ -20,8 +27,14 @@ public class Components {
     return builder.toString();
   }
 
+  /**
+   * Convert a plain string to components and then as a {@link Result}.
+   *
+   * @param plain the plain string to convert
+   * @return the result
+   */
   @NonNull
-  public static Result asResult(@NonNull String plain) {
+  public static ComponentResult asResult(@NonNull String plain) {
     Component component;
     if (JsonUtils.isJson(plain)) {
       component = GsonComponentSerializer.gson().deserialize(plain);
@@ -31,8 +44,14 @@ public class Components {
     return Components.asResult(component);
   }
 
+  /**
+   * Convert a {@link Component} to a {@link Result}.
+   *
+   * @param component the component to convert
+   * @return the result
+   */
   @NonNull
-  public static Result asResult(@NonNull Component component) {
+  public static ComponentResult asResult(@NonNull Component component) {
     return new ComponentResult(component);
   }
 }

@@ -24,6 +24,11 @@ public class PermissionMiddleware implements JdaMiddleware {
   @NonNull private final JdaMessagesProvider messagesProvider;
   @NonNull private final Map<WeakReference<JdaCommand>, Permission> cached;
 
+  /**
+   * Create the middleware.
+   *
+   * @param messagesProvider the messages provider
+   */
   public PermissionMiddleware(@NonNull JdaMessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
     this.cached = new HashMap<>();

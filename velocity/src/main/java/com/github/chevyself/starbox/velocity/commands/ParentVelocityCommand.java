@@ -8,6 +8,7 @@ import com.github.chevyself.starbox.velocity.context.CommandContext;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Extension of {@link AbstractParentCommand} for Velocity. */
 @Getter
 public class ParentVelocityCommand extends AbstractParentCommand<CommandContext, VelocityCommand>
     implements VelocityCommand {
@@ -16,6 +17,14 @@ public class ParentVelocityCommand extends AbstractParentCommand<CommandContext,
   private final boolean async;
   @NonNull private final VelocityCommandExecutor executor;
 
+  /**
+   * Create the command.
+   *
+   * @param commandManager the command manager
+   * @param annotation the annotation
+   * @param permission the permission
+   * @param async whether the command should be executed asynchronously
+   */
   public ParentVelocityCommand(
       @NonNull CommandManager<CommandContext, VelocityCommand> commandManager,
       @NonNull Command annotation,

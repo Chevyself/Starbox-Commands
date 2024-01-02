@@ -8,15 +8,29 @@ import lombok.Getter;
 import lombok.NonNull;
 import net.kyori.adventure.text.Component;
 
+/**
+ * Extension of result that allows the use of the Minecraft component system with the adventure API.
+ */
+@Getter
 public class ComponentResult extends SimpleResult {
   /** The components that will be sent after the execution. */
-  @NonNull @Getter private final List<Component> components;
+  @NonNull private final List<Component> components;
 
+  /**
+   * Create an instance.
+   *
+   * @param components the components to send
+   */
   public ComponentResult(@NonNull List<Component> components) {
     super(Components.toString(components));
     this.components = components;
   }
 
+  /**
+   * Create an instance.
+   *
+   * @param components the components to send
+   */
   public ComponentResult(@NonNull Component... components) {
     this(Arrays.asList(components));
   }

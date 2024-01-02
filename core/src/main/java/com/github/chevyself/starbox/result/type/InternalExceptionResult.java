@@ -12,9 +12,9 @@ public class InternalExceptionResult extends ExceptionResult {
   /**
    * Create the result.
    *
-   * @param exception the exception thrown
+   * @param throwable the exception thrown
    */
-  public InternalExceptionResult(@NonNull Exception exception) {
-    super(exception);
+  public InternalExceptionResult(@NonNull Throwable throwable) {
+    super(throwable);
   }
 }

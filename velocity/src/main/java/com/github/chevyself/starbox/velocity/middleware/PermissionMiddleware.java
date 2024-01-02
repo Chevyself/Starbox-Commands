@@ -7,10 +7,16 @@ import com.github.chevyself.starbox.velocity.messages.VelocityMessagesProvider;
 import java.util.Optional;
 import lombok.NonNull;
 
+/** Permission middleware. This checks the permission of the sender before executing a command */
 public class PermissionMiddleware implements Middleware<CommandContext> {
 
   @NonNull private final VelocityMessagesProvider messagesProvider;
 
+  /**
+   * Create the middleware.
+   *
+   * @param messagesProvider the messages provider
+   */
   public PermissionMiddleware(@NonNull VelocityMessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }

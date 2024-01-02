@@ -15,13 +15,14 @@ import lombok.NonNull;
  * {@link StarboxCommandContext} the {@link #sender} is the static instance of {@link
  * ConsoleCommandSender#INSTANCE}
  */
+@Getter
 public class CommandContext implements StarboxCommandContext<CommandContext, SystemCommand> {
 
-  @NonNull @Getter private final CommandLineParser commandLineParser;
-  @NonNull @Getter private final SystemCommand command;
-  @NonNull @Getter private final CommandSender sender;
-  @NonNull @Getter private final ProvidersRegistry<CommandContext> providersRegistry;
-  @NonNull @Getter private final MessagesProvider<CommandContext> messagesProvider;
+  @NonNull private final CommandLineParser commandLineParser;
+  @NonNull private final SystemCommand command;
+  @NonNull private final CommandSender sender;
+  @NonNull private final ProvidersRegistry<CommandContext> providersRegistry;
+  @NonNull private final MessagesProvider<CommandContext> messagesProvider;
 
   /**
    * Create the command context.

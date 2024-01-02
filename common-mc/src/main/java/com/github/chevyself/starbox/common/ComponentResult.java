@@ -8,15 +8,30 @@ import lombok.NonNull;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
+/**
+ * Extension of result that allows the use of the Minecraft component system with the Bungee chat
+ * API.
+ */
+@Getter
 public class ComponentResult extends SimpleResult {
   /** The components that will be sent after the execution. */
-  @NonNull @Getter private final List<BaseComponent> components;
+  @NonNull private final List<BaseComponent> components;
 
+  /**
+   * Create an instance.
+   *
+   * @param components the components to send
+   */
   public ComponentResult(@NonNull List<BaseComponent> components) {
     super(ComponentSerializer.toString(components));
     this.components = components;
   }
 
+  /**
+   * Create an instance.
+   *
+   * @param components the components to send
+   */
   public ComponentResult(@NonNull BaseComponent[] components) {
     this(Arrays.asList(components));
   }

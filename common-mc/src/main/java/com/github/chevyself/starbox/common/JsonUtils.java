@@ -2,7 +2,8 @@ package com.github.chevyself.starbox.common;
 
 import lombok.NonNull;
 
-public class JsonUtils {
+/** Static utility methods for json. */
+public final class JsonUtils {
 
   /**
    * Checks if a string is json. This method will return true if the string starts with "[" or "{"

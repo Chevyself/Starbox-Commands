@@ -7,11 +7,22 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
+/** Extension of {@link StarboxCommand} for JDA. */
 public interface JdaCommand extends StarboxCommand<CommandContext, JdaCommand> {
 
+  /**
+   * Get the description of the command.
+   *
+   * @return the description
+   */
   @NonNull
   String getDescription();
 
+  /**
+   * Create the command data to use slash commands.
+   *
+   * @return the command data
+   */
   @NonNull
   default SlashCommandData toCommandData() {
     SlashCommandData commandData = Commands.slash(this.getName(), this.getDescription());
@@ -21,6 +32,11 @@ public interface JdaCommand extends StarboxCommand<CommandContext, JdaCommand> {
     return commandData;
   }
 
+  /**
+   * Create the command data to use the subcommand feature of slash commands.
+   *
+   * @return the subcommand data
+   */
   @NonNull
   default SubcommandData toSubcommandData() {
     return new SubcommandData(this.getName(), this.getDescription());

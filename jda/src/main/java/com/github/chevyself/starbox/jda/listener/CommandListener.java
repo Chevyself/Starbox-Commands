@@ -24,12 +24,13 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.jetbrains.annotations.NotNull;
 
 /** The main listener of command execution. */
+@Getter
 public class CommandListener implements EventListener {
 
-  @NonNull @Getter private final CommandManager<CommandContext, JdaCommand> manager;
-  @NonNull @Getter private final JdaAdapter adapter;
-  @NonNull @Getter private final JdaMessagesProvider messagesProvider;
-  @NonNull @Getter private final ListenerOptions listenerOptions;
+  @NonNull private final CommandManager<CommandContext, JdaCommand> manager;
+  @NonNull private final JdaAdapter adapter;
+  @NonNull private final JdaMessagesProvider messagesProvider;
+  @NonNull private final ListenerOptions listenerOptions;
 
   /**
    * Create an instance.

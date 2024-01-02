@@ -11,13 +11,14 @@ import lombok.experimental.Delegate;
 import org.bukkit.command.CommandSender;
 
 /** The context of a Bukkit command. */
+@Getter
 public class CommandContext implements StarboxCommandContext<CommandContext, BukkitCommand> {
 
-  @NonNull @Getter private final CommandLineParser commandLineParser;
-  @NonNull @Getter private final BukkitCommand command;
-  @NonNull @Getter private final CommandSender sender;
-  @NonNull @Getter @Delegate private final ProvidersRegistry<CommandContext> providersRegistry;
-  @NonNull @Getter private final MessagesProvider<CommandContext> messagesProvider;
+  @NonNull private final CommandLineParser commandLineParser;
+  @NonNull private final BukkitCommand command;
+  @NonNull private final CommandSender sender;
+  @NonNull @Delegate private final ProvidersRegistry<CommandContext> providersRegistry;
+  @NonNull private final MessagesProvider<CommandContext> messagesProvider;
 
   /**
    * Create a Bukkit context.

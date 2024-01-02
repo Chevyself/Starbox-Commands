@@ -10,13 +10,21 @@ import java.util.ArrayList;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Extension of {@link AbstractBuiltCommand} for bukkit commands. */
+@Getter
 public class BukkitBuiltCommand extends AbstractBuiltCommand<CommandContext, BukkitCommand>
     implements BukkitCommand {
 
-  @NonNull @Getter private final BukkitAdapter adapter;
-  @NonNull @Getter private final BukkitCommandExecutor executor;
-  @Getter private final String permission;
+  @NonNull private final BukkitAdapter adapter;
+  @NonNull private final BukkitCommandExecutor executor;
+  private final String permission;
 
+  /**
+   * Create a new built command.
+   *
+   * @param builder the builder which built this command
+   * @param adapter the bukkit adapter
+   */
   public BukkitBuiltCommand(
       @NonNull CommandBuilder<CommandContext, BukkitCommand> builder,
       @NonNull BukkitAdapter adapter) {

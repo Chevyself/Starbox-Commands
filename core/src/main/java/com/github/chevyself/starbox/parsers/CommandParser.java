@@ -35,11 +35,12 @@ import lombok.NonNull;
  * @param <C> the command context
  * @param <T> the command type
  */
+@Getter
 public abstract class CommandParser<
     C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
-  @NonNull @Getter protected final Adapter<C, T> adapter;
-  @NonNull @Getter protected final CommandManager<C, T> commandManager;
+  @NonNull protected final Adapter<C, T> adapter;
+  @NonNull protected final CommandManager<C, T> commandManager;
 
   /**
    * Create the parser.

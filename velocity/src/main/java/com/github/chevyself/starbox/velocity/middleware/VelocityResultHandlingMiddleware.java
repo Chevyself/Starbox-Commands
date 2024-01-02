@@ -9,6 +9,7 @@ import lombok.NonNull;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
+/** Extension of the {@link ResultHandlingMiddleware} for the Velocity platform. */
 public class VelocityResultHandlingMiddleware extends ResultHandlingMiddleware<CommandContext> {
 
   @Override

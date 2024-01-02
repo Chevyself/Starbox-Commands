@@ -14,8 +14,15 @@ import com.github.chevyself.starbox.velocity.context.CommandContext;
 import java.lang.reflect.Method;
 import lombok.NonNull;
 
+/** Extension of the {@link CommandParser} for the Velocity platform. */
 public class VelocityCommandParser extends CommandParser<CommandContext, VelocityCommand> {
 
+  /**
+   * Create a new command parser for the Velocity platform.
+   *
+   * @param adapter the adapter
+   * @param commandManager the command manager
+   */
   public VelocityCommandParser(
       @NonNull Adapter<CommandContext, VelocityCommand> adapter,
       @NonNull CommandManager<CommandContext, VelocityCommand> commandManager) {

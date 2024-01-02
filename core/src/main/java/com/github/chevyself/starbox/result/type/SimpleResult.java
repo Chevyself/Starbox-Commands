@@ -17,6 +17,11 @@ public class SimpleResult implements Result {
     this.message = message;
   }
 
+  /**
+   * Get the message to display.
+   *
+   * @return the message
+   */
   @NonNull
   public String getMessage() {
     return message;

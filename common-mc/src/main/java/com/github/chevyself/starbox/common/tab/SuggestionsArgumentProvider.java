@@ -5,6 +5,12 @@ import com.github.chevyself.starbox.providers.StarboxArgumentProvider;
 import java.util.List;
 import lombok.NonNull;
 
+/**
+ * Extension of argument provided that may provide suggestions for the command.
+ *
+ * @param <O> the object type to provide
+ * @param <C> the command context type
+ */
 public interface SuggestionsArgumentProvider<O, C extends StarboxCommandContext<C, ?>>
     extends StarboxArgumentProvider<O, C> {
 

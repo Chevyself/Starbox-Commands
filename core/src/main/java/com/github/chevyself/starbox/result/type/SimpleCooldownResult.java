@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /** A simple implementation of {@link CooldownResult} and {@link SimpleResult}. */
+@Getter
 public class SimpleCooldownResult extends SimpleResult implements CooldownResult {
 
-  @NonNull @Getter private final Duration cooldown;
+  @NonNull private final Duration cooldown;
 
   /**
    * Create the result.

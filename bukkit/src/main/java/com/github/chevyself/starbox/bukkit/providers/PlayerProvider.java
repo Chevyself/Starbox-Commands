@@ -40,7 +40,8 @@ public class PlayerProvider
   }
 
   @Override
-  public @NonNull List<String> getSuggestions(@NonNull String string, CommandContext context) {
+  public @NonNull List<String> getSuggestions(
+      @NonNull String string, @NonNull CommandContext context) {
     return PlayerProvider.getPlayerNames();
   }
 

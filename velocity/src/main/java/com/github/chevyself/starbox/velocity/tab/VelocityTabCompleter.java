@@ -7,6 +7,7 @@ import com.github.chevyself.starbox.velocity.context.CommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import lombok.NonNull;
 
+/** Extension of the {@link GenericTabCompleter} for the Velocity platform. */
 public class VelocityTabCompleter
     extends GenericTabCompleter<CommandContext, VelocityCommand, CommandSource> {
 

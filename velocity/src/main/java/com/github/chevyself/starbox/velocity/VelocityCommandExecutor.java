@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
 
+/** Used to actually register the command with the Velocity API. */
 public class VelocityCommandExecutor implements SimpleCommand {
 
   @NonNull
@@ -20,6 +21,11 @@ public class VelocityCommandExecutor implements SimpleCommand {
   @NonNull private static final VelocityTabCompleter genericCompleter = new VelocityTabCompleter();
   @NonNull private final VelocityCommand command;
 
+  /**
+   * Create a new executor for the given command.
+   *
+   * @param command the command
+   */
   public VelocityCommandExecutor(@NonNull VelocityCommand command) {
     this.command = command;
   }

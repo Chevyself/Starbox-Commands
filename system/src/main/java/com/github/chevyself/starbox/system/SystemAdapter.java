@@ -16,13 +16,21 @@ import com.github.chevyself.starbox.system.commands.SystemCommand;
 import com.github.chevyself.starbox.system.context.CommandContext;
 import com.github.chevyself.starbox.system.middleware.SystemResultHandlingMiddleware;
 import com.github.chevyself.starbox.system.providers.SystemCommandContextProvider;
+import lombok.Getter;
 import lombok.NonNull;
 
+/** The adapter for the System platform. */
+@Getter
 public class SystemAdapter implements Adapter<CommandContext, SystemCommand> {
 
   @NonNull private final String prefix;
   private CommandListener listener;
 
+  /**
+   * Create the adapter.
+   *
+   * @param prefix the prefix
+   */
   public SystemAdapter(@NonNull String prefix) {
     this.prefix = prefix;
   }
@@ -69,7 +77,7 @@ public class SystemAdapter implements Adapter<CommandContext, SystemCommand> {
   }
 
   @Override
-  public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
+  public @NonNull MessagesProvider<CommandContext> getDefaultMessagesProvider() {
     return new GenericMessagesProvider<>();
   }
 

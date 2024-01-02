@@ -7,11 +7,20 @@ import com.github.chevyself.starbox.jda.context.CommandContext;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Extension of {@link AbstractParentCommand} for JDA. */
+@Getter
 public class JdaParentCommand extends AbstractParentCommand<CommandContext, JdaCommand>
     implements JdaCommand {
 
-  @NonNull @Getter private final String description;
+  @NonNull private final String description;
 
+  /**
+   * Create the command.
+   *
+   * @param commandManager the command manager
+   * @param annotation the annotation
+   * @param description the description
+   */
   public JdaParentCommand(
       @NonNull CommandManager<CommandContext, JdaCommand> commandManager,
       @NonNull Command annotation,

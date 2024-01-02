@@ -50,6 +50,12 @@ public class CommandMetadata {
     return (T) map.get(key);
   }
 
+  /**
+   * Check if the metadata map contains a value for a key.
+   *
+   * @param key the key to check
+   * @return true if the map contains the key
+   */
   public boolean has(@NonNull String key) {
     return map.containsKey(key);
   }

@@ -15,8 +15,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import lombok.NonNull;
 
+/** Parses commands for the bukkit platform. */
 public class BukkitCommandParser extends CommandParser<CommandContext, BukkitCommand> {
 
+  /**
+   * Create a new command parser for the bukkit platform.
+   *
+   * @param adapter the bukkit adapter
+   * @param commandManager the command manager
+   */
   public BukkitCommandParser(
       @NonNull BukkitAdapter adapter,
       @NonNull CommandManager<CommandContext, BukkitCommand> commandManager) {

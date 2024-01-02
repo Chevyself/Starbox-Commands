@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 /** This context is used for every command {@link User being the sender}. */
 public interface CommandContext extends StarboxCommandContext<CommandContext, JdaCommand> {
 
-  @SuppressWarnings("unchecked")
   @Override
   @NonNull
   JdaCommand getCommand();

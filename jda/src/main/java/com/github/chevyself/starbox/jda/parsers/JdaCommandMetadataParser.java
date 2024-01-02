@@ -6,6 +6,10 @@ import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import java.lang.reflect.AnnotatedElement;
 import lombok.NonNull;
 
+/**
+ * Implementation of {@link CommandMetadataParser} for JDA. This parses the {@link
+ * CommandPermission} and puts it in the metadata.
+ */
 public class JdaCommandMetadataParser implements CommandMetadataParser {
 
   @Override

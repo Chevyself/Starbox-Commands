@@ -20,13 +20,15 @@ import org.bukkit.help.HelpTopic;
  * {@link #StarboxCommandHelpTopic(StarboxBukkitCommand, StarboxCommandHelpTopic,
  * BukkitMessagesProvider)} has more detailed information about the {@link HelpTopic} {}
  */
+@Setter
+@Getter
 class StarboxCommandHelpTopic extends HelpTopic {
 
   @NonNull private static final Server server = Bukkit.getServer();
   /** This instance of {@link HelpMap} is used to parseAndRegister topics for children commands. */
   @NonNull private static final HelpMap helpMap = StarboxCommandHelpTopic.server.getHelpMap();
 
-  @NonNull @Getter @Setter private BukkitMessagesProvider provider;
+  @NonNull private BukkitMessagesProvider provider;
 
   /**
    * Create the topic. The topic is created with {@link BukkitMessagesProvider}:

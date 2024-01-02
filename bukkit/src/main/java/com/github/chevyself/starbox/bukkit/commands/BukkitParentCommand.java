@@ -9,13 +9,26 @@ import com.github.chevyself.starbox.commands.AbstractParentCommand;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Represents a parent command for the bukkit platform. */
+@Getter
 public class BukkitParentCommand extends AbstractParentCommand<CommandContext, BukkitCommand>
     implements BukkitCommand {
 
-  @NonNull @Getter private final BukkitAdapter adapter;
-  @NonNull @Getter private final BukkitCommandExecutor executor;
-  @Getter private final String permission;
+  @NonNull private final BukkitAdapter adapter;
+  @NonNull private final BukkitCommandExecutor executor;
+  private final String permission;
 
+  /**
+   * Creates a new parent command for the bukkit platform.
+   *
+   * @param commandManager the command manager
+   * @param annotation the annotation
+   * @param adapter the bukkit adapter
+   * @param permission the permission
+   * @param description the description
+   * @param usage the usage
+   * @param async whether the command should be executed asynchronously
+   */
   public BukkitParentCommand(
       @NonNull CommandManager<CommandContext, BukkitCommand> commandManager,
       @NonNull Command annotation,

@@ -8,6 +8,7 @@ import com.github.chevyself.starbox.result.type.SimpleResult;
 import java.util.Optional;
 import lombok.NonNull;
 
+/** Default result handling middleware for JDA. */
 public class JdaResultHandlingMiddleware extends ResultHandlingMiddleware<CommandContext> {
 
   @Override
@@ -18,6 +19,12 @@ public class JdaResultHandlingMiddleware extends ResultHandlingMiddleware<Comman
     return Optional.empty();
   }
 
+  /**
+   * Send a message to the channel based on the context.
+   *
+   * @param context the context of the command execution
+   * @param message the message to send
+   */
   public void sendMessage(@NonNull CommandContext context, @NonNull String message) {
     if (context instanceof SlashCommandContext) {
       ((SlashCommandContext) context).getEvent().getHook().sendMessage(message).queue();

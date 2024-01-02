@@ -19,12 +19,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * This context is used when the command is executed inside a guild. The context is still a {@link
  * User} but you can also get the {@link Member}
  */
+@Getter
 public class GuildCommandContext extends GenericCommandContext {
 
   /** The sender of the command as a member. */
-  @NonNull @Getter private final Member member;
+  @NonNull private final Member member;
   /** The guild where the command was executed. */
-  @NonNull @Getter private final Guild guild;
+  @NonNull private final Guild guild;
 
   /**
    * Create an instance.

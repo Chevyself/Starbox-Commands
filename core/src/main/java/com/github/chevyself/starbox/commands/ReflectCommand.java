@@ -7,6 +7,7 @@ import com.github.chevyself.starbox.result.Result;
 import com.github.chevyself.starbox.result.type.ArgumentExceptionResult;
 import com.github.chevyself.starbox.result.type.InternalExceptionResult;
 import com.github.chevyself.starbox.util.Pair;
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import lombok.NonNull;
@@ -53,7 +54,7 @@ public interface ReflectCommand<
   @Override
   default Result run(@NonNull C context) {
     try {
-      Object object = this.getMethod().invoke(this.getObject(), this.getObjects(context));
+      Object object = this.getMethod().invokeExact(this.getObject(), this.getObjects(context));
       if (object instanceof Result) {
         return (Result) object;
       } else {
@@ -61,19 +62,21 @@ public interface ReflectCommand<
       }
     } catch (final IllegalAccessException | InvocationTargetException e) {
       return new InternalExceptionResult(e);
-    } catch (MissingArgumentException | ArgumentProviderException e) {
+    } catch (final MissingArgumentException | ArgumentProviderException e) {
       return new ArgumentExceptionResult(e);
+    } catch (final Throwable e) {
+      return new InternalExceptionResult(e);
     }
   }
 
   /**
-   * Get the method to run a command. This is annotated with the respective @Command annotation, and
-   * it is required to call the command
+   * Get the method handle to run a command. This is annotated with the respective @Command
+   * annotation, and it is required to call the command
    *
-   * @return the method to execute a command
+   * @return the method handle to execute a command
    */
   @NonNull
-  Method getMethod();
+  MethodHandle getMethod();
 
   /**
    * Get the instance of a class that contains a command. It is required to call the {@link

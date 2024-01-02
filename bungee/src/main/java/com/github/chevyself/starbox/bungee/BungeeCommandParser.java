@@ -13,8 +13,15 @@ import com.github.chevyself.starbox.parsers.ParentCommandSupplier;
 import java.lang.reflect.Method;
 import lombok.NonNull;
 
+/** Implementation of {@link CommandParser} for the Bungee platform. */
 public class BungeeCommandParser extends CommandParser<CommandContext, BungeeCommand> {
 
+  /**
+   * Create a new command parser.
+   *
+   * @param adapter the bungee adapter
+   * @param commandManager the command manager
+   */
   public BungeeCommandParser(
       @NonNull BungeeAdapter adapter,
       @NonNull CommandManager<CommandContext, BungeeCommand> commandManager) {

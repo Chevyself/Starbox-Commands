@@ -11,12 +11,22 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 
+/**
+ * Represents the actual command executor for the Bungee platform. This is used to register the
+ * command with the Bungee API.
+ */
 public class BungeeCommandExecutor extends Command implements TabExecutor {
 
   @NonNull private static final BungeeTabCompleter tabCompleter = new BungeeTabCompleter();
   @NonNull private final BungeeCommand command;
   private final boolean async;
 
+  /**
+   * Create a new command executor.
+   *
+   * @param command the command to execute
+   * @param async whether the command should be executed asynchronously
+   */
   public BungeeCommandExecutor(@NonNull BungeeCommand command, boolean async) {
     super(command.getName(), command.getPermission(), Aliases.getAliases(command));
     this.command = command;

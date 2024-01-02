@@ -9,6 +9,7 @@ import com.velocitypowered.api.command.CommandSource;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** The context for Velocity commands. */
 @Getter
 public class CommandContext implements StarboxCommandContext<CommandContext, VelocityCommand> {
 
@@ -18,6 +19,15 @@ public class CommandContext implements StarboxCommandContext<CommandContext, Vel
   @NonNull private final ProvidersRegistry<CommandContext> providersRegistry;
   @NonNull private final MessagesProvider<CommandContext> messagesProvider;
 
+  /**
+   * Create an instance.
+   *
+   * @param commandLineParser the parser that parsed the command from the command line
+   * @param command the command for which this context was created
+   * @param sender the sender of the command
+   * @param providersRegistry the registry used in the context
+   * @param messagesProvider the messages' provider for this context
+   */
   public CommandContext(
       @NonNull CommandLineParser commandLineParser,
       @NonNull VelocityCommand command,

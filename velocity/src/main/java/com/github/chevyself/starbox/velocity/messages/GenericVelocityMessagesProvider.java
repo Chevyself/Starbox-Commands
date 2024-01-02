@@ -4,6 +4,7 @@ import com.github.chevyself.starbox.common.DecoratedMessagesProvider;
 import com.github.chevyself.starbox.velocity.context.CommandContext;
 import lombok.NonNull;
 
+/** Extends {@link DecoratedMessagesProvider} to provide generic messages for Velocity. */
 public class GenericVelocityMessagesProvider extends DecoratedMessagesProvider<CommandContext>
     implements VelocityMessagesProvider {
 

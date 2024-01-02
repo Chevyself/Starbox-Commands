@@ -12,7 +12,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 /** Static utilities for {@link BaseComponent}. */
-public class Components {
+public final class Components {
 
   @NonNull
   private static final Map<Character, Modifier> modifiers =
@@ -40,13 +40,25 @@ public class Components {
           .put('o', component -> component.setItalic(true))
           .build();
 
+  /**
+   * Convert plain text to Components and then as a {@link Result}.
+   *
+   * @param plain the plain text to convert
+   * @return the result
+   */
   @NonNull
-  public static Result asResult(@NonNull String plain) {
+  public static ComponentResult asResult(@NonNull String plain) {
     return new ComponentResult(Components.getComponent(plain));
   }
 
+  /**
+   * Convert an array of {@link BaseComponent} to a {@link Result}.
+   *
+   * @param components the components to convert
+   * @return the result
+   */
   @NonNull
-  public static Result asResult(@NonNull BaseComponent[] components) {
+  public static ComponentResult asResult(@NonNull BaseComponent[] components) {
     return new ComponentResult(components);
   }
 

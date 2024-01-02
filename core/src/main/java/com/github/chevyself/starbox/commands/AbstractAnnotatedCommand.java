@@ -4,6 +4,9 @@ import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.arguments.Argument;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
+import com.github.chevyself.starbox.exceptions.CommandRegistrationException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.List;
 import lombok.Getter;
@@ -15,13 +18,14 @@ import lombok.NonNull;
  * @param <C> the context
  * @param <T> the command
  */
+@Getter
 public abstract class AbstractAnnotatedCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     extends AbstractCommand<C, T> implements ReflectCommand<C, T> {
 
-  @NonNull @Getter protected final Object object;
-  @NonNull @Getter protected final Method method;
-  @NonNull @Getter protected final List<Argument<?>> arguments;
+  @NonNull protected final Object object;
+  @NonNull protected final MethodHandle method;
+  @NonNull protected final List<Argument<?>> arguments;
 
   /**
    * Create a new annotated command.
@@ -38,7 +42,11 @@ public abstract class AbstractAnnotatedCommand<
       @NonNull Method method) {
     super(commandManager, annotation, commandManager.getCommandMetadataParser().parse(method));
     this.object = object;
-    this.method = method;
     this.arguments = Argument.parseArguments(method);
+    try {
+      this.method = MethodHandles.lookup().unreflect(method);
+    } catch (IllegalAccessException e) {
+      throw new CommandRegistrationException("Failed to unreflect command", e);
+    }
   }
 }

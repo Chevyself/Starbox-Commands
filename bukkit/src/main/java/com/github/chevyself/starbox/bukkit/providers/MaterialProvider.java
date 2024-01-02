@@ -49,7 +49,8 @@ public class MaterialProvider implements BukkitArgumentProvider<Material> {
   }
 
   @Override
-  public @NonNull List<String> getSuggestions(@NonNull String string, CommandContext context) {
+  public @NonNull List<String> getSuggestions(
+      @NonNull String string, @NonNull CommandContext context) {
     List<String> suggestions = new ArrayList<>();
     boolean prefix = string.startsWith("minecraft:");
     for (Material value : Material.values()) {

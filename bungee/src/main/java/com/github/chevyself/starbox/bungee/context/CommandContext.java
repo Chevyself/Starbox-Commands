@@ -11,13 +11,14 @@ import lombok.experimental.Delegate;
 import net.md_5.bungee.api.CommandSender;
 
 /** The context for bungee commands. */
+@Getter
 public class CommandContext implements StarboxCommandContext<CommandContext, BungeeCommand> {
 
-  @NonNull @Getter private final CommandLineParser commandLineParser;
-  @NonNull @Getter private final BungeeCommand command;
-  @NonNull @Getter private final CommandSender sender;
-  @NonNull @Getter @Delegate private final ProvidersRegistry<CommandContext> providersRegistry;
-  @NonNull @Getter private final MessagesProvider<CommandContext> messagesProvider;
+  @NonNull private final CommandLineParser commandLineParser;
+  @NonNull private final BungeeCommand command;
+  @NonNull private final CommandSender sender;
+  @NonNull @Delegate private final ProvidersRegistry<CommandContext> providersRegistry;
+  @NonNull private final MessagesProvider<CommandContext> messagesProvider;
 
   /**
    * Create an instance.

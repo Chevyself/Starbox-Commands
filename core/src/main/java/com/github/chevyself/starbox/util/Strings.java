@@ -362,22 +362,38 @@ public final class Strings {
     builder.append(Option.generateUsage(command.getOptions()));
     if (command instanceof ReflectCommand) {
       ReflectCommand<?, ?> reflectCommand = (ReflectCommand<?, ?>) command;
-      if (reflectCommand.getArguments().size() > 0) {
+      if (!reflectCommand.getArguments().isEmpty()) {
         builder.append(Argument.generateUsage(reflectCommand.getArguments()));
       }
     }
     return builder.toString();
   }
 
+  /**
+   * Get help for the command. This will generate a help message using {@link
+   * #generateUsage(StarboxCommand)}
+   *
+   * @param command the command to generate the help
+   * @param children the children of the command
+   * @return the help message
+   */
   public static String genericHelp(
       @NonNull StarboxCommand<?, ?> command,
       @NonNull Collection<? extends StarboxCommand<?, ?>> children) {
     StringBuilder builder = new StringBuilder();
-    builder.append("usage: ").append(command.getName()).append(" ").append(generateUsage(command));
-    if (children.size() > 0) {
+    builder
+        .append("usage: ")
+        .append(command.getName())
+        .append(" ")
+        .append(Strings.generateUsage(command));
+    if (!children.isEmpty()) {
       builder.append("\nSubcommands:");
       for (StarboxCommand<?, ?> child : children) {
-        builder.append("\n + ").append(child.getName()).append(" ").append(generateUsage(child));
+        builder
+            .append("\n + ")
+            .append(child.getName())
+            .append(" ")
+            .append(Strings.generateUsage(child));
       }
     }
     return builder.toString();
@@ -402,15 +418,15 @@ public final class Strings {
         .append("usage: ")
         .append(nameSupplier.apply(command))
         .append(" ")
-        .append(generateUsage(command));
-    if (children.size() > 0) {
+        .append(Strings.generateUsage(command));
+    if (!children.isEmpty()) {
       builder.append("\nSubcommands:");
       for (T child : children) {
         builder
             .append("\n + ")
             .append(nameSupplier.apply(child))
             .append(" ")
-            .append(generateUsage(child));
+            .append(Strings.generateUsage(child));
       }
     }
     return builder.toString();

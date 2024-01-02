@@ -15,10 +15,11 @@ import org.bukkit.plugin.Plugin;
  * &lt;plugin_name&gt;'. This helps to create a {@link HelpTopic} for {@link
  * org.bukkit.plugin.java.JavaPlugin} that uses {@link CommandManager} to parseAndRegister commands
  */
+@Getter
 public class PluginHelpTopic extends HelpTopic {
 
-  @NonNull @Getter private final CommandManager<CommandContext, BukkitCommand> manager;
-  @NonNull @Getter private final BukkitMessagesProvider provider;
+  @NonNull private final CommandManager<CommandContext, BukkitCommand> manager;
+  @NonNull private final BukkitMessagesProvider provider;
 
   /**
    * Create the instance of the help topic.

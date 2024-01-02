@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 
+/**
+ * Esteemed extension of {@link StarboxCommand} for commands with arguments.
+ *
+ * @param <C> the context
+ * @param <T> the command
+ */
 public interface ArgumentedStarboxCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     extends StarboxCommand<C, T> {

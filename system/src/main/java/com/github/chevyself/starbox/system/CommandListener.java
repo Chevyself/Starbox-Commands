@@ -41,29 +41,37 @@ public class CommandListener extends Thread {
     while (!closed) {
       if (this.scanner.hasNextLine()) {
         String line = this.scanner.nextLine().trim();
-        String[] split = line.split(" ");
-        String name = split[0];
-        if (!name.startsWith(this.prefix)) {
-          continue;
-        }
-        Optional<SystemCommand> optionalCommand =
-            this.manager.getCommand(name.substring(this.prefix.length()));
-        if (optionalCommand.isPresent()) {
-          SystemCommand command = optionalCommand.get();
-          CommandLineParser parser =
-              CommandLineParser.parse(
-                  command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
-          command.execute(
-              new CommandContext(
-                  parser,
-                  command,
-                  ConsoleCommandSender.INSTANCE,
-                  this.manager.getProvidersRegistry(),
-                  this.manager.getMessagesProvider()));
-        } else {
-          System.out.println("Command " + name + " could not be found");
-        }
+        this.process(line);
       }
+    }
+  }
+
+  /**
+   * Process a command line.
+   *
+   * @param line the line to process
+   */
+  public void process(@NonNull String line) {
+    String[] split = line.split(" ");
+    String name = split[0];
+    if (!name.startsWith(this.prefix)) {
+      return;
+    }
+    Optional<SystemCommand> optionalCommand =
+        this.manager.getCommand(name.substring(this.prefix.length()));
+    if (optionalCommand.isPresent()) {
+      SystemCommand command = optionalCommand.get();
+      CommandLineParser parser =
+          CommandLineParser.parse(command.getOptions(), Arrays.copyOfRange(split, 1, split.length));
+      command.execute(
+          new CommandContext(
+              parser,
+              command,
+              ConsoleCommandSender.INSTANCE,
+              this.manager.getProvidersRegistry(),
+              this.manager.getMessagesProvider()));
+    } else {
+      System.out.println("Command " + name + " could not be found");
     }
   }
 

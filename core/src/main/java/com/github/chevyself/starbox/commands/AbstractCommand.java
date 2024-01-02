@@ -20,18 +20,19 @@ import lombok.NonNull;
  * @param <C> the type of context
  * @param <T> the type of children
  */
+@Getter
 public abstract class AbstractCommand<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>>
     implements StarboxCommand<C, T> {
 
-  @NonNull @Getter protected final List<String> aliases;
-  @NonNull @Getter protected final List<Middleware<C>> middlewares;
-  @NonNull @Getter protected final List<Option> options;
-  @NonNull @Getter protected final CommandMetadata metadata;
-  @NonNull @Getter protected final List<T> children;
-  @NonNull @Getter protected final ProvidersRegistry<C> providersRegistry;
-  @NonNull @Getter protected final MessagesProvider<C> messagesProvider;
-  @NonNull @Getter private final CommandManager<C, T> commandManager;
+  @NonNull protected final List<String> aliases;
+  @NonNull protected final List<Middleware<C>> middlewares;
+  @NonNull protected final List<Option> options;
+  @NonNull protected final CommandMetadata metadata;
+  @NonNull protected final List<T> children;
+  @NonNull protected final ProvidersRegistry<C> providersRegistry;
+  @NonNull protected final MessagesProvider<C> messagesProvider;
+  @NonNull private final CommandManager<C, T> commandManager;
 
   /**
    * Create a new command.

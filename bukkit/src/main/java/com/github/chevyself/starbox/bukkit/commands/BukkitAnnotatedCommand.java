@@ -11,13 +11,25 @@ import java.lang.reflect.Method;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Extension of {@link AbstractAnnotatedCommand} for bukkit commands. */
+@Getter
 public class BukkitAnnotatedCommand extends AbstractAnnotatedCommand<CommandContext, BukkitCommand>
     implements BukkitCommand {
 
-  @NonNull @Getter private final BukkitAdapter adapter;
-  @NonNull @Getter private final BukkitCommandExecutor executor;
-  @Getter private final String permission;
+  @NonNull private final BukkitAdapter adapter;
+  @NonNull private final BukkitCommandExecutor executor;
+  private final String permission;
 
+  /**
+   * Create a new annotated bukkit command.
+   *
+   * @param commandManager the command manager to register the command to
+   * @param annotation the annotation of the command
+   * @param object the object to invoke
+   * @param method the method to invoke
+   * @param adapter the bukkit adapter
+   * @param permission the permission of the command
+   */
   public BukkitAnnotatedCommand(
       @NonNull CommandManager<CommandContext, BukkitCommand> commandManager,
       @NonNull Command annotation,

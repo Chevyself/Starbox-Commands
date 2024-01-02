@@ -4,7 +4,6 @@ import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.adapters.Adapter;
 import com.github.chevyself.starbox.commands.CommandBuilder;
-import com.github.chevyself.starbox.common.DecoratedMessagesProvider;
 import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.parsers.CommandMetadataParser;
 import com.github.chevyself.starbox.parsers.CommandParser;
@@ -24,11 +23,18 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import java.util.logging.Logger;
 import lombok.NonNull;
 
+/** The adapter for the Velocity platform. */
 public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand> {
 
   @NonNull private final ProxyServer proxyServer;
   @NonNull private final Logger logger;
 
+  /**
+   * Create the adapter.
+   *
+   * @param proxyServer the proxy server
+   * @param logger the logger
+   */
   public VelocityAdapter(@NonNull ProxyServer proxyServer, @NonNull Logger logger) {
     this.proxyServer = proxyServer;
     this.logger = logger;
@@ -93,7 +99,7 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
   }
 
   @Override
-  public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
+  public @NonNull MessagesProvider<CommandContext> getDefaultMessagesProvider() {
     return new GenericVelocityMessagesProvider();
   }
 

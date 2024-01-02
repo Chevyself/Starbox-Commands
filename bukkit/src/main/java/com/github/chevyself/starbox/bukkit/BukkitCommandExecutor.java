@@ -11,6 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+/**
+ * Represents the executor for a bukkit command made by Starbox. This executor is the one that
+ * actually goes registered in the bukkit command map.
+ */
 public class BukkitCommandExecutor extends Command {
 
   @NonNull private static final BukkitTabCompleter reflectCompleter = new BukkitTabCompleter();
@@ -20,6 +24,16 @@ public class BukkitCommandExecutor extends Command {
   @NonNull @Getter private final BukkitCommand command;
   private final boolean async;
 
+  /**
+   * Creates a new executor for a bukkit command.
+   *
+   * @param name the name of the command
+   * @param description the description of the command
+   * @param usageMessage the usage message of the command
+   * @param aliases the aliases of the command
+   * @param command the command
+   * @param async whether the command should be executed asynchronously
+   */
   public BukkitCommandExecutor(
       String name,
       String description,
@@ -33,7 +47,7 @@ public class BukkitCommandExecutor extends Command {
   }
 
   @Override
-  public List<String> tabComplete(
+  public @NonNull List<String> tabComplete(
       @NonNull CommandSender sender, @NonNull String name, String @NonNull [] args)
       throws IllegalArgumentException {
     return BukkitCommandExecutor.tabCompleter.tabComplete(command, sender, name, args);

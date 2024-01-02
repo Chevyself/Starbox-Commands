@@ -26,16 +26,17 @@ import lombok.NonNull;
  * @param <C> the command context type
  * @param <T> the command type
  */
+@Getter
 public final class CommandManager<
     C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>> {
 
-  @NonNull @Getter private final Adapter<C, T> adapter;
-  @NonNull @Getter private final CommandParser<C, T> commandParser;
-  @NonNull @Getter private final CommandMetadataParser commandMetadataParser;
-  @NonNull @Getter private final List<T> commands;
-  @NonNull @Getter private final ProvidersRegistry<C> providersRegistry;
-  @NonNull @Getter private final MiddlewareRegistry<C> middlewareRegistry;
-  @NonNull @Getter private final MessagesProvider<C> messagesProvider;
+  @NonNull private final Adapter<C, T> adapter;
+  @NonNull private final CommandParser<C, T> commandParser;
+  @NonNull private final CommandMetadataParser commandMetadataParser;
+  @NonNull private final List<T> commands;
+  @NonNull private final ProvidersRegistry<C> providersRegistry;
+  @NonNull private final MiddlewareRegistry<C> middlewareRegistry;
+  @NonNull private final MessagesProvider<C> messagesProvider;
 
   CommandManager(
       @NonNull Adapter<C, T> adapter,
@@ -161,6 +162,12 @@ public final class CommandManager<
     return this.commands.stream().filter(command -> command.hasAlias(alias)).findFirst();
   }
 
+  /**
+   * Create a new command builder with the provided name.
+   *
+   * @param name the name of the command
+   * @return the command builder
+   */
   @NonNull
   public CommandBuilder<C, T> literal(@NonNull String name) {
     return new CommandBuilder<>(this, name);

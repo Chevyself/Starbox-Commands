@@ -7,6 +7,7 @@ import com.github.chevyself.starbox.parsers.CommandLineParser;
 import lombok.NonNull;
 import net.md_5.bungee.api.CommandSender;
 
+/** Extension of {@link GenericTabCompleter} for Bungee commands. */
 public class BungeeTabCompleter
     extends GenericTabCompleter<CommandContext, BungeeCommand, CommandSender> {
 

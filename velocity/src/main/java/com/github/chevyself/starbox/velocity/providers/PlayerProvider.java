@@ -11,12 +11,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 
+/** Provides a {@link Player} from a {@link CommandContext} or {@link String}. */
 public class PlayerProvider
     implements VelocityExtraArgumentProvider<Player>, VelocityArgumentProvider<Player> {
 
   @NonNull private final VelocityMessagesProvider messagesProvider;
   @NonNull private final ProxyServer proxyServer;
 
+  /**
+   * Create the provider.
+   *
+   * @param messagesProvider to message if the {@link String} is invalid
+   * @param proxyServer to get the {@link Player} from the {@link String}
+   */
   public PlayerProvider(
       @NonNull VelocityMessagesProvider messagesProvider, @NonNull ProxyServer proxyServer) {
     this.messagesProvider = messagesProvider;

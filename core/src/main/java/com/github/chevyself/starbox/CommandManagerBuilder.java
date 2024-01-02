@@ -30,7 +30,7 @@ import lombok.NonNull;
  * <p>You can set a {@link MessagesProvider} and a {@link CommandMetadataParser} using the setters:
  * {@link #setMessagesProvider(MessagesProvider)} and {@link
  * #setCommandMetadataParser(CommandMetadataParser)}. If none are set, the default ones will be used
- * from the adapter: {@link Adapter#getDefaultMessaesProvider()} and {@link
+ * from the adapter: {@link Adapter#getDefaultMessagesProvider()} and {@link
  * Adapter#getDefaultCommandMetadataParser()}.
  *
  * <p>Once the {@link CommandManager} is built, the setters will throw an {@link
@@ -189,7 +189,7 @@ public final class CommandManagerBuilder<
   public CommandManager<C, T> build() {
     if (built == null) {
       if (messagesProvider == null) {
-        this.messagesProvider = adapter.getDefaultMessaesProvider();
+        this.messagesProvider = adapter.getDefaultMessagesProvider();
       }
       if (useDefaultMiddlewares) {
         this.adapter.registerDefaultMiddlewares(this, this.middlewareRegistry);

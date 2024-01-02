@@ -9,6 +9,7 @@ import com.github.chevyself.starbox.result.Result;
 import com.github.chevyself.starbox.result.type.SimpleResult;
 import lombok.NonNull;
 
+/** Handles the result of a command for the bukkit platform. */
 public class BukkitResultHandlingMiddleware extends ResultHandlingMiddleware<CommandContext>
     implements BukkitMiddleware {
 

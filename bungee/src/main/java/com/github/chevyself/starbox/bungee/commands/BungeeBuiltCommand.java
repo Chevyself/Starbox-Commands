@@ -9,13 +9,21 @@ import com.github.chevyself.starbox.metadata.CommandMetadata;
 import lombok.Getter;
 import lombok.NonNull;
 
+/** Extension of {@link AbstractBuiltCommand} for bungee commands. */
+@Getter
 public class BungeeBuiltCommand extends AbstractBuiltCommand<CommandContext, BungeeCommand>
     implements BungeeCommand {
 
-  @NonNull @Getter private final BungeeAdapter adapter;
-  @NonNull @Getter private final BungeeCommandExecutor executor;
-  @Getter private final String permission;
+  @NonNull private final BungeeAdapter adapter;
+  @NonNull private final BungeeCommandExecutor executor;
+  private final String permission;
 
+  /**
+   * Create a new built command.
+   *
+   * @param builder the builder which built this command
+   * @param adapter the bungee adapter
+   */
   public BungeeBuiltCommand(
       @NonNull CommandBuilder<CommandContext, BungeeCommand> builder,
       @NonNull BungeeAdapter adapter) {

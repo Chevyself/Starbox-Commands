@@ -7,9 +7,16 @@ import java.lang.annotation.Target;
 import lombok.NonNull;
 import net.dv8tion.jda.api.Permission;
 
+/** Represents the permission of a command. */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CommandPermission {
+
+  /**
+   * Get the permission to check for.
+   *
+   * @return the permission
+   */
   @NonNull
   Permission value();
 }

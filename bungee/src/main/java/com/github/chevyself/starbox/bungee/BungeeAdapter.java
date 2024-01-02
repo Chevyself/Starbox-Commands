@@ -22,11 +22,18 @@ import lombok.NonNull;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
+/** Adapts the {@link CommandManager} to the Bungee API. */
+@Getter
 public class BungeeAdapter implements Adapter<CommandContext, BungeeCommand> {
 
-  @NonNull @Getter private final Plugin plugin;
-  @NonNull @Getter private final PluginManager pluginManager;
+  @NonNull private final Plugin plugin;
+  @NonNull private final PluginManager pluginManager;
 
+  /**
+   * Create the Bungee adapter.
+   *
+   * @param plugin the plugin to register commands for
+   */
   public BungeeAdapter(@NonNull Plugin plugin) {
     this.plugin = plugin;
     this.pluginManager = plugin.getProxy().getPluginManager();
@@ -80,7 +87,7 @@ public class BungeeAdapter implements Adapter<CommandContext, BungeeCommand> {
   }
 
   @Override
-  public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
+  public @NonNull MessagesProvider<CommandContext> getDefaultMessagesProvider() {
     return new GenericMessagesProvider<>();
   }
 

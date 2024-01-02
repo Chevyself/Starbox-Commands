@@ -11,8 +11,15 @@ import com.github.chevyself.starbox.system.context.CommandContext;
 import java.lang.reflect.Method;
 import lombok.NonNull;
 
+/** Extension of {@link CommandParser} that is used for the System platform. */
 public class SystemCommandParser extends CommandParser<CommandContext, SystemCommand> {
 
+  /**
+   * Create the command parser.
+   *
+   * @param adapter the adapter
+   * @param commandManager the command manager
+   */
   public SystemCommandParser(
       @NonNull SystemAdapter adapter,
       @NonNull CommandManager<CommandContext, SystemCommand> commandManager) {

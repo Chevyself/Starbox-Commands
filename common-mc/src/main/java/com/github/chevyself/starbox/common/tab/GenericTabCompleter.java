@@ -13,14 +13,42 @@ import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 
+/**
+ * Abstract extension of tab complete that fulfills the logic of tab completing a command.
+ *
+ * @param <C> the command context
+ * @param <T> the command
+ * @param <O> the sender
+ */
 public abstract class GenericTabCompleter<
         C extends StarboxCommandContext<C, T>, T extends StarboxCommand<C, T>, O>
     implements TabCompleter<C, T, O> {
 
+  /**
+   * Get the permission to run the parameter command.
+   *
+   * @param command the command to get the permission from
+   * @return the permission to run the command
+   */
   public abstract String getPermission(@NonNull T command);
 
+  /**
+   * Check if the sender has the permission to run the command.
+   *
+   * @param sender the sender
+   * @param permission the permission to check
+   * @return if the sender has the permission
+   */
   public abstract boolean hasPermission(@NonNull O sender, @NonNull String permission);
 
+  /**
+   * Create the command context.
+   *
+   * @param parser the command line parser
+   * @param command the command to run
+   * @param sender the sender
+   * @return the command context
+   */
   @NonNull
   public abstract C createContext(
       @NonNull CommandLineParser parser, @NonNull T command, @NonNull O sender);
@@ -33,6 +61,14 @@ public abstract class GenericTabCompleter<
     }
   }
 
+  /**
+   * Use reflection to generate tab complete suggestions for the last argument.
+   *
+   * @param command the command to tab complete
+   * @param sender the sender
+   * @param strings the arguments
+   * @return the tab complete suggestions
+   */
   public @NonNull List<String> reflectTabComplete(
       @NonNull T command, @NonNull O sender, @NonNull String[] strings) {
     CommandLineParser parser = CommandLineParser.parse(command.getOptions(), strings);
@@ -40,7 +76,7 @@ public abstract class GenericTabCompleter<
     Optional<SingleArgument<?>> optionalArgument = this.getArgument(command, strings.length - 1);
     if (optionalArgument.isPresent()) {
       SingleArgument<?> argument = optionalArgument.get();
-      if (argument.getSuggestions(context).size() > 0) {
+      if (!argument.getSuggestions(context).isEmpty()) {
         return Strings.copyPartials(strings[strings.length - 1], argument.getSuggestions(context));
       } else {
         StarboxArgumentProvider<?, C> provider =

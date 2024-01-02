@@ -36,6 +36,7 @@ import lombok.NonNull;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 
+/** Adapter for the JDA platform. */
 public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
 
   @NonNull @Getter private final JDA jda;
@@ -44,12 +45,25 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
   private CommandManager<CommandContext, JdaCommand> commandManager;
   private CommandListener listener;
 
+  /**
+   * Create the adapter.
+   *
+   * @param jda the JDA instance
+   * @param listenerOptions the listener options
+   */
   public JdaAdapter(@NonNull JDA jda, @NonNull ListenerOptions listenerOptions) {
     this.jda = jda;
     this.listenerOptions = listenerOptions;
     this.guildCommands = new ConcurrentHashMap<>();
   }
 
+  /**
+   * Get a command by its alias.
+   *
+   * @param guild the guild to get the command from
+   * @param alias the alias of the command
+   * @return the command
+   */
   @NonNull
   public Optional<JdaCommand> getCommand(Guild guild, @NonNull String alias) {
     if (guild != null) {
@@ -148,7 +162,7 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
   }
 
   @Override
-  public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
+  public @NonNull MessagesProvider<CommandContext> getDefaultMessagesProvider() {
     return new GenericJdaMessagesProvider();
   }
 

@@ -16,6 +16,13 @@ public class UnknownCommand extends AbstractCommand<CommandContext, JdaCommand>
 
   @NonNull private final JdaMessagesProvider messagesProvider;
 
+  /**
+   * Create the unknown command.
+   *
+   * @param commandManager the command manager
+   * @param name the name of the command
+   * @param messagesProvider the messages provider
+   */
   public UnknownCommand(
       @NonNull CommandManager<CommandContext, JdaCommand> commandManager,
       @NonNull String name,

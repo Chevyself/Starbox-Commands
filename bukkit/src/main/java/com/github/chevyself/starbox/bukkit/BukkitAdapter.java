@@ -3,6 +3,7 @@ package com.github.chevyself.starbox.bukkit;
 import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.CommandManagerBuilder;
 import com.github.chevyself.starbox.adapters.Adapter;
+import com.github.chevyself.starbox.bukkit.commands.BukkitBuiltCommand;
 import com.github.chevyself.starbox.bukkit.commands.BukkitCommand;
 import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.bukkit.messages.BukkitMessagesProvider;
@@ -32,6 +33,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.help.HelpMap;
 import org.bukkit.plugin.Plugin;
 
+/** Adapts the {@link CommandManager} to the Bukkit API. */
 public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
 
   /**
@@ -57,6 +59,13 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
   @NonNull @Getter private final Plugin plugin;
   private final boolean registerCommandHelp;
 
+  /**
+   * Creates a new BukkitAdapter with the given {@link Plugin} and whether the command help should
+   * be registered or not.
+   *
+   * @param plugin the plugin
+   * @param registerCommandHelp whether the command help should be registered or not
+   */
   public BukkitAdapter(@NonNull Plugin plugin, boolean registerCommandHelp) {
     this.plugin = plugin;
     this.registerCommandHelp = registerCommandHelp;
@@ -165,13 +174,13 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
   }
 
   @Override
-  public @NonNull MessagesProvider<CommandContext> getDefaultMessaesProvider() {
+  public @NonNull MessagesProvider<CommandContext> getDefaultMessagesProvider() {
     return new GenericBukkitMessagesProvider();
   }
 
   @Override
   public @NonNull BukkitCommand adapt(
       @NonNull CommandBuilder<CommandContext, BukkitCommand> builder) {
-    return null;
+    return new BukkitBuiltCommand(builder, this);
   }
 }

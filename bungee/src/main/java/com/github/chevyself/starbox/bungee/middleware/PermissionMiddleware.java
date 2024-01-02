@@ -12,6 +12,11 @@ public class PermissionMiddleware implements BungeeMiddleware {
 
   @NonNull private final BungeeMessagesProvider messagesProvider;
 
+  /**
+   * Create the middleware.
+   *
+   * @param messagesProvider the messages provider
+   */
   public PermissionMiddleware(@NonNull BungeeMessagesProvider messagesProvider) {
     this.messagesProvider = messagesProvider;
   }

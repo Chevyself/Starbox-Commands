@@ -6,9 +6,10 @@ import java.time.Duration;
 import lombok.Getter;
 import lombok.NonNull;
 
+@Getter
 public class SimpleCooldownResult extends SimpleResult implements CooldownResult {
 
-  @NonNull @Getter private final Duration cooldown;
+  @NonNull private final Duration cooldown;
 
   public SimpleCooldownResult(@NonNull String message, @NonNull Duration cooldown) {
     super(message);

@@ -111,7 +111,7 @@ public class Option implements StarboxFlag {
    */
   @NonNull
   public static String generateUsage(@NonNull Collection<? extends Option> options) {
-    if (options.size() == 0) {
+    if (options.isEmpty()) {
       return "";
     }
     StringBuilder builder = new StringBuilder();
@@ -126,6 +126,12 @@ public class Option implements StarboxFlag {
     return builder.toString();
   }
 
+  /**
+   * Parse the options from a {@link Command} annotation.
+   *
+   * @param annotation the annotation to parse
+   * @return the parsed options
+   */
   @NonNull
   public static List<Option> of(@NonNull Command annotation) {
     return Option.of(annotation.flags());

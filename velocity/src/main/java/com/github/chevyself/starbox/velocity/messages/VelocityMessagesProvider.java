@@ -4,6 +4,7 @@ import com.github.chevyself.starbox.messages.MessagesProvider;
 import com.github.chevyself.starbox.velocity.context.CommandContext;
 import lombok.NonNull;
 
+/** Extension of the {@link MessagesProvider} for the Velocity platform. */
 public interface VelocityMessagesProvider extends MessagesProvider<CommandContext> {
   /**
    * The message sent when a command is executed by another entity rather than a player.

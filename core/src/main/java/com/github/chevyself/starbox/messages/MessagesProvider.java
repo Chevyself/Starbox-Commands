@@ -8,7 +8,7 @@ import lombok.NonNull;
 /**
  * Provides messages for different instances of the manager.
  *
- * @param <C> the command context
+ * @param <C> the type of the command context
  */
 public interface MessagesProvider<C extends StarboxCommandContext<C, ?>> {
 

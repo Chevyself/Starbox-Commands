@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /** Represents that the command execution resulted in an exception. */
+@Getter
 public abstract class ExceptionResult extends SimpleResult {
 
-  @NonNull @Getter protected final Throwable exception;
+  @NonNull protected final Throwable exception;
 
   /**
    * Create the result.
@@ -21,8 +22,8 @@ public abstract class ExceptionResult extends SimpleResult {
     this.exception = exception;
   }
 
-  @NonNull
-  public String getMessage() {
+  @Override
+  public @NonNull String getMessage() {
     return exception.getClass().getSimpleName() + ", e: " + exception.getMessage();
   }
 }

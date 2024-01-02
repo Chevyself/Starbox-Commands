@@ -18,11 +18,21 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
+/** Extension of {@link AbstractAnnotatedCommand} for JDA. */
+@Getter
 public class JdaAnnotatedCommand extends AbstractAnnotatedCommand<CommandContext, JdaCommand>
     implements JdaCommand {
 
-  @NonNull @Getter private final String description;
+  @NonNull private final String description;
 
+  /**
+   * Create the command.
+   *
+   * @param commandManager the command manager
+   * @param annotation the annotation
+   * @param object the object to invoke
+   * @param method the method to invoke
+   */
   public JdaAnnotatedCommand(
       @NonNull CommandManager<CommandContext, JdaCommand> commandManager,
       @NonNull Command annotation,
