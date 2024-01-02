@@ -6,7 +6,6 @@ import com.github.chevyself.starbox.bukkit.context.CommandContext;
 import com.github.chevyself.starbox.commands.AbstractBuiltCommand;
 import com.github.chevyself.starbox.commands.CommandBuilder;
 import com.github.chevyself.starbox.metadata.CommandMetadata;
-import java.util.ArrayList;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -36,7 +35,7 @@ public class BukkitBuiltCommand extends AbstractBuiltCommand<CommandContext, Buk
             this.getName(),
             metadata.has("description") ? metadata.get("description") : "",
             metadata.has("usage") ? metadata.get("usage") : "",
-            metadata.has("aliases") ? metadata.get("aliases") : new ArrayList<>(),
+            builder.getAliases(),
             this,
             metadata.has("async") ? metadata.get("async") : false);
     this.permission = metadata.has("permission") ? metadata.get("permission") : null;
