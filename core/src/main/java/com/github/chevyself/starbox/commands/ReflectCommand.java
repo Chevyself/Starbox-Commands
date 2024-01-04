@@ -54,14 +54,12 @@ public interface ReflectCommand<
   @Override
   default Result run(@NonNull C context) {
     try {
-      Object object = this.getMethod().invokeExact(this.getObject(), this.getObjects(context));
+      Object object = this.getMethod().invoke(this.getObject(), this.getObjects(context));
       if (object instanceof Result) {
         return (Result) object;
       } else {
         return null;
       }
-    } catch (final IllegalAccessException | InvocationTargetException e) {
-      return new InternalExceptionResult(e);
     } catch (final MissingArgumentException | ArgumentProviderException e) {
       return new ArgumentExceptionResult(e);
     } catch (final Throwable e) {
@@ -76,7 +74,7 @@ public interface ReflectCommand<
    * @return the method handle to execute a command
    */
   @NonNull
-  MethodHandle getMethod();
+  Method getMethod();
 
   /**
    * Get the instance of a class that contains a command. It is required to call the {@link

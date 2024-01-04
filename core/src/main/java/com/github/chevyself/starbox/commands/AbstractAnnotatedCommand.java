@@ -24,7 +24,7 @@ public abstract class AbstractAnnotatedCommand<
     extends AbstractCommand<C, T> implements ReflectCommand<C, T> {
 
   @NonNull protected final Object object;
-  @NonNull protected final MethodHandle method;
+  @NonNull protected final Method method;
   @NonNull protected final List<Argument<?>> arguments;
 
   /**
@@ -43,10 +43,6 @@ public abstract class AbstractAnnotatedCommand<
     super(commandManager, annotation, commandManager.getCommandMetadataParser().parse(method));
     this.object = object;
     this.arguments = Argument.parseArguments(method);
-    try {
-      this.method = MethodHandles.lookup().unreflect(method);
-    } catch (IllegalAccessException e) {
-      throw new CommandRegistrationException("Failed to unreflect command", e);
-    }
+    this.method = method;
   }
 }
