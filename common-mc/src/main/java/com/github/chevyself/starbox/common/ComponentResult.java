@@ -23,7 +23,7 @@ public class ComponentResult extends SimpleResult {
    * @param components the components to send
    */
   public ComponentResult(@NonNull List<BaseComponent> components) {
-    super(ComponentSerializer.toString(components));
+    super(ComponentResult.toString(components));
     this.components = components;
   }
 
@@ -34,5 +34,20 @@ public class ComponentResult extends SimpleResult {
    */
   public ComponentResult(@NonNull BaseComponent[] components) {
     this(Arrays.asList(components));
+  }
+
+  @NonNull
+  private static String toString(@NonNull List<BaseComponent> components) {
+    if (components.isEmpty()) {
+      return "[]";
+    }
+    StringBuilder builder = new StringBuilder();
+    builder.append("[");
+    for (BaseComponent component : components) {
+      builder.append(ComponentSerializer.toString(component)).append(", ");
+    }
+    builder.delete(builder.length() - 2, builder.length());
+    builder.append("]");
+    return builder.toString();
   }
 }
