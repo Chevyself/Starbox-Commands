@@ -4,8 +4,10 @@ import com.github.chevyself.starbox.CommandManager;
 import com.github.chevyself.starbox.annotations.Command;
 import com.github.chevyself.starbox.commands.AbstractParentCommand;
 import com.github.chevyself.starbox.jda.context.CommandContext;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 /** Extension of {@link AbstractParentCommand} for JDA. */
 @Getter
@@ -13,6 +15,7 @@ public class JdaParentCommand extends AbstractParentCommand<CommandContext, JdaC
     implements JdaCommand {
 
   @NonNull private final String description;
+  @Setter private String id;
 
   /**
    * Create the command.
@@ -27,5 +30,10 @@ public class JdaParentCommand extends AbstractParentCommand<CommandContext, JdaC
       @NonNull String description) {
     super(commandManager, annotation);
     this.description = description;
+  }
+
+  @Override
+  public @NonNull Optional<String> getId() {
+    return Optional.ofNullable(this.id);
   }
 }

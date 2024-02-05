@@ -49,7 +49,9 @@ public class VelocityAdapter implements Adapter<CommandContext, VelocityCommand>
   }
 
   @Override
-  public void onUnregister(@NonNull VelocityCommand command) {}
+  public void onUnregister(@NonNull VelocityCommand command) {
+    proxyServer.getCommandManager().unregister(command.getName());
+  }
 
   @Override
   public void close() {}

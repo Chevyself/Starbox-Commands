@@ -2,6 +2,7 @@ package com.github.chevyself.starbox;
 
 import com.github.chevyself.starbox.adapters.Adapter;
 import com.github.chevyself.starbox.commands.CommandBuilder;
+import com.github.chevyself.starbox.commands.ReflectCommand;
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.context.StarboxCommandContext;
 import com.github.chevyself.starbox.messages.MessagesProvider;
@@ -148,6 +149,67 @@ public final class CommandManager<
   @NonNull
   public CommandManager<C, T> registerAllIn(@NonNull String packageName) {
     return this.registerAll(this.getCommandParser().parseAllCommandsIn(packageName));
+  }
+
+  /**
+   * Unregisters a command from the manager. This will remove the command from the list and call
+   * {@link Adapter#onUnregister(StarboxCommand)}
+   *
+   * @param command the command to be unregistered
+   * @return this manager
+   */
+  @NonNull
+  public CommandManager<C, T> unregister(@NonNull T command) {
+    this.commands.remove(command);
+    this.adapter.onUnregister(command);
+    return this;
+  }
+
+  /**
+   * Unregisters all the commands in the collection. This will loop around each command to call
+   * {@link #unregister(StarboxCommand)}
+   *
+   * @param commands the commands to be unregistered
+   * @return this manager
+   */
+  @NonNull
+  public CommandManager<C, T> unregisterAll(@NonNull T... commands) {
+    for (T command : commands) {
+      this.unregister(command);
+    }
+    return this;
+  }
+
+  /**
+   * Unregisters all the commands in the collection. This will loop around each command to call
+   * {@link #unregister(StarboxCommand)}
+   *
+   * @param commands the commands to be unregistered
+   * @return this manager
+   */
+  @NonNull
+  public CommandManager<C, T> unregisterAll(@NonNull Collection<? extends T> commands) {
+    commands.forEach(this::unregister);
+    return this;
+  }
+
+  /**
+   * Unregister all the commands that use the provided object to invoke methods. This will filter
+   * the commands that are instances of {@link ReflectCommand} and have the same object as the
+   * provided one.
+   *
+   * @param object the object to filter the commands
+   * @return this manager
+   */
+  @NonNull
+  public CommandManager<C, T> unregisterAllIn(@NonNull Object object) {
+    this.commands.stream()
+        .filter(
+            command ->
+                command instanceof ReflectCommand
+                    && ((ReflectCommand<?, ?>) command).getObject().equals(object))
+        .forEach(this::unregister);
+    return this;
   }
 
   /**

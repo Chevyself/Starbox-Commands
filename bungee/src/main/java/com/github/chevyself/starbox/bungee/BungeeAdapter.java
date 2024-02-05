@@ -45,7 +45,9 @@ public class BungeeAdapter implements Adapter<CommandContext, BungeeCommand> {
   }
 
   @Override
-  public void onUnregister(@NonNull BungeeCommand command) {}
+  public void onUnregister(@NonNull BungeeCommand command) {
+    this.pluginManager.unregisterCommand(command.getExecutor());
+  }
 
   @Override
   public void close() {}

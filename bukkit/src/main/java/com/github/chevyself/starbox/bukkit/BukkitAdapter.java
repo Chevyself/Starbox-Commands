@@ -77,7 +77,9 @@ public class BukkitAdapter implements Adapter<CommandContext, BukkitCommand> {
   }
 
   @Override
-  public void onUnregister(@NonNull BukkitCommand command) {}
+  public void onUnregister(@NonNull BukkitCommand command) {
+    command.getExecutor().unregister(BukkitAdapter.commandMap);
+  }
 
   @Override
   public void close() {}

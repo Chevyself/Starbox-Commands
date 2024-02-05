@@ -2,6 +2,7 @@ package com.github.chevyself.starbox.jda.commands;
 
 import com.github.chevyself.starbox.commands.StarboxCommand;
 import com.github.chevyself.starbox.jda.context.CommandContext;
+import java.util.Optional;
 import lombok.NonNull;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -41,4 +42,19 @@ public interface JdaCommand extends StarboxCommand<CommandContext, JdaCommand> {
   default SubcommandData toSubcommandData() {
     return new SubcommandData(this.getName(), this.getDescription());
   }
+
+  /**
+   * Get the id assigned from discord.
+   *
+   * @return the id or empty if not assigned
+   */
+  @NonNull
+  Optional<String> getId();
+
+  /**
+   * Set the id assigned from discord.
+   *
+   * @param id the id to set
+   */
+  void setId(String id);
 }

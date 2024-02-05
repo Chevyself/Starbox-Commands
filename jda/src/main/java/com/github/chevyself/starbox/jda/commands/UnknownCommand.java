@@ -8,6 +8,7 @@ import com.github.chevyself.starbox.metadata.CommandMetadata;
 import com.github.chevyself.starbox.result.Result;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 import lombok.NonNull;
 
 /** This represents a command which wasn't found in {@link CommandManager}. */
@@ -46,4 +47,12 @@ public class UnknownCommand extends AbstractCommand<CommandContext, JdaCommand>
   public @NonNull String getDescription() {
     return "No description provided";
   }
+
+  @Override
+  public @NonNull Optional<String> getId() {
+    return Optional.empty();
+  }
+
+  @Override
+  public void setId(String id) {}
 }

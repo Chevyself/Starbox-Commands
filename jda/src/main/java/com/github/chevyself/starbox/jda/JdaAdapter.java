@@ -87,11 +87,16 @@ public class JdaAdapter implements Adapter<CommandContext, JdaCommand> {
 
   @Override
   public void onRegister(@NonNull JdaCommand command) {
-    this.jda.upsertCommand(command.toCommandData());
+    this.jda
+        .upsertCommand(command.toCommandData())
+        .queue(created -> command.setId(created.getId()));
   }
 
   @Override
-  public void onUnregister(@NonNull JdaCommand command) {}
+  public void onUnregister(@NonNull JdaCommand command) {
+    command.getId().ifPresent(id -> this.jda.deleteCommandById(id).queue());
+    command.setId(null);
+  }
 
   @Override
   public void close() {

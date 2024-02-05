@@ -8,8 +8,10 @@ import com.github.chevyself.starbox.commands.AbstractAnnotatedCommand;
 import com.github.chevyself.starbox.jda.context.CommandContext;
 import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
@@ -24,6 +26,7 @@ public class JdaAnnotatedCommand extends AbstractAnnotatedCommand<CommandContext
     implements JdaCommand {
 
   @NonNull private final String description;
+  @Setter private String id;
 
   /**
    * Create the command.
@@ -77,5 +80,10 @@ public class JdaAnnotatedCommand extends AbstractAnnotatedCommand<CommandContext
         .filter(Objects::nonNull)
         .forEach(data::addOptions);
     return data;
+  }
+
+  @Override
+  public @NonNull Optional<String> getId() {
+    return Optional.ofNullable(this.id);
   }
 }
