@@ -156,11 +156,43 @@ public class SingleArgument<O> implements Argument<O>, Mappable {
       }
     } else {
       if (argument.getBehaviour().equals(ArgumentBehaviour.CONTINUOUS)) {
-        string = String.join(" ", arguments.subList(argument.getPosition(), arguments.size()));
+        string =
+            String.join(
+                " ", arguments.subList(argument.getPosition() + lastIndex, arguments.size()));
       } else {
-        string = arguments.get(argument.getPosition() + lastIndex);
+        Pair<String, Integer> pair =
+            SingleArgument.getNormalArgument(arguments, argument.getPosition() + lastIndex);
+        string = pair.getA();
+        increase = pair.getB();
       }
     }
+    return new Pair<>(string, increase);
+  }
+
+  /**
+   * Parses the correct normal argument from the list of arguments.
+   *
+   * @param arguments the list of arguments
+   * @param position the starting position of the argument
+   * @return the parsed string and the increase in the index
+   */
+  @NonNull
+  static Pair<String, Integer> getNormalArgument(@NonNull List<String> arguments, int position) {
+    int increase = 0;
+    String initial = arguments.get(position);
+    if (!initial.startsWith("\"")) {
+      return new Pair<>(initial, 0);
+    }
+    StringBuilder builder = new StringBuilder();
+    for (int i = position; i < arguments.size(); i++) {
+      builder.append(arguments.get(i)).append(" ");
+      if (arguments.get(i).endsWith("\"") && !arguments.get(i).endsWith("\\\"")) {
+        increase = i - position;
+        break;
+      }
+    }
+    builder.deleteCharAt(builder.length() - 1);
+    String string = builder.substring(1, builder.length() - 1).replace("\\\"", "\"");
     return new Pair<>(string, increase);
   }
 }

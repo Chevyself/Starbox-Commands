@@ -35,24 +35,11 @@ public final class CommandLineParser {
    */
   @NonNull
   private static final Pattern flagPattern =
-      Pattern.compile("-{1,2}(\\w+)(?:[ \t]*=[ \t]*)?((\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")|\\S+)?");
-
-  /**
-   * The pattern to match the arguments from the command line. It matches the following:
-   *
-   * <ul>
-   *   <li><code>"argument with spaces"</code>
-   *   <li><code>argument</code>
-   * </ul>
-   *
-   * Arguments can be surrounded by quotation marks to allow spaces.
-   */
-  @NonNull
-  private static final Pattern argumentsPattern =
-      Pattern.compile("((\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")|\\S+)");
+      Pattern.compile(
+          "\\s*-{1,2}(\\w+)(?:[ \t]*=[ \t]*)?((\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")|\\S+)?\\s*");
 
   /** The arguments as they were passed to the command line. */
-  @NonNull private final String[] rawArguments;
+  @NonNull private final String rawString;
   /** The available options or flags. */
   @NonNull private final List<Option> options;
   // Parsed values
@@ -66,13 +53,13 @@ public final class CommandLineParser {
   private boolean parsed;
 
   private CommandLineParser(
-      @NonNull String[] rawArguments,
+      @NonNull String rawString,
       @NonNull Collection<? extends Option> options,
       @NonNull List<FlagArgument> flags,
       @NonNull List<String> arguments,
       String argumentsString,
       boolean parsed) {
-    this.rawArguments = rawArguments;
+    this.rawString = rawString;
     this.options = new ArrayList<>(options);
     this.flags = flags;
     this.arguments = arguments;
@@ -80,8 +67,9 @@ public final class CommandLineParser {
     this.parsed = parsed;
   }
 
-  CommandLineParser(@NonNull String[] rawArguments, @NonNull Collection<? extends Option> options) {
-    this(rawArguments, options, new ArrayList<>(), new ArrayList<>(), null, false);
+  private CommandLineParser(
+      @NonNull String rawString, @NonNull Collection<? extends Option> options) {
+    this(rawString, options, new ArrayList<>(), new ArrayList<>(), null, false);
   }
 
   /**
@@ -109,7 +97,7 @@ public final class CommandLineParser {
   @NonNull
   public static CommandLineParser parse(
       @NonNull Collection<? extends Option> options, @NonNull String... strings) {
-    return new CommandLineParser(strings, options).parse();
+    return new CommandLineParser(String.join(" ", strings), options).parse();
   }
 
   private static String getValue(String value, @NonNull Option option) {
@@ -129,23 +117,6 @@ public final class CommandLineParser {
     return value.replaceAll("(?<!\\\\)\"", "").replace("\\\"", "\"");
   }
 
-  @NonNull
-  private static String buildArgumentsString(@NonNull Iterable<String> subList) {
-    StringBuilder builder = new StringBuilder();
-    for (String string : subList) {
-      builder
-          .append(
-              CommandLineParser.hasSpaces(string)
-                  ? "\"" + string.replace("\"", "\\\"") + "\""
-                  : string)
-          .append(" ");
-    }
-    if (builder.length() > 0) {
-      builder.deleteCharAt(builder.length() - 1);
-    }
-    return builder.toString().trim();
-  }
-
   private static boolean hasSpaces(@NonNull String string) {
     return !string.equals(" ") && string.contains(" ");
   }
@@ -160,7 +131,7 @@ public final class CommandLineParser {
     if (this.parsed) {
       return this;
     }
-    String joined = CommandLineParser.buildArgumentsString(Arrays.asList(this.rawArguments));
+    String joined = rawString;
     joined = this.parseFlags(joined);
     joined = this.parseArguments(joined);
     this.parsed = true;
@@ -170,9 +141,8 @@ public final class CommandLineParser {
 
   @NonNull
   private String parseArguments(@NonNull String joined) {
-    Matcher matcher = CommandLineParser.argumentsPattern.matcher(joined);
-    while (matcher.find()) {
-      arguments.add(CommandLineParser.validateQuotation(matcher.group()));
+    if (!joined.isEmpty()) {
+      this.arguments.addAll(Arrays.asList(joined.split(" +")));
     }
     return joined;
   }
@@ -188,7 +158,8 @@ public final class CommandLineParser {
       if (optional.isPresent()) {
         Option option = optional.get();
         value = CommandLineParser.getValue(value, option);
-        joined = joined.replaceFirst(Pattern.quote(group), "");
+        // We must have a space as the pattern removes whitespaces completely
+        joined = joined.replaceFirst(Pattern.quote(group), " ");
         this.flags.add(new FlagArgument(option, value));
       }
     }
@@ -219,17 +190,12 @@ public final class CommandLineParser {
    */
   @NonNull
   public CommandLineParser copyFrom(int position, @NonNull Collection<? extends Option> options) {
-    List<String> subList = arguments.subList(position, arguments.size());
+    String rawCopy = String.join(" ", this.arguments.subList(position, this.arguments.size()));
     List<Option> optionsCopy = new ArrayList<>(this.options);
     optionsCopy.addAll(options);
     CommandLineParser copy =
         new CommandLineParser(
-                subList.toArray(new String[0]),
-                optionsCopy,
-                new ArrayList<>(this.flags),
-                new ArrayList<>(),
-                null,
-                false)
+                rawCopy, optionsCopy, new ArrayList<>(this.flags), new ArrayList<>(), null, false)
             .parse();
     copy.getFlags().addAll(this.flags);
     return copy;
@@ -237,15 +203,19 @@ public final class CommandLineParser {
 
   @Override
   public String toString() {
-    return "Parser{"
-        + "rawArguments="
-        + Arrays.toString(rawArguments)
+    return "CommandLineParser{"
+        + "rawString='"
+        + rawString
+        + '\''
         + ", options="
         + options
         + ", flags="
         + flags
         + ", arguments="
         + arguments
+        + ", argumentsString='"
+        + argumentsString
+        + '\''
         + ", parsed="
         + parsed
         + '}';
